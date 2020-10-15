@@ -16,3 +16,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::middleware('auth')->group(function () {
+  Route::get('dashboard','MainController@dashboard')->name('dashboard');
+
+  // Settings => (cities, townships, statuses, expense_types, payment_types, banks)
+
+  Route::resource('cities','CityController');
+  Route::resource('townships','TownshipController');
+  Route::resource('statuses','StatusController');
+  Route::resource('expense_types','ExpenseTypeController');
+  Route::resource('payment_types','PaymentTypeController');
+  Route::resource('banks','BankController');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
