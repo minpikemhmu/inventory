@@ -18,7 +18,7 @@ class CreateDeliveryMenTable extends Migration
             $table->string('phone_no');
             $table->text('address');
 
-            $tabl->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id');
 
             $table->softDeletes();
             $table->timestamps();

@@ -18,7 +18,7 @@ class CreateStaffTable extends Migration
             $table->string('phone_no');
             $table->text('address');
             $table->date('joined_date');
-            $table->string('designation')
+            $table->string('designation');
 
             $table->unsignedBigInteger('user_id');
 
