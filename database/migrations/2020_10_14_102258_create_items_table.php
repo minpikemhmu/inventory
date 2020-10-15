@@ -16,22 +16,24 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('codeno');
-            $table->unsignedBigInteger('client_id');
             $table->date('expired_date');
-            $table->string('deposit');
-            $table->string('amount');
-            $table->unsignedBigInteger('township_id');
-            $table->string('township_id');
+            $table->integer('deposit');
+            $table->integer('amount');
             $table->string('delivery_fees');
             $table->string('receiver_name');
-            $table->string('receiver_address');
+            $table->text('receiver_address');
             $table->string('receiver_phone_no');
             $table->longText('remark');
             $table->date('received_date');
-            $table->string('paystatus');
+            $table->string('paystatus')->default(0); 
+            // 0,1 (ပုံမှန်ဆို မပေးရသေးတာ)
             
+            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('township_id');
+
             $table->softDeletes();
             $table->timestamps();
+            
             $table->foreign('client_id')
                     ->references('id')->on('clients')
                     ->onDelete('cascade');

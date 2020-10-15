@@ -15,13 +15,16 @@ class CreateStaffTable extends Migration
     {
         Schema::create('staff', function (Blueprint $table) {
             $table->id();
-            $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->string('phone_no');
-            $table->string('address');
+            $table->text('address');
             $table->date('joined_date');
-            $table->softDeletes('designation');
+            $table->string('designation')
+
+            $table->unsignedBigInteger('user_id');
+
+            $table->softDeletes();
             $table->timestamps();
+            
             $table->foreign('user_id')
                     ->references('id')->on('users')
                     ->onDelete('cascade');

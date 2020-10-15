@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Status extends Model
 {
-    protected $fillable=[
-        	'codeno','description'
-        ];
+  protected $fillable=[
+  	'codeno','description'
+  ];
+
+  public function ways()
+  {
+    return $this->hasMany('App\Way');
+  }
 }

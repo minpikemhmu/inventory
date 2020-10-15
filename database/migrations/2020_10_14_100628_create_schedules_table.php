@@ -15,13 +15,17 @@ class CreateSchedulesTable extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_id');
-            $table->string('pickup_date');
-            $table->integer('status');
+            $table->date('pickup_date');
+            $table->integer('status')->default(0); 
+            // 0 (ချိန်းထားတုန်း) ,1 (လာယူပြီးပြီ)
             $table->longText('remark');
-            $table->string('file');
+            $table->text('file')->nullable();
+
+            $table->unsignedBigInteger('client_id');
+
             $table->softDeletes();
             $table->timestamps();
+
             $table->foreign('client_id')
                     ->references('id')->on('clients')
                     ->onDelete('cascade');

@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class PaymentType extends Model
 {
-    protected $fillable=[
-        	'name'
-        ];
+  protected $fillable=[
+  	'name'
+  ];
+
+  public function incomes()
+  {
+    return $this->hasMany('App\Income');
+  }
 }

@@ -7,7 +7,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
 {
-    protected $fillable=[
-        	'user_id','contact_person','phone_no','address','codeno','township_id'
-        ];
+  protected $fillable=[
+  	'contact_person', 'phone_no', 'address', 'codeno', 'user_id', 'township_id'
+  ];
+
+  public function user()
+  {
+    return $this->belongsTo('App\User');
+  }
+
+  public function township()
+  {
+    return $this->belongsTo('App\Township');
+  }
+
+  public function schedules()
+  {
+    return $this->hasMany('App\Schedule');
+  }
+
+  public function items()
+  {
+    return $this->hasMany('App\Item');
+  }
 }

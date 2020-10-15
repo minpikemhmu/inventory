@@ -16,10 +16,13 @@ class CreateTownshipsTable extends Migration
         Schema::create('townships', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('delivery_fees');
+
             $table->unsignedBigInteger('city_id');
-            $table->string('delivery_fees');
+
             $table->softDeletes();
             $table->timestamps();
+            
             $table->foreign('city_id')
                     ->references('id')->on('cities')
                     ->onDelete('cascade');

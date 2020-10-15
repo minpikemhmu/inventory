@@ -15,18 +15,20 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->string('contact_person');
             $table->string('phone_no');
-            $table->string('address');
+            $table->text('address');
             $table->string('codeno');
+
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('township_id');
+
             $table->softDeletes();
             $table->timestamps();
+
             $table->foreign('user_id')
                     ->references('id')->on('users')
                     ->onDelete('cascade');
-
             $table->foreign('township_id')
                     ->references('id')->on('townships')
                     ->onDelete('cascade');

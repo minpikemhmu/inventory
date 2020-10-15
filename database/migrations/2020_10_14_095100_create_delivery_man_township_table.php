@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDeliverymenTownshipsTable extends Migration
+class CreateDeliverymanTownshipTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateDeliverymenTownshipsTable extends Migration
      */
     public function up()
     {
-        Schema::create('deliverymen_townships', function (Blueprint $table) {
+        Schema::create('delivery_man_township', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('deliveryMen_id');
+
+            $table->unsignedBigInteger('delivery_men_id');
             $table->unsignedBigInteger('township_id');
+            
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('deliveryMen_id')
+            $table->foreign('delivery_men_id')
                     ->references('id')->on('delivery_men')
                     ->onDelete('cascade');
 
@@ -37,6 +39,6 @@ class CreateDeliverymenTownshipsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('deliverymen_townships');
+        Schema::dropIfExists('delivery_man_townships');
     }
 }

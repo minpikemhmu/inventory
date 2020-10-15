@@ -7,5 +7,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Staff extends Model
 {
 	protected $fillable=[
-    'user_id','phone_no','address','joined_date','designation'];
+    'phone_no', 'address', 'joined_date', 'designation', 'user_id'
+  ];
+
+  public function user()
+  {
+    return $this->belongsTo('App\User');
+  }
+
+  public function pickups()
+  {
+    return $this->hasMany('App\Pickup');
+  }
+
+  public function ways()
+  {
+    return $this->hasMany('App\Way');
+  }
 }

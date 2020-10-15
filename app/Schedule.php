@@ -7,7 +7,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Schedule extends Model
 {
 	protected $fillable=[
-        	'client_id','pickup_date','status','remark','file'
-        ];
+  	'pickup_date', 'status', 'remark', 'file', 'client_id'
+  ];
 
+  public function client()
+  {
+    return $this->belongsTo('App\Client');
+  }
+
+  public function pickups()
+  {
+    return $this->hasMany('App\Pickup');
+  }
 }

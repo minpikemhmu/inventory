@@ -15,11 +15,14 @@ class CreateDeliveryMenTable extends Migration
     {
         Schema::create('delivery_men', function (Blueprint $table) {
             $table->id();
-            $tabl->unsignedBigInteger('user_id');
             $table->string('phone_no');
-            $table->string('address');
+            $table->text('address');
+
+            $tabl->unsignedBigInteger('user_id');
+
             $table->softDeletes();
             $table->timestamps();
+            
             $table->foreign('user_id')
                     ->references('id')->on('users')
                     ->onDelete('cascade');

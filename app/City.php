@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class City extends Model
 {
-   protected $fillable=[
-        	'name'
-        ];
+  protected $fillable=[
+  	'name'
+  ];
+
+  public function townships()
+  {
+    return $this->hasMany('App\Township');
+  }
 }

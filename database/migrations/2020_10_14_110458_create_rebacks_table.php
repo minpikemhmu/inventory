@@ -15,11 +15,14 @@ class CreateRebacksTable extends Migration
     {
         Schema::create('rebacks', function (Blueprint $table) {
             $table->id();
+            $table->longText('remark');
+
             $table->unsignedBigInteger('pickup_id');
             $table->unsignedBigInteger('way_id');
-            $table->string('remark');
+
             $table->softDeletes();
             $table->timestamps();
+            
             $table->foreign('pickup_id')
                     ->references('id')->on('pickups')
                     ->onDelete('cascade');

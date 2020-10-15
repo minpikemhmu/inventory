@@ -15,17 +15,20 @@ class CreatePickupsTable extends Migration
     {
         Schema::create('pickups', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('delivery_men_id');
+            $table->integer('status')->default(0);
+
             $table->unsignedBigInteger('schedule_id');
-            $table->integer('status');
+            $table->unsignedBigInteger('delivery_men_id');
             $table->unsignedBigInteger('staff_id');
+
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('delivery_men_id')
-                    ->references('id')->on('delivery_men')
-                    ->onDelete('cascade');
+            
             $table->foreign('schedule_id')
                     ->references('id')->on('schedules')
+                    ->onDelete('cascade');
+            $table->foreign('delivery_men_id')
+                    ->references('id')->on('delivery_men')
                     ->onDelete('cascade');
             $table->foreign('staff_id')
                     ->references('id')->on('staff')

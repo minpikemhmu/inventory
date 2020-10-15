@@ -15,15 +15,18 @@ class CreateIncomesTable extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
+            $table->integer('delivery_fees');
+            $table->integer('amount');
+            $table->integer('bank_amount')->default(0); // default 0
+            $table->integer('cash_amount')->default(0); // default 0
+
             $table->unsignedBigInteger('way_id');
-            $table->string('delivery_fees');
-            $table->string('amount');
             $table->unsignedBigInteger('payment_type_id');
-            $table->unsignedBigInteger('bank_id');
-            $table->string('bank_amount');
-            $table->string('cash_amount');
+            $table->unsignedBigInteger('bank_id')->nullable();
+            
             $table->softDeletes();
             $table->timestamps();
+
             $table->foreign('way_id')
                     ->references('id')->on('ways')
                     ->onDelete('cascade');
