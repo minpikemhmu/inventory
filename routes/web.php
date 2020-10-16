@@ -20,14 +20,36 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
   Route::get('dashboard','MainController@dashboard')->name('dashboard');
 
-  // Settings => (cities, townships, statuses, expense_types, payment_types, banks)
+  Route::prefix('settings')->group(function () {
+    // Settings => (cities, townships, statuses, expense_types, payment_types, banks)
+    Route::resource('cities','CityController');
+    Route::resource('townships','TownshipController');
+    Route::resource('statuses','StatusController');
+    Route::resource('expense_types','ExpenseTypeController');
+    Route::resource('payment_types','PaymentTypeController');
+    Route::resource('banks','BankController');
+  });
 
-  Route::resource('cities','CityController');
-  Route::resource('townships','TownshipController');
-  Route::resource('statuses','StatusController');
-  Route::resource('expense_types','ExpenseTypeController');
-  Route::resource('payment_types','PaymentTypeController');
-  Route::resource('banks','BankController');
+  // Success List
+  Route::get('success_list','MainController@success_list')->name('success_list');
+
+  // Reject List
+  Route::get('reject_list','MainController@reject_list')->name('reject_list');
+
+  // Return List
+  Route::get('return_list','MainController@return_list')->name('return_list');
+
+  // Delay List
+  Route::get('delay_list','MainController@delay_list')->name('delay_list');
+
+  // Financial Statement
+  Route::get('statements','MainController@financial_statements')->name('statements');
+
+  // Debt List
+  Route::get('debt_list','MainController@debt_list')->name('debt_list');
+
+  // staff
+  Route::resource('staff','StaffController');
 });
 
 Auth::routes();

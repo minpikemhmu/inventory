@@ -11,6 +11,12 @@
   border-color: #f38c05;
 }
 
+.btn-primary:hover {
+    color: #FFF;
+    background-color: #f38c05;
+    border-color: #f38c05;
+}
+
 .badge-primary {
     color: #FFF;
     background-color: #f38c05;
