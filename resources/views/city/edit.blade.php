@@ -14,13 +14,14 @@
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
-          <h3 class="tile-title d-inline-block">City Create Form</h3>
+          <h3 class="tile-title d-inline-block">City Edit Form</h3>
           
-          <form action="{{route('cities.store')}}" method="POST">
+          <form action="{{route('cities.update',$city->id)}}" method="POST">
             @csrf
+            @method('PUT')
             <div class="form-group">
               <label for="InputCityName">Name:</label>
-              <input class="form-control" id="InputCityName" type="text" placeholder="Enter name" name="name">
+              <input class="form-control" id="InputCityName" type="text" placeholder="Enter name" name="name" value="{{$city->name}}">
                <div class="form-control-feedback text-danger"> {{$errors->first('name') }} </div>
             </div>
 
