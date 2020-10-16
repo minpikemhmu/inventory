@@ -25,6 +25,7 @@
 
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{{asset('datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar-->
@@ -104,15 +105,14 @@
       <ul class="app-menu">
         <!-- For Admin -->
         @role('admin')
-        <li><a class="app-menu__item {{ Request::is('dashboard') ? 'active' : '' }}" href="{{route('dashboard')}}"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Dashboard</span></a></li>
-        <li class="treeview {{ Request::is('settings/*') ? 'is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-cog" aria-hidden="true"></i><span class="app-menu__label">Settings</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li><a class="app-menu__item active" href="{{route('dashboard')}}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Settings</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item {{ Request::is('settings/cities') ? 'active' : '' }}" href="{{route('cities.index')}}"><i class="icon fa fa-circle-o"></i> Cities</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/townships') ? 'active' : '' }}" href="{{route('cities.index')}}"><i class="icon fa fa-circle-o"></i> Townships</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/statuses') ? 'active' : '' }}" href="{{route('cities.index')}}"><i class="icon fa fa-circle-o"></i> Delivery Status Codes</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/expense_types') ? 'active' : '' }}" href="{{route('cities.index')}}"><i class="icon fa fa-circle-o"></i> Expense Types</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/payment_types') ? 'active' : '' }}" href="{{route('cities.index')}}"><i class="icon fa fa-circle-o"></i> Payment Types</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/banks') ? 'active' : '' }}" href="{{route('cities.index')}}"><i class="icon fa fa-circle-o"></i> Banks</a></li>
+            <li><a class="treeview-item" href="{{route('cities.index')}}"><i class="icon fa fa-circle-o"></i> Cities</a></li>
+            <li><a class="treeview-item" href="{{route('townships.index')}}"  rel="noopener"><i class="icon fa fa-circle-o"></i> Townships</a></li>
+            <li><a class="treeview-item" href="{{route('statuses.index')}}"><i class="icon fa fa-circle-o"></i> Delivery Status Codes</a></li>
+            <li><a class="treeview-item" href="{{route('expense_types.index')}}"><i class="icon fa fa-circle-o"></i> Expense Types</a></li>
+            <li><a class="treeview-item" href="{{route('payment_types.index')}}"><i class="icon fa fa-circle-o"></i> Payment Types</a></li><li><a class="treeview-item" href="{{route('banks.index')}}"><i class="icon fa fa-circle-o"></i> Banks</a></li>
           </ul>
         </li>
         <li><a class="app-menu__item {{ Request::is('success_list') ? 'active' : '' }}" href="{{route('success_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Success List</span></a></li>
@@ -159,6 +159,11 @@
     <script src="{{ asset('assets/js/plugins/pace.min.js') }}"></script>
     <!-- Page specific javascripts-->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/chart.js') }}"></script>
+  <script src="{{asset('datatables/jquery.dataTables.min.js')}}"></script>
+  <script src="{{asset('datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{{asset('demo/datatables-demo.js')}}"></script>
     <script type="text/javascript">
       var data = {
         labels: ["January", "February", "March", "April", "May"],
@@ -217,5 +222,6 @@
         ga('send', 'pageview');
       }
     </script>
+    @yield('script')
   </body>
 </html>

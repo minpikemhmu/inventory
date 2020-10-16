@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\City;
+use App\Bank;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class BankController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CityController extends Controller
      */
     public function index()
     {
-        $cities=City::all();
-        return view('city.index',compact('cities'));
+         $banks=Bank::all();
+        return view('bank.index',compact('banks'));
     }
 
     /**
@@ -25,7 +25,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        return view('city.create');
+        return view('bank.create');
     }
 
     /**
@@ -36,15 +36,15 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $request->validate([
+         $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
         ]);
 
         if($validator){
-            $city=new City;
-            $city->name=$request->name;
-            $city->save();
-            return redirect()->route('cities.index')->with("successMsg",'New City is ADDED in your data');
+            $bank=new Bank;
+            $bank->name=$request->name;
+            $bank->save();
+            return redirect()->route('banks.index')->with("successMsg",'New Bank is ADDED in your data');
         }
         else
         {
@@ -55,10 +55,10 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\City  $city
+     * @param  \App\Bank  $bank
      * @return \Illuminate\Http\Response
      */
-    public function show(City $city)
+    public function show(Bank $bank)
     {
         //
     }
@@ -66,33 +66,33 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\City  $city
+     * @param  \App\Bank  $bank
      * @return \Illuminate\Http\Response
      */
-    public function edit(City $city)
+    public function edit(Bank $bank)
     {
-        $city=$city;
-        return view('city.edit',compact('city'));
+        $city=$bank;
+        return view('bank.edit',compact('bank'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\City  $city
+     * @param  \App\Bank  $bank
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, City $city)
+    public function update(Request $request, Bank $bank)
     {
-        $validator = $request->validate([
+         $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
         ]);
 
         if($validator){
-            $city=$city;
-            $city->name=$request->name;
-            $city->save();
-            return redirect()->route('cities.index')->with("successMsg",'update successfully');
+            $bank=$bank;
+            $bank->name=$request->name;
+            $bank->save();
+            return redirect()->route('banks.index')->with("successMsg",'update successfully');
         }
         else
         {
@@ -103,13 +103,13 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\City  $city
+     * @param  \App\Bank  $bank
      * @return \Illuminate\Http\Response
      */
-    public function destroy(City $city)
+    public function destroy(Bank $bank)
     {
-        $city=$city;
-        $city->delete();
-       return redirect()->route('cities.index')->with('successMsg','Existing City is DELETED in your data');
+        $bank=$bank;
+        $bank->delete();
+       return redirect()->route('banks.index')->with('successMsg','Existing Bank is DELETED in your data');
     }
 }

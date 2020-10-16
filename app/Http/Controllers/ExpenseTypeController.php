@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\City;
+use App\ExpenseType;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class ExpenseTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CityController extends Controller
      */
     public function index()
     {
-        $cities=City::all();
-        return view('city.index',compact('cities'));
+        $expensetypes=ExpenseType::all();
+        return view('ExpenseTypes.index',compact('expensetypes'));
     }
 
     /**
@@ -25,7 +25,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        return view('city.create');
+        return view('ExpenseTypes.create');
     }
 
     /**
@@ -41,10 +41,10 @@ class CityController extends Controller
         ]);
 
         if($validator){
-            $city=new City;
-            $city->name=$request->name;
-            $city->save();
-            return redirect()->route('cities.index')->with("successMsg",'New City is ADDED in your data');
+            $expensetype=new ExpenseType;
+            $expensetype->name=$request->name;
+            $expensetype->save();
+            return redirect()->route('expense_types.index')->with("successMsg",'New ExpenseType is ADDED in your data');
         }
         else
         {
@@ -55,10 +55,10 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\City  $city
+     * @param  \App\ExpenseType  $expenseType
      * @return \Illuminate\Http\Response
      */
-    public function show(City $city)
+    public function show(ExpenseType $expenseType)
     {
         //
     }
@@ -66,33 +66,33 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\City  $city
+     * @param  \App\ExpenseType  $expenseType
      * @return \Illuminate\Http\Response
      */
-    public function edit(City $city)
+    public function edit(ExpenseType $expenseType)
     {
-        $city=$city;
-        return view('city.edit',compact('city'));
+        $expenseType=$expenseType;
+        return view('ExpenseTypes.edit',compact('expenseType'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\City  $city
+     * @param  \App\ExpenseType  $expenseType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, City $city)
+    public function update(Request $request, ExpenseType $expenseType)
     {
-        $validator = $request->validate([
+         $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
         ]);
 
         if($validator){
-            $city=$city;
-            $city->name=$request->name;
-            $city->save();
-            return redirect()->route('cities.index')->with("successMsg",'update successfully');
+            $expensetype=$expenseType;
+            $expensetype->name=$request->name;
+            $expensetype->save();
+            return redirect()->route('expense_types.index')->with("successMsg",'Update successfully');
         }
         else
         {
@@ -103,13 +103,14 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\City  $city
+     * @param  \App\ExpenseType  $expenseType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(City $city)
+    public function destroy(ExpenseType $expenseType)
     {
-        $city=$city;
-        $city->delete();
-       return redirect()->route('cities.index')->with('successMsg','Existing City is DELETED in your data');
+         $expenseType=$expenseType;
+        $expenseType->delete();
+       return redirect()->route('expense_types.index')->with('successMsg','Existing ExpenseType is DELETED in your data');
+    
     }
 }

@@ -3,24 +3,25 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Cities</h1>
+        <h1><i class="fa fa-dashboard"></i> Expense Types</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('cities.index')}}">Cities</a></li>
+        <li class="breadcrumb-item"><a href="{{route('expense_types.index')}}">Expense Types</a></li>
       </ul>
     </div>
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
-          <h3 class="tile-title d-inline-block">City Create Form</h3>
+          <h3 class="tile-title d-inline-block">Expense Types Edit Form</h3>
           
-          <form action="{{route('cities.store')}}" method="POST">
+          <form action="{{route('expense_types.update',$expenseType->id)}}" method="POST">
             @csrf
+            @method('PUT')
             <div class="form-group">
-              <label for="InputCityName">Name:</label>
-              <input class="form-control" id="InputCityName" type="text" placeholder="Enter name" name="name">
+              <label for="expense_types">Expense_types Name:</label>
+              <input class="form-control" id="expense_types" type="text" placeholder="Enter name" name="name" value="{{$expenseType->name}}">
                <div class="form-control-feedback text-danger"> {{$errors->first('name') }} </div>
             </div>
 

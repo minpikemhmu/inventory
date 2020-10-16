@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\City;
+use App\PaymentType;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class PaymentTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CityController extends Controller
      */
     public function index()
     {
-        $cities=City::all();
-        return view('city.index',compact('cities'));
+         $paymenttypes=PaymentType::all();
+        return view('PaymentType.index',compact('paymenttypes'));
     }
 
     /**
@@ -25,7 +25,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        return view('city.create');
+         return view('PaymentType.create');
     }
 
     /**
@@ -41,10 +41,10 @@ class CityController extends Controller
         ]);
 
         if($validator){
-            $city=new City;
-            $city->name=$request->name;
-            $city->save();
-            return redirect()->route('cities.index')->with("successMsg",'New City is ADDED in your data');
+            $PaymentType=new PaymentType;
+            $PaymentType->name=$request->name;
+            $PaymentType->save();
+            return redirect()->route('payment_types.index')->with("successMsg",'New PaymentType is ADDED in your data');
         }
         else
         {
@@ -55,10 +55,10 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\City  $city
+     * @param  \App\PaymentType  $paymentType
      * @return \Illuminate\Http\Response
      */
-    public function show(City $city)
+    public function show(PaymentType $paymentType)
     {
         //
     }
@@ -66,33 +66,33 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\City  $city
+     * @param  \App\PaymentType  $paymentType
      * @return \Illuminate\Http\Response
      */
-    public function edit(City $city)
+    public function edit(PaymentType $paymentType)
     {
-        $city=$city;
-        return view('city.edit',compact('city'));
+        $paymentType=$paymentType;
+        return view('PaymentType.edit',compact('paymentType'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\City  $city
+     * @param  \App\PaymentType  $paymentType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, City $city)
+    public function update(Request $request, PaymentType $paymentType)
     {
         $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
         ]);
 
         if($validator){
-            $city=$city;
-            $city->name=$request->name;
-            $city->save();
-            return redirect()->route('cities.index')->with("successMsg",'update successfully');
+            $PaymentType=$paymentType;
+            $PaymentType->name=$request->name;
+            $PaymentType->save();
+            return redirect()->route('payment_types.index')->with("successMsg",'Update successfully');
         }
         else
         {
@@ -103,13 +103,13 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\City  $city
+     * @param  \App\PaymentType  $paymentType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(City $city)
+    public function destroy(PaymentType $paymentType)
     {
-        $city=$city;
-        $city->delete();
-       return redirect()->route('cities.index')->with('successMsg','Existing City is DELETED in your data');
+        $paymentType=$paymentType;
+        $paymentType->delete();
+       return redirect()->route('payment_types.index')->with('successMsg','Existing PaymentType is DELETED in your data');
     }
 }
