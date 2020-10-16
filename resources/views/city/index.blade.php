@@ -24,7 +24,7 @@
                         @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">City List</h3>
-          <a href="{{route('cities.create')}}" class="btn btn-primary float-right">Add New</a>
+          <a href="{{route('cities.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
           <table class="table">
             <thead>
               <tr>
@@ -40,6 +40,7 @@
                 <td>{{$i++}}</td>
                 <td>{{$row->name}}</td>
                 <td>
+
                   <a href="{{route('cities.edit',$row->id)}}" class="btn btn-warning">Edit</a>
                   <form action="{{ route('cities.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
 
