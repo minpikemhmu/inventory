@@ -50,6 +50,19 @@ Route::middleware('auth')->group(function () {
 
   // staff
   Route::resource('staff','StaffController');
+
+  //  For Staff
+  Route::resource('schedules', 'ScheduleController');
+  Route::resource('items', 'ItemController');
+  Route::resource('clients', 'ClientController');
+  Route::resource('delivery_men', 'DeliveryMenController');
+  Route::get('incomes', 'MainController@incomes')->name('incomes');
+  Route::resource('expenses','ExpenseController');
+
+  // For Client
+  Route::get('pickups','MainController@pickups')->name('pickups');
+  Route::get('ways','MainController@ways')->name('ways');
+
 });
 
 Auth::routes();
