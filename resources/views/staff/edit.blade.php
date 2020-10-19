@@ -14,50 +14,51 @@
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
-          <h3 class="tile-title d-inline-block">City Staff Form</h3>
+          <h3 class="tile-title d-inline-block">Staff Edit Form</h3>
           
-          <form action="{{route('staff.store')}}" method="POST">
+          <form action="{{route('staff.update',$staff->id)}}" method="POST">
             @csrf
-            <div class="form-group">
+            @method('PUT')
+           <div class="form-group">
               <label for="InputCityName">Name:</label>
-              <input class="form-control" id="InputCityName" type="text" placeholder="Enter name" name="name">
+              <input class="form-control" id="InputCityName" type="text" placeholder="Enter name" name="name" value="{{$staff->user->name}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('name') }} </div>
             </div>
 
             <div class="form-group">
               <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="Enter email">
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="Enter email"value="{{$staff->user->email}}">
               <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
               <div class="form-control-feedback text-danger"> {{$errors->first('email') }} </div>
             </div>
 
             <div class="form-group">
               <label for="exampleInputPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Enter Password">
+              <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Enter Password"value="{{$staff->user->password}}" >
               <div class="form-control-feedback text-danger"> {{$errors->first('password') }} </div>
             </div>
 
             <div class="form-group">
               <label for="phone">Phone No:</label>
-              <input class="form-control" id="phone" type="text" placeholder="Enter Phone No" name="phone">
+              <input class="form-control" id="phone" type="text" placeholder="Enter Phone No" name="phone" value="{{$staff->phone_no}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('phone') }} </div>
             </div>
 
             <div class="form-group">
               <label for="address">Address:</label>
-              <input class="form-control" id="address" type="text" placeholder="Enter Address" name="address">
+              <input class="form-control" id="address" type="text" placeholder="Enter Address" name="address" value="{{$staff->address}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('address') }} </div>
             </div>
 
             <div class="form-group">
               <label for="date">Join date:</label>
-              <input class="form-control" id="date" type="date" name="date">
+              <input class="form-control" id="date" type="date" name="date" value="{{$staff->joined_date}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('date') }} </div>
             </div>
 
             <div class="form-group">
               <label for="designation">Designation:</label>
-              <input class="form-control" id="designation" type="text" placeholder="Enter designation" name="designation">
+              <input class="form-control" id="designation" type="text" placeholder="Enter designation" name="designation" value="{{$staff->designation}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('designation') }} </div>
             </div>
 

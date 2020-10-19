@@ -16,30 +16,40 @@
         <div class="tile">
           <h3 class="tile-title d-inline-block">Staff List</h3>
           <a href="{{route('staff.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
-          <table class="table">
+          <table class="table table-responsive">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Name</th>
                 <th>Phone No</th>
+                <th>Address</th>
                 <th>Designation</th>
                 <th>Joined Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
+              @php $i=1; @endphp
+              @foreach($staff as $row)
               <tr>
-                <td>1</td>
-                <td>Ma San</td>
-                <td>09-987654321</td>
-                <td>Store Manager</td>
-                <td>01-02-2019</td>
+                <td>{{$i++}}</td>
+                <td>{{$row->user->name}}</td>
+                <td>{{$row->phone_no}}</td>
+                <td>{{$row->address}}</td>
+                <td>{{$row->designation}}</td>
+                <td>{{$row->joined_date}}</td>
                 <td>
-                  <a href="#" class="btn btn-primary">Detail</a>
-                  <a href="#" class="btn btn-warning">Edit</a>
-                  <a href="#" class="btn btn-danger">Delete</a>
+                  <a href="{{route('staff.show',$row->id)}}" class="btn btn-primary">Detail</a>
+                  <a href="{{route('staff.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                  <form action="{{ route('staff.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
+
+                    @csrf
+                    @method('DELETE')
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
                 </td>
               </tr>
+              @endforeach
             </tbody>
           </table>
         </div>

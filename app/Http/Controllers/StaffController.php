@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Staff;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller
@@ -14,7 +16,8 @@ class StaffController extends Controller
      */
     public function index()
     {
-        return view('staff.index');
+        $staff=Staff::all();
+        return view('staff.index',compact('staff'));
     }
 
     /**
@@ -24,7 +27,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        //
+        return view('staff.create');
     }
 
     /**
@@ -35,7 +38,36 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $validator = $request->validate([
+            'name'  => ['required', 'string', 'max:255'],
+            'email'  => ['required','string','email','max:255','unique:users'],
+            'password'  => ['required','min:6'],
+            'phone'  => ['required'],
+            'address'  => ['required','string'],
+            'date'=>['required','date'],
+            'designation'=>['required']
+        ]);
+        if($validator){
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
+            $user->assignRole('staff');
+            $staff=new Staff;
+            $staff->phone_no =$request->phone;
+            $staff->address = $request->address;
+            $staff->joined_date = $request->date;
+            $staff->designation = $request->designation;
+            $staff->user_id = $user->id;
+            $staff->save();
+           
+            return redirect()->route('staff.index')->with("successMsg",'New Staff is ADDED in your data');
+        }
+        else
+        {
+            return redirect::back()->withErrors($validator);
+        }
     }
 
     /**
@@ -57,7 +89,8 @@ class StaffController extends Controller
      */
     public function edit(Staff $staff)
     {
-        //
+        $staff=$staff;
+        return view('staff.edit',compact('staff'));
     }
 
     /**
@@ -69,7 +102,37 @@ class StaffController extends Controller
      */
     public function update(Request $request, Staff $staff)
     {
-        //
+         $validator = $request->validate([
+            'name'  => ['required', 'string', 'max:255'],
+            'email'  => ['required','string','email','max:255'],
+            'password'  => ['required','min:6'],
+            'phone'  => ['required'],
+            'address'  => ['required','string'],
+            'date'=>['required','date'],
+            'designation'=>['required']
+        ]);
+        if($validator){
+            $staff=$staff;
+            $user =User::find($staff->user_id);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
+            $user->assignRole('staff');
+            
+            $staff->phone_no =$request->phone;
+            $staff->address = $request->address;
+            $staff->joined_date = $request->date;
+            $staff->designation = $request->designation;
+            $staff->user_id = $user->id;
+            $staff->save();
+           
+            return redirect()->route('staff.index')->with("successMsg",'New Staff is ADDED in your data');
+        }
+        else
+        {
+            return redirect::back()->withErrors($validator);
+        }
     }
 
     /**
