@@ -26,6 +26,7 @@
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="{{asset('datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.min.css') }}">
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar-->
@@ -161,6 +162,7 @@
     <script src="{{ asset('assets/js/plugins/pace.min.js') }}"></script>
     <!-- Page specific javascripts-->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/chart.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/select2.min.js') }}"></script>
   <script src="{{asset('datatables/jquery.dataTables.min.js')}}"></script>
   <script src="{{asset('datatables/dataTables.bootstrap4.min.js')}}"></script>
 
