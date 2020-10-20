@@ -14,14 +14,14 @@
     <div class="row">
       <div class="col-md-12">
         @if(session('successMsg') != NULL)
-                            <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
-                                <strong> ✅ SUCCESS!</strong>
-                                {{ session('successMsg') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+          <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
+              <strong> ✅ SUCCESS!</strong>
+              {{ session('successMsg') }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">Pickup List</h3>
           <a href="{{route('schedules.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
@@ -91,7 +91,6 @@
                         <td>Mg Mg</td>
                         <td>
                           <a href="{{route('items.collect',1)}}" class="btn btn-primary">Collect</a>
-                          <a href="#" class="btn btn-info">Pending</a>
                           <a href="#" class="btn btn-warning">Edit</a>
                           <a href="#" class="btn btn-danger">Delete</a>
                         </td>
