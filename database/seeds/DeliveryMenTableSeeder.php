@@ -27,5 +27,7 @@ class DeliveryMenTableSeeder extends Seeder
       $delivery_man->address = 'Baho Street, Mayangone Township';
       $delivery_man->user_id = $user->id;
       $delivery_man->save();
+
+      $delivery_man->townships()->attach([25,26]);
     }
 }

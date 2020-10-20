@@ -51,7 +51,7 @@
                       Ba Kyaw
                     </td>
                     <td>25-10-2020</td>
-                    <td>7000</td>
+                    <td>7,000</td>
                   </tr>
                   <tr>
                     <td colspan="5" class="text-right">Total</td>
