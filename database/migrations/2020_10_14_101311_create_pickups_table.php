@@ -18,7 +18,7 @@ class CreatePickupsTable extends Migration
             $table->integer('status')->default(0);
 
             $table->unsignedBigInteger('schedule_id');
-            $table->unsignedBigInteger('delivery_men_id');
+            $table->unsignedBigInteger('delivery_man_id');
             $table->unsignedBigInteger('staff_id');
 
             $table->softDeletes();

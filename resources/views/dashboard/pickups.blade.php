@@ -23,21 +23,26 @@
                   <th>Client Name</th>
                   <th>Township</th>
                   <th>Pickup Date</th>
+                  <th>remark</th>
                   <th>Quantity</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
+                @php $i=1;@endphp
+                @foreach($pickups as $row)
                 <tr>
-                  <td>1</td>
-                  <td>Ma San</td>
-                  <td>Mayangone</td>
-                  <td>25-10-2020</td>
-                  <td>5</td>
+                  <td>{{$i++}}</td>
+                  <td>{{$row->schedule->client->user->name}}</td>
+                  <td>{{$row->schedule->client->address}}</td>
+                  <td>{{$row->schedule->pickup_date}}</td>
+                  <td>{{$row->schedule->remark}}</td>
+                  <td>{{$row->schedule->quantity}}</td>
                   <td>
                     <a href="#" class="btn btn-primary">Pending</a>
                   </td>
                 </tr>
+                @endforeach
               </tbody>
             </table>
           </div>

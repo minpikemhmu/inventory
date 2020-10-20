@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Pickup extends Model
 {
   protected $fillable=[
-  	'status', 'schedule_id', 'delivery_men_id', 'staff_id'
+  	'status', 'schedule_id', 'delivery_man_id', 'staff_id'
   ];
 
   public function schedule()
@@ -15,7 +15,7 @@ class Pickup extends Model
     return $this->belongsTo('App\Schedule');
   }
 
-  public function delivery_men()
+  public function delivery_man()
   {
     return $this->belongsTo('App\DeliveryMan');
   }

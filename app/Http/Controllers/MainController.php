@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Pickup;
+use Auth;
 
 class MainController extends Controller
 {
@@ -69,7 +71,16 @@ class MainController extends Controller
   // for pickup page => delivery man view
   public function pickups($value='')
   {
-    return view('dashboard.pickups');
+    $role=Auth::user()->roles()->first();
+    $rolename=$role->name;
+    $pickups="";
+    if($rolename="delivery_man"){
+      $user=Auth::user();
+      $id=$user->delivery_man->id;
+      $pickups=Pickup::where('delivery_man_id',$id)->get();
+    }
+    //dd($pickups);
+    return view('dashboard.pickups',compact('pickups'));
   }
 
   // for way page => delivery man view

@@ -44,6 +44,7 @@
                         <th>Client Name</th>
                         <th>Pickup Date</th>
                         <th>Remark</th>
+                        <th>Quantity</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -56,6 +57,7 @@
                         <td>{{$row->client->user->name}}</td>
                         <td>{{$row->pickup_date}}</td>
                         <td>{{$row->remark}}</td>
+                        <td>{{$row->quantity}}</td>
                         <td>
                           
                           <a href="#" class="btn btn-primary assign" data-id="{{$row->id}}">Assign</a>
@@ -113,6 +115,7 @@
                         <th>Pickup Date</th>
                         <th>Remark</th>
                         <th>Delivery Man</th>
+                        <th>Quantity</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -123,7 +126,8 @@
                         <td>{{$row->schedule->client->user->name}}</td>
                         <td>{{$row->schedule->pickup_date}}</td>
                         <td>{{$row->schedule->remark}}</td>
-                        <td>{{$row->delivery_men->user->name}}</td>
+                        <td>{{$row->delivery_man->user->name}}</td>
+                        <td>{{$row->schedule->quantity}}</td>
                         <td>
                           @if($row->status==1)
                           <a href="{{route('items.collect',1)}}" class="btn btn-primary">Collect</a>

@@ -207,7 +207,7 @@ class ScheduleController extends Controller
             $pickup->schedule_id=$schedule_id;
         }
         //dd($deliveryman_id);
-        $pickup->delivery_men_id=$deliveryman_id;
+        $pickup->delivery_man_id=$deliveryman_id;
         $pickup->staff_id=$staff;
         $pickup->save();
         return redirect()->route('schedules.index')->with('successMsg','Assign successfully');
