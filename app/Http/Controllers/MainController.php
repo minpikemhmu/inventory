@@ -48,10 +48,22 @@ class MainController extends Controller
     return view('dashboard.debt_list');
   }
 
-  // for debt list page
+  // for income list page
   public function incomes($value='')
   {
     return view('dashboard.incomes');
+  }
+
+  // for add incomes form page
+  public function addincomeform($value='')
+  {
+    return view('dashboard.addincomes');
+  }
+
+  // for add incomes method => store
+  public function addincomes(Request $request)
+  {
+    
   }
 
   // for pickup page => delivery man view

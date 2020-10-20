@@ -24,7 +24,7 @@ class DeliveryMenController extends Controller
      */
     public function create()
     {
-        //
+        return view('deliveryman.create');
     }
 
     /**

@@ -53,10 +53,18 @@ Route::middleware('auth')->group(function () {
 
   //  For Staff
   Route::resource('schedules', 'ScheduleController');
+  Route::post('storeandassignschedule', 'ScheduleController@storeandassignschedule')->name('schedules.storeandassign');
+
   Route::resource('items', 'ItemController');
+  Route::get('collectitem/{id}','ItemController@collectitem')->name('items.collect');
+
   Route::resource('clients', 'ClientController');
   Route::resource('delivery_men', 'DeliveryMenController');
+
   Route::get('incomes', 'MainController@incomes')->name('incomes');
+  Route::get('addincomes', 'MainController@addincomeform')->name('incomes.create');
+  Route::post('addincomes', 'MainController@addincomes')->name('incomes.store');
+
   Route::resource('expenses','ExpenseController');
 
   // For Client

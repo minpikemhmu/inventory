@@ -82,4 +82,9 @@ class ScheduleController extends Controller
     {
         //
     }
+    
+    public function storeandassignschedule($value='')
+    {
+        // 
+    }
 }

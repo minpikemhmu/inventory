@@ -15,6 +15,7 @@
       <div class="col-md-12">
         <div class="tile">
           <h3 class="tile-title d-inline-block">Incomes List (14-Oct-2020)</h3>
+          <a href="{{route('incomes.create')}}" class="btn btn-primary float-right">Add Income</a>
           <table class="table">
             <thead>
               <tr>

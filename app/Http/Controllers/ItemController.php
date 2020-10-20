@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Item;
+use App\Client;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -81,5 +82,12 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         //
+    }
+
+    // here accept client id
+    public function collectitem($id)
+    {
+        $client = Client::find($id);
+        return view('item.create',compact('client'));
     }
 }
