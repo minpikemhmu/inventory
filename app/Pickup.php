@@ -15,7 +15,7 @@ class Pickup extends Model
     return $this->belongsTo('App\Schedule');
   }
 
-  public function delivery_man()
+  public function delivery_men()
   {
     return $this->belongsTo('App\DeliveryMan');
   }

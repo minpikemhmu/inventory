@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
 
   //  For Staff
   Route::resource('schedules', 'ScheduleController');
+  Route::post('uploadfile', 'ScheduleController@uploadfile')->name('uploadfile');
   Route::post('storeandassignschedule', 'ScheduleController@storeandassignschedule')->name('schedules.storeandassign');
 
   Route::resource('items', 'ItemController');

@@ -20,7 +20,7 @@ class CreateSchedulesTable extends Migration
             // 0 (ချိန်းထားတုန်း) ,1 (လာယူပြီးပြီ)
             $table->longText('remark');
             $table->text('file')->nullable();
-
+            $table->integer('quantity');
             $table->unsignedBigInteger('client_id');
 
             $table->softDeletes();

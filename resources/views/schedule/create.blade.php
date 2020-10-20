@@ -25,7 +25,9 @@
               <label for="InputClient">Client:</label>
               <select class="form-control" name="client" id="InputClient">
                 <optgroup label="Choose Client">
-                  <option value="1">Ma San</option>
+                  @foreach($clients as $row)
+                  <option value="{{$row->id}}">{{$row->user->name}}</option>
+                  @endforeach
                 </optgroup>
               </select>
             </div>
@@ -50,7 +52,13 @@
 
             <div class="form-group myfile">
               <label for="file">file:</label>
-              <input type="file"  id="file" name="file"></textarea>
+              <input type="file"  id="file" name="file">
+            </div>
+
+            <div class="form-group">
+              <label for="quantity">Quantity:</label>
+              <input type="number"  id="quantity" class="form-control" name="quantity">
+              <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
             </div>
             
             @role('staff')
@@ -58,8 +66,9 @@
               <label for="InputDeliveryMan">Delivery Man:</label>
               <select class="form-control" name="deliveryman" id="InputDeliveryMan">
                 <optgroup label="Choose Delivery Man">
-                  <option value="1">Mg Mg</option>
-                  <option value="2">U Kyaw</option>
+                 @foreach($deliverymen as $row)
+                  <option value="{{$row->id}}">{{$row->user->name}}</option>
+                  @endforeach
                 </optgroup>
               </select>
             </div>

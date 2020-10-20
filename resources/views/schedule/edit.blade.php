@@ -40,7 +40,13 @@
 
             <div class="form-group myfile">
               <label for="file">file:</label>
-              <input type="file"  id="file" name="file"></textarea>
+              <input type="file"  id="file" name="file">
+            </div>
+
+            <div class="form-group">
+              <label for="quantity">Quantity:</label>
+              <input type="number"  id="quantity" class="form-control" name="quantity" value="{{$schedule->quantity}}">
+              <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
             </div>
             <div class="form-group">
               <button class="btn btn-primary" type="submit">Save</button>
