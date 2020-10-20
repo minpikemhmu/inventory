@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Staff');
     }
+
+    public function getRole($value='')
+    {
+        return $this->getRoleNames()[0];
+    }
 }
