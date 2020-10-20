@@ -8,15 +8,24 @@
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('cities.index')}}">Schedules</a></li>
+        <li class="breadcrumb-item"><a href="{{route('schedules.index')}}">Schedules</a></li>
       </ul>
     </div>
     <div class="row">
       <div class="col-md-12">
+        @if(session('successMsg') != NULL)
+                            <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
+                                <strong> ✅ SUCCESS!</strong>
+                                {{ session('successMsg') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">Schedules List</h3>
           <a href="{{route('schedules.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
-          <table class="table">
+          <table class="table" id="dataTable">
             <thead>
               <tr>
                 <th>#</th>
@@ -27,17 +36,24 @@
               </tr>
             </thead>
             <tbody>
+               @php $i=1; @endphp
+              @foreach($schedules as $row)
               <tr>
-                <td>1</td>
-                <td>Client One</td>
-                <td>25-10-2020</td>
-                <td>This is a remark by clients</td>
+                <td>{{$i++}}</td>
+                <td>{{$row->client->user->name}}</td>
+                <td>{{$row->pickup_date}}</td>
+                <td>{{$row->remark}}</td>
                 <td>
-                  <a href="#" class="btn btn-primary">Assign</a>
-                  <a href="#" class="btn btn-warning">Edit</a>
-                  <a href="#" class="btn btn-danger">Delete</a>
+                  <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                  <form action="{{ route('schedules.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
+
+                    @csrf
+                    @method('DELETE')
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
                 </td>
               </tr>
+              @endforeach
             </tbody>
           </table>
         </div>
@@ -46,3 +62,12 @@
     </div>
   </main>
 @endsection 
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+    //alert("ok");
+    setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+  })
+  
+</script>
+@endsection
