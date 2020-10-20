@@ -13,44 +13,67 @@
     </div>
     <div class="row">
       <div class="col-md-12">
+         @if(session('successMsg') != NULL)
+                            <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
+                                <strong> ✅ SUCCESS!</strong>
+                                {{ session('successMsg') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">Delivery Men List</h3>
           <a href="{{route('delivery_men.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
-          <div class="table-responsive">
-            <table class="table" id="dataTable">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Phone no</th>
-                  <th>Address</th>
-                  <th>Townships</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Delivery Man</td>
-                  <td>09-98765432</td>
-                  <td>Baho Street, Mayangone Township</td>
-                  <td>
-                    <span class="badge badge-info">Mayangone</span>
-                    <span class="badge badge-info">Hlaing</span>
-                    <span class="badge badge-info">Tharkata</span>
-                  </td>
-                  <td>
-                    <a href="#" class="btn btn-primary">Detail</a>
-                    <a href="#" class="btn btn-warning">Edit</a>
-                    <a href="#" class="btn btn-danger">Delete</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Phone No</th>
+                <th>Address</th>
+                <th>Townships</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @php $i=1; @endphp
+              @foreach($DeliveryMen as $row)
+              <tr>
+                <td>{{$i++}}</td>
+                <td>{{$row->user->name}}</td>
+                <td>{{$row->phone_no}}</td>
+                <td>{{$row->address}}</td>
+                <td>
+                  @foreach($row->townships as $township)
+                    <span class="badge badge-info">{{$township->name}}</span>
+                  @endforeach
+                </td>
+                <td>
+                  <a href="{{route('delivery_men.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                  <form action="{{ route('delivery_men.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
+
+                    @csrf
+                    @method('DELETE')
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                </td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
         </div>
       </div>
       
     </div>
   </main>
 @endsection 
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+    //alert("ok");
+    setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+  })
+  
+</script>
+@endsection

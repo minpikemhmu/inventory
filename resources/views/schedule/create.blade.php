@@ -16,31 +16,43 @@
         <div class="tile">
           @role('client')
             <h3 class="tile-title d-inline-block">Create Schedule Form</h3>
-            <form method="post" action="{{asset('schedules.store')}}">
+            <form method="post" action="{{route('schedules.store')}}" enctype="multipart/form-data">
           @endrole
           @role('staff')
             <h3 class="tile-title d-inline-block">Create Schedule and Assign</h3>
-            <form method="post" action="{{asset('schedules.storeandassign')}}">
+            <form method="post" action="{{route('schedules.storeandassign')}}" enctype="multipart/form-data">
             <div class="form-group">
-              <label for="InputClientName">Client Name:</label>
-              <select class="form-control" name="client_name" id="InputClientName">
-                <optgroup label="Choose Client:">
-                  <option value="">Ma Su</option>
-                  <option value="">Ko Thi</option>
-                  <option value="">Ma Mon</option>
+              <label for="InputClient">Client:</label>
+              <select class="form-control" name="client" id="InputClient">
+                <optgroup label="Choose Client">
+                  <option value="1">Ma San</option>
                 </optgroup>
               </select>
             </div>
-          @endrole          
+          @endrole  
+            @csrf     
             <div class="form-group">
               <label for="InputDate">Date:</label>
-              <input class="form-control" id="InputDate" type="date">
+              <input class="form-control" id="InputDate" type="date" name="date">
+              <div class="form-control-feedback text-danger"> {{$errors->first('date') }} </div>
+            </div>   
+            <div class="form-group">
+              <label for="InputRemark">Remark:</label>
+              <textarea class="form-control" id="InputRemark" name="remark" placeholder="Enter Remark" ></textarea>
+              <div class="form-control-feedback text-danger"> {{$errors->first('remark') }} </div>
             </div>
 
             <div class="form-group">
-              <label for="InputRemark">Remark:</label>
-              <textarea class="form-control" id="InputRemark" name="remark" placeholder="Enter Remark"></textarea>
+              <input type="checkbox" class="mychangepsw" id="cpassw">
+              <label for="cpassw">Do you upload file</label>
+              
             </div>
+
+            <div class="form-group myfile">
+              <label for="file">file:</label>
+              <input type="file"  id="file" name="file"></textarea>
+            </div>
+            
             @role('staff')
             <div class="form-group">
               <label for="InputDeliveryMan">Delivery Man:</label>
@@ -58,6 +70,7 @@
             @endrole
 
             @role('client')
+            
             <div class="form-group">
               <button class="btn btn-primary" type="submit">Save</button>
             </div>
@@ -69,3 +82,17 @@
     </div>
   </main>
 @endsection 
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".myfile").hide();
+    $(".mychangepsw").click(function(){
+      if(this.checked){
+    $(".myfile").show();
+      }else{
+      $(".myfile").hide();
+      }
+    })
+  })
+</script>
+@endsection

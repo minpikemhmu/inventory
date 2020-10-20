@@ -15,10 +15,10 @@ class DeliveryMan extends Model
     return $this->belongsTo('App\User');
   }
 
-  public function townships()
-  {
-    return $this->belongsToMany('App\Township');
-  }
+  public function townships(){
+             return $this->belongsToMany('App\Township','delivery_man_township','delivery_men_id','township_id')
+      ->withTimestamps();;
+    }
 
   public function pickups()
   {

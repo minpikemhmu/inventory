@@ -41,7 +41,7 @@ class StaffController extends Controller
          $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
             'email'  => ['required','string','email','max:255','unique:users'],
-            'password'  => ['required','min:6'],
+            'password'  => ['required','min:6','confirmed'],
             'phone'  => ['required'],
             'address'  => ['required','string'],
             'date'=>['required','date'],
@@ -105,20 +105,24 @@ class StaffController extends Controller
          $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
             'email'  => ['required','string','email','max:255'],
-            'password'  => ['required','min:6'],
             'phone'  => ['required'],
             'address'  => ['required','string'],
             'date'=>['required','date'],
             'designation'=>['required']
         ]);
+         //dd($request);
         if($validator){
             $staff=$staff;
             $user =User::find($staff->user_id);
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = Hash::make($request->password);
+            if($request->password!=null){
+              $user->password = Hash::make($request->password);   
+          }else{
+              $user->password = $request->oldpassword;
+          }
+           
             $user->save();
-            $user->assignRole('staff');
             
             $staff->phone_no =$request->phone;
             $staff->address = $request->address;
@@ -127,7 +131,7 @@ class StaffController extends Controller
             $staff->user_id = $user->id;
             $staff->save();
            
-            return redirect()->route('staff.index')->with("successMsg",'New Staff is ADDED in your data');
+            return redirect()->route('staff.index')->with("successMsg",'Update Successfully');
         }
         else
         {
@@ -143,6 +147,10 @@ class StaffController extends Controller
      */
     public function destroy(Staff $staff)
     {
-        //
+        $staff=$staff;
+        $user =User::find($staff->user_id);
+        $user->delete();
+        $staff->delete();
+       return redirect()->route('staff.index')->with('successMsg','Existing Staff is DELETED in your data');
     }
 }

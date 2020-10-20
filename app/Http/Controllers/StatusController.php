@@ -91,10 +91,8 @@ class StatusController extends Controller
         ]);
 
         if($validator){
-            $codeno=uniqid();
             $status=$status;
             $status->description=$request->desc;
-            $status->codeno=$codeno;
             $status->save();
             return redirect()->route('statuses.index')->with("successMsg",'Update successfully');
         }

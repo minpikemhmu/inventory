@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Schedule;
 use Illuminate\Http\Request;
+use Auth;
 
 class ScheduleController extends Controller
 {
@@ -14,7 +15,8 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        return view('schedule.index');
+        $schedules=Schedule::all();
+        return view('schedule.index',compact('schedules'));
     }
 
     /**
@@ -35,7 +37,40 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $validator = $request->validate([
+            'date'  => ['required','date'],
+            'remark'=>['required','string']
+        ]);
+
+
+        if($validator){
+                if($request->hasfile('file'))
+            {
+            $profile=$request->file('file');
+            $upload_path=public_path().'/images/';
+            $name=$profile->getClientOriginalName();
+            $profile->move($upload_path,$name);
+            $path='/images/'.$name;
+            }else
+            {
+                $path="";
+            }
+             $user=Auth::user();
+             $client=$user->client->id;
+             //dd($client);
+            $schedule=new Schedule;
+            $schedule->pickup_date=$request->date;
+            $schedule->status=0;
+            $schedule->client_id=$client;
+            $schedule->file=$path;
+            $schedule->remark=$request->remark;
+            $schedule->save();
+            return redirect()->route('schedules.index')->with("successMsg",'New Schedule is ADDED in your data');
+        }
+        else
+        {
+            return redirect::back()->withErrors($validator);
+        }
     }
 
     /**
@@ -57,7 +92,8 @@ class ScheduleController extends Controller
      */
     public function edit(Schedule $schedule)
     {
-        //
+        $schedule=$schedule;
+        return view('schedule.edit',compact('schedule'));
     }
 
     /**
@@ -69,7 +105,38 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, Schedule $schedule)
     {
-        //
+         $validator = $request->validate([
+            'date'  => ['required','date'],
+            'remark'=>['required','string']
+        ]);
+
+
+        if($validator){
+                if($request->hasfile('file'))
+            {
+            $profile=$request->file('file');
+            $upload_path=public_path().'/images/';
+            $name=$profile->getClientOriginalName();
+            $profile->move($upload_path,$name);
+            $path='/images/'.$name;
+            }else
+            {
+                $path=$request->oldfile;
+            }
+             $user=Auth::user();
+             $client=$user->client->id;
+             //dd($client);
+            $schedule=$schedule;
+            $schedule->pickup_date=$request->date;
+            $schedule->file=$path;
+            $schedule->remark=$request->remark;
+            $schedule->save();
+            return redirect()->route('schedules.index')->with("successMsg",'Updated Successfully');
+        }
+        else
+        {
+            return redirect::back()->withErrors($validator);
+        }
     }
 
     /**
@@ -80,7 +147,9 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
-        //
+         $schedule=$schedule;
+        $schedule->delete();
+       return redirect()->route('schedules.index')->with('successMsg','Existing Schedule is DELETED in your data');
     }
     
     public function storeandassignschedule($value='')
