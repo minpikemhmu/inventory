@@ -18,14 +18,16 @@
           
           <form action="{{route('incomes.store')}}" method="POST">
             @csrf
-            <div class="form-group">
-              <label for="InputDeliveryMan">Select Delivery Man:</label>
-              <select class="form-control" id="InputDeliveryMan" name="deliveryman">
-                <optgroup label="Select Delivery Man">
-                  <option value="1">Mg Mg</option>
-                  <option value="2">Ba Kyaw</option>
-                </optgroup>
-              </select>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="InputDeliveryMan">Select Delivery Man:</label>
+                <select class="form-control" id="InputDeliveryMan" name="deliveryman">
+                  <optgroup label="Select Delivery Man">
+                    <option value="1">Mg Mg</option>
+                    <option value="2">Ba Kyaw</option>
+                  </optgroup>
+                </select>
+              </div>
             </div>
 
             <label>Success Ways By Mg Mg:</label>

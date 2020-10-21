@@ -14,19 +14,19 @@
     <div class="row">
       <div class="col-md-12">
         @if(session('successMsg') != NULL)
-                            <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
-                                <strong> ✅ SUCCESS!</strong>
-                                {{ session('successMsg') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+            <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
+                <strong> ✅ SUCCESS!</strong>
+                {{ session('successMsg') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">Staff List</h3>
           <a href="{{route('staff.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
           <div class="table-responsive">
-            <table class="table" id="dataTable">
+            <table class="table dataTable">
               <thead>
                 <tr>
                   <th>#</th>

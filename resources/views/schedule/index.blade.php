@@ -31,7 +31,7 @@
             @role('staff')
             <ul class="nav nav-tabs">
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#schedules">Schedules</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pending">Pending</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#assigned">Assigned</a></li>
             @endrole
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
@@ -59,10 +59,8 @@
                         <td>{{$row->remark}}</td>
                         <td>{{$row->quantity}}</td>
                         <td>
-                          
                           <a href="#" class="btn btn-primary assign" data-id="{{$row->id}}">Assign</a>
                           <a href="#" class="btn btn-info showfile" data-file="{{$row->file}}">show file</a>
-                          
                         </td>
                       </tr>
                       @endforeach
@@ -78,24 +76,22 @@
                         <td>{{$row->client->user->name}}</td>
                         <td>{{$row->pickup_date}}</td>
                         <td>{{$row->remark}}</td>
+                        <td>{{$row->quantity}}</td>
                         <td>
-                         @if($row->status==0)
+                          @if($row->status==0)
                           <a href="#" class="btn btn-primary addfile" data-id="{{$row->id}}" data-file="{{$row->file}}">Add file for cpmplete</a>
                           @else
                          
                             <a href="#" class="btn btn-info">completed</a>
                          
                           @endif
-                          
-                         
-                         
                           <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">Edit</a>
                           <form action="{{ route('schedules.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
 
                             @csrf
                             @method('DELETE')
-                          <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                          </form>
                         
                         </td>
                       </tr>
@@ -105,7 +101,7 @@
                   </table>
                 </div>
               </div>
-              <div class="tab-pane fade" id="pending">
+              <div class="tab-pane fade" id="assigned">
                 <div class="table-responsive">
                   <table class="table dataTable">
                     <thead>
@@ -130,14 +126,14 @@
                         <td>{{$row->schedule->quantity}}</td>
                         <td>
                           @if($row->status==1)
-                          <a href="{{route('items.collect',1)}}" class="btn btn-primary">Collect</a>
+                          <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'sid'=>$row->schedule->id])}}" class="btn btn-primary">Collect</a>
 
                           @else
-                          <a href="" class="btn btn-info">pending</a>
+                          <button type="button" class="btn btn-info">pending</button>
                           @endif
 
-                          <a href="#" class="btn btn-warning">Edit</a>
-                          <a href="#" class="btn btn-danger">Delete</a>
+                          {{-- <a href="#" class="btn btn-warning">Edit</a>
+                          <a href="#" class="btn btn-danger">Delete</a> --}}
                         </td>
                       </tr>
                       @endforeach
@@ -208,16 +204,15 @@
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Old file</a>
               </li>
             </ul>
-            <div class="tab-content" id="myTabContent">
+            <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade show active " id="home" role="tabpanel" aria-labelledby="home-tab">
-              <div class="form-group">
-              <label for="addfile">file:</label>
-              <input type="file"  id="addfile" name="addfile"></textarea>
-               </div></div>
+                <div class="form-group">
+                  <input type="file"  id="addfile" name="addfile">
+                 </div>
+              </div>
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <img src="" class="myoldfile img-fluid">
               </div>
-              
             </div>
         </div>
         <div class="modal-footer">

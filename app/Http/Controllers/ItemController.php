@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Item;
 use App\Client;
+use App\Schedule;
+
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -85,9 +87,10 @@ class ItemController extends Controller
     }
 
     // here accept client id
-    public function collectitem($id)
+    public function collectitem($cid, $sid)
     {
-        $client = Client::find($id);
-        return view('item.create',compact('client'));
+        $client = Client::find($cid);
+        $schedule = Schedule::find($sid);
+        return view('item.create',compact('client','schedule'));
     }
 }

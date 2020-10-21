@@ -15,7 +15,7 @@
       <div class="col-md-12">
         <div class="tile">
           <div class="bs-component">
-            <ul class="nav nav-tabs nav-pills">
+            <ul class="nav nav-tabs">
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Income</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile">Expense</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profit">Profit</a></li>

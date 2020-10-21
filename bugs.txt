@@ -1,0 +1,3 @@
+-> In Schedule Update, if we have photo please update photo.
+-> form validation တွေမှာ validation error တက်ရင် နဂိုထည့်ပြီးသား တန်ဖိုးတွေပြန်ပြပေးပါ
+-> Delivery Man Edit မှာ animation တစ်ခုဖြစ်နေပါတယ်

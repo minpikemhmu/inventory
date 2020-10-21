@@ -28,13 +28,7 @@
                   <table class="table table-bordered dataTable">
                     <thead>
                       <tr>
-                        <th>
-                          <div class="animated-checkbox">
-                            <label class="mb-0">
-                              <input type="checkbox"><span class="label-text"> </span>
-                            </label>
-                          </div>
-                        </th>
+                        <th>#</th>
                         <th>Codeno</th>
                         <th>Township</th>
                         <th>Receiver Info</th>
@@ -74,13 +68,7 @@
                   <table class="table table-bordered dataTable">
                     <thead>
                       <tr>
-                        <th>
-                          <div class="animated-checkbox">
-                            <label class="mb-0">
-                              <input type="checkbox"><span class="label-text"> </span>
-                            </label>
-                          </div>
-                        </th>
+                        <th>#</th>
                         <th>Codeno</th>
                         <th>Township</th>
                         <th>Delivery Man</th>

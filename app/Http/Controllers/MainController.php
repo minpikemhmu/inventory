@@ -83,12 +83,14 @@ class MainController extends Controller
     return view('dashboard.pickups',compact('pickups'));
   }
 
+
   public function pickupdone($id){
     //dd($id);
     $pickup=Pickup::find($id);
     $pickup->status=1;
     $pickup->save();
   return redirect()->route('pickups')->with("successMsg",'Pickup successfully');
+
   }
 
   // for way page => delivery man view

@@ -34,8 +34,8 @@
             </div>
 
             <div class="form-group">
-              <label for="cpassw">Change Password</label>
               <input type="checkbox" class="mychangepsw" id="cpassw">
+              <label for="cpassw">Want to change password?</label>
             </div>
 
             <div class="form-group psw">
