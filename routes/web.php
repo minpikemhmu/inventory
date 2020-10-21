@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function () {
 
   Route::resource('items', 'ItemController');
   Route::get('items/collectitem/{cid}/{sid}','ItemController@collectitem')->name('items.collect');
+  Route::post('itemdetail','ItemController@itemdetail')->name('itemdetail');
 
   Route::resource('clients', 'ClientController');
   Route::resource('delivery_men', 'DeliveryMenController');
@@ -74,7 +75,7 @@ Route::middleware('auth')->group(function () {
   // For Client
   Route::get('pickups','MainController@pickups')->name('pickups');
   Route::post('pickups','MainController@donepickups')->name('donepickups');
-
+  Route::post('delichargebytown','ItemController@delichargebytown')->name('delichargebytown');
   Route::get('ways','MainController@ways')->name('ways');
 
 });

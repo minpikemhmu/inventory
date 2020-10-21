@@ -50,10 +50,11 @@
                   <td>
                     @if($row->status==0)
                     <a href="#" class="btn btn-primary">Pending</a>
-                    @else
-                    <a href="#" class="btn btn-primary">complete pick up</a>
-                    @endif
                     <a href="{{route('pickupdone',$row->id)}}" class="btn btn-success">Done</a>
+                    @else
+                    <a href="#" class="btn btn-primary">completed pick up</a>
+                    @endif
+                    
                   </td>
                 </tr>
                 @endforeach

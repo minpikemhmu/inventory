@@ -29,6 +29,7 @@ class CreateItemsTable extends Migration
             
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('township_id');
+            $table->unsignedBigInteger('staff_id');
 
             $table->softDeletes();
             $table->timestamps();
@@ -38,6 +39,9 @@ class CreateItemsTable extends Migration
                     ->onDelete('cascade');
             $table->foreign('township_id')
                     ->references('id')->on('townships')
+                    ->onDelete('cascade');
+             $table->foreign('staff_id')
+                    ->references('id')->on('staff')
                     ->onDelete('cascade');
             
         });

@@ -13,6 +13,15 @@
     </div>
     <div class="row">
       <div class="col-md-12">
+        @if(session('successMsg') != NULL)
+          <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
+              <strong> ✅ SUCCESS!</strong>
+              {{ session('successMsg') }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">Item List</h3>
           <a href="#" class="btn btn-primary float-right wayassign">Way Assign</a>
@@ -39,6 +48,7 @@
                     </thead>
                     <tbody>
                       <tr>
+                        @foreach($items as $row)
                         <td>
                           <div class="animated-checkbox">
                             <label class="mb-0">
@@ -46,19 +56,25 @@
                             </label>
                           </div>
                         </td>
-                        <td>001-0003</td>
-                        <td>Mayangone</td>
+                        <td>{{$row->codeno}}</td>
+                        <td>{{$row->township->name}}</td>
                         <td>
-                          Ma Mon <span class="badge badge-dark">0987654321</span>
+                          {{$row->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span>
                         </td>
-                        <td>25-10-2020</td>
-                        <td>7000</td>
+                        <td>{{$row->expired_date}}</td>
+                        <td>{{$row->amount}}</td>
                         <td>
-                          <a href="#" class="btn btn-primary detail">Detail</a>
-                          <a href="#" class="btn btn-warning">Edit</a>
-                          <a href="#" class="btn btn-danger">Delete</a>
+                          <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">Detail</a>
+                          <a href="{{route('items.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                          <form action="{{ route('items.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
+
+                           @csrf
+                            @method('DELETE')
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                         </td>
                       </tr>
+                      @endforeach
                     </tbody>
                   </table>
                 </div>
@@ -141,16 +157,16 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">001-003</h5>
+          <h5 class="modal-title rcode" id="exampleModalLabel"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p><strong>Receiver Name:</strong> Ma Mon</p>
-          <p><strong>Receiver Phone No:</strong> 09987654321</p>
-          <p><strong>Receiver Address:</strong> No(3), Than Street, Hlaing, Yangon.</p>
-          <p><strong>Remark:</strong> <span class="text-danger">Don't press over!!!!</span></p>
+          <p><strong>Receiver Name:</strong> <span id="rname">Ma Mon</span></p>
+          <p ><strong >Receiver Phone No:</strong> <span id="rphone">09987654321</span></p>
+          <p><strong >Receiver Address:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
+          <p><strong>Remark:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
 
         </div>
         <div class="modal-footer">
@@ -163,12 +179,29 @@
 @section('script')
   <script type="text/javascript">
     $(document).ready(function () {
+    setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+
       $('.wayassign').click(function () {
         $('#wayAssignModal').modal('show');
       })
 
       $('.detail').click(function () {
+        var id=$(this).data('id');
+        //console.log(id);
         $('#itemDetailModal').modal('show');
+        $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+
+        $.post('itemdetail',{id:id},function(res){
+          $("#rname").html(res.receiver_name);
+          $("#rphone").html(res.receiver_phone_no);
+          $("#raddress").html(res.receiver_address);
+          $("#rremark").html(res.remark);
+          $(".rcode").html(res.codeno);
+        })
       })
     })
   </script>

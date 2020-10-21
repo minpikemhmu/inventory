@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Item extends Model
 {
 	protected $fillable=[
-    'codeno', 'expired_date', 'deposit', 'amount', 'delivery_fees', 'receiver_name', 'receiver_address', 'receiver_phone_no', 'remark', 'paystatus', 'client_id', 'township_id'
+    'codeno', 'expired_date', 'deposit', 'amount', 'delivery_fees', 'receiver_name', 'receiver_address', 'receiver_phone_no', 'remark', 'paystatus', 'client_id', 'township_id','staff_id'
   ];
 
   public function client()
