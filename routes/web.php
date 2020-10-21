@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
   // Debt List
   Route::get('debt_list','MainController@debt_list')->name('debt_list');
 
+  //pickupdone by delivery man
+  Route::get('pickupdone/{id}','MainController@pickupdone')->name('pickupdone');
+
   // staff
   Route::resource('staff','StaffController');
 
