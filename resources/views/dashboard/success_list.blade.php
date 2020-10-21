@@ -14,43 +14,47 @@
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
-          <h3 class="tile-title d-inline-block">Success List (14-Oct-2020)</h3>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Item Code</th>
-                <th>Delivery Men</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td><span class="badge badge-primary">0001-0024</span></td>
-                <td>Kyaw Lwin</td>
-                <td>3,000</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td><span class="badge badge-primary">0001-0323</span></td>
-                <td>Min Pike</td>
-                <td>2,500</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td><span class="badge badge-primary">0031-0015</span></td>
-                <td>Kyaw Kyi</td>
-                <td>5,000</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td><span class="badge badge-primary">0031-0004</span></td>
-                <td>Hein Min</td>
-                <td>1,500</td>
-              </tr>
-            </tbody>
-          </table>
+          @php $mytime = Carbon\Carbon::now(); @endphp
+          <h3 class="tile-title d-inline-block">Success List ({{$mytime->toFormattedDateString()}})</h3>
+          <div class="table-responsive">
+
+            <table class="table dataTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Item Code</th>
+                  <th>Delivery Men</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><span class="badge badge-primary">0001-0024</span></td>
+                  <td>Kyaw Lwin</td>
+                  <td>3,000</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><span class="badge badge-primary">0001-0323</span></td>
+                  <td>Min Pike</td>
+                  <td>2,500</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><span class="badge badge-primary">0031-0015</span></td>
+                  <td>Kyaw Kyi</td>
+                  <td>5,000</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><span class="badge badge-primary">0031-0004</span></td>
+                  <td>Hein Min</td>
+                  <td>1,500</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

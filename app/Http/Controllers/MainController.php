@@ -83,6 +83,16 @@ class MainController extends Controller
     return view('dashboard.pickups',compact('pickups'));
   }
 
+  // done pickup => change status 1 in pickup table
+  public function donepickups(Request $request)
+  {
+    $id = $request->pickup_id;
+    $pickup = Pickup::find($id);
+    $pickup->status = 1;
+    $pickup->save();
+    return back();
+  }
+
   // for way page => delivery man view
   public function ways($value='')
   {

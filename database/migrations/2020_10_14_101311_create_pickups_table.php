@@ -27,7 +27,7 @@ class CreatePickupsTable extends Migration
             $table->foreign('schedule_id')
                     ->references('id')->on('schedules')
                     ->onDelete('cascade');
-            $table->foreign('delivery_men_id')
+            $table->foreign('delivery_man_id')
                     ->references('id')->on('delivery_men')
                     ->onDelete('cascade');
             $table->foreign('staff_id')

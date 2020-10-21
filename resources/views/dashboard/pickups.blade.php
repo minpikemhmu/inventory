@@ -39,7 +39,15 @@
                   <td>{{$row->schedule->remark}}</td>
                   <td>{{$row->schedule->quantity}}</td>
                   <td>
-                    <a href="#" class="btn btn-primary">Pending</a>
+                    @if($row->status == 1)
+                      <button class="btn btn-info">completed</button>
+                    @else
+                      <form class="d-inline" method="post" action="{{route('donepickups')}}" onsubmit="return confirm('Are you sure to make complete?')">
+                        @csrf
+                        <input type="hidden" name="pickup_id" value="{{$row->id}}">
+                        <input type="submit" class="btn btn-primary" value="Pending">
+                      </form>
+                    @endif
                   </td>
                 </tr>
                 @endforeach

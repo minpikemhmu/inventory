@@ -46,12 +46,11 @@
 
             <div class="form-group">
               <input type="checkbox" class="mychangepsw" id="cpassw">
-              <label for="cpassw">Do you upload file</label>
-              
+              <label for="cpassw">Do you want to upload file?</label>
             </div>
 
             <div class="form-group myfile">
-              <label for="file">file:</label>
+              {{-- <label for="file">file:</label> --}}
               <input type="file"  id="file" name="file">
             </div>
 

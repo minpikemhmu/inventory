@@ -64,6 +64,11 @@
                 </div>
 
                 <div class="form-group">
+                  <label for="InputAmount">Amount: (deposit+delivery fees+others)</label>
+                  <input class="form-control" id="InputAmount" type="number" name="amount">
+                </div>
+
+                <div class="form-group">
                   <label for="InputRemark">Remark:</label>
                   <textarea class="form-control" id="InputRemark" name="remark"></textarea>
                 </div>
@@ -82,6 +87,8 @@
                     <li class="list-group-item">Township: {{$client->township->name}}</li>
                   </ul>
                 </div>
+
+                <img src="{{asset($schedule->file)}}" class="img-fluid">
               </div>
             </div>
 

@@ -24,7 +24,6 @@ class CreateItemsTable extends Migration
             $table->text('receiver_address');
             $table->string('receiver_phone_no');
             $table->longText('remark');
-            $table->date('received_date');
             $table->string('paystatus')->default(0); 
             // 0,1 (ပုံမှန်ဆို မပေးရသေးတာ)
             

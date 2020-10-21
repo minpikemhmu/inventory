@@ -14,44 +14,46 @@
     <div class="row">
       <div class="col-md-12">
         @if(session('successMsg') != NULL)
-                            <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
-                                <strong> ✅ SUCCESS!</strong>
-                                {{ session('successMsg') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+            <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
+                <strong> ✅ SUCCESS!</strong>
+                {{ session('successMsg') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">Status List</h3>
           <a href="{{route('statuses.create')}}" class="btn btn-primary float-right">Add New</a>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              @php $i=1; @endphp
-               @foreach($statuses as $row)
-              <tr>
-                <td>{{$i++}}</td>
-                <td>{{$row->description}}</td>
-                <td>
-                  <a href="{{route('statuses.edit',$row->id)}}" class="btn btn-warning">Edit</a>
-                  <form action="{{ route('statuses.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
+          <div class="table-responsive">
+            <table class="table dataTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @php $i=1; @endphp
+                 @foreach($statuses as $row)
+                <tr>
+                  <td>{{$i++}}</td>
+                  <td>{{$row->description}}</td>
+                  <td>
+                    <a href="{{route('statuses.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                    <form action="{{ route('statuses.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
 
-                    @csrf
-                    @method('DELETE')
-                  <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-                </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
+                      @csrf
+                      @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       

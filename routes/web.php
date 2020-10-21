@@ -57,19 +57,21 @@ Route::middleware('auth')->group(function () {
   Route::post('storeandassignschedule', 'ScheduleController@storeandassignschedule')->name('schedules.storeandassign');
 
   Route::resource('items', 'ItemController');
-  Route::get('collectitem/{id}','ItemController@collectitem')->name('items.collect');
+  Route::get('items/collectitem/{cid}/{sid}','ItemController@collectitem')->name('items.collect');
 
   Route::resource('clients', 'ClientController');
   Route::resource('delivery_men', 'DeliveryMenController');
 
   Route::get('incomes', 'MainController@incomes')->name('incomes');
-  Route::get('addincomes', 'MainController@addincomeform')->name('incomes.create');
-  Route::post('addincomes', 'MainController@addincomes')->name('incomes.store');
+  Route::get('incomes/addincomes', 'MainController@addincomeform')->name('incomes.create');
+  Route::post('incomes/addincomes', 'MainController@addincomes')->name('incomes.store');
 
   Route::resource('expenses','ExpenseController');
 
   // For Client
   Route::get('pickups','MainController@pickups')->name('pickups');
+  Route::post('pickups','MainController@donepickups')->name('donepickups');
+
   Route::get('ways','MainController@ways')->name('ways');
 
 });

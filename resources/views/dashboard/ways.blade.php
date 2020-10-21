@@ -15,7 +15,7 @@
       <div class="col-md-12">
         <div class="tile">
           <h3 class="tile-title d-inline-block">Ways List (14-Oct-2020)</h3>
-          <div class="d-inline-block float-right">
+          <div class="float-right delivery_actions">
             <a href="#" class="btn btn-success btn-sm mx-2">Success</a>
             <a href="#" class="btn btn-warning btn-sm mx-2">Return</a>
             <a href="#" class="btn btn-danger btn-sm mx-2">Reject</a>
@@ -25,13 +25,7 @@
             <table class="table table-bordered dataTable">
               <thead>
                 <tr>
-                  <th>
-                    <div class="animated-checkbox">
-                      <label class="mb-0">
-                        <input type="checkbox"><span class="label-text"> </span>
-                      </label>
-                    </div>
-                  </th>
+                  <th>#</th>
                   <th>Codeno</th>
                   <th>Township</th>
                   <th>Receiver Info</th>
@@ -45,7 +39,7 @@
                   <td>
                     <div class="animated-checkbox">
                       <label class="mb-0">
-                        <input type="checkbox" name="item" value="{{1}}"><span class="label-text"> </span>
+                        <input type="checkbox" name="ways[]" value="{{1}}"><span class="label-text"> </span>
                       </label>
                     </div>
                   </td>
@@ -95,6 +89,8 @@
 @section('script')
   <script type="text/javascript">
     $(document).ready(function () {
+      // $('.delivery_actions').hide();
+
       $('.detail').click(function () {
         $('#itemDetailModal').modal('show');
       })
