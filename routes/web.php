@@ -64,6 +64,11 @@ Route::middleware('auth')->group(function () {
   Route::post('itemdetail','ItemController@itemdetail')->name('itemdetail');
   Route::post('wayassign','ItemController@assignWays')->name('wayassign');
 
+  Route::post('updatewayassign','ItemController@updatewayassign')->name('updatewayassign');
+
+  Route::get('deletewayassign/{id}','ItemController@deletewayassign')->name('deletewayassign');
+  
+
   Route::resource('clients', 'ClientController');
   Route::resource('delivery_men', 'DeliveryMenController');
 

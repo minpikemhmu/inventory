@@ -111,8 +111,8 @@
                         <td>{{$way->item->amount}}</td>
                         <td>
                           <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
-                          <a href="#" class="btn btn-warning">Edit</a>
-                          <a href="#" class="btn btn-danger">Delete</a>
+                          <a href="#" class="btn btn-warning wayedit" data-id="{{$way->id}}">Edit</a>
+                          <a href="{{route('deletewayassign',$way->id)}}" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
                         </td>
                       </tr>
                       @endforeach
@@ -162,6 +162,38 @@
     </div>
   </div>
 
+  {{-- Edit Ways Assign modal --}}
+  <div class="modal fade" id="editwayAssignModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Choose Delivery Man</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" action="{{route('updatewayassign')}}">
+          @csrf
+          <input type="hidden"  id="wayid" name="wayid">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Choose Delivery Man:</label>
+              <select class="js-example-basic-single form-control" name="delivery_man">
+                @foreach($deliverymen as $man)
+                  <option value="{{$man->id}}">{{$man->user->name}}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Assign</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   {{-- Item Detail modal --}}
   <div class="modal fade" id="itemDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -190,7 +222,6 @@
   <script type="text/javascript">
     $(document).ready(function () {
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
-
       $('.wayassign').click(function () {
         var ways = [];
         $.each($("input[name='assign[]']:checked"), function(){
@@ -230,10 +261,22 @@
         dropdownParent: $('#wayAssignModal')
       });
 
+       $('.js-example-basic-single').select2({
+        width: '100%',
+        dropdownParent: $('#editwayAssignModal')
+      });
+
       var $submit = $("#submit_assign").hide();
       $cbs = $('input[name="assign[]"]').click(function() {
           $submit.toggle( $cbs.is(":checked") , 2000);
       });
+
+      $(".wayedit").click(function(){
+        $('#editwayAssignModal').modal('show');
+        var id=$(this).data("id");
+        //console.log(id);
+        $("#wayid").val(id);
+      })
     })
   </script>
 @endsection

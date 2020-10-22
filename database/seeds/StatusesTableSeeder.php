@@ -27,5 +27,9 @@ class StatusesTableSeeder extends Seeder
         'codeno' => '004',
         'description' =>'delay' ,
       ]);
+       Status::create([
+        'codeno' => '005',
+        'description' =>'assign' ,
+      ]);
     }
 }

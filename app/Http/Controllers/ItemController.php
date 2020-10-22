@@ -184,19 +184,18 @@ class ItemController extends Controller
         $codeno=$client->codeno;
         //dd($codeno);
         $mytime = Carbon\Carbon::now();
+        //dd($checktime);
         $array = explode('-', $mytime->toDateString());
         $datecode=$array[2]."001";
         
         //dd($itemcode);
-        $items=Item::all();
-        //dd($items);
-        if($items->count()==0){
+        // $items=Item::all();
+        $item=Item::whereDate('created_at',Carbon\Carbon::today())->orderBy('id','desc')->first();
+        //dd($item);
+        if(!$item){
            $itemcode=$codeno.$datecode;
-        }else if($items->count()>0 && $mytime){
-            $itemcode=$codeno.$datecode;
         }else{
-        $latestitem=Item::latest()->first();
-        $code=$latestitem->codeno;
+        $code=$item->codeno;
         $mycode=substr($code, 11,14);
         //dd($mycode);
         $itemcode=$codeno.$array[2].$mycode+1;
@@ -228,6 +227,49 @@ class ItemController extends Controller
 
     public function assignWays(Request $request)
     {
-        dd($request);
+        //dd($request);
+        $myways=$request->ways;
+        //dd($myways);
+        foreach($myways as $myway){
+            $way=new Way;
+            $way->status_code="005";
+            $way->item_id=$myway;
+            $way->delivery_man_id=$request->delivery_man;
+            $role=Auth::user()->roles()->first();
+            $rolename=$role->name;
+              if($rolename=="staff"){
+                $user=Auth::user();
+                $staffid=$user->staff->id;
+                $way->staff_id=$staffid;
+            }
+            $way->status_id=5;
+            $way->save();
+
+
+        }
+return redirect()->route('items.index')->with("successMsg",'way assign successfully');
+    }
+
+
+    public function updatewayassign(Request $request){
+        $id=$request->wayid;
+
+            $way=Way::find($id);
+            $way->delivery_man_id=$request->delivery_man;
+            $role=Auth::user()->roles()->first();
+            $rolename=$role->name;
+              if($rolename=="staff"){
+                $user=Auth::user();
+                $staffid=$user->staff->id;
+                $way->staff_id=$staffid;
+            }
+            $way->save();
+            return redirect()->route('items.index')->with("successMsg",'way assign update successfully');
+    }
+
+    public function deletewayassign($id){
+        $way=Way::find($id);
+        $way->delete();
+        return redirect()->route('items.index')->with("successMsg",'way assign delete successfully');
     }
 }

@@ -41,7 +41,17 @@ class StatusController extends Controller
         ]);
 
         if($validator){
-            $codeno=uniqid();
+            $codeno="";
+            $mystatus=Status::latest()->first();
+            $mycode=$mystatus->codeno;
+            $ss=$mycode+1;
+            if(!$mystatus){
+                $codeno="001";
+            }else{
+                $codeno="00".$ss;
+            }
+
+            //dd($mystatus);
             $status=new Status;
             $status->description=$request->desc;
             $status->codeno=$codeno;
