@@ -188,6 +188,8 @@ class ItemController extends Controller
         //dd($items);
         if($items->count()==0){
            $itemcode=$codeno.$datecode;
+        }else if($items->count()>0 && $mytime){
+            $itemcode=$codeno.$datecode;
         }else{
         $latestitem=Item::latest()->first();
         $code=$latestitem->codeno;
