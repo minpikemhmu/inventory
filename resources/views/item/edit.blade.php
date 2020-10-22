@@ -84,9 +84,7 @@
 
                 <div class="form-group">
                   <label for="InputRemark">Remark:</label>
-                  <textarea class="form-control" id="InputRemark" name="remark">
-                    {{$item->remark}}
-                  </textarea>
+                  <textarea class="form-control" id="InputRemark" name="remark">{{$item->remark}}</textarea>
                   <div class="form-control-feedback text-danger"> {{$errors->first('remark') }} </div>
                 </div>
               </div>

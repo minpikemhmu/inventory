@@ -27,15 +27,15 @@ class CreateItemsTable extends Migration
             $table->string('paystatus')->default(0); 
             // 0,1 (ပုံမှန်ဆို မပေးရသေးတာ)
             
-            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('pickup_id');
             $table->unsignedBigInteger('township_id');
             $table->unsignedBigInteger('staff_id');
 
             $table->softDeletes();
             $table->timestamps();
             
-            $table->foreign('client_id')
-                    ->references('id')->on('clients')
+            $table->foreign('pickup_id')
+                    ->references('id')->on('pickups')
                     ->onDelete('cascade');
             $table->foreign('township_id')
                     ->references('id')->on('townships')

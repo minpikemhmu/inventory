@@ -25,9 +25,4 @@ class Client extends Model
   {
     return $this->hasMany('App\Schedule');
   }
-
-  public function items()
-  {
-    return $this->hasMany('App\Item');
-  }
 }

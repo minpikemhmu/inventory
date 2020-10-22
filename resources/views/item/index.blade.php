@@ -24,7 +24,7 @@
         @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">Item List</h3>
-          <a href="#" class="btn btn-primary float-right wayassign">Way Assign</a>
+          <a href="#" class="btn btn-primary float-right wayassign" id="submit_assign">Way Assign</a>
 
           <div class="bs-component">
             <ul class="nav nav-tabs">
@@ -52,12 +52,12 @@
                         <td>
                           <div class="animated-checkbox">
                             <label class="mb-0">
-                              <input type="checkbox" name="item" value="{{1}}"><span class="label-text"> </span>
+                              <input type="checkbox" name="assign[]" value="{{$row->id}}" data-codeno="{{$row->codeno}}"><span class="label-text"> </span>
                             </label>
                           </div>
                         </td>
                         <td>{{$row->codeno}}</td>
-                        <td>{{$row->township->name}}</td>
+                        <td class="text-danger">{{$row->township->name}}</td>
                         <td>
                           {{$row->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span>
                         </td>
@@ -67,7 +67,6 @@
                           <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">Detail</a>
                           <a href="{{route('items.edit',$row->id)}}" class="btn btn-warning">Edit</a>
                           <form action="{{ route('items.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
-
                            @csrf
                             @method('DELETE')
                           <button type="submit" class="btn btn-danger">Delete</button>
@@ -94,6 +93,7 @@
                       </tr>
                     </thead>
                     <tbody>
+                      @foreach($ways as $way)
                       <tr>
                         <td>
                           <div class="animated-checkbox">
@@ -102,19 +102,20 @@
                             </label>
                           </div>
                         </td>
-                        <td>001-0003</td>
-                        <td>Mayangone</td>
-                        <td>
-                          Ba Kyaw
+                        <td>{{$way->item->codeno}}</td>
+                        <td>{{$way->item->township->name}}</td>
+                        <td class="text-danger">
+                          {{$way->delivery_man->user->name}}
                         </td>
-                        <td>25-10-2020</td>
-                        <td>7000</td>
+                        <td>{{$way->item->expired_date}}</td>
+                        <td>{{$way->item->amount}}</td>
                         <td>
-                          <a href="#" class="btn btn-primary">Assigned</a>
+                          <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
                           <a href="#" class="btn btn-warning">Edit</a>
                           <a href="#" class="btn btn-danger">Delete</a>
                         </td>
                       </tr>
+                      @endforeach
                     </tbody>
                   </table>
                 </div>
@@ -136,18 +137,27 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <select class="form-control" name="delivery_man">
-            <optgroup label="Choose Delivery Man">
-              <option value="1">Mg Mg</option>
-              <option value="2">Ba Kyaw</option>
-            </optgroup>
-          </select>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Assign</button>
-        </div>
+        <form method="post" action="{{route('wayassign')}}">
+          @csrf
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Way Code Numbers:</label>
+              <div id="selectedWays"></div>
+            </div>
+            <div class="form-group">
+              <label>Choose Delivery Man:</label>
+              <select class="js-example-basic-multiple form-control" name="delivery_man">
+                @foreach($deliverymen as $man)
+                  <option value="{{$man->id}}">{{$man->user->name}}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Assign</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -179,9 +189,20 @@
 @section('script')
   <script type="text/javascript">
     $(document).ready(function () {
-    setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+      setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
 
       $('.wayassign').click(function () {
+        var ways = [];
+        $.each($("input[name='assign[]']:checked"), function(){
+          let wayObj = {id:$(this).val(),codeno:$(this).data('codeno')};
+          ways.push(wayObj);
+        });
+        var html="";
+        for(let way of ways){
+          html+=`<input type="hidden" value="${way.id}" name="ways[]"><span class="badge badge-primary mx-2">${way.codeno}</span>`;
+        }
+        $('#selectedWays').html(html);
+
         $('#wayAssignModal').modal('show');
       })
 
@@ -203,6 +224,16 @@
           $(".rcode").html(res.codeno);
         })
       })
+
+      $('.js-example-basic-multiple').select2({
+        width: '100%',
+        dropdownParent: $('#wayAssignModal')
+      });
+
+      var $submit = $("#submit_assign").hide();
+      $cbs = $('input[name="assign[]"]').click(function() {
+          $submit.toggle( $cbs.is(":checked") , 2000);
+      });
     })
   </script>
 @endsection

@@ -29,4 +29,9 @@ class Pickup extends Model
   {
     return $this->hasMany('App\Reback');
   }
+
+  public function items()
+  {
+    return $this->hasMany('App\Item');
+  }
 }

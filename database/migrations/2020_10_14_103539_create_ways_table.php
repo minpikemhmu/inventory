@@ -16,11 +16,11 @@ class CreateWaysTable extends Migration
         Schema::create('ways', function (Blueprint $table) {
             $table->id();
             $table->string('status_code');
-            $table->date('delivery_date');
-            $table->date('refund_date');
+            $table->date('delivery_date')->nullable();
+            $table->date('refund_date')->nullable();
 
             $table->unsignedBigInteger('item_id');
-            $table->unsignedBigInteger('delivery_men_id');
+            $table->unsignedBigInteger('delivery_man_id');
             $table->unsignedBigInteger('staff_id');
             $table->unsignedBigInteger('status_id');
 
@@ -30,7 +30,7 @@ class CreateWaysTable extends Migration
             $table->foreign('item_id')
                     ->references('id')->on('items')
                     ->onDelete('cascade');
-            $table->foreign('delivery_men_id')
+            $table->foreign('delivery_man_id')
                     ->references('id')->on('delivery_men')
                     ->onDelete('cascade');
             $table->foreign('staff_id')

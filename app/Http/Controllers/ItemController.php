@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Item;
 use App\Client;
-use App\Schedule;
+use App\Pickup;
 use App\Township;
+use App\DeliveryMan;
+use App\Way;
 use Carbon;
 use Auth;
 use Illuminate\Http\Request;
@@ -19,8 +21,10 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items=Item::all();
-        return view('item.index',compact('items'));
+        $items=Item::doesntHave('way')->get();
+        $deliverymen = DeliveryMan::all();
+        $ways = Way::all();
+        return view('item.index',compact('items','deliverymen','ways'));
     }
 
     /**
@@ -67,7 +71,7 @@ class ItemController extends Controller
             $item->receiver_phone_no=$request->receiver_phoneno;
             $item->remark=$request->remark;
             $item->paystatus=0;
-            $item->client_id=$request->client_id;
+            $item->pickup_id=$request->pickup_id;
             $item->township_id=$request->receiver_township;
              $role=Auth::user()->roles()->first();
              $rolename=$role->name;
@@ -173,7 +177,7 @@ class ItemController extends Controller
     }
 
     // here accept client id
-    public function collectitem($cid, $sid)
+    public function collectitem($cid, $pid)
     {
         $itemcode="";
         $client = Client::find($cid);
@@ -196,14 +200,12 @@ class ItemController extends Controller
         $itemcode=$codeno.$array[2].$mycode+1;
             
         }
-
-        
         //dd($itemcode);
         //dd($datecode);
-        $schedule = Schedule::find($sid);
+        $pickup = Pickup::find($pid);
         $townships=Township::all();
       //  dd($townships);
-        return view('item.create',compact('client','schedule','townships','itemcode'));
+        return view('item.create',compact('client','pickup','townships','itemcode'));
     }
 
 
@@ -215,9 +217,15 @@ class ItemController extends Controller
        //dd($deliverycharge);
        return $deliverycharge;
     }
+
     public function itemdetail(Request $request){
         $id=$request->id;
         $item=Item::find($id);
         return $item;
+    }
+
+    public function assignWays(Request $request)
+    {
+        dd($request);
     }
 }
