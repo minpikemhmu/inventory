@@ -54,7 +54,7 @@
                       @foreach($staffschedules as $row)
                       <tr>
                         <td>{{$i++}}</td>
-                        <td>{{$row->client->user->name}}</td>
+                        <td class="text-danger">{{$row->client->user->name}}</td>
                         <td>{{$row->pickup_date}}</td>
                         <td>{{$row->remark}}</td>
                         <td>{{$row->quantity}}</td>
@@ -119,17 +119,18 @@
                       @foreach($pickups as $row)
                       <tr>
                         <td>1</td>
-                        <td>{{$row->schedule->client->user->name}}</td>
+                        <td class="text-danger">{{$row->schedule->client->user->name}}</td>
                         <td>{{$row->schedule->pickup_date}}</td>
                         <td>{{$row->schedule->remark}}</td>
-                        <td>{{$row->delivery_man->user->name}}</td>
+                        <td class="text-danger">{{$row->delivery_man->user->name}}</td>
                         <td>{{$row->schedule->quantity}}</td>
                         <td>
-                          @if($row->status==1)
-                          <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'sid'=>$row->schedule->id])}}" class="btn btn-primary">Collect</a>
-
+                          @if($row->status==1 && $row->schedule->quantity > count($row->items))
+                            <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'pid'=>$row->id])}}" class="btn btn-primary">Collect</a>
+                          @elseif($row->status == 1 && $row->schedule->quantity == count(($row->items)))
+                            <button type="button" class="btn btn-info">complete</button>
                           @else
-                          <button type="button" class="btn btn-info">pending</button>
+                            <button type="button" class="btn btn-danger">pending</button>
                           @endif
 
                           {{-- <a href="#" class="btn btn-warning">Edit</a>

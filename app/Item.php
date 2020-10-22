@@ -10,9 +10,9 @@ class Item extends Model
     'codeno', 'expired_date', 'deposit', 'amount', 'delivery_fees', 'receiver_name', 'receiver_address', 'receiver_phone_no', 'remark', 'paystatus', 'client_id', 'township_id','staff_id'
   ];
 
-  public function client()
+  public function pickup()
   {
-    return $this->belongsTo('App\Client');
+    return $this->belongsTo('App\Pickup');
   }
 
   public function township()
@@ -23,5 +23,10 @@ class Item extends Model
   public function way()
   {
     return $this->hasOne('App\Way');
+  }
+
+  public function staff()
+  {
+    return $this->belongsTo('App\Staff');
   }
 }

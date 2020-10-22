@@ -15,8 +15,8 @@ class Schedule extends Model
     return $this->belongsTo('App\Client');
   }
 
-  public function pickups()
+  public function pickup()
   {
-    return $this->hasMany('App\Pickup');
+    return $this->hasOne('App\Pickup');
   }
 }

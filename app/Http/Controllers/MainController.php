@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pickup;
+use App\Way;
 use Auth;
 
 class MainController extends Controller
@@ -77,7 +78,7 @@ class MainController extends Controller
     if($rolename="delivery_man"){
       $user=Auth::user();
       $id=$user->delivery_man->id;
-      $pickups=Pickup::where('delivery_man_id',$id)->get();
+      $pickups=Pickup::where('delivery_man_id',$id)->doesntHave('items')->get();
     }
     //dd($pickups);
     return view('dashboard.pickups',compact('pickups'));
@@ -96,6 +97,8 @@ class MainController extends Controller
   // for way page => delivery man view
   public function ways($value='')
   {
-    return view('dashboard.ways');
+    // ways assigned for that user (must delivery_date and refund_date equal NULL)
+    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->get(); 
+    return view('dashboard.ways',compact('ways'));
   }
 }

@@ -14,7 +14,9 @@
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
-          <h3 class="tile-title d-inline-block">Ways List (14-Oct-2020)</h3>
+          @php $mytime = Carbon\Carbon::now(); @endphp
+          <h3 class="tile-title d-inline-block">Ways List ({{$mytime->toFormattedDateString()}})</h3>
+
           <div class="float-right delivery_actions">
             <a href="#" class="btn btn-success btn-sm mx-2">Success</a>
             <a href="#" class="btn btn-warning btn-sm mx-2">Return</a>
@@ -35,6 +37,7 @@
                 </tr>
               </thead>
               <tbody>
+                @foreach($ways as $way)
                 <tr>
                   <td>
                     <div class="animated-checkbox">
@@ -43,17 +46,18 @@
                       </label>
                     </div>
                   </td>
-                  <td>001-0003</td>
-                  <td>Mayangone</td>
+                  <td>{{$way->item->codeno}}</td>
+                  <td class="text-danger">{{$way->item->township->name}}</td>
                   <td>
-                    Ma Mon <span class="badge badge-dark">0987654321</span>
+                    {{$way->item->receiver_name}} <span class="badge badge-dark">{{$way->item->receiver_phone_no}}</span>
                   </td>
-                  <td>25-10-2020</td>
-                  <td>7000</td>
+                  <td class="text-danger">{{$way->item->expired_date}}</td>
+                  <td>{{$way->item->amount}}</td>
                   <td>
-                    <a href="#" class="btn btn-primary detail">Detail</a>
+                    <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
                   </td>
                 </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -67,16 +71,16 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">001-003</h5>
+          <h5 class="modal-title rcode" id="exampleModalLabel"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p><strong>Receiver Name:</strong> Ma Mon</p>
-          <p><strong>Receiver Phone No:</strong> 09987654321</p>
-          <p><strong>Receiver Address:</strong> No(3), Than Street, Hlaing, Yangon.</p>
-          <p><strong>Remark:</strong> <span class="text-danger">Don't press over!!!!</span></p>
+          <p><strong>Receiver Name:</strong> <span id="rname">Ma Mon</span></p>
+          <p ><strong >Receiver Phone No:</strong> <span id="rphone">09987654321</span></p>
+          <p><strong >Receiver Address:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
+          <p><strong>Remark:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
 
         </div>
         <div class="modal-footer">
@@ -92,8 +96,24 @@
       // $('.delivery_actions').hide();
 
       $('.detail').click(function () {
+        var id=$(this).data('id');
+        //console.log(id);
         $('#itemDetailModal').modal('show');
+        $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+
+        $.post('itemdetail',{id:id},function(res){
+          $("#rname").html(res.receiver_name);
+          $("#rphone").html(res.receiver_phone_no);
+          $("#raddress").html(res.receiver_address);
+          $("#rremark").html(res.remark);
+          $(".rcode").html(res.codeno);
+        })
       })
+
     })
   </script>
 @endsection

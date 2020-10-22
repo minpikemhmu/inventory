@@ -83,14 +83,12 @@
 
                 <div class="form-group">
                   <label for="InputRemark">Remark:</label>
-                  <textarea class="form-control" id="InputRemark" name="remark">
-                    {{ old('remark') }}
-                  </textarea>
+                  <textarea class="form-control" id="InputRemark" name="remark">{{ old('remark') }}</textarea>
                   <div class="form-control-feedback text-danger"> {{$errors->first('remark') }} </div>
                 </div>
               </div>
               <div class="col-md-6">
-                <input type="hidden" name="client_id" value="{{$client->id}}">
+                <input type="hidden" name="pickup_id" value="{{$pickup->id}}">
 
                 <div class="card mt-4">
                   <div class="card-header">
@@ -101,10 +99,11 @@
                     <li class="list-group-item">Contact Person: {{$client->contact_person}}</li>
                     <li class="list-group-item">Phone Number: {{$client->phone_no}}</li>
                     <li class="list-group-item">Township: {{$client->township->name}}</li>
+                    <li class="list-group-item">Left Item to collect: {{$pickup->schedule->quantity - count($pickup->items)}}</li>
                   </ul>
                 </div>
 
-                <img src="{{asset($schedule->file)}}" class="img-fluid">
+                <img src="{{asset($pickup->schedule->file)}}" class="img-fluid">
               </div>
             </div>
 

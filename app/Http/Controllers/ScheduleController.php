@@ -20,7 +20,7 @@ class ScheduleController extends Controller
         $role=Auth::user()->roles()->first();
         $rolename=$role->name;
          
-        $staffschedules=Schedule::doesntHave('pickups')->where('status',1)->get();
+        $staffschedules=Schedule::doesntHave('pickup')->where('status',1)->get();
         $schedules="";
         if($rolename=="client"){
         $user=Auth::user();

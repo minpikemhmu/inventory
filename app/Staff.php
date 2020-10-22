@@ -24,4 +24,9 @@ class Staff extends Model
   {
     return $this->hasMany('App\Way');
   }
+
+  public function items()
+  {
+    return $this->hasMany('App\Item');
+  }
 }

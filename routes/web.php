@@ -60,8 +60,9 @@ Route::middleware('auth')->group(function () {
   Route::post('storeandassignschedule', 'ScheduleController@storeandassignschedule')->name('schedules.storeandassign');
 
   Route::resource('items', 'ItemController');
-  Route::get('items/collectitem/{cid}/{sid}','ItemController@collectitem')->name('items.collect');
+  Route::get('items/collectitem/{cid}/{pid}','ItemController@collectitem')->name('items.collect');
   Route::post('itemdetail','ItemController@itemdetail')->name('itemdetail');
+  Route::post('wayassign','ItemController@assignWays')->name('wayassign');
 
   Route::resource('clients', 'ClientController');
   Route::resource('delivery_men', 'DeliveryMenController');
