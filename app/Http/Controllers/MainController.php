@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Pickup;
 use App\Way;
+use App\DeliveryMan;
 use Auth;
 
 class MainController extends Controller
@@ -60,7 +61,15 @@ class MainController extends Controller
   // for add incomes form page
   public function addincomeform($value='')
   {
-    return view('dashboard.addincomes');
+    $delivery_men = DeliveryMan::all();
+    return view('dashboard.addincomes',compact('delivery_men'));
+  }
+
+  // get the success ways by deliveryman
+  public function successways($id)
+  {
+    $ways = Way::where('delivery_man_id',$id)->where('status_code',001)->get();
+    return $ways;
   }
 
   // for add incomes method => store

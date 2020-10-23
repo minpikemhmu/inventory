@@ -16,21 +16,42 @@
         <div class="tile">
           <h3 class="tile-title d-inline-block">Income Create Form</h3>
           
-          <form action="{{route('incomes.store')}}" method="POST">
-            @csrf
-            <div class="row">
-              <div class="form-group col-md-6">
-                <label for="InputDeliveryMan">Select Delivery Man:</label>
-                <select class="form-control" id="InputDeliveryMan" name="deliveryman">
-                  <optgroup label="Select Delivery Man">
-                    <option value="1">Mg Mg</option>
-                    <option value="2">Ba Kyaw</option>
-                  </optgroup>
-                </select>
-              </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="InputDeliveryMan">Select Delivery Man:</label>
+              <select class="form-control" id="InputDeliveryMan" name="deliveryman">
+                <optgroup label="Select Delivery Man">
+                  @foreach($delivery_men as $deliveryman)
+                    <option value="{{$deliveryman->id}}" data-name="{{$deliveryman->user->name}}">{{$deliveryman->user->name}}</option>
+                  @endforeach
+                </optgroup>
+              </select>
             </div>
+          </div>
 
-            <label>Success Ways By Mg Mg:</label>
+          <form action="{{route('incomes.store')}}" method="POST" id="incomeform">
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </main>
+@endsection 
+@section('script')
+  <script type="text/javascript">
+    $(document).ready(function () {
+      // $('#incomeform').hide();
+
+      $('#InputDeliveryMan').change(function () {
+        var deliveryman_id = $(this).val();
+        var deliveryman = $("#InputDeliveryMan option:selected").text();
+        alert(deliveryman)
+        var url = `/incomes/getsuccesswaysbydeliveryman/${deliveryman_id}`;
+        $.get(url,function (response) {
+          console.log(response);
+          var html = `
+            @csrf
+            <label>Success Ways By ${deliveryman}:</label>
 
             <div class="table-responsive">
               <table class="table table-bordered">
@@ -44,8 +65,10 @@
                     <th>Amount</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
+                <tbody>`;
+          for(let row of response){
+            html +=`
+              <tr>
                     <td>1</td>
                     <td>001-0003</td>
                     <td>Mayangone</td>
@@ -55,7 +78,11 @@
                     <td>25-10-2020</td>
                     <td>7,000</td>
                   </tr>
-                  <tr>
+            `;
+          }
+
+          html +=`
+            <tr>
                     <td colspan="5" class="text-right">Total</td>
                     <td>12,000</td>
                   </tr>
@@ -66,10 +93,10 @@
             <div class="form-group">
               <button class="btn btn-primary" type="submit">Save</button>
             </div>
-          </form>
-        </div>
-      </div>
-      
-    </div>
-  </main>
-@endsection 
+          `;
+          $('#incomeform').html(html);
+        })
+      })
+    })
+  </script>
+@endsection

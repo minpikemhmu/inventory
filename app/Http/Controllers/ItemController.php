@@ -195,7 +195,7 @@ class ItemController extends Controller
         $array = explode('-', $mytime->toDateString());
         $datecode=$array[2]."001";
         
-        //dd($itemcode);
+        // dd($datecode);
         // $items=Item::all();
         $item=Item::whereDate('created_at',Carbon\Carbon::today())->orderBy('id','desc')->first();
         //dd($item);

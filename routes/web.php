@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
 
   Route::get('incomes', 'MainController@incomes')->name('incomes');
   Route::get('incomes/addincomes', 'MainController@addincomeform')->name('incomes.create');
+  Route::get('incomes/getsuccesswaysbydeliveryman/{id}', 'MainController@successways')->name('incomes.successways');
   Route::post('incomes/addincomes', 'MainController@addincomes')->name('incomes.store');
 
   Route::resource('expenses','ExpenseController');
