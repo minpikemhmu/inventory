@@ -62,11 +62,9 @@ class ScheduleController extends Controller
         if($validator){
                 if($request->hasfile('file'))
             {
-            $profile=$request->file('file');
-            $upload_path=public_path().'/images/';
-            $name=$profile->getClientOriginalName();
-            $profile->move($upload_path,$name);
-            $path='/images/'.$name;
+            $name= time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('images', $name, 'public');
+            $path='/storage/'.$name;
             }else
             {
                 $path="";
@@ -132,11 +130,9 @@ class ScheduleController extends Controller
         if($validator){
                 if($request->hasfile('file'))
             {
-            $profile=$request->file('file');
-            $upload_path=public_path().'/images/';
-            $name=$profile->getClientOriginalName();
-            $profile->move($upload_path,$name);
-            $path='/images/'.$name;
+            $name= time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('images', $name, 'public');
+            $path='/storage/'.$name;
             }else
             {
                 $path=$request->oldfile;
@@ -185,11 +181,9 @@ class ScheduleController extends Controller
         if($request->client){
              if($request->hasfile('file'))
             {
-            $profile=$request->file('file');
-            $upload_path=public_path().'/images/';
-            $name=$profile->getClientOriginalName();
-            $profile->move($upload_path,$name);
-            $path='/images/'.$name;
+            $name= time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('images', $name, 'public');
+            $path='/storage/'.$name;
             }else
             {
                 $path="";
@@ -216,13 +210,13 @@ class ScheduleController extends Controller
     public function uploadfile(Request $request){
         //dd($request);
         $id=$request->addid;
+
+        //dd($request->addfile);
         if($request->hasfile('addfile'))
             {
-            $profile=$request->file('addfile');
-            $upload_path=public_path().'/images/';
-            $name=$profile->getClientOriginalName();
-            $profile->move($upload_path,$name);
-            $path='/images/'.$name;
+            $name= time().'_'.$request->addfile->getClientOriginalName();
+            $filePath = $request->file('addfile')->storeAs('images', $name, 'public');
+            $path='/storage/'.$name;
             }else{
                 $path=$request->oldfile;
             }

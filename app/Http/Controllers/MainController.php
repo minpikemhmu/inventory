@@ -124,4 +124,31 @@ class MainController extends Controller
     }
     return 'success';
   }
+   public function retuenDeliver(Request $request)
+  {
+    $ways = $request->ways;
+    // dd($ways);
+    foreach ($ways as $way) {
+      $way = Way::find($way['id']);
+      $way->status_id = 2;
+      $way->status_code = '002';
+      $way->delivery_date = date('Y-m-d');
+      $way->save();
+    }
+    return 'success';
+  }
+
+  public function rejectDeliver(Request $request)
+  {
+    $ways = $request->ways;
+    // dd($ways);
+    foreach ($ways as $way) {
+      $way = Way::find($way['id']);
+      $way->status_id = 3;
+      $way->status_code = '003';
+      $way->delivery_date = date('Y-m-d');
+      $way->save();
+    }
+    return 'success';
+  }
 }

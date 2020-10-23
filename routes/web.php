@@ -85,6 +85,8 @@ Route::middleware('auth')->group(function () {
   Route::post('delichargebytown','ItemController@delichargebytown')->name('delichargebytown');
   Route::get('ways','MainController@ways')->name('ways');
   Route::post('makeDelivered','MainController@makeDeliver')->name('makeDeliver');
+  Route::post('retuenDeliver','MainController@retuenDeliver')->name('retuenDeliver');
+  Route::post('rejectDeliver','MainController@rejectDeliver')->name('rejectDeliver');
 });
 
 Route::resource('profiles','ProfileController');

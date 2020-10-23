@@ -52,6 +52,8 @@
                       <span class="badge badge-info">{{'success'}}</span>
                     @elseif($way->status_code == '002')
                       <span class="badge badge-warning">{{'return'}}</span>
+                    @elseif($way->status_code == '003')
+                      <span class="badge badge-danger">{{'reject'}}</span>
                     @endif
 
                   </td>
@@ -143,6 +145,34 @@
         $.post("{{route('makeDeliver')}}",{ways:ways},function (response) {
           console.log(response);
           alert('successfully changed!')
+          location.href="{{route('ways')}}";
+        })
+      })
+      $('.return').click(function (e) {
+        e.preventDefault();
+        var ways = [];
+        $.each($("input[name='ways[]']:checked"), function(){
+          let wayObj = {id:$(this).val()};
+          ways.push(wayObj);
+        });
+        $.post("{{route('retuenDeliver')}}",{ways:ways},function (response) {
+          console.log(response);
+          alert('successfully changed!')
+          location.href="{{route('ways')}}";
+        })
+      })
+
+       $('.reject').click(function (e) {
+        e.preventDefault();
+        var ways = [];
+        $.each($("input[name='ways[]']:checked"), function(){
+          let wayObj = {id:$(this).val()};
+          ways.push(wayObj);
+        });
+        $.post("{{route('rejectDeliver')}}",{ways:ways},function (response) {
+          console.log(response);
+          alert('successfully changed!')
+          location.href="{{route('ways')}}";
         })
       })
 
