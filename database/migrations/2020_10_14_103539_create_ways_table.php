@@ -23,6 +23,7 @@ class CreateWaysTable extends Migration
             $table->unsignedBigInteger('delivery_man_id');
             $table->unsignedBigInteger('staff_id');
             $table->unsignedBigInteger('status_id');
+            $table->string('remark')->nullable();;
 
             $table->softDeletes();
             $table->timestamps();

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Way extends Model
 {
 	protected $fillable=[
-  	'status_code', 'delivery_date', 'refund_date', 'item_id', 'delivery_man_id', 'staff_id', 'status_id'
+  	'status_code', 'delivery_date', 'refund_date', 'item_id', 'delivery_man_id', 'staff_id', 'status_id','remark'
   ];
 
   public function item()

@@ -99,6 +99,67 @@
       </div>
     </div>
   </div>
+
+  {{-- return modal --}}
+  <div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title rcode" id="exampleModalLabel">Return</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{route('retuenDeliver')}}" method="POST">
+            @csrf
+          <div class="form-group">
+              <div id="selectedWays"></div>
+            </div>
+          <div class="form-group">
+                  <label for="InputRemark">Remark:</label>
+                  <textarea class="form-control" id="InputRemark" name="remark"></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">OK</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+   {{-- reject modal --}}
+  <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title rcode" id="exampleModalLabel">Reject</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{route('rejectDeliver')}}" method="POST">
+            @csrf
+          <div class="form-group">
+              <div id="selectedrejectWays"></div>
+            </div>
+          <div class="form-group">
+                  <label for="InputRemark">Remark:</label>
+                  <textarea class="form-control" id="InputRemark" name="remark"></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">OK</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 @section('script')
   <script type="text/javascript">
@@ -148,32 +209,40 @@
           location.href="{{route('ways')}}";
         })
       })
+
+
+
       $('.return').click(function (e) {
         e.preventDefault();
+        $('#returnModal').modal('show');
         var ways = [];
         $.each($("input[name='ways[]']:checked"), function(){
           let wayObj = {id:$(this).val()};
           ways.push(wayObj);
         });
-        $.post("{{route('retuenDeliver')}}",{ways:ways},function (response) {
-          console.log(response);
-          alert('successfully changed!')
-          location.href="{{route('ways')}}";
-        })
+        var html="";
+        for(let way of ways){
+          html+=`<input type="hidden" value="${way.id}" name="ways[]">`;
+        }
+        $('#selectedWays').html(html);
       })
+
+
+
 
        $('.reject').click(function (e) {
         e.preventDefault();
+        $('#rejectModal').modal('show');
         var ways = [];
         $.each($("input[name='ways[]']:checked"), function(){
           let wayObj = {id:$(this).val()};
           ways.push(wayObj);
         });
-        $.post("{{route('rejectDeliver')}}",{ways:ways},function (response) {
-          console.log(response);
-          alert('successfully changed!')
-          location.href="{{route('ways')}}";
-        })
+        var html="";
+        for(let way of ways){
+          html+=`<input type="hidden" value="${way.id}" name="ways[]">`;
+        }
+        $('#selectedrejectWays').html(html);
       })
 
     })

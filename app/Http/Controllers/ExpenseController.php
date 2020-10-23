@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use App\ExpenseType;
 use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
@@ -14,7 +15,8 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        return view('expense.index');
+        $expenses=Expense::all();
+        return view('expense.index',compact('expenses'));
     }
 
     /**
@@ -24,7 +26,8 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        return view('expense.create');
+        $expensetypes=ExpenseType::all();
+        return view('expense.create',compact('expensetypes'));
     }
 
     /**
@@ -35,7 +38,24 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'description'  => ['required', 'string', 'max:255'],
+            'expensetype'=>['required'],
+            'amount'=>['required']
+        ]);
+
+        if($validator){
+            $expense=new Expense;
+            $expense->description=$request->description;
+            $expense->amount=$request->amount;
+            $expense->expense_type_id=$request->expensetype;
+            $expense->save();
+            return redirect()->route('expenses.index')->with("successMsg",'New Expense is ADDED in your data');
+        }
+        else
+        {
+            return redirect::back()->withErrors($validator);
+        }
     }
 
     /**
@@ -57,7 +77,9 @@ class ExpenseController extends Controller
      */
     public function edit(Expense $expense)
     {
-        //
+        $expensetypes=ExpenseType::all();
+        $expense=$expense;
+        return view('expense.edit',compact('expense','expensetypes'));
     }
 
     /**
@@ -69,7 +91,24 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, Expense $expense)
     {
-        //
+        $validator = $request->validate([
+            'description'  => ['required', 'string', 'max:255'],
+            'expensetype'=>['required'],
+            'amount'=>['required']
+        ]);
+
+        if($validator){
+            $expense=$expense;
+            $expense->description=$request->description;
+            $expense->amount=$request->amount;
+            $expense->expense_type_id=$request->expensetype;
+            $expense->save();
+            return redirect()->route('expenses.index')->with("successMsg",'New Expense updated successfully');
+        }
+        else
+        {
+            return redirect::back()->withErrors($validator);
+        }
     }
 
     /**
@@ -80,6 +119,9 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-        //
+        
+         $expense=$expense;
+        $expense->delete();
+       return redirect()->route('expenses.index')->with('successMsg','Existing Expense is DELETED in your data');
     }
 }

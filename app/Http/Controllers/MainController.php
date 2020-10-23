@@ -114,11 +114,13 @@ class MainController extends Controller
   public function makeDeliver(Request $request)
   {
     $ways = $request->ways;
-    // dd($ways);
+    //dd($ways);
     foreach ($ways as $way) {
-      $way = Way::find($way['id']);
+      $way = Way::where('id',$way)->first();
+      //dd($way);
       $way->status_id = 1;
       $way->status_code = '001';
+       $way->remark =Null;
       $way->delivery_date = date('Y-m-d');
       $way->save();
     }
@@ -126,29 +128,35 @@ class MainController extends Controller
   }
    public function retuenDeliver(Request $request)
   {
+    //dd($request);
     $ways = $request->ways;
-    // dd($ways);
+   //dd($ways);
     foreach ($ways as $way) {
-      $way = Way::find($way['id']);
+      $way = Way::where('id',$way)->first();
+      //dd($way);
       $way->status_id = 2;
       $way->status_code = '002';
-      $way->delivery_date = date('Y-m-d');
+      $way->refund_date = date('Y-m-d');
+      $way->remark = $request->remark;
       $way->save();
     }
-    return 'success';
+    return redirect()->route('ways');
   }
 
   public function rejectDeliver(Request $request)
   {
+    //dd($request);
     $ways = $request->ways;
-    // dd($ways);
+   //dd($ways);
     foreach ($ways as $way) {
-      $way = Way::find($way['id']);
+      $way = Way::where('id',$way)->first();
+      //dd($way);
       $way->status_id = 3;
       $way->status_code = '003';
-      $way->delivery_date = date('Y-m-d');
+      $way->refund_date = date('Y-m-d');
+      $way->remark = $request->remark;
       $way->save();
     }
-    return 'success';
+    return redirect()->route('ways');
   }
 }
