@@ -101,4 +101,18 @@ class MainController extends Controller
     $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->get(); 
     return view('dashboard.ways',compact('ways'));
   }
+
+  public function makeDeliver(Request $request)
+  {
+    $ways = $request->ways;
+    // dd($ways);
+    foreach ($ways as $way) {
+      $way = Way::find($way['id']);
+      $way->status_id = 1;
+      $way->status_code = '001';
+      $way->delivery_date = date('Y-m-d');
+      $way->save();
+    }
+    return 'success';
+  }
 }

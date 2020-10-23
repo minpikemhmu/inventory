@@ -46,7 +46,15 @@
                       </label>
                     </div>
                   </td>
-                  <td>{{$way->item->codeno}}</td>
+                  <td>
+                    {{$way->item->codeno}}
+                    @if($way->status_code == '001')
+                      <span class="badge badge-info">{{'success'}}</span>
+                    @elseif($way->status_code == '002')
+                      <span class="badge badge-warning">{{'return'}}</span>
+                    @endif
+
+                  </td>
                   <td class="text-danger">{{$way->item->township->name}}</td>
                   <td>
                     {{$way->item->receiver_name}} <span class="badge badge-dark">{{$way->item->receiver_phone_no}}</span>
@@ -94,6 +102,11 @@
   <script type="text/javascript">
     $(document).ready(function () {
       // $('.delivery_actions').hide();
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
 
       $('.detail').click(function () {
         var id=$(this).data('id');
@@ -122,7 +135,15 @@
 
       $('.success').click(function (e) {
         e.preventDefault();
-        
+        var ways = [];
+        $.each($("input[name='ways[]']:checked"), function(){
+          let wayObj = {id:$(this).val()};
+          ways.push(wayObj);
+        });
+        $.post("{{route('makeDeliver')}}",{ways:ways},function (response) {
+          console.log(response);
+          alert('successfully changed!')
+        })
       })
 
     })
