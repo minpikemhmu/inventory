@@ -17,10 +17,10 @@
           @php $mytime = Carbon\Carbon::now(); @endphp
           <h3 class="tile-title d-inline-block">Ways List ({{$mytime->toFormattedDateString()}})</h3>
 
-          <div class="float-right delivery_actions">
-            <a href="#" class="btn btn-success btn-sm mx-2">Success</a>
-            <a href="#" class="btn btn-warning btn-sm mx-2">Return</a>
-            <a href="#" class="btn btn-danger btn-sm mx-2">Reject</a>
+          <div class="float-right actions">
+            <a href="#" class="btn btn-success btn-sm mx-2 success">Success</a>
+            <a href="#" class="btn btn-warning btn-sm mx-2 return">Return</a>
+            <a href="#" class="btn btn-danger btn-sm mx-2 reject">Reject</a>
           </div>
 
           <div class="table-responsive">
@@ -42,7 +42,7 @@
                   <td>
                     <div class="animated-checkbox">
                       <label class="mb-0">
-                        <input type="checkbox" name="ways[]" value="{{1}}"><span class="label-text"> </span>
+                        <input type="checkbox" name="ways[]" value="{{$way->id}}"><span class="label-text"> </span>
                       </label>
                     </div>
                   </td>
@@ -112,6 +112,17 @@
           $("#rremark").html(res.remark);
           $(".rcode").html(res.codeno);
         })
+      })
+
+      // control actions
+      var $actions = $(".actions").hide();
+      $cbs = $('input[name="ways[]"]').click(function() {
+          $actions.toggle( $cbs.is(":checked") , 2000);
+      });
+
+      $('.success').click(function (e) {
+        e.preventDefault();
+        
       })
 
     })

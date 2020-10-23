@@ -15,7 +15,15 @@
       <div class="col-md-12">
         <div class="tile">
           <h3 class="tile-title d-inline-block">Item Create Form</h3>
-          
+          @if(session('successMsg') != NULL)
+            <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
+                <strong> ✅ SUCCESS!</strong>
+                {{ session('successMsg') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+          @endif
           <form method="POST" action="{{route('items.store')}}">
             @csrf
             <div class="row">
@@ -59,13 +67,13 @@
 
                 <div class="form-group">
                   <label for="InputExpiredDate">Expired Date:</label>
-                  <input class="form-control" id="InputExpiredDate" type="date" name="expired_date"  value="{{ old('expired_date') }}">
+                  <input class="form-control" id="InputExpiredDate" type="date" name="expired_date"  value="@if($pickupeditem){{ $pickupeditem->expired_date }}@else{{old('expired_date')}}@endif">
                   <div class="form-control-feedback text-danger"> {{$errors->first('expired_date') }} </div>
                 </div>
 
                 <div class="form-group">
                   <label for="InputDeposit">Deposit:</label>
-                  <input class="form-control" id="InputDeposit" type="number" name="deposit" value="{{ old('deposit') }}">
+                  <input class="form-control" id="InputDeposit" type="number" name="deposit" value="@if($pickupeditem){{ $pickupeditem->deposit }}@else {{old('deposit')}} @endif">
                   <div class="form-control-feedback text-danger"> {{$errors->first('deposit') }} </div>
                 </div>
 
@@ -83,7 +91,7 @@
 
                 <div class="form-group">
                   <label for="InputRemark">Remark:</label>
-                  <textarea class="form-control" id="InputRemark" name="remark">{{ old('remark') }}</textarea>
+                  <textarea class="form-control" id="InputRemark" name="remark">@if($pickupeditem){{ $pickupeditem->remark }} @else {{old('remark')}} @endif</textarea>
                   <div class="form-control-feedback text-danger"> {{$errors->first('remark') }} </div>
                 </div>
               </div>
@@ -134,11 +142,11 @@
       })
     })
 
-    $("#InputDeposit").change(function(){
-      var deposit=parseInt($(this).val());
+    $("#InputAmount").focus(function(){
+      var deposit=parseInt($('#InputDeposit').val());
       var delivery_fees=parseInt($("#InputDeliveryFees").val());
       var amount=deposit+delivery_fees;
-      $("#InputAmount").val(amount);
+      $(this).val(amount);
     })
   })
 </script>

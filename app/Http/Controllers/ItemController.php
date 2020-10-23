@@ -73,15 +73,21 @@ class ItemController extends Controller
             $item->paystatus=0;
             $item->pickup_id=$request->pickup_id;
             $item->township_id=$request->receiver_township;
-             $role=Auth::user()->roles()->first();
-             $rolename=$role->name;
-              if($rolename=="staff"){
+            $role=Auth::user()->roles()->first();
+            $rolename=$role->name;
+            if($rolename=="staff"){
                 $user=Auth::user();
-                 $staffid=$user->staff->id;
+                $staffid=$user->staff->id;
                 $item->staff_id=$staffid;
             }
             $item->save();
-           return redirect()->route('items.index')->with("successMsg",'New Item is ADDED in your data');
+
+            $pickup = Pickup::find($item->pickup_id);
+            if (($pickup->schedule->quantity - count($pickup->items)) > 0) {
+                return redirect()->back()->with("successMsg",'New Item is ADDED');
+            }else{
+                return redirect()->route('items.index')->with("successMsg",'New Item is ADDED in your data');
+            }
         }
         else
         {
@@ -179,6 +185,7 @@ class ItemController extends Controller
     // here accept client id
     public function collectitem($cid, $pid)
     {
+
         $itemcode="";
         $client = Client::find($cid);
         $codeno=$client->codeno;
@@ -205,8 +212,8 @@ class ItemController extends Controller
         //dd($datecode);
         $pickup = Pickup::find($pid);
         $townships=Township::all();
-      //  dd($townships);
-        return view('item.create',compact('client','pickup','townships','itemcode'));
+        $pickupeditem = Item::where('pickup_id',$pickup->id)->orderBy('id','desc')->first();
+        return view('item.create',compact('client','pickup','townships','itemcode','pickupeditem'));
     }
 
 
