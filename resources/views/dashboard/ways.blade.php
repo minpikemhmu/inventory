@@ -1,80 +1,137 @@
 @extends('main')
 @section('content')
-  <main class="app-content">
-    <div class="app-title">
-      <div>
-        <h1><i class="fa fa-dashboard"></i> Ways</h1>
-        <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
-      </div>
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('ways')}}">Ways</a></li>
-      </ul>
+<main class="app-content">
+  <div class="app-title">
+    <div>
+      <h1><i class="fa fa-dashboard"></i> Ways</h1>
+      <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="tile">
-          @php $mytime = Carbon\Carbon::now(); @endphp
-          <h3 class="tile-title d-inline-block">Ways List ({{$mytime->toFormattedDateString()}})</h3>
+    <ul class="app-breadcrumb breadcrumb">
+      <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+      <li class="breadcrumb-item"><a href="{{route('ways')}}">Ways</a></li>
+    </ul>
+  </div>
 
-          <div class="float-right actions">
-            <a href="#" class="btn btn-success btn-sm mx-2 success">Success</a>
-            <a href="#" class="btn btn-warning btn-sm mx-2 return">Return</a>
-            <a href="#" class="btn btn-danger btn-sm mx-2 reject">Reject</a>
-          </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="tile">
+        @php $mytime = Carbon\Carbon::now(); @endphp
+        <h3 class="tile-title d-inline-block">Ways List ({{$mytime->toFormattedDateString()}})</h3>
 
-          <div class="table-responsive">
-            <table class="table table-bordered dataTable">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Codeno</th>
-                  <th>Township</th>
-                  <th>Receiver Info</th>
-                  <th>Expired Date</th>
-                  <th>Amount</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($ways as $way)
-                <tr>
-                  <td>
-                    <div class="animated-checkbox">
-                      <label class="mb-0">
-                        <input type="checkbox" name="ways[]" value="{{$way->id}}"><span class="label-text"> </span>
-                      </label>
-                    </div>
-                  </td>
-                  <td>
-                    {{$way->item->codeno}}
-                    @if($way->status_code == '001')
-                      <span class="badge badge-info">{{'success'}}</span>
-                    @elseif($way->status_code == '002')
-                      <span class="badge badge-warning">{{'return'}}</span>
-                    @elseif($way->status_code == '003')
-                      <span class="badge badge-danger">{{'reject'}}</span>
-                    @endif
-
-                  </td>
-                  <td class="text-danger">{{$way->item->township->name}}</td>
-                  <td>
-                    {{$way->item->receiver_name}} <span class="badge badge-dark">{{$way->item->receiver_phone_no}}</span>
-                  </td>
-                  <td class="text-danger">{{$way->item->expired_date}}</td>
-                  <td>{{$way->item->amount}}</td>
-                  <td>
-                    <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
-                  </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
+        <div class="float-right actions">
+          <a href="#" class="btn btn-success btn-sm mx-2 success">Success</a>
         </div>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="home" aria-selected="true">Pending ways</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#success" role="tab" aria-controls="profile" aria-selected="false">success ways</a>
+          </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="home-tab">
+            <div class="col-12">
+            <div class="alert alert-primary success d-none" role="alert"></div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered dataTable">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Codeno</th>
+                    <th>Township</th>
+                    <th>Receiver Info</th>
+                    <th>Expired Date</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($ways as $way)
+                  <tr>
+                    <td>
+                      <div class="animated-checkbox">
+                        <label class="mb-0">
+                          <input type="checkbox" name="ways[]" value="{{$way->id}}"><span class="label-text"> </span>
+                        </label>
+                      </div>
+                    </td>
+                    <td>
+                      {{$way->item->codeno}}
+                      @if($way->status_code == '001')
+                      <span class="badge badge-info">{{'success'}}</span>
+                      @elseif($way->status_code == '002')
+                      <span class="badge badge-warning">{{'return'}}</span>
+                      @elseif($way->status_code == '003')
+                      <span class="badge badge-danger">{{'reject'}}</span>
+                      @endif
+
+                    </td>
+                    <td class="text-danger">{{$way->item->township->name}}</td>
+                    <td>
+                      {{$way->item->receiver_name}} <span class="badge badge-dark">{{$way->item->receiver_phone_no}}</span>
+                    </td>
+                    <td class="text-danger">{{$way->item->expired_date}}</td>
+                    <td>{{$way->item->amount}}</td>
+                    <td>
+                      <a href="#" class="btn btn-warning btn-sm return" data-id="{{$way->id}}">Return</a>
+                      <a href="#" class="btn btn-danger btn-sm reject" data-id="{{$way->id}}">Reject</a>
+                      <a href="#" class="btn btn-sm btn-primary detail" data-id="{{$way->item->id}}">Detail</a> 
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="success" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="table-responsive">
+              <table class="table table-bordered dataTable">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Codeno</th>
+                    <th>Township</th>
+                    <th>Receiver Info</th>
+                    <th>Expired Date</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @php $i=1 @endphp
+                  @foreach($successways as $way)
+                  <tr>
+                    <td>{{$i++}}</td>
+                    <td>
+                      {{$way->item->codeno}}
+
+                    </td>
+                    <td class="text-danger">{{$way->item->township->name}}</td>
+                    <td>
+                      {{$way->item->receiver_name}} <span class="badge badge-dark">{{$way->item->receiver_phone_no}}</span>
+                    </td>
+                    <td class="text-danger">{{$way->item->expired_date}}</td>
+                    <td>{{$way->item->amount}}</td>
+                    <td>
+                      <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </div>
-  </main>
+  </div>
+</main>
 
   {{-- Item Detail modal --}}
   <div class="modal fade" id="itemDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -111,19 +168,19 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="{{route('retuenDeliver')}}" method="POST">
-            @csrf
-          <div class="form-group">
-              <div id="selectedWays"></div>
+         
+           <div class="form-group">
+              <input type="hidden" name="wayid" id="returnway" value="">
             </div>
           <div class="form-group">
                   <label for="InputRemark">Remark:</label>
-                  <textarea class="form-control" id="InputRemark" name="remark"></textarea>
+                  <textarea class="form-control returnremark" id="InputRemark" name="remark"></textarea>
+                  <span class="Eremark error d-block" ></span>
           </div>
 
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">OK</button>
+          <button type="button" class="btn btn-primary btnreturn">OK</button>
           </form>
         </div>
       </div>
@@ -142,19 +199,18 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="{{route('rejectDeliver')}}" method="POST">
-            @csrf
           <div class="form-group">
-              <div id="selectedrejectWays"></div>
+              <input type="hidden" name="wayid" id="rejectway" value="">
             </div>
           <div class="form-group">
                   <label for="InputRemark">Remark:</label>
-                  <textarea class="form-control" id="InputRemark" name="remark"></textarea>
+                  <textarea class="form-control rejectremark" id="InputRemark" name="remark"></textarea>
+                  <span class="Ejremark error d-block" ></span>
           </div>
 
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">OK</button>
+          <button type="button" class="btn btn-primary btnreject">OK</button>
           </form>
         </div>
       </div>
@@ -215,34 +271,92 @@
       $('.return').click(function (e) {
         e.preventDefault();
         $('#returnModal').modal('show');
-        var ways = [];
-        $.each($("input[name='ways[]']:checked"), function(){
-          let wayObj = {id:$(this).val()};
-          ways.push(wayObj);
-        });
-        var html="";
-        for(let way of ways){
-          html+=`<input type="hidden" value="${way.id}" name="ways[]">`;
-        }
-        $('#selectedWays').html(html);
+        var id=$(this).data('id');
+        $("#returnway").val(id);
       })
 
+
+      $(".btnreturn").click(function(){
+        var wayid=$("#returnway").val();
+        var remark= $(".returnremark").val();
+        var url="{{route('retuenDeliver')}}";
+         $.ajax({
+          url:url,
+          type:"post",
+          data:{wayid:wayid,remark:remark},
+          dataType:'json',
+          success:function(response){
+            if(response.success){
+               $('#returnModal').modal('hide');
+               $('.Eremark').text('');
+              $('span.error').removeClass('text-danger');
+              $('.success').removeClass('d-none');
+              $('.success').show();
+              $('.success').text('successfully added to return list');
+              $('.success').fadeOut(3000);
+              location.href="{{route('ways')}}";
+            }
+          },
+          error:function(error){
+            var message=error.responseJSON.message;
+            var errors=error.responseJSON.errors;
+            console.log(error.responseJSON.errors);
+            if(errors){
+              var remark=errors.remark;
+              $('.Eremark').text(remark);
+              $('span.error').addClass('text-danger');
+            }
+
+          }
+          
+
+        })
+      })
 
 
 
        $('.reject').click(function (e) {
         e.preventDefault();
         $('#rejectModal').modal('show');
-        var ways = [];
-        $.each($("input[name='ways[]']:checked"), function(){
-          let wayObj = {id:$(this).val()};
-          ways.push(wayObj);
-        });
-        var html="";
-        for(let way of ways){
-          html+=`<input type="hidden" value="${way.id}" name="ways[]">`;
-        }
-        $('#selectedrejectWays').html(html);
+        var id=$(this).data('id');
+        $("#rejectway").val(id);
+      })
+
+        $(".btnreject").click(function(){
+        var wayid=$("#rejectway").val();
+        var remark= $(".rejectremark").val();
+        var url="{{route('rejectDeliver')}}";
+         $.ajax({
+          url:url,
+          type:"post",
+          data:{wayid:wayid,remark:remark},
+          dataType:'json',
+          success:function(response){
+            if(response.success){
+               $('#rejectModal').modal('hide');
+               $('.Ejremark').text('');
+              $('span.error').removeClass('text-danger');
+              $('.success').removeClass('d-none');
+              $('.success').show();
+              $('.success').text('successfully added to reject list');
+              $('.success').fadeOut(3000);
+              location.href="{{route('ways')}}";
+            }
+          },
+          error:function(error){
+            var message=error.responseJSON.message;
+            var errors=error.responseJSON.errors;
+            console.log(error.responseJSON.errors);
+            if(errors){
+              var remark=errors.remark;
+              $('.Ejremark').text(remark);
+              $('span.error').addClass('text-danger');
+            }
+
+          }
+          
+
+        })
       })
 
     })

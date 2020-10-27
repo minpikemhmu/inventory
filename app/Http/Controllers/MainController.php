@@ -6,8 +6,14 @@ use Illuminate\Http\Request;
 use App\Pickup;
 use App\Way;
 use App\DeliveryMan;
+use App\PaymentType;
 use Auth;
-
+use Illuminate\Support\Facades\DB;
+use Carbon;
+use Response;
+use App\Bank;
+use App\Http\Resources\SuccesswayResource;
+use App\Income;
 class MainController extends Controller
 {
   // for dashboard main page
@@ -68,14 +74,44 @@ class MainController extends Controller
   // get the success ways by deliveryman
   public function successways($id)
   {
-    $ways = Way::where('delivery_man_id',$id)->where('status_code',001)->get();
-    return $ways;
+
+    $paymenttypes=PaymentType::all();
+    $banks=Bank::all();
+    $ways =Way::doesntHave('income')->where('ways.delivery_man_id',$id)
+            ->where('ways.status_code',001)
+            ->get();;
+    $ways =  SuccesswayResource::collection($ways);
+    //dd($ways);
+    return Response::json(array(
+           'ways' => $ways,
+           'paymenttypes' => $paymenttypes,
+           'banks'=>$banks,
+      ));
   }
 
   // for add incomes method => store
   public function addincomes(Request $request)
   {
-    
+    //dd($request);
+    $income=new Income;
+    $income->delivery_fees=$request->deliveryfee;
+    $income->amount=$request->amount;
+    $income->payment_type_id=$request->paymenttype;
+    $income->way_id=$request->way_id;
+    if($request->paymenttype!=2){
+      if($request->bank!="null"){
+        $income->bank_id=$request->bank;
+        $income->bank_amount=$request->amount;
+      } 
+    }else if($request->paymenttype!=3){
+      if($request->bank!="null"){
+      $income->bank_id=$request->bank;
+      $income->bank_amount=$request->bank_amount;
+      $income->cash_amount=$request->cash_amount;
+    }
+    }
+    $income->save();
+    return redirect()->route('incomes.create')->with("successMsg",'Income added successfully');
   }
 
   // for pickup page => delivery man view
@@ -107,8 +143,9 @@ class MainController extends Controller
   public function ways($value='')
   {
     // ways assigned for that user (must delivery_date and refund_date equal NULL)
-    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->get(); 
-    return view('dashboard.ways',compact('ways'));
+    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->get();
+    $successways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get(); 
+    return view('dashboard.ways',compact('ways','successways'));
   }
 
   public function makeDeliver(Request $request)
@@ -129,34 +166,38 @@ class MainController extends Controller
    public function retuenDeliver(Request $request)
   {
     //dd($request);
-    $ways = $request->ways;
+     $request->validate([
+            'remark' => 'required',
+        ]);
+      $wayid = $request->wayid;
+       $mytime = Carbon\Carbon::now();
    //dd($ways);
-    foreach ($ways as $way) {
-      $way = Way::where('id',$way)->first();
+      $way = Way::where('id',$wayid)->first();
       //dd($way);
       $way->status_id = 2;
       $way->status_code = '002';
-      $way->refund_date = date('Y-m-d');
       $way->remark = $request->remark;
+      $way->deleted_at=$mytime;
       $way->save();
-    }
-    return redirect()->route('ways');
+    return response()->json(['success'=>'successfully!']);
   }
 
   public function rejectDeliver(Request $request)
   {
-    //dd($request);
-    $ways = $request->ways;
-   //dd($ways);
-    foreach ($ways as $way) {
-      $way = Way::where('id',$way)->first();
+     $request->validate([
+            'remark' => 'required',
+        ]);
+      $wayid = $request->wayid;
+    
+      $way = Way::where('id',$wayid)->first();
       //dd($way);
       $way->status_id = 3;
       $way->status_code = '003';
       $way->refund_date = date('Y-m-d');
       $way->remark = $request->remark;
+      $way->deleted_at=Null;
       $way->save();
-    }
-    return redirect()->route('ways');
+    
+   return response()->json(['success'=>'successfully!']);
   }
 }

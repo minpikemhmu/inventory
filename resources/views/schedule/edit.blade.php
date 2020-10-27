@@ -32,16 +32,26 @@
               <div class="form-control-feedback text-danger"> {{$errors->first('remark') }} </div>
             </div>
 
-            <div class="form-group">
-              <input type="checkbox" class="mychangepsw" id="cpassw">
-              <label for="cpassw">Do you want to upload file?</label>
-              
-            </div>
-
-            <div class="form-group myfile">
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">new file</a>
+                <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">old file</a>
+              </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+              <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+               <div class="form-group">
               {{-- <label for="file">file:</label> --}}
               <input type="file"  id="file" name="file">
             </div>
+              </div>
+              <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <img src="{{asset($schedule->file)}}" width="300" height="300">
+              </div>
+            </div>
+            
+
+            
 
             <div class="form-group">
               <label for="quantity">Quantity:</label>

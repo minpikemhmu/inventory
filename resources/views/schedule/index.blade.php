@@ -116,9 +116,10 @@
                       </tr>
                     </thead>
                     <tbody>
+                      @php $i=1; @endphp
                       @foreach($pickups as $row)
                       <tr>
-                        <td>1</td>
+                        <td>{{$i++}}</td>
                         <td class="text-danger">{{$row->schedule->client->user->name}}</td>
                         <td>{{$row->schedule->pickup_date}}</td>
                         <td>{{$row->schedule->remark}}</td>
