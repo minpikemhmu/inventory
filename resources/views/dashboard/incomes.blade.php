@@ -24,34 +24,28 @@
                   <th>#</th>
                   <th>Item Code</th>
                   <th>Delivery Men</th>
+                  <th>Payment type</th>
                   <th>Amount</th>
                 </tr>
               </thead>
               <tbody>
+                @php $i=1; $total=0 @endphp
+                @foreach($incomes as $row)
+                @php $total+=$row->amount; @endphp
                 <tr>
-                  <td>1</td>
-                  <td><span class="badge badge-primary">0001-0024</span></td>
-                  <td>Kyaw Lwin</td>
-                  <td>3,000</td>
+                  <td>{{$i++}}</td>
+                  <td><span class="badge badge-primary">{{$row->way->item->codeno}}</span></td>
+                  <td>{{$row->way->delivery_man->user->name}}</td>
+                  <td>{{$row->payment_type->name}}</td>
+                  <td>{{$row->amount}}</td>
                 </tr>
+                @endforeach
                 <tr>
-                  <td>2</td>
-                  <td><span class="badge badge-primary">0001-0323</span></td>
-                  <td>Min Pike</td>
-                  <td>2,500</td>
+                  <td colspan="4">Total amount</td>
+                  <td>{{$total}}</td>
                 </tr>
-                <tr>
-                  <td>3</td>
-                  <td><span class="badge badge-primary">0031-0015</span></td>
-                  <td>Kyaw Kyi</td>
-                  <td>5,000</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td><span class="badge badge-primary">0031-0004</span></td>
-                  <td>Hein Min</td>
-                  <td>1,500</td>
-                </tr>
+                
+                
               </tbody>
             </table>
           </div>

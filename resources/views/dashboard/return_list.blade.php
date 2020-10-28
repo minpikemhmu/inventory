@@ -28,13 +28,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td><span class="badge badge-primary">0001-0024</span></td>
-                  <td>Kyaw Lwin</td>
-                  <td>3,000</td>
-                  <td>Get vector icons and social logos on your website with Font Awesome, the web's most popular icon set and toolkit.</td>
+                @php $i=1; @endphp
+                @foreach($returnways as $row)
+                 <tr>
+                  <td>{{$i++}}</td>
+                  <td><span class="btn badge badge-primary btndetail" data-itemid="{{$row->item->id}}">{{$row->item->codeno}}</span></td>
+                  <td>{{$row->delivery_man->user->name}}</td>
+                  <td>{{$row->item->amount}}</td>
+                  <td>{{$row->remark}}</td>
                 </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -42,4 +45,61 @@
       </div>
     </div>
   </main>
+
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="detailmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Item Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="returnitemdetail my-1">
+              
+          </div>
+      </div>
+  
+    </div>
+  </div>
+</div>
 @endsection 
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".btndetail").click(function(){
+      $("#detailmodal").modal("show");
+      var item_id=$(this).data("itemid");
+      //console.log(item_id);
+      $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+      var routeURL="{{route('returnitem')}}";
+      $.post(routeURL,{id:item_id},function(res){
+        console.log(res);
+        var html="";
+        $.each(res,function(i,v){
+           html+=`<h6 class="text-dark">Expire Date: <span class="text-danger">${v.expired_date}</span></h6>
+              <h6 class="text-dark">Deposit Fee: <span>${v.deposit}Ks</span></h6>
+              <h6 class="text-dark">Delivery Fee:<span>${v.delivery_fees}Ks</span></h6>
+              <h6 class="text-dark">Client's Name:<span>${v.uname}</span></h6>
+              <h6 class="text-dark">Contact Person:<span>${v.cperson}</span></h6>
+              <h6 class="text-dark">Client's Phone:<span>${v.cphone}</span></h6>
+              <h6 class="text-dark">Client's Full Address:<span>${v.caddress}</span></h6>`
+        })
+       $(".returnitemdetail").html(html);
+
+      })
+    })
+  })
+</script>
+@endsection

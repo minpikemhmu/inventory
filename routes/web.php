@@ -35,9 +35,13 @@ Route::middleware('auth')->group(function () {
 
   // Reject List
   Route::get('reject_list','MainController@reject_list')->name('reject_list');
+  Route::post('rejectitem','MainController@rejectitem')->name('rejectitem');
+
 
   // Return List
   Route::get('return_list','MainController@return_list')->name('return_list');
+  Route::post('returnitem','MainController@returnitem')->name('returnitem');
+
 
   // Delay List
   Route::get('delay_list','MainController@delay_list')->name('delay_list');

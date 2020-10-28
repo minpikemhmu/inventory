@@ -31,13 +31,43 @@ class MainController extends Controller
   // for reject list page
   public function reject_list($value='')
   {
-    return view('dashboard.reject_list');
+    $rejectways=Way::where('refund_date','!=',null)->orderBy('id','desc')->get();
+    return view('dashboard.reject_list',compact('rejectways'));
   }
 
   // for return list page
   public function return_list($value='')
   {
-    return view('dashboard.return_list');
+    $returnways=Way::where('deleted_at','!=',null)->orderBy('id','desc')->get();
+    return view('dashboard.return_list',compact('returnways'));
+  }
+
+  public function rejectitem(Request $request){
+    $id=$request->id;
+   // dd($id);
+    $returnitems=DB::table('items')
+            ->join('pickups', 'pickups.id', '=', 'items.pickup_id')
+            ->join('schedules', 'schedules.id', '=', 'pickups.schedule_id')
+            ->join('clients', 'clients.id', '=', 'schedules.client_id')
+            ->join('users', 'users.id', '=', 'clients.user_id')
+            ->select('items.*', 'clients.contact_person as cperson', 'clients.phone_no as cphone','clients.address as caddress','users.name as uname')
+            ->where('items.id',$id)
+            ->get();
+            return $returnitems;
+  }
+
+  public function returnitem(Request $request){
+    $id=$request->id;
+   // dd($id);
+    $returnitems=DB::table('items')
+            ->join('pickups', 'pickups.id', '=', 'items.pickup_id')
+            ->join('schedules', 'schedules.id', '=', 'pickups.schedule_id')
+            ->join('clients', 'clients.id', '=', 'schedules.client_id')
+            ->join('users', 'users.id', '=', 'clients.user_id')
+            ->select('items.*', 'clients.contact_person as cperson', 'clients.phone_no as cphone','clients.address as caddress','users.name as uname')
+            ->where('items.id',$id)
+            ->get();
+            return $returnitems;
   }
 
   // for delay list page
@@ -55,13 +85,15 @@ class MainController extends Controller
   // for debt list page
   public function debt_list($value='')
   {
+    
     return view('dashboard.debt_list');
   }
 
   // for income list page
   public function incomes($value='')
   {
-    return view('dashboard.incomes');
+    $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->get();
+    return view('dashboard.incomes',compact('incomes'));
   }
 
   // for add incomes form page

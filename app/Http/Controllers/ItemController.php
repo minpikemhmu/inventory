@@ -104,7 +104,8 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        $item=$item;
+        return $item;
     }
 
     /**
