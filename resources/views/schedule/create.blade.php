@@ -59,6 +59,13 @@
               <input type="number"  id="quantity" class="form-control" name="quantity">
               <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
             </div>
+
+
+            <div class="form-group">
+              <label for="amount">amount:</label>
+              <input type="number"  id="amount" class="form-control" name="amount">
+              <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
+            </div>
             
             @role('staff')
             <div class="form-group">
