@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Schedule extends Model
 {
 	protected $fillable=[
-  	'pickup_date', 'status', 'remark', 'file', 'client_id','quantity'
+  	'pickup_date', 'status', 'remark', 'file', 'client_id','quantity','amount'
   ];
 
   public function client()

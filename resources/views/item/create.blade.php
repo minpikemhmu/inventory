@@ -108,6 +108,16 @@
                     <li class="list-group-item">Phone Number: {{$client->phone_no}}</li>
                     <li class="list-group-item">Township: {{$client->township->name}}</li>
                     <li class="list-group-item">Left Item to collect: {{$pickup->schedule->quantity - count($pickup->items)}}</li>
+
+                    @php
+                    $total=0;
+                   
+                    @endphp
+                    @foreach($pickup->items as $pickupitem)
+                     @php $total+=$pickupitem->deposit @endphp
+                    @endforeach
+
+                    <li class="list-group-item">Deposit for all item: {{$pickup->schedule->amount-$total}}KS</li>
                   </ul>
                 </div>
 

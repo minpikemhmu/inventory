@@ -55,7 +55,8 @@ class ScheduleController extends Controller
          $validator = $request->validate([
             'date'  => ['required','date'],
             'remark'=>['required','string'],
-            'quantity'=>['required']
+            'quantity'=>['required'],
+            'amount'=>['required']
         ]);
 
 
@@ -79,6 +80,12 @@ class ScheduleController extends Controller
             $schedule->file=$path;
             $schedule->remark=$request->remark;
             $schedule->quantity=$request->quantity;
+            $schedule->amount=$request->amount;
+            if($request->hasfile('file')){
+                $schedule->status=1;
+            }else{
+              $schedule->status=0;  
+            }
             $schedule->save();
             return redirect()->route('schedules.index')->with("successMsg",'New Schedule is ADDED in your data');
         }
@@ -123,7 +130,8 @@ class ScheduleController extends Controller
          $validator = $request->validate([
             'date'  => ['required','date'],
             'remark'=>['required','string'],
-            'quantity'=>['required']
+            'quantity'=>['required'],
+            'amount'=>['required']
         ]);
 
 
@@ -145,6 +153,12 @@ class ScheduleController extends Controller
             $schedule->file=$path;
             $schedule->remark=$request->remark;
             $schedule->quantity=$request->quantity;
+            $schedule->amount=$request->amount;
+            if($request->hasfile('file')){
+                $schedule->status=1;
+            }else{
+              $schedule->status=0;  
+            }
             $schedule->save();
             return redirect()->route('schedules.index')->with("successMsg",'Updated Successfully');
         }
@@ -195,6 +209,7 @@ class ScheduleController extends Controller
                 $schedule->quantity=$request->quantity;
                 $schedule->file=$path;
                 $schedule->client_id=$request->client;
+                $schedule->amount=$request->amount;
                 $schedule->save();
                 $pickup->schedule_id=$schedule->id;
         }else{

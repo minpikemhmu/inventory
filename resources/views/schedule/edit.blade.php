@@ -41,7 +41,7 @@
             <div class="tab-content" id="nav-tabContent">
               <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                <div class="form-group">
-              {{-- <label for="file">file:</label> --}}
+              <label for="file">file:</label>
               <input type="file"  id="file" name="file">
             </div>
               </div>
@@ -50,13 +50,16 @@
               </div>
             </div>
             
-
-            
-
             <div class="form-group">
               <label for="quantity">Quantity:</label>
               <input type="number"  id="quantity" class="form-control" name="quantity" value="{{$schedule->quantity}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
+            </div>
+
+             <div class="form-group">
+              <label for="amount">Amount:</label>
+              <input type="number"  id="amount" class="form-control" name="amount" value="{{$schedule->amount}}">
+              <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
             </div>
             <div class="form-group">
               <button class="btn btn-primary" type="submit">Save</button>

@@ -21,6 +21,7 @@ class CreateSchedulesTable extends Migration
             $table->longText('remark');
             $table->text('file')->nullable();
             $table->integer('quantity');
+            $table->integer('amount');
             $table->unsignedBigInteger('client_id');
 
             $table->softDeletes();

@@ -45,7 +45,7 @@ class ClientController extends Controller
         $mytime = Carbon\Carbon::now();
         $array = explode('-', $mytime->toDateString());
         $codeno=$array[0].$array[1]."001";
-        $latestdata=Client::latest()->first();
+        $latestdata=Client::whereMonth('created_at',Carbon\Carbon::today())->orderBy('id','desc')->first();
             //dd($latecodeno);
          $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],

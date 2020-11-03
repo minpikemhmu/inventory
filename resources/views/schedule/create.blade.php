@@ -44,13 +44,9 @@
               <div class="form-control-feedback text-danger"> {{$errors->first('remark') }} </div>
             </div>
 
-            <div class="form-group">
-              <input type="checkbox" class="mychangepsw" id="cpassw">
-              <label for="cpassw">Do you want to upload file?</label>
-            </div>
 
-            <div class="form-group myfile">
-              {{-- <label for="file">file:</label> --}}
+            <div class="form-group">
+               <label for="file">file:</label> 
               <input type="file"  id="file" name="file">
             </div>
 
@@ -62,9 +58,9 @@
 
 
             <div class="form-group">
-              <label for="amount">amount:</label>
+              <label for="amount">Amount:</label>
               <input type="number"  id="amount" class="form-control" name="amount">
-              <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
+              <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
             </div>
             
             @role('staff')
