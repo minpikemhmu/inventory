@@ -27,7 +27,7 @@ class ScheduleController extends Controller
         $client=$user->client->id;
         $schedules=Schedule::where('client_id',$client)->get();
         }
-        $pickups=Pickup::all();
+        $pickups=Pickup::orderBy('id','desc')->get();
         $deliverymen=DeliveryMan::all();
         return view('schedule.index',compact('schedules','staffschedules','deliverymen','pickups'));
     }

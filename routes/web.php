@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
 
   // Debt List
   Route::get('debt_list','MainController@debt_list')->name('debt_list');
+  Route::post('updateincome','MainController@updateincome')->name('updateincome');
 
   //pickupdone by delivery man
   Route::get('pickupdone/{id}','MainController@pickupdone')->name('pickupdone');

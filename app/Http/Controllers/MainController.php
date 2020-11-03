@@ -85,14 +85,25 @@ class MainController extends Controller
   // for debt list page
   public function debt_list($value='')
   {
-    
-    return view('dashboard.debt_list');
+     $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','=',Null)->get();
+     //dd($incomes);
+    return view('dashboard.debt_list',compact('incomes'));
+  }
+
+  //update imcome
+  public function updateincome(Request $request){
+    $id=$request->id;
+    $income=Income::find($id);
+    $income->delivery_fees=$request->deliamount;
+    $income->amount=$request->amount;
+    $income->save();
+    return "success";
   }
 
   // for income list page
   public function incomes($value='')
   {
-    $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->get();
+    $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','!=',Null)->get();
     return view('dashboard.incomes',compact('incomes'));
   }
 
@@ -130,17 +141,28 @@ class MainController extends Controller
     $income->amount=$request->amount;
     $income->payment_type_id=$request->paymenttype;
     $income->way_id=$request->way_id;
-    if($request->paymenttype!=2){
+   
+    if($request->paymenttype==1){
+       $income->cash_amount=$request->amount;
+    }
+    else if($request->paymenttype==2){
       if($request->bank!="null"){
         $income->bank_id=$request->bank;
+        $income->cash_amount=null;
         $income->bank_amount=$request->amount;
       } 
-    }else if($request->paymenttype!=3){
+    }else if($request->paymenttype==3){
       if($request->bank!="null"){
       $income->bank_id=$request->bank;
       $income->bank_amount=$request->bank_amount;
       $income->cash_amount=$request->cash_amount;
+      }
     }
+    else if($request->paymenttype==4){
+      $income->amount=null;
+      $income->delivery_fees=null;
+    }else{
+      $income->amount=null;
     }
     $income->save();
     return redirect()->route('incomes.create')->with("successMsg",'Income added successfully');
