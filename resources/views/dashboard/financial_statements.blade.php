@@ -22,42 +22,31 @@
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="home">
-                <table class="table">
+                <div class="row col-12">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                <input type="date" name="" class="form-control start-date">
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                <input type="date" name="" class="form-control end-date">
+                </div>
+                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
+                 <button class="btn btn-success search">Search</button>
+                </div>
+              </div>
+              <div class="table-responsive mytable">
+              <table class="table searchTable" id="incometable">
                   <thead>
                     <tr>
-                      <th>#</th>
+                      
                       <th>Item Code</th>
                       <th>Delivery Men</th>
                       <th>Amount</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td><span class="badge badge-primary">0001-0024</span></td>
-                      <td>Kyaw Lwin</td>
-                      <td>3,000</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td><span class="badge badge-primary">0001-0323</span></td>
-                      <td>Min Pike</td>
-                      <td>2,500</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td><span class="badge badge-primary">0031-0015</span></td>
-                      <td>Kyaw Kyi</td>
-                      <td>5,000</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td><span class="badge badge-primary">0031-0004</span></td>
-                      <td>Hein Min</td>
-                      <td>1,500</td>
-                    </tr>
-                  </tbody>
+                    </tbody>
                 </table>
+              </div>
               </div>
               <div class="tab-pane fade" id="profile">
                 <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
@@ -72,3 +61,51 @@
     </div>
   </main>
 @endsection 
+@section('script')
+  <script type="text/javascript">
+    $(document).ready(function (argument) {
+      $(".mytable").hide();
+      $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+      $('.search').click(function (argument) {
+        $(".mytable").show();
+        var start_date = $('.start-date').val();
+        var end_date = $('.end-date').val();
+// console.log(start_date, end_date)
+        var url="{{route('incomesearch')}}";
+        var i=1;
+         $('#incometable').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        destroy:true,
+        "sort":false,
+        "stateSave": true,
+        "ajax": {
+            url: url,
+            type: "POST",
+            data:{start_date:start_date,end_date:end_date},
+            dataType:'json',
+        },
+        "columns": [
+
+        { "data": "item_code",
+        render:function(data){
+                    //console.log(data);
+                   return `<span class="btn badge badge-primary">${data}</span>`
+                  } },
+        { "data": "delivery_man" },
+         { "data": "amount" }
+        ],
+        "info":false
+    } );
+         
+      })
+      
+      
+    })
+  </script>
+  @endsection
+

@@ -13,7 +13,9 @@ use Carbon;
 use Response;
 use App\Bank;
 use App\Http\Resources\SuccesswayResource;
+use App\Http\Resources\IncomeResource;
 use App\Income;
+use Yajra\DataTables\Facades\DataTables;
 class MainController extends Controller
 {
   // for dashboard main page
@@ -100,6 +102,14 @@ class MainController extends Controller
     return "success";
   }
 
+//search income by date
+public function incomesearch(Request $request){
+  $start_date=$request->start_date;
+  $end_date=$request->end_date;
+  $incomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('amount','!=',Null)->get();
+   $myincomes =  IncomeResource::collection($incomes);
+  return Datatables::of($myincomes)->make(true);
+}
   // for income list page
   public function incomes($value='')
   {
