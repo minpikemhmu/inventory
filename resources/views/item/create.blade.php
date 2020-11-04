@@ -66,8 +66,8 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="InputExpiredDate">Expired Date:</label>
-                  <input class="form-control" id="InputExpiredDate" type="date" name="expired_date"  value="@if($pickupeditem){{ $pickupeditem->expired_date }}@else{{old('expired_date')}}@endif">
+                  <label for="txtDate">Expired Date:</label>
+                  <input class="form-control" id="txtDate" type="date" name="expired_date"  value="@if($pickupeditem){{ $pickupeditem->expired_date }}@else{{old('expired_date')}}@endif">
                   <div class="form-control-feedback text-danger"> {{$errors->first('expired_date') }} </div>
                 </div>
 
@@ -158,6 +158,21 @@
       var amount=deposit+delivery_fees;
       $(this).val(amount);
     })
+    $(function(){
+    var dtToday = new Date();
+    
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+    
+    var maxDate = year + '-' + month + '-' + day;
+    //alert(maxDate);
+    $('#txtDate').attr('min', maxDate);
+});
   })
 </script>
 @endsection
