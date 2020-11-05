@@ -53,7 +53,8 @@ Route::middleware('auth')->group(function () {
   Route::get('debt_list','MainController@debt_list')->name('debt_list');
   Route::post('updateincome','MainController@updateincome')->name('updateincome');
   Route::post('incomesearch','MainController@incomesearch')->name('incomesearch');
-
+ Route::post('expensesearch','MainController@expensesearch')->name('expensesearch');
+  Route::post('profit','MainController@profit')->name('profit');
   //pickupdone by delivery man
   Route::get('pickupdone/{id}','MainController@pickupdone')->name('pickupdone');
 

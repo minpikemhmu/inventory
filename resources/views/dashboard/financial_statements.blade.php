@@ -34,10 +34,10 @@
                 </div>
               </div>
               <div class="table-responsive mytable">
-              <table class="table searchTable" id="incometable">
+              <table class="table " id="incometable">
                   <thead>
                     <tr>
-                      
+                      <th>#</th>
                       <th>Item Code</th>
                       <th>Delivery Men</th>
                       <th>Amount</th>
@@ -48,11 +48,67 @@
                 </table>
               </div>
               </div>
+
+
               <div class="tab-pane fade" id="profile">
-                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
+                <div class="row col-12">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                <input type="date" name="" class="form-control exstart-date">
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                <input type="date" name="" class="form-control exend-date">
+                </div>
+                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
+                 <button class="btn btn-success exsearch">Search</button>
+                </div>
               </div>
+
+               <div class="table-responsive mytable">
+              <table class="table " id="expensetable">
+                  <thead>
+                    <tr>  
+                      <th>#</th>
+                      <th>Description</th>
+                      <th>Expense Type</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    </tbody>
+                </table>
+              </div>
+
+              </div>
+
+
               <div class="tab-pane fade" id="profit">
-                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
+                <div class="row col-12">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                <input type="date" name="" class="form-control pstart-date">
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                <input type="date" name="" class="form-control pend-date">
+                </div>
+                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
+                 <button class="btn btn-success psearch">Search</button>
+                </div>
+              </div>
+
+              <div class="table-responsive mytable">
+              <table class="table" id="profittable">
+                  <thead>
+                    <tr>  
+                      <th>Income</th>
+                      <th>Expense</th>
+                      <th>profit</th>
+                    </tr>
+                  </thead>
+                  <tbody class="searchTable">
+                    </tbody>
+                </table>
+              </div>
+
+
               </div>
             </div>
           </div>
@@ -90,7 +146,7 @@
             dataType:'json',
         },
         "columns": [
-
+          {"data":'DT_RowIndex'},
         { "data": "item_code",
         render:function(data){
                     //console.log(data);
@@ -105,6 +161,63 @@
       })
       
       
+
+//expensesearch
+      $('.exsearch').click(function (argument) {
+        $(".mytable").show();
+        var start_date = $('.exstart-date').val();
+        var end_date = $('.exend-date').val();
+// console.log(start_date, end_date)
+        var url="{{route('expensesearch')}}";
+        var i=1;
+         $('#expensetable').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        destroy:true,
+        "sort":false,
+        "stateSave": true,
+        "ajax": {
+            url: url,
+            type: "POST",
+            data:{start_date:start_date,end_date:end_date},
+            dataType:'json',
+        },
+        "columns": [
+         {"data":'DT_RowIndex'},
+        { "data": "description",},
+        { "data": "expense" },
+        { "data": "amount" }
+        ],
+        "info":false
+    } );
+         
+      })
+
+      //profit
+       $('.psearch').click(function (argument) {
+        $(".mytable").show();
+        var start_date = $('.pstart-date').val();
+        var end_date = $('.pend-date').val();
+// console.log(start_date, end_date)
+        var url="{{route('profit')}}";
+        $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.post(url,{start_date:start_date,end_date:end_date},function(res){
+            var income=res.income;
+            var expense=res.expense;
+            var profit=income-expense;
+
+            var html='';
+            html+=`<tr><td>${income}</td><td>${expense}</td><td>${profit}</td></tr>`
+            $(".searchTable").html(html);
+        })
+         
+      })
+
     })
   </script>
   @endsection

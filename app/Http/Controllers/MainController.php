@@ -14,7 +14,9 @@ use Response;
 use App\Bank;
 use App\Http\Resources\SuccesswayResource;
 use App\Http\Resources\IncomeResource;
+use App\Http\Resources\ExpenseResource;
 use App\Income;
+use App\Expense;
 use Yajra\DataTables\Facades\DataTables;
 class MainController extends Controller
 {
@@ -108,7 +110,33 @@ public function incomesearch(Request $request){
   $end_date=$request->end_date;
   $incomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('amount','!=',Null)->get();
    $myincomes =  IncomeResource::collection($incomes);
-  return Datatables::of($myincomes)->make(true);
+   //dd($myincomes);
+  return Datatables::of($myincomes)->addIndexColumn()->toJson();
+}
+
+//expensesearch
+public function expensesearch(Request $request){
+  $start_date=$request->start_date;
+  $end_date=$request->end_date;
+  //dd($end_date);
+  $expenses=Expense::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+  //dd($expenses);
+   $myexpenses =  ExpenseResource::collection($expenses);
+
+ // dd($myexpenses);
+  return Datatables::of($myexpenses)->addIndexColumn()->toJson();
+}
+
+//profit
+public function profit(Request $request){
+  $start_date=$request->start_date;
+  $end_date=$request->end_date;
+  $allincomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('amount');
+  $allexpenses=Expense::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('amount');
+  return Response::json(array(
+           'income' => $allincomes,
+           'expense' => $allexpenses,
+      ));
 }
   // for income list page
   public function incomes($value='')
