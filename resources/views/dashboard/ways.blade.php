@@ -75,7 +75,7 @@
                       {{$way->item->receiver_name}} <span class="badge badge-dark">{{$way->item->receiver_phone_no}}</span>
                     </td>
                     <td class="text-danger">{{$way->item->expired_date}}</td>
-                    <td>{{$way->item->amount}}</td>
+                    <td>{{number_format($way->item->amount)}}</td>
                     <td>
                       <a href="#" class="btn btn-warning btn-sm return" data-id="{{$way->id}}">Return</a>
                       <a href="#" class="btn btn-danger btn-sm reject" data-id="{{$way->id}}">Reject</a>
@@ -115,7 +115,7 @@
                       {{$way->item->receiver_name}} <span class="badge badge-dark">{{$way->item->receiver_phone_no}}</span>
                     </td>
                     <td class="text-danger">{{$way->item->expired_date}}</td>
-                    <td>{{$way->item->amount}}</td>
+                    <td>{{number_format($way->item->amount)}}</td>
                     <td>
                       <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
                     </td>

@@ -30,11 +30,12 @@
               <tbody>
                 @php $i=1; @endphp
                 @foreach($returnways as $row)
+                @php $amount=number_format($row->item->amount) @endphp;
                  <tr>
                   <td>{{$i++}}</td>
                   <td><span class="btn badge badge-primary btndetail" data-itemid="{{$row->item->id}}">{{$row->item->codeno}}</span></td>
                   <td>{{$row->delivery_man->user->name}}</td>
-                  <td>{{$row->item->amount}}</td>
+                  <td>{{$amount}}</td>
                   <td>{{$row->remark}}</td>
                 </tr>
                 @endforeach
@@ -89,8 +90,8 @@
         var html="";
         $.each(res,function(i,v){
            html+=`<h6 class="text-dark">Expire Date: <span class="text-danger">${v.expired_date}</span></h6>
-              <h6 class="text-dark">Deposit Fee: <span>${v.deposit}Ks</span></h6>
-              <h6 class="text-dark">Delivery Fee:<span>${v.delivery_fees}Ks</span></h6>
+              <h6 class="text-dark">Deposit Fee: <span>${thousands_separators(v.deposit)}Ks</span></h6>
+              <h6 class="text-dark">Delivery Fee:<span>${thousands_separators(v.delivery_fees)}Ks</span></h6>
               <h6 class="text-dark">Client's Name:<span>${v.uname}</span></h6>
               <h6 class="text-dark">Contact Person:<span>${v.cperson}</span></h6>
               <h6 class="text-dark">Client's Phone:<span>${v.cphone}</span></h6>
@@ -100,6 +101,12 @@
 
       })
     })
+        function thousands_separators(num)
+  {
+    var num_parts = num.toString().split(".");
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num_parts.join(".");
+  }
   })
 </script>
 @endsection

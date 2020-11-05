@@ -117,7 +117,7 @@
                      @php $total+=$pickupitem->deposit @endphp
                     @endforeach
 
-                    <li class="list-group-item">Deposit for all item: {{$pickup->schedule->amount-$total}}KS</li>
+                    <li class="list-group-item">Deposit for all item: {{number_format($pickup->schedule->amount-$total)}}KS</li>
                   </ul>
                 </div>
 

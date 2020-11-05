@@ -37,12 +37,12 @@
                   <td><span class="badge badge-primary">{{$row->way->item->codeno}}</span></td>
                   <td>{{$row->way->delivery_man->user->name}}</td>
                   <td>{{$row->payment_type->name}}</td>
-                  <td>{{$row->amount}}</td>
+                  <td>{{number_format($row->amount)}}</td>
                 </tr>
                 @endforeach
                 <tr>
                   <td colspan="4">Total amount</td>
-                  <td>{{$total}}</td>
+                  <td>{{number_format($total)}}</td>
                 </tr>
                 
                 

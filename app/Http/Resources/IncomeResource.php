@@ -19,7 +19,7 @@ class IncomeResource extends JsonResource
             'id'=>$this->id,
             'delivery_man' =>$this->way->delivery_man->user->name,
             'item_code'=>$this->way->item->codeno,
-            'amount'=>$this->amount,
+            'amount'=>number_format($this->amount),
         ];
     }
 }

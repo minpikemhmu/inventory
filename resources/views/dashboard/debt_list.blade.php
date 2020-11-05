@@ -38,9 +38,9 @@
                   <td>{{$row->way->delivery_man->user->name}}</td>
                   <td>{{$row->payment_type->name}}</td>
                   @if(!$row->delivery_fees)
-                  <td>{{$row->way->item->amount}}KS</td>
+                  <td>{{number_format($row->way->item->amount)}}KS</td>
                   @else
-                  <td>{{$row->way->item->deposit}}KS</td>
+                  <td>{{number_format($row->way->item->deposit)}}KS</td>
                   @endif
                   <td><button class="btn btn-sm btn-success btndone" data-id="{{$row->id}}" data-amount="{{$row->way->item->amount}}" data-deli="{{$row->way->item->delivery_fees}}">done</button></td>
                 </tr>
@@ -91,8 +91,8 @@
         var html="";
         $.each(res,function(i,v){
            html+=`<h6 class="text-dark">Expire Date: <span class="text-danger">${v.expired_date}</span></h6>
-              <h6 class="text-dark">Deposit Fee: <span>${v.deposit}Ks</span></h6>
-              <h6 class="text-dark">Delivery Fee:<span>${v.delivery_fees}Ks</span></h6>
+              <h6 class="text-dark">Deposit Fee: <span>${thousands_separators(v.deposit)}Ks</span></h6>
+              <h6 class="text-dark">Delivery Fee:<span>${thousands_separators(v.delivery_fees)}Ks</span></h6>
               <h6 class="text-dark">Client's Name:<span>${v.uname}</span></h6>
               <h6 class="text-dark">Contact Person:<span>${v.cperson}</span></h6>
               <h6 class="text-dark">Client's Phone:<span>${v.cphone}</span></h6>
@@ -126,6 +126,12 @@
         }
       })
     })
+      function thousands_separators(num)
+  {
+    var num_parts = num.toString().split(".");
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num_parts.join(".");
+  }
   })
 </script>
 @endsection

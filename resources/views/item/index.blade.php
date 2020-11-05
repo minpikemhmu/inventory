@@ -62,7 +62,7 @@
                           {{$row->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span>
                         </td>
                         <td>{{$row->expired_date}}</td>
-                        <td>{{$row->amount}}</td>
+                        <td>{{number_format($row->amount)}}</td>
                         <td>
                           <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">Detail</a>
                           <a href="{{route('items.edit',$row->id)}}" class="btn btn-warning">Edit</a>
@@ -94,6 +94,7 @@
                     </thead>
                     <tbody>
                       @foreach($ways as $way)
+                      @php $amount=number_format($way->item->amount) ;@endphp
                       <tr>
                         <td>
                           <div class="animated-checkbox">
@@ -115,7 +116,7 @@
                           {{$way->delivery_man->user->name}}
                         </td>
                         <td>{{$way->item->expired_date}}</td>
-                        <td>{{$way->item->amount}}</td>
+                        <td>{{$amount}}</td>
                         <td>
                           <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
                           <a href="#" class="btn btn-warning wayedit" data-id="{{$way->id}}">Edit</a>

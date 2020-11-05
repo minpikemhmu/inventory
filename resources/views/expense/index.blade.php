@@ -44,7 +44,7 @@
                   <td>{{$i++}}</td>
                   <td>{{$row->created_at->format('Y-m-d')}}</td>
                   <td>{{$row->description}}</td>
-                  <td>{{$row->amount}}</td>
+                  <td>{{number_format($row->amount)}}</td>
                   <td>{{$row->expense_type->name}}</td>
                   <td>
                     <a href="{{route('expenses.edit',$row->id)}}" class="btn btn-warning">Edit</a>

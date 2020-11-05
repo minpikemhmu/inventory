@@ -212,12 +212,18 @@
             var profit=income-expense;
 
             var html='';
-            html+=`<tr><td>${income}</td><td>${expense}</td><td>${profit}</td></tr>`
+            html+=`<tr><td>${thousands_separators(income)}</td><td>${thousands_separators(expense)}</td><td>${thousands_separators(profit)}</td></tr>`
             $(".searchTable").html(html);
         })
          
       })
 
+       function thousands_separators(num)
+  {
+    var num_parts = num.toString().split(".");
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num_parts.join(".");
+  }
     })
   </script>
   @endsection

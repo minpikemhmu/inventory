@@ -155,7 +155,7 @@
                       ${row.delivery_man.user.user_name}
                     </td>
                     <td>${row.delivery_date}</td>
-                    <td>${row.item.item_amount}</td>
+                    <td>${thousands_separators(row.item.item_amount)}</td>
                     <td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.township.delivery_fees}">save</button></td>
                   </tr>
             `;
@@ -192,15 +192,14 @@
         }
        // console.log(id);
       })
+      setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
     })
+
+      function thousands_separators(num)
+  {
+    var num_parts = num.toString().split(".");
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num_parts.join(".");
+  }
   </script>
-@endsection
-@section('script')
-<script type="text/javascript">
-  $(document).ready(function(){
-    //alert("ok");
-    setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
-  })
-  
-</script>
 @endsection
