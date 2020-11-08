@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Township extends Model
 {
   protected $fillable=[
-  	'name', 'delivery_fees', 'city_id'
+  	'name', 'delivery_fees', 'status', 'city_id'
   ];
 
   public function city()

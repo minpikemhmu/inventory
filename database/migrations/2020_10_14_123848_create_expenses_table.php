@@ -20,11 +20,29 @@ class CreateExpensesTable extends Migration
 
             $table->unsignedBigInteger('expense_type_id');
 
+            $table->unsignedBigInteger('client_id')->nullable();
+            $table->unsignedBigInteger('staff_id');
+            $table->unsignedBigInteger('city_id');
+
+            $table->smallInteger('status'); // 0 (unpaid) / 1 (paid)
+
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('expense_type_id')
                     ->references('id')->on('expense_types')
+                    ->onDelete('cascade');
+
+            $table->foreign('client_id')
+                    ->references('id')->on('clients')
+                    ->onDelete('cascade');
+
+            $table->foreign('staff_id')
+                    ->references('id')->on('staff')
+                    ->onDelete('cascade');
+
+            $table->foreign('city_id')
+                    ->references('id')->on('cities')
                     ->onDelete('cascade');
         });
     }

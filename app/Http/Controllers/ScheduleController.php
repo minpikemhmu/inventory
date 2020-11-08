@@ -52,7 +52,7 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-         $validator = $request->validate([
+        $validator = $request->validate([
             'date'  => ['required','date'],
             'remark'=>['required','string'],
             'quantity'=>['required'],
@@ -65,7 +65,7 @@ class ScheduleController extends Controller
             {
             $name= time().'_'.$request->file->getClientOriginalName();
             $filePath = $request->file('file')->storeAs('images', $name, 'public');
-            $path='/storage/'.$name;
+            $path='/storage/'.$filePath;
             }else
             {
                 $path="";
@@ -140,7 +140,7 @@ class ScheduleController extends Controller
             {
             $name= time().'_'.$request->file->getClientOriginalName();
             $filePath = $request->file('file')->storeAs('images', $name, 'public');
-            $path='/storage/'.$name;
+            $path='/storage/'.$filePath;
             }else
             {
                 $path=$request->oldfile;
@@ -197,7 +197,7 @@ class ScheduleController extends Controller
             {
             $name= time().'_'.$request->file->getClientOriginalName();
             $filePath = $request->file('file')->storeAs('images', $name, 'public');
-            $path='/storage/'.$name;
+            $path='/storage/'.$filePath;
             }else
             {
                 $path="";
@@ -231,7 +231,7 @@ class ScheduleController extends Controller
             {
             $name= time().'_'.$request->addfile->getClientOriginalName();
             $filePath = $request->file('addfile')->storeAs('images', $name, 'public');
-            $path='/storage/'.$name;
+            $path='/storage/'.$filePath;
             }else{
                 $path=$request->oldfile;
             }

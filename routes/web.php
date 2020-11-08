@@ -98,6 +98,6 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('profiles','ProfileController');
 
-Auth::routes();
+Auth::routes(['register'=>false]);
 
 Route::get('/home', 'HomeController@index')->name('home');

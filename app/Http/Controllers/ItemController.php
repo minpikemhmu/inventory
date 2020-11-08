@@ -190,7 +190,7 @@ class ItemController extends Controller
         $itemcode="";
         $client = Client::find($cid);
         $codeno=$client->codeno;
-        //dd($codeno);
+        // dd($codeno);
         $mytime = Carbon\Carbon::now();
         //dd($checktime);
         $array = explode('-', $mytime->toDateString());
@@ -202,6 +202,7 @@ class ItemController extends Controller
         //dd($item);
         if(!$item){
            $itemcode=$codeno.$datecode;
+           // dd($itemcode);
         }else{
         $code=$item->codeno;
         $mycode=substr($code, 11,14);
