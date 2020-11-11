@@ -146,7 +146,9 @@
                     @foreach($pickup->items as $pickupitem)
                      @php $total+=$pickupitem->deposit @endphp
                     @endforeach
-                    <input type="hidden" name="depositamount" value={{$pickup->schedule->amount-$total}}>
+                    <input type="hidden" name="client_id" value="{{$client->id}}">
+
+                    <input type="hidden" name="depositamount" value={{$pickup->schedule->amount}}>
                     <input type="hidden" name="qty" value={{$pickup->schedule->quantity - count($pickup->items)}}>
                     <input type="hidden" name="myqty" value="{{$pickup->schedule->quantity}}">
                     <li class="list-group-item">Deposit for all item: {{number_format($pickup->schedule->amount-$total)}}KS</li>
@@ -154,7 +156,7 @@
                       <div class="row">
                         <div class="col-6">
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paystatus" id="paid" value="paid" >
+                            <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" >
                             <label class="form-check-label" for="paid">
                               paid
                             </label>
@@ -164,7 +166,7 @@
                         <div class="col-6">
                           <div class="col-6">
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paystatus" id="unpaid" value="unpaid" >
+                            <input class="form-check-input" type="radio" name="paystatus" id="unpaid" value="2" >
                             <label class="form-check-label" for="unpaid">
                               Unpaid
                             </label>

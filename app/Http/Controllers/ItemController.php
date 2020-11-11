@@ -8,6 +8,7 @@ use App\Pickup;
 use App\Township;
 use App\DeliveryMan;
 use App\Way;
+use App\Expense;
 use Carbon;
 use Auth;
 use Session;
@@ -59,6 +60,7 @@ class ItemController extends Controller
       $myqty=$request->myqty;
       $damount=$request->depositamount;
 
+      //dd($damount);
       $validator = $request->validate([
         'receiver_name'  => ['required','string'],
         'receiver_phoneno'=>['required','string'],
@@ -97,6 +99,9 @@ class ItemController extends Controller
         $item->save();
 
         if($qty==1){
+
+          
+
           $checkitems = Item::orderBy('id', 'desc')->take($myqty)->get();
           if($checkitems->sum('deposit')!=$damount){
                 //dd($checkitems);
@@ -109,6 +114,20 @@ class ItemController extends Controller
             //}
             return redirect()->route('checkitem',$pickup->id); 
 
+          }else{
+            $expense=new Expense;
+          $expense->amount=$damount;
+          $expense->client_id=$request->client_id;
+          if($rolename=="staff"){
+          $user=Auth::user();
+          $staffid=$user->staff->id;
+          $expense->staff_id=$staffid;
+        }
+          $expense->status=$request->paystatus;
+          $expense->description="Client Deposit";
+          $expense->city_id=1;
+          $expense->expense_type_id=1;
+          $expense->save();
           }
         }
 
