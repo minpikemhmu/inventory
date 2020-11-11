@@ -34,8 +34,8 @@
           @endrole  
             @csrf     
             <div class="form-group">
-              <label for="InputDate">Date:</label>
-              <input class="form-control" id="InputDate" type="date" name="date">
+              <label for="txtDate">Date:</label>
+              <input class="form-control" id="txtDate" type="date" name="date" required>
               <div class="form-control-feedback text-danger"> {{$errors->first('date') }} </div>
             </div>   
             <div class="form-group">
@@ -94,6 +94,7 @@
   </main>
 @endsection 
 @section('script')
+
 <script type="text/javascript">
   $(document).ready(function(){
     $(".myfile").hide();
@@ -104,6 +105,23 @@
       $(".myfile").hide();
       }
     })
+
+
+    $(function(){
+        var dtToday = new Date();
+        
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        
+        var maxDate = year + '-' + month + '-' + day;
+        //alert(maxDate);
+        $('#txtDate').attr('min', maxDate);
+    });
   })
 </script>
 @endsection

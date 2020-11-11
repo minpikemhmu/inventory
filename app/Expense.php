@@ -7,11 +7,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Expense extends Model
 {
 	protected $fillable=[
-  	'amount', 'description', 'expense_type_id'
+  	'amount', 'description', 'expense_type_id' , 'status', 'client_id', 'staff_id', 'city_id'
   ];
 
   public function expense_type()
   {
     return $this->belongsTo('App\ExpenseType');
+  }
+
+  public function client()
+  {
+    return $this->belongsTo('App\Client');
+  }
+
+  public function staff()
+  {
+    return $this->belongsTo('App\Staff');
+  }
+
+  public function city()
+  {
+    return $this->belongsTo('App\City');
   }
 }

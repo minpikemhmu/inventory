@@ -18,28 +18,61 @@
           
           <form action="{{route('townships.store')}}" method="POST">
             @csrf
-            <div class="form-group">
+
+            <div class="row my-3">
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="incity" value="1">
+                  <label class="form-check-label" for="incity">
+                    In city
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="gate" value="2" >
+                  <label class="form-check-label" for="gate">
+                    Gate
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="post" value="3" >
+                  <label class="form-check-label" for="post">
+                    Post Office
+                  </label>
+                </div>
+              </div>
+              <div class="form-control-feedback text-danger"> {{$errors->first('rcity') }} </div>
+            </div>
+            <div class="form-group townshipname">
               <label for="InputCityName">Name:</label>
               <input class="form-control" id="InputCityName" type="text" placeholder="Enter name" name="name">
                <div class="form-control-feedback text-danger"> {{$errors->first('name') }} </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group deliveryfee">
               <label for="delifee">Delivery Fees:</label>
               <input class="form-control" id="delifee" type="text" placeholder="Enter Delivery Fees" name="delifee">
                <div class="form-control-feedback text-danger"> {{$errors->first('delifee') }} </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group cityname">
               <label for="city">City</label>
               <select class="form-control" id="city" name="city">
                 <option>Choose City</option>
                 @foreach($cities as $row)
-                <option value="{{$row->id}}">{{$row->name}}</option>
+                <option value="{{$row->id}}_{{$row->name}}">{{$row->name}}</option>
                 @endforeach
               </select>
               <div class="form-control-feedback text-danger"> {{$errors->first('city') }} </div>
             </div>
+
+            
+            
 
             <div class="form-group">
               <button class="btn btn-primary" type="submit">Save</button>
@@ -51,3 +84,40 @@
     </div>
   </main>
 @endsection 
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+    //alert("ok");
+
+
+
+    $("#incity").click(function(){
+    if ($(this).is(':checked'))
+    {
+      $(".townshipname").show();
+     $(".deliveryfee").show();
+     $(".cityname").show();
+    }
+  });
+
+    $("#gate").click(function(){
+    if ($(this).is(':checked'))
+    {
+      $(".townshipname").hide();
+     $(".deliveryfee").show();
+     $(".cityname").show();
+    }
+  });
+
+
+     $("#post").click(function(){
+    if ($(this).is(':checked'))
+    {
+      $(".townshipname").hide();
+     $(".deliveryfee").show();
+     $(".cityname").show();
+    }
+  });
+  })
+</script>
+@endsection

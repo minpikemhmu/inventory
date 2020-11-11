@@ -130,6 +130,8 @@
                             <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'pid'=>$row->id])}}" class="btn btn-primary">Collect</a>
                           @elseif($row->status == 1 && $row->schedule->quantity == count(($row->items)))
                             <button type="button" class="btn btn-info">complete</button>
+                          @elseif($row->status==2)
+                           <a href="{{route('checkitem',$row->id)}}" class="btn btn-danger">fail</a>
                           @else
                             <button type="button" class="btn btn-danger">pending</button>
                           @endif

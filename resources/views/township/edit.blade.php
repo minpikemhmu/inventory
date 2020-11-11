@@ -19,6 +19,36 @@
           <form action="{{route('townships.update',$township->id)}}" method="POST">
             @csrf
             @method('put')
+            <div class="row my-3">
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="incity" value="1" @if($township->status==1) checked @endif>
+                  <label class="form-check-label" for="incity">
+                    In city
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="gate" value="2" @if($township->status==2) checked @endif>
+                  <label class="form-check-label" for="gate">
+                    Gate
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="post" value="3" @if($township->status==3) checked @endif>
+                  <label class="form-check-label" for="post">
+                    Post Office
+                  </label>
+                </div>
+              </div>
+              <div class="form-control-feedback text-danger"> {{$errors->first('rcity') }} </div>
+            </div>
+
             <div class="form-group">
               <label for="InputCityName">Name:</label>
               <input class="form-control" id="InputCityName" type="text" placeholder="Enter name" name="name" value="{{$township->name}}">

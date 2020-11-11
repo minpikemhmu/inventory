@@ -16,7 +16,7 @@ class CreateIncomesTable extends Migration
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
             $table->integer('delivery_fees');
-            $table->integer('amount');
+            $table->integer('amount')->default(0);
             $table->integer('bank_amount')->default(0); // default 0
             $table->integer('cash_amount')->default(0); // default 0
 

@@ -52,7 +52,7 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-         $validator = $request->validate([
+        $validator = $request->validate([
             'date'  => ['required','date'],
             'remark'=>['required','string'],
             'quantity'=>['required'],

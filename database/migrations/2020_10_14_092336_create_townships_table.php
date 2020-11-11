@@ -17,7 +17,7 @@ class CreateTownshipsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('delivery_fees');
-
+            $table->smallInteger('status'); // incity - 1, gate - 2, post office - 3
             $table->unsignedBigInteger('city_id');
 
             $table->softDeletes();

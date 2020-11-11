@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DeliveryMan extends Model
 {
   protected $fillable=[
-  	'phone_no', 'address', 'user_id'
+  	'phone_no', 'address', 'user_id', 'city_id'
   ];
 
   public function user()
   {
     return $this->belongsTo('App\User');
+  }
+
+  public function city()
+  {
+    return $this->belongsTo('App\City');
   }
 
   public function townships(){

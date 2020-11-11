@@ -13,7 +13,7 @@ class ExpensetypesTableSeeder extends Seeder
     {
          ExpenseType::create(['name'=>'Client']);
          ExpenseType::create(['name'=>'Office']);
-         ExpenseType::create(['name'=>'salary']);
+         ExpenseType::create(['name'=>'Salary']);
          ExpenseType::create(['name'=>'Others']);
     }
 }

@@ -19,12 +19,17 @@ class CreateDeliveryMenTable extends Migration
             $table->text('address');
 
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('city_id')->nullable(); // ရုံးခွဲ
 
             $table->softDeletes();
             $table->timestamps();
             
             $table->foreign('user_id')
                     ->references('id')->on('users')
+                    ->onDelete('cascade');
+
+            $table->foreign('city_id')
+                    ->references('id')->on('cities')
                     ->onDelete('cascade');
         });
     }
