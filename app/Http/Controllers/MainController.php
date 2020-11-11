@@ -18,6 +18,8 @@ use App\Http\Resources\ExpenseResource;
 use App\Income;
 use App\Expense;
 use Yajra\DataTables\Facades\DataTables;
+use App\Client;
+
 class MainController extends Controller
 {
   // for dashboard main page
@@ -89,9 +91,23 @@ class MainController extends Controller
   // for debt list page
   public function debt_list($value='')
   {
-     $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','=',Null)->get();
+     // $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','=',Null)->get();
      //dd($incomes);
-    return view('dashboard.debt_list',compact('incomes'));
+     $clients = Client::all();
+    return view('dashboard.debt_list',compact('clients'));
+  }
+
+  public function getdebitlistbyclient($id)
+  {
+    // $client = Client::find($id);
+    $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
+
+    $incomes = Way::where('status_id',3)->with('item')->get();
+    
+    return Response::json(array(
+           'expenses' => $expenses,
+           'incomes' => $incomes,
+      ));
   }
 
   //update imcome
@@ -132,10 +148,12 @@ public function profit(Request $request){
   $start_date=$request->start_date;
   $end_date=$request->end_date;
   $allincomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('amount');
+  $netincomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('delivery_fees');
   $allexpenses=Expense::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('amount');
   return Response::json(array(
-           'income' => $allincomes,
-           'expense' => $allexpenses,
+           'allincomes' => $allincomes,
+           'netincomes' => $netincomes,
+           'expenses' => $allexpenses,
       ));
 }
   // for income list page
@@ -160,7 +178,7 @@ public function profit(Request $request){
     $banks=Bank::all();
     $ways =Way::doesntHave('income')->where('ways.delivery_man_id',$id)
             ->where('ways.status_code',001)
-            ->get();;
+            ->get();
     $ways =  SuccesswayResource::collection($ways);
     //dd($ways);
     return Response::json(array(
@@ -249,7 +267,7 @@ public function profit(Request $request){
       //dd($way);
       $way->status_id = 1;
       $way->status_code = '001';
-       $way->remark =Null;
+      $way->remark =Null;
       $way->delivery_date = date('Y-m-d');
       $way->save();
     }
@@ -260,17 +278,24 @@ public function profit(Request $request){
     //dd($request);
      $request->validate([
             'remark' => 'required',
+            'date' => 'required'
         ]);
       $wayid = $request->wayid;
-       $mytime = Carbon\Carbon::now();
-   //dd($ways);
+      $mytime = Carbon\Carbon::now();
+      //dd($ways);
       $way = Way::where('id',$wayid)->first();
       //dd($way);
       $way->status_id = 2;
       $way->status_code = '002';
       $way->remark = $request->remark;
-      $way->deleted_at=$mytime;
       $way->save();
+      // $way->deleted_at=$mytime;
+      
+      $way->delete();
+
+      $way->item->expired_date = $request->date;
+      $way->item->save();
+
     return response()->json(['success'=>'successfully!']);
   }
 
@@ -291,5 +316,12 @@ public function profit(Request $request){
       $way->save();
     
    return response()->json(['success'=>'successfully!']);
+  }
+
+  // for cancel list
+  public function cancel($value='')
+  {
+    $ways = Way::where('status_id',3)->get();
+    return view('dashboard.cancel',compact('ways'));
   }
 }

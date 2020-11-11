@@ -77,8 +77,11 @@
                     <td class="text-danger">{{$way->item->expired_date}}</td>
                     <td>{{number_format($way->item->amount)}}</td>
                     <td>
+                      @if($way->status_code == 005)
+                      <a href="#" class="btn btn-info btn-sm success" data-id="{{$way->id}}">Success</a>
                       <a href="#" class="btn btn-warning btn-sm return" data-id="{{$way->id}}">Return</a>
                       <a href="#" class="btn btn-danger btn-sm reject" data-id="{{$way->id}}">Reject</a>
+                      @endif
                       <a href="#" class="btn btn-sm btn-primary detail" data-id="{{$way->item->id}}">Detail</a> 
                     </td>
                   </tr>
@@ -168,16 +171,18 @@
           </button>
         </div>
         <div class="modal-body">
-         
-           <div class="form-group">
-              <input type="hidden" name="wayid" id="returnway" value="">
-            </div>
           <div class="form-group">
-                  <label for="InputRemark">Remark:</label>
-                  <textarea class="form-control returnremark" id="InputRemark" name="remark"></textarea>
-                  <span class="Eremark error d-block" ></span>
+            <input type="hidden" name="wayid" id="returnway" value="">
           </div>
-
+          <div class="form-group">
+            <label for="InputDate">Date:</label>
+            <input type="date" name="return_date" class="form-control returndate" id="InputDate">
+          </div>
+          <div class="form-group">
+            <label for="InputRemark">Remark:</label>
+            <textarea class="form-control returnremark" id="InputRemark" name="remark"></textarea>
+            <span class="Eremark error d-block" ></span>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary btnreturn">OK</button>
@@ -187,8 +192,7 @@
     </div>
   </div>
 
-
-   {{-- reject modal --}}
+  {{-- reject modal --}}
   <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -253,20 +257,24 @@
       });
 
       $('.success').click(function (e) {
+        var wayid = $(this).data('id');
         e.preventDefault();
         var ways = [];
-        $.each($("input[name='ways[]']:checked"), function(){
-          let wayObj = {id:$(this).val()};
+        if (!wayid) {
+          $.each($("input[name='ways[]']:checked"), function(){
+            let wayObj = {id:$(this).val()};
+            ways.push(wayObj);
+          });
+        }else{
+          let wayObj = {id:wayid};
           ways.push(wayObj);
-        });
+        }
         $.post("{{route('makeDeliver')}}",{ways:ways},function (response) {
           console.log(response);
           alert('successfully changed!')
           location.href="{{route('ways')}}";
         })
       })
-
-
 
       $('.return').click(function (e) {
         e.preventDefault();
@@ -275,15 +283,15 @@
         $("#returnway").val(id);
       })
 
-
       $(".btnreturn").click(function(){
         var wayid=$("#returnway").val();
         var remark= $(".returnremark").val();
+        var date= $(".returndate").val();
         var url="{{route('retuenDeliver')}}";
          $.ajax({
           url:url,
           type:"post",
-          data:{wayid:wayid,remark:remark},
+          data:{wayid:wayid,remark:remark,date:date},
           dataType:'json',
           success:function(response){
             if(response.success){

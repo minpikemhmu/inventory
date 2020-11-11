@@ -23,7 +23,8 @@
                   </button>
               </div>
           @endif
-
+      </div>
+    </div>
 
         {{-- <div class="tile"> --}}
           
@@ -66,28 +67,27 @@
               </tbody>
             </table>
           </div> --}}
-          
+      <div class="row">
           @foreach($pickups as $row)
-          
-          <div class="card mb-3">
-            <h5 class="card-header">{{$row->schedule->client->user->name}} ({{$row->schedule->quantity}}) <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->schedule->pickup_date}}</small></h5>
-            <div class="card-body">
-              <h5 class="card-title">{{$row->schedule->client->address}}</h5>
-              <p class="card-text">{{$row->schedule->remark}}</p>
-            
-              @if($row->status==0)
-                <a href="#" class="btn btn-primary">Pending</a>
-                <a href="{{route('pickupdone',$row->id)}}" class="btn btn-success">Done</a>
-              @else
-                <a href="#" class="btn btn-primary">completed pick up</a>
-              @endif
+          <div class="col-md-3">
+            <div class="card mb-3">
+              <h5 class="card-header">{{$row->schedule->client->user->name}} ({{$row->schedule->quantity}}) <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->schedule->pickup_date}}</small></h5>
+              <div class="card-body">
+                <h5 class="card-title">{{$row->schedule->client->address}}</h5>
+                <p class="card-text">{{$row->schedule->remark}}</p>
+              
+                @if($row->status==0)
+                  <a href="#" class="btn btn-primary">Pending</a>
+                  <a href="{{route('pickupdone',$row->id)}}" class="btn btn-success">Done</a>
+                @else
+                  <a href="#" class="btn btn-primary">completed pick up</a>
+                @endif
 
+              </div>
             </div>
           </div>
-          
           @endforeach
         {{-- </div> --}}
       </div>
-    </div>
   </main>
 @endsection 

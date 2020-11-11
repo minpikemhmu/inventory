@@ -123,7 +123,7 @@
         </li>
         <li><a class="app-menu__item {{ Request::is('success_list') ? 'active' : '' }}" href="{{route('success_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Success List</span></a></li>
         <li><a class="app-menu__item {{ Request::is('reject_list') ? 'active' : '' }}" href="{{route('reject_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Reject List</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('return_list') ? 'active' : '' }}" href="{{route('return_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Return List</span></a></li>
+        {{-- <li><a class="app-menu__item {{ Request::is('return_list') ? 'active' : '' }}" href="{{route('return_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Return List</span></a></li> --}}
         <li><a class="app-menu__item {{ Request::is('delay_list') ? 'active' : '' }}" href="{{route('delay_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Delay List</span></a></li>
         <li><a class="app-menu__item {{ Request::is('statements') ? 'active' : '' }}" href="{{route('statements')}}"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Financial Statement</span></a></li>
         <li><a class="app-menu__item {{ Request::is('debt_list') ? 'active' : '' }}" href="{{route('debt_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Debit List</span></a></li>
@@ -136,10 +136,10 @@
         <li><a class="app-menu__item {{ Request::is('items*') ? 'active' : '' }}" href="{{route('items.index')}}"><i class="app-menu__icon fa fa-archive"></i><span class="app-menu__label">Item List</span></a></li>
         <li><a class="app-menu__item {{ Request::is('clients*') ? 'active' : '' }}" href="{{route('clients.index')}}"><i class="app-menu__icon fa fa-user-circle"></i><span class="app-menu__label">Client List</span></a></li>
         <li><a class="app-menu__item {{ Request::is('delivery_men*') ? 'active' : '' }}" href="{{route('delivery_men.index')}}"><i class="app-menu__icon fa fa-user-circle-o"></i><span class="app-menu__label">Delivery Men</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('debt_list') ? 'active' : '' }}" href="{{route('debt_list')}}"><i class="app-menu__icon fa fa-list-alt"></i><span class="app-menu__label">Debit List</span></a></li>
-        
         <li><a class="app-menu__item {{ Request::is('reject_list') ? 'active' : '' }}" href="{{route('reject_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Reject List</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('return_list') ? 'active' : '' }}" href="{{route('return_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Return List</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('delay_list') ? 'active' : '' }}" href="{{route('delay_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Delay List</span></a></li>
+        {{-- <li><a class="app-menu__item {{ Request::is('return_list') ? 'active' : '' }}" href="{{route('return_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Return List</span></a></li> --}}
+        <li><a class="app-menu__item {{ Request::is('debt_list') ? 'active' : '' }}" href="{{route('debt_list')}}"><i class="app-menu__icon fa fa-list-alt"></i><span class="app-menu__label">Debit List</span></a></li>
         <li><a class="app-menu__item {{ Request::is('incomes*') ? 'active' : '' }}" href="{{route('incomes')}}"><i class="app-menu__icon fa fa-files-o"></i><span class="app-menu__label">Income</span></a></li>
         <li><a class="app-menu__item {{ Request::is('expenses*') ? 'active' : '' }}" href="{{route('expenses.index')}}"><i class="app-menu__icon fa fa-files-o"></i><span class="app-menu__label">Expense</span></a></li>
         @endrole
@@ -153,6 +153,7 @@
         <!-- For Client -->
         @role('client')
         <li><a class="app-menu__item {{ Request::is('schedules*') ? 'active' : '' }}" href="{{route('schedules.index')}}"><i class="app-menu__icon fa fa-calendar-check-o"></i><span class="app-menu__label">Pickup Appointments</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('cancel*') ? 'active' : '' }}" href="{{route('cancel.index')}}"><i class="app-menu__icon fa fa-calendar-check-o"></i><span class="app-menu__label">Cancel List</span></a></li>
         @endrole
 
       </ul>

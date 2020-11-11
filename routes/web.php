@@ -42,7 +42,6 @@ Route::middleware('auth')->group(function () {
   Route::get('return_list','MainController@return_list')->name('return_list');
   Route::post('returnitem','MainController@returnitem')->name('returnitem');
 
-
   // Delay List
   Route::get('delay_list','MainController@delay_list')->name('delay_list');
 
@@ -51,6 +50,8 @@ Route::middleware('auth')->group(function () {
 
   // Debt List
   Route::get('debt_list','MainController@debt_list')->name('debt_list');
+  Route::get('debit/getdebitlistbyclient/{id}', 'MainController@getdebitlistbyclient')->name('debit.getdebitlistbyclient');
+
   Route::post('updateincome','MainController@updateincome')->name('updateincome');
   Route::post('incomesearch','MainController@incomesearch')->name('incomesearch');
  Route::post('expensesearch','MainController@expensesearch')->name('expensesearch');
@@ -63,6 +64,10 @@ Route::middleware('auth')->group(function () {
 
   //  For Staff
   Route::resource('schedules', 'ScheduleController');
+
+  // client
+  Route::get('cancel', 'MainController@cancel')->name('cancel.index');
+
   Route::post('uploadfile', 'ScheduleController@uploadfile')->name('uploadfile');
   Route::post('storeandassignschedule', 'ScheduleController@storeandassignschedule')->name('schedules.storeandassign');
 

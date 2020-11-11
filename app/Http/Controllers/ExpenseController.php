@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Expense;
 use App\ExpenseType;
 use Illuminate\Http\Request;
+use Auth;
 
 class ExpenseController extends Controller
 {
@@ -49,6 +50,9 @@ class ExpenseController extends Controller
             $expense->description=$request->description;
             $expense->amount=$request->amount;
             $expense->expense_type_id=$request->expensetype;
+            $expense->staff_id = Auth::user()->staff->id;
+            $expense->city_id = 1; // default yangon
+            $expense->status = 2;
             $expense->save();
             return redirect()->route('expenses.index')->with("successMsg",'New Expense is ADDED in your data');
         }
