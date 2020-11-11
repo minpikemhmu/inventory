@@ -52,22 +52,52 @@
                    <div class="form-control-feedback text-danger"> {{$errors->first('receiver_address') }} </div>
                 </div>
 
-                <div class="form-group">
-                  <label for="InputReceiverTownship">Receiver Township:</label>
-                  <select class="form-control mytownship" id="InputReceiverTownship" name="receiver_township">
-                    <optgroup label="Choose Township">
-                      <option>Choose township</option>
+                <div class="row my-3">
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="incity" value="1">
+                  <label class="form-check-label" for="incity">
+                    In city
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="gate" value="2" >
+                  <label class="form-check-label" for="gate">
+                    Gate
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="post" value="3" >
+                  <label class="form-check-label" for="post">
+                    Post Office
+                  </label>
+                </div>
+              </div>
+              <div class="form-control-feedback text-danger"> {{$errors->first('rcity') }} </div>
+            </div>
+
+            <div class="form-group township">
+                  <label for="InputReceiverTownship">Receiver Township:</label><br>
+                  <select class="js-example-basic-single  mytownship" id="InputReceiverTownship" name="receiver_township"  >
+                    
+                    
                       @foreach($townships as $row)
                       <option value="{{$row->id}}">{{$row->name}}</option>
                       @endforeach
-                    </optgroup>
+                  
                   </select>
                   <div class="form-control-feedback text-danger"> {{$errors->first('receiver_township') }} </div>
-                </div>
+               </div>
 
                 <div class="form-group">
                   <label for="txtDate">Expired Date:</label>
-                  <input class="form-control" id="txtDate" type="date" name="expired_date"  value="@if($pickupeditem){{ $pickupeditem->expired_date }}@else{{old('expired_date')}}@endif">
+                  <input class="form-control pickdate" id="txtDate" type="date" name="expired_date"  value="@if($pickupeditem){{ $pickupeditem->expired_date }}@else{{old('expired_date')}}@endif">
                   <div class="form-control-feedback text-danger"> {{$errors->first('expired_date') }} </div>
                 </div>
 
@@ -116,8 +146,37 @@
                     @foreach($pickup->items as $pickupitem)
                      @php $total+=$pickupitem->deposit @endphp
                     @endforeach
+                    <input type="hidden" name="client_id" value="{{$client->id}}">
 
+                    <input type="hidden" name="depositamount" value={{$pickup->schedule->amount}}>
+                    <input type="hidden" name="qty" value={{$pickup->schedule->quantity - count($pickup->items)}}>
+                    <input type="hidden" name="myqty" value="{{$pickup->schedule->quantity}}">
                     <li class="list-group-item">Deposit for all item: {{number_format($pickup->schedule->amount-$total)}}KS</li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-6">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" >
+                            <label class="form-check-label" for="paid">
+                              paid
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="col-6">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paystatus" id="unpaid" value="2" >
+                            <label class="form-check-label" for="unpaid">
+                              Unpaid
+                            </label>
+                          </div>
+                        </div>
+                        </div>
+
+                        
+                      </div>
+                    </li>
                   </ul>
                 </div>
 
@@ -138,6 +197,7 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
+    $(".township").hide();
     $(".mytownship").change(function(){
       var id=$(this).val();
       //console.log(id);
@@ -174,6 +234,56 @@
         //alert(maxDate);
         $('#txtDate').attr('min', maxDate);
     });
+
+
+
+    $("input[name=rcity]").click(function(){
+
+    if ($(this).is(':checked'))
+    {
+      $(".township").show();
+     var id=$(this).val();
+
+     if(id==1){
+      var today = new Date();
+      var numberofdays = 3;
+      today.setDate(today.getDate() + numberofdays); 
+      var day = ("0" + today.getDate()).slice(-2);
+      var month = ("0" + (today.getMonth() + 1)).slice(-2);
+      //console.log(month);
+      var incityday= today.getFullYear()+"-"+(month)+"-"+(day) ;
+      console.log(incityday);
+      $(".pickdate").val(incityday);
+     }else{
+      var today = new Date();
+      var numberofdays = 7;
+      today.setDate(today.getDate() + numberofdays); 
+      var day = ("0" + today.getDate()).slice(-2);
+      var month = ("0" + (today.getMonth() + 1)).slice(-2);
+      //console.log(month);
+      var gateday= today.getFullYear()+"-"+(month)+"-"+(day) ;
+      console.log(gateday);
+      $(".pickdate").val(gateday);
+     }
+
+      $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+      $.post("/townshipbystatus",{id:id},function(res){
+       // console.log(res);
+        var html="";
+        html+=`<option>Choose township</option>`
+        $.each(res,function(i,v){
+          html+=`<option value="${v.id}">${v.name}</option>`
+        })
+        $("#InputReceiverTownship").html(html);
+      })
+    }
+  });
+
+     $('.js-example-basic-single').select2({width:'100%'});
   })
 </script>
 @endsection

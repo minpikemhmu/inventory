@@ -8,8 +8,10 @@ use App\Pickup;
 use App\Township;
 use App\DeliveryMan;
 use App\Way;
+use App\Expense;
 use Carbon;
 use Auth;
+use Session;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -21,7 +23,14 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items=Item::doesntHave('way')->get();
+        //$items=Item::doesntHave('way')->get();
+          $status=1;  
+          $items=Item::whereHas('pickup',function($query)use($status){
+        $query->where('status',1);
+          })->doesntHave('way')->get();
+         //dd($myitems);
+        
+
         $deliverymen = DeliveryMan::all();
         $ways = Way::all();
         return view('item.index',compact('items','deliverymen','ways'));
@@ -46,53 +55,96 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+      $qty=$request->qty;
+       // dd($qty);
+      $myqty=$request->myqty;
+      $damount=$request->depositamount;
 
-         $validator = $request->validate([
-            'receiver_name'  => ['required','string'],
-            'receiver_phoneno'=>['required','string'],
-            'receiver_address'=>['required','string'],
-            'receiver_township'=>['required'],
-            'expired_date'=>['required','date'],
-            'deposit'=>['required'],
-            'delivery_fees'=>['required'],
-            'amount'=>['required'],
-            'remark'=>['required','string']
-        ]);
+      //dd($damount);
+      $validator = $request->validate([
+        'receiver_name'  => ['required','string'],
+        'receiver_phoneno'=>['required','string'],
+        'receiver_address'=>['required','string'],
+        'receiver_township'=>['required'],
+        'expired_date'=>['required','date'],
+        'deposit'=>['required'],
+        'delivery_fees'=>['required'],
+        'amount'=>['required'],
+        'remark'=>['required','string']
+      ]);
 
-         if($validator){
-            $item=new Item;
-            $item->codeno=$request->codeno;
-            $item->expired_date=$request->expired_date;
-            $item->deposit=$request->deposit;
-            $item->amount =$request->amount;
-            $item->delivery_fees=$request->delivery_fees;
-            $item->receiver_name=$request->receiver_name;
-            $item->receiver_address=$request->receiver_address;
-            $item->receiver_phone_no=$request->receiver_phoneno;
-            $item->remark=$request->remark;
-            $item->paystatus=0;
-            $item->pickup_id=$request->pickup_id;
-            $item->township_id=$request->receiver_township;
-            $role=Auth::user()->roles()->first();
-            $rolename=$role->name;
-            if($rolename=="staff"){
-                $user=Auth::user();
-                $staffid=$user->staff->id;
-                $item->staff_id=$staffid;
-            }
-            $item->save();
+      if($validator){
 
-            $pickup = Pickup::find($item->pickup_id);
-            if (($pickup->schedule->quantity - count($pickup->items)) > 0) {
-                return redirect()->back()->with("successMsg",'New Item is ADDED');
-            }else{
-                return redirect()->route('items.index')->with("successMsg",'New Item is ADDED in your data');
-            }
+            //dd('c');
+        $item=new Item;
+        $item->codeno=$request->codeno;
+        $item->expired_date=$request->expired_date;
+        $item->deposit=$request->deposit;
+        $item->amount =$request->amount;
+        $item->delivery_fees=$request->delivery_fees;
+        $item->receiver_name=$request->receiver_name;
+        $item->receiver_address=$request->receiver_address;
+        $item->receiver_phone_no=$request->receiver_phoneno;
+        $item->remark=$request->remark;
+        $item->paystatus=0;
+        $item->pickup_id=$request->pickup_id;
+        $item->township_id=$request->receiver_township;
+        $role=Auth::user()->roles()->first();
+        $rolename=$role->name;
+        if($rolename=="staff"){
+          $user=Auth::user();
+          $staffid=$user->staff->id;
+          $item->staff_id=$staffid;
         }
-        else
-        {
-            return redirect::back()->withErrors($validator);
+        $item->save();
+
+        if($qty==1){
+
+          
+
+          $checkitems = Item::orderBy('id', 'desc')->take($myqty)->get();
+          if($checkitems->sum('deposit')!=$damount){
+                //dd($checkitems);
+
+            //foreach ($checkitems as $value) {
+              $pickup=Pickup::find($checkitems[0]->pickup_id);
+              $pickup->status=2;
+              $pickup->save();
+              
+            //}
+            return redirect()->route('checkitem',$pickup->id); 
+
+          }else{
+            $expense=new Expense;
+          $expense->amount=$damount;
+          $expense->client_id=$request->client_id;
+          if($rolename=="staff"){
+          $user=Auth::user();
+          $staffid=$user->staff->id;
+          $expense->staff_id=$staffid;
         }
+          $expense->status=$request->paystatus;
+          $expense->description="Client Deposit";
+          $expense->city_id=1;
+          $expense->expense_type_id=1;
+          $expense->save();
+          }
+        }
+
+
+        $pickup = Pickup::find($item->pickup_id);
+        if (($pickup->schedule->quantity - count($pickup->items)) > 0) {
+          return redirect()->back()->with("successMsg",'New Item is ADDED');
+        }else{
+          return redirect()->route('items.index')->with("successMsg",'New Item is ADDED in your data');
+        }
+
+
+      }
+      else
+      {
+        return redirect::back()->withErrors($validator);
+      }
             
     }
 
@@ -280,5 +332,38 @@ return redirect()->route('items.index')->with("successMsg",'way assign successfu
         $way=Way::find($id);
         $way->delete();
         return redirect()->route('items.index')->with("successMsg",'way assign delete successfully');
+    }
+
+    public function townshipbystatus(Request $request){
+        $id=$request->id;
+        $township=Township::where('status',$id)->get();
+        return $township;
+    }
+
+    public function checkitem($pickupid){
+    
+    $checkitems=Item::where('pickup_id',$pickupid)->get();
+
+    return view('dashboard.checkitem',compact('checkitems'))->with("successMsg",'items amount are wrong');
+      //dd($pickupid);
+      
+    }
+
+    public function updateamount(Request $request){
+      $checkitemarray=$request->myarray;
+      foreach ($checkitemarray as $value) {
+
+       $item=Item::find($value["id"]);
+       $deliveryfee=$item->delivery_fees;
+       //dd($deliveryfee);
+       $item->deposit=$value["amount"];
+       $item->amount=$value["amount"]+$deliveryfee;
+       $item->save();
+       $pickup=Pickup::find($item->pickup_id);
+       $pickup->status=1;
+       $pickup->save();
+      }
+
+      return "success";
     }
 }

@@ -76,10 +76,13 @@ Route::middleware('auth')->group(function () {
   Route::post('itemdetail','ItemController@itemdetail')->name('itemdetail');
   Route::post('wayassign','ItemController@assignWays')->name('wayassign');
 
-  Route::post('updatewayassign','ItemController@updatewayassign')->name('updatewayassign');
-
-  Route::get('deletewayassign/{id}','ItemController@deletewayassign')->name('deletewayassign');
+  Route::get('checkitem/{pickupid}','ItemController@checkitem')->name('checkitem');
+  Route::post('updateamount','ItemController@updateamount')->name('updateamount');
   
+
+  Route::post('updatewayassign','ItemController@updatewayassign')->name('updatewayassign');
+  Route::post('townshipbystatus','ItemController@townshipbystatus')->name('townshipbystatus');
+  Route::get('deletewayassign/{id}','ItemController@deletewayassign')->name('deletewayassign');
 
   Route::resource('clients', 'ClientController');
   Route::resource('delivery_men', 'DeliveryMenController');
