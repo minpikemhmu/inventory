@@ -3,7 +3,8 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Pickups</h1>
+        @php $mytime = Carbon\Carbon::now(); @endphp
+        <h1><i class="fa fa-dashboard"></i> Pickups ({{$mytime->toFormattedDateString()}})</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
@@ -22,11 +23,13 @@
                   </button>
               </div>
           @endif
-        <div class="tile">
-          @php $mytime = Carbon\Carbon::now(); @endphp
-          <h3 class="tile-title d-inline-block">Pickup List ({{$mytime->toFormattedDateString()}})</h3>
+
+
+        {{-- <div class="tile"> --}}
           
-          <div class="table-responsive">
+          {{-- <h3 class="tile-title d-inline-block">Pickup List ({{$mytime->toFormattedDateString()}})</h3> --}}
+          
+          {{-- <div class="table-responsive">
             <table class="table table-bordered dataTable">
               <thead>
                 <tr>
@@ -62,8 +65,28 @@
                 @endforeach
               </tbody>
             </table>
+          </div> --}}
+          
+          @foreach($pickups as $row)
+          
+          <div class="card mb-3">
+            <h5 class="card-header">{{$row->schedule->client->user->name}} ({{$row->schedule->quantity}}) <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->schedule->pickup_date}}</small></h5>
+            <div class="card-body">
+              <h5 class="card-title">{{$row->schedule->client->address}}</h5>
+              <p class="card-text">{{$row->schedule->remark}}</p>
+            
+              @if($row->status==0)
+                <a href="#" class="btn btn-primary">Pending</a>
+                <a href="{{route('pickupdone',$row->id)}}" class="btn btn-success">Done</a>
+              @else
+                <a href="#" class="btn btn-primary">completed pick up</a>
+              @endif
+
+            </div>
           </div>
-        </div>
+          
+          @endforeach
+        {{-- </div> --}}
       </div>
     </div>
   </main>

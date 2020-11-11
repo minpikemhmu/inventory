@@ -24,6 +24,9 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('staff_id');
             $table->unsignedBigInteger('city_id');
 
+            // expense_type (other) 
+            $table->unsignedBigInteger('item_id')->nullable();
+
             $table->smallInteger('status'); // 0 (unpaid) / 1 (paid)
 
             $table->softDeletes();
@@ -43,6 +46,10 @@ class CreateExpensesTable extends Migration
 
             $table->foreign('city_id')
                     ->references('id')->on('cities')
+                    ->onDelete('cascade');
+
+            $table->foreign('item_id')
+                    ->references('id')->on('items')
                     ->onDelete('cascade');
         });
     }
