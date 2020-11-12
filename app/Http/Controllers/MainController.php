@@ -16,8 +16,13 @@ use App\Http\Resources\SuccesswayResource;
 use App\Http\Resources\IncomeResource;
 use App\Http\Resources\ExpenseResource;
 use App\Income;
+use App\Notifications\RejectNotification;
 use App\Expense;
 use Yajra\DataTables\Facades\DataTables;
+use Notification;
+use App\User;
+use App\Events\rejectitem;
+use Illuminate\Notifications\DatabaseNotification;
 class MainController extends Controller
 {
   // for dashboard main page
@@ -280,6 +285,8 @@ public function profit(Request $request){
             'remark' => 'required',
         ]);
       $wayid = $request->wayid;
+
+      
     
       $way = Way::where('id',$wayid)->first();
       //dd($way);
@@ -289,7 +296,40 @@ public function profit(Request $request){
       $way->remark = $request->remark;
       $way->deleted_at=Null;
       $way->save();
-    
+      //$waynoti="reject";
+      Notification::send($way,new RejectNotification($way));
+    //dd("ok");
+    event(new rejectitem($way));
+      
    return response()->json(['success'=>'successfully!']);
   }
+
+  public function rejectnoti(){
+    //$notidata=array();
+    $cs=array();
+    if(Auth::check()){
+      $rejectways=Way::where('refund_date','!=',null)->orderBy('id','desc')->get();
+     foreach ($rejectways as $ways) {
+        foreach ($ways->unreadNotifications as $notification) {
+          
+          array_push($cs, $notification->data);
+        }
+       # code...
+     }
+    }
+    return $cs;
+
+  /* for($i=0;$i<count($cs);$i++){
+    array_push($notidata, $cs)
+     
+  }*/
+   }
+
+   public function clearrejectnoti($id){
+   // dd($id);
+    $mytime = Carbon\Carbon::now();
+      $date=$mytime->toDateString();
+      $userconfirm= DB::table('notifications')->where('id', $id)->update(array('read_at' => $date));
+      return redirect()->route('reject_list');
+   }
 }

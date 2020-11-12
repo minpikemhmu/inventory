@@ -25,6 +25,7 @@
                   <th>Delivery Men</th>
                   <th>Amount</th>
                   <th>Remark</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -37,6 +38,9 @@
                   <td>{{$row->delivery_man->user->name}}</td>
                   <td>{{$amount}}</td>
                   <td>{{$row->remark}}</td>
+                  @foreach($row->unreadNotifications as $notification)
+                  <td><a href="{{route('clearrejectnoti',$notification->id)}}" class="btn btn-sm btn-info">done</a></td>
+                  @endforeach
                 </tr>
                 @endforeach
               </tbody>

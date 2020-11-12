@@ -4,8 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Notifications\RejectNotification;
+use Illuminate\Notifications\Notifiable;
 class Way extends Model
 {
+  use Notifiable;
 	protected $fillable=[
   	'status_code', 'delivery_date', 'refund_date', 'item_id', 'delivery_man_id', 'staff_id', 'status_id','remark'
   ];
