@@ -38,9 +38,14 @@
                   <td>{{$row->delivery_man->user->name}}</td>
                   <td>{{$amount}}</td>
                   <td>{{$row->remark}}</td>
-                  @foreach($row->unreadNotifications as $notification)
+                  @foreach($row->notifications as $notification)
+                   @if($notification->unread())
                   <td><a href="{{route('clearrejectnoti',$notification->id)}}" class="btn btn-sm btn-info">done</a></td>
+                  @else
+                  <td><a href="" class="btn btn-sm btn-primary">complete</a></td>
+                  @endif
                   @endforeach
+
                 </tr>
                 @endforeach
               </tbody>
