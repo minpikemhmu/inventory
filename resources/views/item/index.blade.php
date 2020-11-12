@@ -109,11 +109,15 @@
                       <span class="badge badge-warning">{{'return'}}</span>
                     @elseif($way->status_code == '003')
                       <span class="badge badge-danger">{{'reject'}}</span>
-                    @endif</td>
+                    @endif
+                    
+                  </td>
+
+                    
 
                         <td>{{$way->item->township->name}}</td>
                         <td class="text-danger">
-                          {{$way->delivery_man->user->name}}
+                          {{$way->delivery_man->user->name}}<span class="badge badge-info seen"></span>
                         </td>
                         <td>{{$way->item->expired_date}}</td>
                         <td>{{$amount}}</td>
@@ -286,5 +290,32 @@
         $("#wayid").val(id);
       })
     })
+
+    seennoti();
+    function seennoti(){
+      $.get("/seennoti",function(res){
+        //console.log(res);
+        var count=res.length;
+        //console.log(count);
+        if(count>0){
+          $(".seen").html("seen");
+        }
+
+      })
+    }
+
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('12ebc307a9a06080ceea', {
+      cluster: 'mt1'
+    });
+
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      //alert(JSON.stringify(data));
+      seennoti();
+      //$(".seen").html("seen");
+    });
   </script>
 @endsection

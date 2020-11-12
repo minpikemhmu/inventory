@@ -17,6 +17,7 @@ use App\Http\Resources\IncomeResource;
 use App\Http\Resources\ExpenseResource;
 use App\Income;
 use App\Notifications\RejectNotification;
+use App\Notifications\SeenNotification;
 use App\Expense;
 use Yajra\DataTables\Facades\DataTables;
 use Notification;
@@ -242,6 +243,10 @@ public function profit(Request $request){
     // ways assigned for that user (must delivery_date and refund_date equal NULL)
     $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->get();
     $successways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get(); 
+    $seen="seen";
+     Notification::send($ways,new SeenNotification($seen));
+    //dd("ok");
+    event(new rejectitem($ways));
     return view('dashboard.ways',compact('ways','successways'));
   }
 
@@ -331,5 +336,10 @@ public function profit(Request $request){
       $date=$mytime->toDateString();
       $userconfirm= DB::table('notifications')->where('id', $id)->update(array('read_at' => $date));
       return redirect()->route('reject_list');
+   }
+
+   public function seennoti(){
+     $ways = Way::all();
+     return $ways;
    }
 }
