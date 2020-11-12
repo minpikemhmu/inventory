@@ -28,16 +28,36 @@ class MainController extends Controller
     return view('dashboard.index');
   }
 
+  public function getways($value='')
+  {
+    $data = Way::selectRaw('COUNT(*) as count, YEAR(created_at) year, MONTH(created_at) month')
+    ->groupBy('year', 'month')
+    ->get();
+    // dd($data);
+    $ways = [100,150,50,115,20,55,64,17,20,35,49,0];
+
+    $success_ways = 10;
+    $reject_ways = 1;
+    
+    return Response::json(array(
+      'ways' => $ways,
+      'success_ways' => $success_ways,
+      'reject_ways' => $reject_ways
+    ));
+  }
+
   // for success list page
   public function success_list($value='')
   {
-    return view('dashboard.success_list');
+    $delivery_men = DeliveryMan::all();
+    $success_ways = Way::where('status_code','001')->get();
+    return view('dashboard.success_list',compact('delivery_men','success_ways'));
   }
 
   // for reject list page
   public function reject_list($value='')
   {
-    $rejectways=Way::where('refund_date','!=',null)->orderBy('id','desc')->get();
+    $rejectways=Way::where('refund_date',null)->where('status_code','003')->orderBy('id','desc')->get();
     return view('dashboard.reject_list',compact('rejectways'));
   }
 
@@ -102,12 +122,50 @@ class MainController extends Controller
     // $client = Client::find($id);
     $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
 
-    $incomes = Way::where('status_id',3)->with('item')->get();
-    
+    $incomes =  Way::with('item.pickup.schedule')
+    ->whereHas('item.pickup.schedule', function($query) use ($id){
+        $query->where('client_id', $id);
+    })->where('status_code','003')->where('refund_date',null)->get();
+
     return Response::json(array(
            'expenses' => $expenses,
            'incomes' => $incomes,
       ));
+  }
+
+  public function fix_debit(Request $request)
+  {
+    $request->validate([
+      'client' => 'required'
+    ]);
+
+    $id = $request->client;
+
+    $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
+
+    foreach ($expenses as $expense) {
+      $expense->status = 1;
+      $expense->save();
+    }
+
+    $incomes =  Way::with('item.pickup.schedule')
+    ->whereHas('item.pickup.schedule', function($query) use ($id){
+        $query->where('client_id', $id);
+    })->where('status_code','003')->where('refund_date',null)->get();
+
+    foreach ($incomes as $way) {
+      $income = new Income;
+      $income->delivery_fees = $way->item->delivery_fees;
+      $income->amount = $way->item->amount;
+      $income->cash_amount = $way->item->amount;
+      $income->way_id = $way->id;
+      $income->payment_type_id = 1;
+      $income->save();
+
+      $way->refund_date = date('Y-m-d');
+      $way->save();
+    }
+    return back();
   }
 
   //update imcome
@@ -149,7 +207,7 @@ public function profit(Request $request){
   $end_date=$request->end_date;
   $allincomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('amount');
   $netincomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('delivery_fees');
-  $allexpenses=Expense::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('amount');
+  $allexpenses=Expense::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('expense_type_id','!=',1)->sum('amount');
   return Response::json(array(
            'allincomes' => $allincomes,
            'netincomes' => $netincomes,
@@ -310,7 +368,7 @@ public function profit(Request $request){
       //dd($way);
       $way->status_id = 3;
       $way->status_code = '003';
-      $way->refund_date = date('Y-m-d');
+      // $way->refund_date = date('Y-m-d');
       $way->remark = $request->remark;
       $way->deleted_at=Null;
       $way->save();

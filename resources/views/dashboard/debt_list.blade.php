@@ -18,18 +18,24 @@
           @php $mytime = Carbon\Carbon::now(); @endphp
           <h3 class="tile-title d-inline-block">Debt List ({{$mytime->toFormattedDateString()}})</h3>
           
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label for="InputClient">Select Client:</label>
-              <select class="form-control" id="InputClient" name="client">
-                <optgroup label="Select Client">
-                  @foreach($clients as $client)
-                    <option value="{{$client->id}}" data-name="{{$client->user->name}}">{{$client->user->name}}</option>
-                  @endforeach
-                </optgroup>
-              </select>
+          <form method="post" action="{{route('fix_debit')}}">
+            @csrf
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="InputClient">Select Client:</label>
+                <select class="form-control" id="InputClient" name="client">
+                  <optgroup label="Select Client">
+                    @foreach($clients as $client)
+                      <option value="{{$client->id}}" data-name="{{$client->user->name}}">{{$client->user->name}}</option>
+                    @endforeach
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group col-md-6 search_btn">
+                <button class="btn btn-primary mt-4" type="submit">စာရင်းရှင်းမယ်</button>
+              </div>
             </div>
-          </div>
+          </form>
 
           <div id="debits">
             <span id="topay"></span>
@@ -127,6 +133,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('#debits').hide();
+    $('.search_btn').hide();
 
     // $(".btndetail").click(function(){
     //   $("#detailmodal").modal("show");
@@ -193,6 +200,11 @@
         var url = `/debit/getdebitlistbyclient/${client_id}`;
         $.get(url,function (response) {
           console.log(response);
+          if (response.expenses.length > 0 || response.incomes.length > 0) {
+            $('.search_btn').show();
+          }else{
+            $('.search_btn').hide();
+          }
           var header = `<h4>ပေးရန် => ${clientname}:</h4>`;
           $('#topay').html(header);
 

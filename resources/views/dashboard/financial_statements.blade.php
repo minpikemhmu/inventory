@@ -24,17 +24,17 @@
               <div class="tab-pane fade active show" id="home">
                 <div class="row col-12">
                   <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                  <input type="date" name="" class="form-control start-date">
+                    <input type="date" name="" class="form-control start-date">
                   </div>
                   <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                  <input type="date" name="" class="form-control end-date">
+                    <input type="date" name="" class="form-control end-date">
                   </div>
                   <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
-                   <button class="btn btn-success search">Search</button>
+                    <button class="btn btn-success search">Search</button>
                   </div>
                 </div>
                 <div class="table-responsive mytable">
-                  <table class="table " id="incometable">
+                  <table class="table" id="incometable">
                     <thead>
                       <tr>
                         <th>#</th>
@@ -49,36 +49,34 @@
                   </table>
                 </div>
               </div>
+
               <div class="tab-pane fade" id="profile">
                 <div class="row col-12">
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                <input type="date" name="" class="form-control exstart-date">
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                  <input type="date" name="" class="form-control exstart-date">
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                  <input type="date" name="" class="form-control exend-date">
+                  </div>
+                  <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
+                   <button class="btn btn-success exsearch">Search</button>
+                  </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                <input type="date" name="" class="form-control exend-date">
-                </div>
-                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
-                 <button class="btn btn-success exsearch">Search</button>
-                </div>
-              </div>
-
-               <div class="table-responsive mytable">
-              <table class="table " id="expensetable">
-                  <thead>
-                    <tr>  
-                      <th>#</th>
-                      <th>Description</th>
-                      <th>Expense Type</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <div class="table-responsive mytable">
+                  <table class="table " id="expensetable">
+                    <thead>
+                      <tr>  
+                        <th>#</th>
+                        <th>Description</th>
+                        <th>Expense Type</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                     </tbody>
-                </table>
+                  </table>
+                </div>
               </div>
-
-              </div>
-
 
               <div class="tab-pane fade" id="profit">
                 <div class="row col-12">

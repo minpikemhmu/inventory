@@ -30,12 +30,12 @@
           <div class="bs-component">
             @role('staff')
             <ul class="nav nav-tabs">
-              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#schedules">Schedules</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#assigned">Assigned</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedules">Schedules</a></li>
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#assigned">Assigned</a></li>
             @endrole
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
-              <div class="tab-pane fade active show" id="schedules">
+              <div class="tab-pane fade" id="schedules">
                 <div class="table-responsive">
                   <table class="table dataTable">
                     <thead>
@@ -101,7 +101,7 @@
                   </table>
                 </div>
               </div>
-              <div class="tab-pane fade" id="assigned">
+              <div class="tab-pane fade active show" id="assigned">
                 <div class="table-responsive">
                   <table class="table dataTable">
                     <thead>

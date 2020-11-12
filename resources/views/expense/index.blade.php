@@ -43,9 +43,9 @@
                 <tr>
                   <td>{{$i++}}</td>
                   <td>{{$row->created_at->format('Y-m-d')}}</td>
-                  <td>{{$row->description}}</td>
-                  <td>{{number_format($row->amount)}}</td>
+                  <td>{{number_format($row->amount)}} Ks</td>
                   <td>{{$row->expense_type->name}}</td>
+                  <td>{{$row->description}}</td>
                   <td>
                     <a href="{{route('expenses.edit',$row->id)}}" class="btn btn-warning">Edit</a>
                     <form action="{{ route('expenses.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">

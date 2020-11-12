@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{asset('assets/images/logo.jpg')}}" rel="shortcut icon"/>
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css')}}">
     <!-- Custom CSS -->

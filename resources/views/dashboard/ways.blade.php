@@ -31,7 +31,7 @@
           </li>
 
         </ul>
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content mt-3" id="myTabContent">
           <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="home-tab">
             <div class="col-12">
             <div class="alert alert-primary success d-none" role="alert"></div>

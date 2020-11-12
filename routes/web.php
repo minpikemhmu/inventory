@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.custom_login');
 });
 
 Route::middleware('auth')->group(function () {
   Route::get('dashboard','MainController@dashboard')->name('dashboard');
 
+  Route::get('getways', 'MainController@getways')->name('getways');
+  
   Route::prefix('settings')->group(function () {
     // Settings => (cities, townships, statuses, expense_types, payment_types, banks)
     Route::resource('cities','CityController');
@@ -51,6 +53,7 @@ Route::middleware('auth')->group(function () {
   // Debt List
   Route::get('debt_list','MainController@debt_list')->name('debt_list');
   Route::get('debit/getdebitlistbyclient/{id}', 'MainController@getdebitlistbyclient')->name('debit.getdebitlistbyclient');
+  Route::post('fix_debit', 'MainController@fix_debit')->name('fix_debit');
 
   Route::post('updateincome','MainController@updateincome')->name('updateincome');
   Route::post('incomesearch','MainController@incomesearch')->name('incomesearch');
