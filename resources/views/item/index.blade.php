@@ -294,12 +294,17 @@
     seennoti();
     function seennoti(){
       $.get("/seennoti",function(res){
-        //console.log(res);
-        var count=res.length;
-        //console.log(count);
-        if(count>0){
-          $(".seen").html("seen");
-        }
+        //console.log(typeof res);
+        res.forEach( function(element, index) {
+          // statements
+          console.log(element.ways);
+          element.ways.forEach( function(v, i) {
+            if(v.item_id){
+              $(".seen").html("seen");
+            }
+            // statements
+          });
+        });
 
       })
     }

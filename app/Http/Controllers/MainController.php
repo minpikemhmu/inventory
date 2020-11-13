@@ -243,8 +243,8 @@ public function profit(Request $request){
     // ways assigned for that user (must delivery_date and refund_date equal NULL)
     $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->get();
     $successways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get(); 
-    $seen="seen";
-     Notification::send($ways,new SeenNotification($seen));
+    //$seen="seen";
+     Notification::send($ways,new SeenNotification($ways));
     //dd("ok");
     event(new rejectitem($ways));
     return view('dashboard.ways',compact('ways','successways'));
@@ -339,7 +339,19 @@ public function profit(Request $request){
    }
 
    public function seennoti(){
-     $ways = Way::all();
-     return $ways;
+     
+         $cs=array();
+    if(Auth::check()){
+       $ways = Way::all();
+     foreach ($ways as $way) {
+        foreach ($way->unreadNotifications as $notification) {
+          
+          array_push($cs, $notification->data);
+        }
+       # code...
+     }
+    }
+   // dd($cs);
+    return $cs;
    }
 }
