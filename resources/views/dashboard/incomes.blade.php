@@ -25,27 +25,31 @@
                   <th>Item Code</th>
                   <th>Delivery Men</th>
                   <th>Payment type</th>
-                  <th>Amount</th>
+                  <th>Cash Amount</th>
+                  <th>Bank Amount</th>
                 </tr>
               </thead>
               <tbody>
-                @php $i=1; $total=0 @endphp
+                @php $i=1; $ctotal=$btotal=0; @endphp
                 @foreach($incomes as $row)
-                @php $total+=$row->amount; @endphp
+                @php 
+                  $ctotal+=$row->cash_amount;
+                  $btotal+=$row->bank_amount;
+                @endphp
                 <tr>
                   <td>{{$i++}}</td>
                   <td><span class="badge badge-primary">{{$row->way->item->codeno}}</span></td>
                   <td>{{$row->way->delivery_man->user->name}}</td>
                   <td>{{$row->payment_type->name}}</td>
-                  <td>{{number_format($row->amount)}}</td>
+                  <td>{{number_format($row->cash_amount)}}</td>
+                  <td>{{number_format($row->bank_amount)}}</td>
                 </tr>
                 @endforeach
                 <tr>
-                  <td colspan="4">Total amount</td>
-                  <td>{{number_format($total)}}</td>
+                  <td colspan="4">Total Amount:</td>
+                  <td>{{number_format($ctotal)}}</td>
+                  <td>{{number_format($btotal)}}</td>
                 </tr>
-                
-                
               </tbody>
             </table>
           </div>

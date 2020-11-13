@@ -16,8 +16,43 @@
         <div class="tile">
           @php $mytime = Carbon\Carbon::now(); @endphp
           <h3 class="tile-title d-inline-block">Success List ({{$mytime->toFormattedDateString()}})</h3>
-          <div class="table-responsive">
 
+          <div class="row">
+            <div class="form-group col-md-4">
+              {{-- <label for="InputMonth">Select Month:</label> --}}
+              <select class="form-control" name="month" id="InputMonth">
+                <optgroup label="Select Month">
+                  <option value="01">Jan</option>
+                  <option value="02">Feb</option>
+                  <option value="03">Mar</option>
+                  <option value="04">Apr</option>
+                  <option value="05">May</option>
+                  <option value="06">Jun</option>
+                  <option value="07">July</option>
+                  <option value="08">Aug</option>
+                  <option value="09">Sep</option>
+                  <option value="10">Oct</option>
+                  <option value="11">Nov</option>
+                  <option value="12">Dec</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              {{-- <label for="InputDeliveryMan">Select Delivery Man:</label> --}}
+              <select class="form-control" id="InputDeliveryMan" name="deliveryman">
+                <optgroup label="Select Delivery Man">
+                  @foreach($delivery_men as $deliveryman)
+                    <option value="{{$deliveryman->id}}" data-name="{{$deliveryman->user->name}}">{{$deliveryman->user->name}}</option>
+                  @endforeach
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <button class="btn btn-success search">Search</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
             <table class="table dataTable">
               <thead>
                 <tr>
@@ -28,33 +63,19 @@
                 </tr>
               </thead>
               <tbody>
+                @php $i=1; @endphp
+                @foreach($success_ways as $way)
                 <tr>
-                  <td>1</td>
-                  <td><span class="badge badge-primary">0001-0024</span></td>
-                  <td>Kyaw Lwin</td>
-                  <td>3,000</td>
+                  <td>{{$i++}}</td>
+                  <td><span class="badge badge-primary">{{$way->item->codeno}}</span></td>
+                  <td>{{$way->delivery_man->user->name}}</td>
+                  <td>{{number_format($way->item->amount)}} Ks</td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td><span class="badge badge-primary">0001-0323</span></td>
-                  <td>Min Pike</td>
-                  <td>2,500</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td><span class="badge badge-primary">0031-0015</span></td>
-                  <td>Kyaw Kyi</td>
-                  <td>5,000</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td><span class="badge badge-primary">0031-0004</span></td>
-                  <td>Hein Min</td>
-                  <td>1,500</td>
-                </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
+          
         </div>
       </div>
     </div>

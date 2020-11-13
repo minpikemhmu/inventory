@@ -20,10 +20,12 @@ use App\Notifications\RejectNotification;
 use App\Notifications\SeenNotification;
 use App\Expense;
 use Yajra\DataTables\Facades\DataTables;
+use App\Client;
 use Notification;
 use App\User;
 use App\Events\rejectitem;
 use Illuminate\Notifications\DatabaseNotification;
+
 class MainController extends Controller
 {
   // for dashboard main page
@@ -32,16 +34,36 @@ class MainController extends Controller
     return view('dashboard.index');
   }
 
+  public function getways($value='')
+  {
+    $data = Way::selectRaw('COUNT(*) as count, YEAR(created_at) year, MONTH(created_at) month')
+    ->groupBy('year', 'month')
+    ->get();
+    // dd($data);
+    $ways = [100,150,50,115,20,55,64,17,20,35,49,0];
+
+    $success_ways = 10;
+    $reject_ways = 1;
+    
+    return Response::json(array(
+      'ways' => $ways,
+      'success_ways' => $success_ways,
+      'reject_ways' => $reject_ways
+    ));
+  }
+
   // for success list page
   public function success_list($value='')
   {
-    return view('dashboard.success_list');
+    $delivery_men = DeliveryMan::all();
+    $success_ways = Way::where('status_code','001')->get();
+    return view('dashboard.success_list',compact('delivery_men','success_ways'));
   }
 
   // for reject list page
   public function reject_list($value='')
   {
-    $rejectways=Way::where('refund_date','!=',null)->orderBy('id','desc')->get();
+    $rejectways=Way::where('refund_date',null)->where('status_code','003')->orderBy('id','desc')->get();
     return view('dashboard.reject_list',compact('rejectways'));
   }
 
@@ -95,9 +117,61 @@ class MainController extends Controller
   // for debt list page
   public function debt_list($value='')
   {
-     $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','=',Null)->get();
+     // $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','=',Null)->get();
      //dd($incomes);
-    return view('dashboard.debt_list',compact('incomes'));
+     $clients = Client::all();
+    return view('dashboard.debt_list',compact('clients'));
+  }
+
+  public function getdebitlistbyclient($id)
+  {
+    // $client = Client::find($id);
+    $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
+
+    $incomes =  Way::with('item.pickup.schedule')
+    ->whereHas('item.pickup.schedule', function($query) use ($id){
+        $query->where('client_id', $id);
+    })->where('status_code','003')->where('refund_date',null)->get();
+
+    return Response::json(array(
+           'expenses' => $expenses,
+           'incomes' => $incomes,
+      ));
+  }
+
+  public function fix_debit(Request $request)
+  {
+    $request->validate([
+      'client' => 'required'
+    ]);
+
+    $id = $request->client;
+
+    $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
+
+    foreach ($expenses as $expense) {
+      $expense->status = 1;
+      $expense->save();
+    }
+
+    $incomes =  Way::with('item.pickup.schedule')
+    ->whereHas('item.pickup.schedule', function($query) use ($id){
+        $query->where('client_id', $id);
+    })->where('status_code','003')->where('refund_date',null)->get();
+
+    foreach ($incomes as $way) {
+      $income = new Income;
+      $income->delivery_fees = $way->item->delivery_fees;
+      $income->amount = $way->item->amount;
+      $income->cash_amount = $way->item->amount;
+      $income->way_id = $way->id;
+      $income->payment_type_id = 1;
+      $income->save();
+
+      $way->refund_date = date('Y-m-d');
+      $way->save();
+    }
+    return back();
   }
 
   //update imcome
@@ -138,10 +212,12 @@ public function profit(Request $request){
   $start_date=$request->start_date;
   $end_date=$request->end_date;
   $allincomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('amount');
-  $allexpenses=Expense::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('amount');
+  $netincomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('delivery_fees');
+  $allexpenses=Expense::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('expense_type_id','!=',1)->sum('amount');
   return Response::json(array(
-           'income' => $allincomes,
-           'expense' => $allexpenses,
+           'allincomes' => $allincomes,
+           'netincomes' => $netincomes,
+           'expenses' => $allexpenses,
       ));
 }
   // for income list page
@@ -166,7 +242,7 @@ public function profit(Request $request){
     $banks=Bank::all();
     $ways =Way::doesntHave('income')->where('ways.delivery_man_id',$id)
             ->where('ways.status_code',001)
-            ->get();;
+            ->get();
     $ways =  SuccesswayResource::collection($ways);
     //dd($ways);
     return Response::json(array(
@@ -259,7 +335,7 @@ public function profit(Request $request){
       //dd($way);
       $way->status_id = 1;
       $way->status_code = '001';
-       $way->remark =Null;
+      $way->remark =Null;
       $way->delivery_date = date('Y-m-d');
       $way->save();
     }
@@ -270,17 +346,24 @@ public function profit(Request $request){
     //dd($request);
      $request->validate([
             'remark' => 'required',
+            'date' => 'required'
         ]);
       $wayid = $request->wayid;
-       $mytime = Carbon\Carbon::now();
-   //dd($ways);
+      $mytime = Carbon\Carbon::now();
+      //dd($ways);
       $way = Way::where('id',$wayid)->first();
       //dd($way);
       $way->status_id = 2;
       $way->status_code = '002';
       $way->remark = $request->remark;
-      $way->deleted_at=$mytime;
       $way->save();
+      // $way->deleted_at=$mytime;
+      
+      $way->delete();
+
+      $way->item->expired_date = $request->date;
+      $way->item->save();
+
     return response()->json(['success'=>'successfully!']);
   }
 
@@ -297,7 +380,7 @@ public function profit(Request $request){
       //dd($way);
       $way->status_id = 3;
       $way->status_code = '003';
-      $way->refund_date = date('Y-m-d');
+      // $way->refund_date = date('Y-m-d');
       $way->remark = $request->remark;
       $way->deleted_at=Null;
       $way->save();
@@ -307,6 +390,13 @@ public function profit(Request $request){
     event(new rejectitem($way));
       
    return response()->json(['success'=>'successfully!']);
+  }
+
+  // for cancel list
+  public function cancel($value='')
+  {
+    $ways = Way::where('status_id',3)->get();
+    return view('dashboard.cancel',compact('ways'));
   }
 
   public function rejectnoti(){

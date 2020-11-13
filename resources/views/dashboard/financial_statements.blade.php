@@ -23,92 +23,88 @@
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="home">
                 <div class="row col-12">
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                <input type="date" name="" class="form-control start-date">
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                    <input type="date" name="" class="form-control start-date">
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                    <input type="date" name="" class="form-control end-date">
+                  </div>
+                  <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
+                    <button class="btn btn-success search">Search</button>
+                  </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                <input type="date" name="" class="form-control end-date">
-                </div>
-                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
-                 <button class="btn btn-success search">Search</button>
-                </div>
-              </div>
-              <div class="table-responsive mytable">
-              <table class="table " id="incometable">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Item Code</th>
-                      <th>Delivery Men</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <div class="table-responsive mytable">
+                  <table class="table" id="incometable">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Item Code</th>
+                        <th>Delivery Men</th>
+                        <th>Cash Amount</th>
+                        <th>Bank Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                     </tbody>
-                </table>
+                  </table>
+                </div>
               </div>
-              </div>
-
 
               <div class="tab-pane fade" id="profile">
                 <div class="row col-12">
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                <input type="date" name="" class="form-control exstart-date">
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                  <input type="date" name="" class="form-control exstart-date">
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                  <input type="date" name="" class="form-control exend-date">
+                  </div>
+                  <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
+                   <button class="btn btn-success exsearch">Search</button>
+                  </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                <input type="date" name="" class="form-control exend-date">
-                </div>
-                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
-                 <button class="btn btn-success exsearch">Search</button>
-                </div>
-              </div>
-
-               <div class="table-responsive mytable">
-              <table class="table " id="expensetable">
-                  <thead>
-                    <tr>  
-                      <th>#</th>
-                      <th>Description</th>
-                      <th>Expense Type</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <div class="table-responsive mytable">
+                  <table class="table " id="expensetable">
+                    <thead>
+                      <tr>  
+                        <th>#</th>
+                        <th>Description</th>
+                        <th>Expense Type</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                     </tbody>
-                </table>
+                  </table>
+                </div>
               </div>
-
-              </div>
-
 
               <div class="tab-pane fade" id="profit">
                 <div class="row col-12">
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                <input type="date" name="" class="form-control pstart-date">
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                  <input type="date" name="" class="form-control pstart-date">
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
+                  <input type="date" name="" class="form-control pend-date">
+                  </div>
+                  <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
+                   <button class="btn btn-success psearch">Search</button>
+                  </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
-                <input type="date" name="" class="form-control pend-date">
-                </div>
-                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
-                 <button class="btn btn-success psearch">Search</button>
-                </div>
-              </div>
 
-              <div class="table-responsive mytable">
-              <table class="table" id="profittable">
-                  <thead>
-                    <tr>  
-                      <th>Income</th>
-                      <th>Expense</th>
-                      <th>profit</th>
-                    </tr>
-                  </thead>
-                  <tbody class="searchTable">
+                <div class="table-responsive mytable">
+                  <table class="table" id="profittable">
+                    <thead>
+                      <tr>  
+                        <th>Total Income</th>
+                        <th>Net Income</th>
+                        <th>Expense(အခြား+တန်ဆာခ)</th>
+                        <th>Net Profit</th>
+                      </tr>
+                    </thead>
+                    <tbody class="searchTable">
                     </tbody>
-                </table>
-              </div>
-
-
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -153,7 +149,8 @@
                    return `<span class="btn badge badge-primary">${data}</span>`
                   } },
         { "data": "delivery_man" },
-         { "data": "amount" }
+         { "data": "cash_amount" },
+         { "data": "bank_amount" }
         ],
         "info":false
     } );
@@ -207,12 +204,13 @@
         });
 
         $.post(url,{start_date:start_date,end_date:end_date},function(res){
-            var income=res.income;
-            var expense=res.expense;
-            var profit=income-expense;
+            var allincomes=res.allincomes;
+            var netincomes=res.netincomes;
+            var expenses=res.expenses;
+            var profit=netincomes-expenses;
 
             var html='';
-            html+=`<tr><td>${thousands_separators(income)}</td><td>${thousands_separators(expense)}</td><td>${thousands_separators(profit)}</td></tr>`
+            html+=`<tr><td>${thousands_separators(allincomes)}</td><td>${thousands_separators(netincomes)}</td><td>${thousands_separators(expenses)}</td><td>${thousands_separators(profit)}</td></tr>`
             $(".searchTable").html(html);
         })
          

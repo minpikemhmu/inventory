@@ -22,7 +22,7 @@
             <div class="row my-3">
               <div class="col-4">
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="rcity" id="incity" value="1">
+                  <input class="form-check-input" type="radio" name="rcity" id="incity" value="1" checked>
                   <label class="form-check-label" for="incity">
                     In city
                   </label>
@@ -56,7 +56,7 @@
 
             <div class="form-group deliveryfee">
               <label for="delifee">Delivery Fees:</label>
-              <input class="form-control" id="delifee" type="text" placeholder="Enter Delivery Fees" name="delifee">
+              <input class="form-control" id="delifee" type="number" placeholder="Enter Delivery Fees" name="delifee">
                <div class="form-control-feedback text-danger"> {{$errors->first('delifee') }} </div>
             </div>
 
@@ -70,9 +70,6 @@
               </select>
               <div class="form-control-feedback text-danger"> {{$errors->first('city') }} </div>
             </div>
-
-            
-            
 
             <div class="form-group">
               <button class="btn btn-primary" type="submit">Save</button>
@@ -88,36 +85,35 @@
 <script type="text/javascript">
   $(document).ready(function(){
     //alert("ok");
-
-
-
     $("#incity").click(function(){
-    if ($(this).is(':checked'))
-    {
-      $(".townshipname").show();
-     $(".deliveryfee").show();
-     $(".cityname").show();
-    }
-  });
+      if ($(this).is(':checked'))
+      {
+        $(".townshipname").show();
+        $(".deliveryfee input").val("");
+        $(".deliveryfee").show();
+        $(".cityname").show();
+      }
+    });
 
     $("#gate").click(function(){
-    if ($(this).is(':checked'))
-    {
-      $(".townshipname").hide();
-     $(".deliveryfee").show();
-     $(".cityname").show();
-    }
-  });
+      if ($(this).is(':checked'))
+      {
+        $(".townshipname").hide();
+        $(".deliveryfee input").val(1000);
+        $(".deliveryfee").show();
+        $(".cityname").show();
+      }
+    });
 
-
-     $("#post").click(function(){
-    if ($(this).is(':checked'))
-    {
-      $(".townshipname").hide();
-     $(".deliveryfee").show();
-     $(".cityname").show();
-    }
-  });
+    $("#post").click(function(){
+      if ($(this).is(':checked'))
+      {
+        $(".townshipname").hide();
+        $(".deliveryfee input").val(1000);
+        $(".deliveryfee").show();
+        $(".cityname").show();
+      }
+    });
   })
 </script>
 @endsection

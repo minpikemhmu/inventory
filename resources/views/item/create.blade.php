@@ -198,6 +198,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $(".township").hide();
+
     $(".mytownship").change(function(){
       var id=$(this).val();
       //console.log(id);
@@ -238,33 +239,32 @@
 
 
     $("input[name=rcity]").click(function(){
-
     if ($(this).is(':checked'))
     {
       $(".township").show();
-     var id=$(this).val();
+      var id=$(this).val();
 
-     if(id==1){
-      var today = new Date();
-      var numberofdays = 3;
-      today.setDate(today.getDate() + numberofdays); 
-      var day = ("0" + today.getDate()).slice(-2);
-      var month = ("0" + (today.getMonth() + 1)).slice(-2);
-      //console.log(month);
-      var incityday= today.getFullYear()+"-"+(month)+"-"+(day) ;
-      console.log(incityday);
-      $(".pickdate").val(incityday);
-     }else{
-      var today = new Date();
-      var numberofdays = 7;
-      today.setDate(today.getDate() + numberofdays); 
-      var day = ("0" + today.getDate()).slice(-2);
-      var month = ("0" + (today.getMonth() + 1)).slice(-2);
-      //console.log(month);
-      var gateday= today.getFullYear()+"-"+(month)+"-"+(day) ;
-      console.log(gateday);
-      $(".pickdate").val(gateday);
-     }
+      if(id==1){
+        var today = new Date();
+        var numberofdays = 3;
+        today.setDate(today.getDate() + numberofdays); 
+        var day = ("0" + today.getDate()).slice(-2);
+        var month = ("0" + (today.getMonth() + 1)).slice(-2);
+        //console.log(month);
+        var incityday= today.getFullYear()+"-"+(month)+"-"+(day) ;
+        console.log(incityday);
+        $(".pickdate").val(incityday);
+      }else{
+        var today = new Date();
+        var numberofdays = 7;
+        today.setDate(today.getDate() + numberofdays); 
+        var day = ("0" + today.getDate()).slice(-2);
+        var month = ("0" + (today.getMonth() + 1)).slice(-2);
+        //console.log(month);
+        var gateday= today.getFullYear()+"-"+(month)+"-"+(day) ;
+        console.log(gateday);
+        $(".pickdate").val(gateday);
+      }
 
       $.ajaxSetup({
          headers: {

@@ -22,6 +22,7 @@
                 <tr>
                   <th>#</th>
                   <th>Item Code</th>
+                  <th>Client</th>
                   <th>Delivery Men</th>
                   <th>Amount</th>
                   <th>Remark</th>
@@ -35,8 +36,11 @@
                  <tr>
                   <td>{{$i++}}</td>
                   <td><span class="btn badge badge-primary btndetail" data-itemid="{{$row->item->id}}">{{$row->item->codeno}}</span></td>
-                  <td>{{$row->delivery_man->user->name}}</td>
-                  <td>{{$amount}}</td>
+                  <td>{{$row->item->pickup->schedule->client->user->name}}</td>
+                  <td>{{$row->delivery_man->user->name}}
+                      @if($row->income) ({{'ရှင်းပြီး'}}) @endif
+                  </td>
+                  <td>{{$amount}} Ks</td>
                   <td>{{$row->remark}}</td>
                   @foreach($row->notifications as $notification)
                    @if($notification->unread())
