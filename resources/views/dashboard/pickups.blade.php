@@ -69,7 +69,7 @@
           </div> --}}
       <div class="row">
           @foreach($pickups as $row)
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="card mb-3">
               <h5 class="card-header">{{$row->schedule->client->user->name}} ({{$row->schedule->quantity}}) <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->schedule->pickup_date}}</small></h5>
               <div class="card-body">
