@@ -135,7 +135,7 @@
         <li><a class="app-menu__item {{ Request::is('items*') ? 'active' : '' }}" href="{{route('items.index')}}"><i class="app-menu__icon fa fa-archive"></i><span class="app-menu__label">Item List</span></a></li>
         <li><a class="app-menu__item {{ Request::is('clients*') ? 'active' : '' }}" href="{{route('clients.index')}}"><i class="app-menu__icon fa fa-user-circle"></i><span class="app-menu__label">Client List</span></a></li>
         <li><a class="app-menu__item {{ Request::is('delivery_men*') ? 'active' : '' }}" href="{{route('delivery_men.index')}}"><i class="app-menu__icon fa fa-user-circle-o"></i><span class="app-menu__label">Delivery Men</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('reject_list') ? 'active' : '' }}" href="{{route('reject_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Reject Ways</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('reject_list') ? 'active' : '' }}" href="{{route('reject_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label ">Reject Ways</span><span class="badge badge-danger rejectcount"></span></a></li>
         <li><a class="app-menu__item {{ Request::is('delay_list') ? 'active' : '' }}" href="{{route('delay_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Delay List</span></a></li>
         {{-- <li><a class="app-menu__item {{ Request::is('return_list') ? 'active' : '' }}" href="{{route('return_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Return List</span></a></li> --}}
         <li><a class="app-menu__item {{ Request::is('debt_list') ? 'active' : '' }}" href="{{route('debt_list')}}"><i class="app-menu__icon fa fa-list-alt"></i><span class="app-menu__label">Debit List</span></a></li>
@@ -173,6 +173,7 @@
 
   <!-- Page level custom scripts -->
   <script src="{{asset('demo/datatables-demo.js')}}"></script>
+  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     
     <!-- Google analytics script-->
     <script type="text/javascript">
@@ -184,6 +185,40 @@
         ga('create', 'UA-72504830-1', 'auto');
         ga('send', 'pageview');
       }
+
+
+      $(document).ready(function(){
+        showNoti()
+
+    function showNoti(){
+      $.get("/rejectnoti",function(res){
+        //console.log(res);
+        var count=res.length;
+        //console.log(count);
+        if(count>0){
+          $(".rejectcount").html(count);
+        }else{
+          $(".rejectcount").html(0);
+        }
+
+      })
+    }
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('12ebc307a9a06080ceea', {
+      cluster: 'mt1'
+    });
+
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      //alert(JSON.stringify(data));
+      showNoti();
+    });
+  
+      })
     </script>
     @yield('script')
   </body>

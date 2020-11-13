@@ -82,7 +82,9 @@ Route::middleware('auth')->group(function () {
   Route::get('checkitem/{pickupid}','ItemController@checkitem')->name('checkitem');
   Route::post('updateamount','ItemController@updateamount')->name('updateamount');
   
-
+Route::get('rejectnoti','MainController@rejectnoti')->name('rejectnoti');
+Route::get('clearrejectnoti/{id}','MainController@clearrejectnoti')->name('clearrejectnoti');
+Route::get('seennoti','MainController@seennoti')->name('seennoti');
   Route::post('updatewayassign','ItemController@updatewayassign')->name('updatewayassign');
   Route::post('townshipbystatus','ItemController@townshipbystatus')->name('townshipbystatus');
   Route::get('deletewayassign/{id}','ItemController@deletewayassign')->name('deletewayassign');
