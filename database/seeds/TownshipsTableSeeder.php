@@ -13,136 +13,154 @@ class TownshipsTableSeeder extends Seeder
     public function run()
     {
       Township::create([
+        'name' => 'Insein',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+      
+      Township::create([
+        'name' => 'Mayangone',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+      
+      Township::create([
+        'name' => 'Sawbwagyigone',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+      
+      Township::create([
+        'name' => 'Thamine',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+      
+      Township::create([
+        'name' => 'Parami',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+      
+      Township::create([
+        'name' => 'Hlaing',
+        'delivery_fees' =>'2000' ,
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+      
+      Township::create([
+        'name' => 'Kamayut',
+        'delivery_fees' =>'2000' ,
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+      
+      Township::create([
+        'name' => 'Myaynigone',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+      
+      Township::create([
+        'name' => 'Sanchaung',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+      
+      Township::create([
         'name' => 'Ahlon',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
+      
       Township::create([
-        'name' => 'Bahan',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-      Township::create([
-        'name' => 'Dagon',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-      Township::create([
-        'name' => 'Hlaing',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-      Township::create([
-        'name' => 'Kamayut',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-      Township::create([
-        'name' => 'Kyauktada',
+        'name' => 'Kyimyintnaing',
         'delivery_fees' =>'2000' ,
         'status' => 1,
         'city_id' => 1,
       ]);
-      Township::create([
-        'name' => 'Kyimyindaing',
-        'delivery_fees' =>'2000' ,
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-      Township::create([
-        'name' => 'Lanmadaw',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
+      
       Township::create([
         'name' => 'Latha',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
+
       Township::create([
-        'name' => 'Mayangon',
+        'name' => 'Lanmadaw',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
-      Township::create([
-        'name' => 'Sanchaung',
-        'delivery_fees' =>'2000' ,
+
+	    Township::create([
+        'name' => 'Kyauttada',
+        'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
-       Township::create([
+
+      Township::create([
         'name' => 'Pabedan',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
 
-        Township::create([
-        'name' => 'Pabedan',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-
-	 Township::create([
-        'name' => 'Botataung',
+      Township::create([
+        'name' => 'Sule',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
 
       Township::create([
-        'name' => 'Dagon Seikkan',
+        'name' => 'Bahan',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
 
       Township::create([
-        'name' => 'Dawbon',
+        'name' => 'Yankin',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
 
       Township::create([
-        'name' => 'Mingala Taungnyunt',
+        'name' => 'Tamwe',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
 
       Township::create([
-        'name' => 'New Dagon East',
+        'name' => 'Kyaytmaung',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
 
       Township::create([
-        'name' => 'New Dagon North',
+        'name' => 'Mingalartaungnyut',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
 
       Township::create([
-        'name' => 'New Dagon South',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-
-      Township::create([
-        'name' => 'North Okkalapa',
+        'name' => 'Botahtaung',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
@@ -156,145 +174,274 @@ class TownshipsTableSeeder extends Seeder
       ]);
 
       Township::create([
-        'name' => 'South Okkalapa',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-
-       Township::create([
-        'name' => 'Tamwe',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-
-       Township::create([
-        'name' => 'Thaketa',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-
-      Township::create([
         'name' => 'Thingangyun',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Thuwana',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Dawbon',
         'delivery_fees' => '2000',
         'status' => 1,
         'city_id' => 1,
       ]);
+      
       Township::create([
-        'name' => 'Yankin',
+        'name' => 'Thakata',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
 
       Township::create([
-        'name' => 'Cocokyun',
+        'name' => 'North Oakka',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
-       Township::create([
-        'name' => 'Dala',
+      
+      Township::create([
+        'name' => 'South Oakka',
         'delivery_fees' => '2000',
         'status' => 1,
         'city_id' => 1,
       ]);
-       Township::create([
-        'name' => 'Kawhmu',
+      
+      Township::create([
+        'name' => 'Kabaraye',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
-       Township::create([
-        'name' => 'Khayan',
+      
+      Township::create([
+        'name' => 'Aungmingalar Highway',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
-       Township::create([
-        'name' => 'Kungyangon',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-
-       Township::create([
-        'name' => 'Kyauktan',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-
-       Township::create([
-        'name' => 'Seikkyi Kanaungto',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-
-       Township::create([
-        'name' => 'Thanlyin',
-        'delivery_fees' =>'2000',
-        'status' => 1,
-        'city_id' => 1,
-      ]);
-
-       Township::create([
-        'name' => 'Thongwa',
+       
+      Township::create([
+        'name' => 'Bayintnaung',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
 
       Township::create([
-        'name' => 'Twante',
+        'name' => 'Phatkan',
         'delivery_fees' =>'2000',
         'status' => 1,
         'city_id' => 1,
       ]);
-	Township::create([
-        'name' => 'Kyaukse District',
+
+      Township::create([
+        'name' => 'Aungsan',
+        'delivery_fees' =>'2000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      // 2000 complete
+
+      Township::create([
+        'name' => 'North Dagon',
         'delivery_fees' =>'3000',
-        'status' => 2,
-        'city_id' => 2,
+        'status' => 1,
+        'city_id' => 1,
       ]);
-	Township::create([
+
+      Township::create([
+        'name' => 'South Dagon',
+        'delivery_fees' =>'3000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'East Dagon',
+        'delivery_fees' =>'3000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Hlaingthayar',
+        'delivery_fees' =>'3000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Shwepyitha',
+        'delivery_fees' =>'3000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Shew Pauk Kan',
+        'delivery_fees' =>'3000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Da Nyin Gone',
+        'delivery_fees' =>'3000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Mingalardon',
+        'delivery_fees' =>'3000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      // 3000 complete
+
+      Township::create([
+        'name' => 'Htauk Kyant',
+        'delivery_fees' =>'4000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+	    
+      Township::create([
+        'name' => 'Hmabi',
+        'delivery_fees' =>'4000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Thanlyan',
+        'delivery_fees' =>'4000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Kyauttan',
+        'delivery_fees' =>'4000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Dagon Seikkan',
+        'delivery_fees' =>'4000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      Township::create([
+        'name' => 'Yu Za Na',
+        'delivery_fees' =>'4000',
+        'status' => 1,
+        'city_id' => 1,
+      ]);
+
+      // 4000 complete
+	    
+      Township::create([
         'name' => 'Mandalay District',
         'delivery_fees' =>'3000',
+        'status' => 1,
+        'city_id' => 2,
+      ]);
+	   
+      Township::create([
+        'name' => 'Pyay District',
+        'delivery_fees' =>'3500',
+        'status' => 1,
+        'city_id' => 3,
+      ]);
+
+	    Township::create([
+        'name' => 'Naypyitaw District',
+        'delivery_fees' =>'3500',
+        'status' => 1,
+        'city_id' => 4,
+      ]);
+
+	    Township::create([
+        'name' => 'Taunggyi District',
+        'delivery_fees' =>'3500',
+        'status' => 1,
+        'city_id' => 5,
+      ]);
+
+      // complete (in direct delivery)
+
+      Township::create([
+        'name' => 'Mandalay Gate',
+        'delivery_fees' =>'1000',
         'status' => 2,
         'city_id' => 2,
       ]);
-	Township::create([
-        'name' => 'Meiktila District',
-        'delivery_fees' =>'3000',
+
+      Township::create([
+        'name' => 'Pyay Gate',
+        'delivery_fees' =>'1000',
         'status' => 2,
+        'city_id' => 3,
+      ]);
+
+      Township::create([
+        'name' => 'Naypyitaw Gate',
+        'delivery_fees' =>'1000',
+        'status' => 2,
+        'city_id' => 4,
+      ]);
+
+      Township::create([
+        'name' => 'Taunggyi Gate',
+        'delivery_fees' =>'1000',
+        'status' => 2,
+        'city_id' => 5,
+      ]);
+
+      // complete gate
+
+      Township::create([
+        'name' => 'Mandalay Post Office',
+        'delivery_fees' =>'1000',
+        'status' => 3,
         'city_id' => 2,
       ]);
-	Township::create([
-        'name' => 'Myingyan District',
-        'delivery_fees' =>'3000',
-        'status' => 2,
-        'city_id' => 2,
+
+      Township::create([
+        'name' => 'Pyay Post Office',
+        'delivery_fees' =>'1000',
+        'status' => 3,
+        'city_id' => 3,
       ]);
-	Township::create([
-        'name' => 'Nyaung-U District',
-        'delivery_fees' =>'3000',
-        'status' => 2,
-        'city_id' => 2,
+
+      Township::create([
+        'name' => 'Naypyitaw Post Office',
+        'delivery_fees' =>'1000',
+        'status' => 3,
+        'city_id' => 4,
       ]);
-	Township::create([
-        'name' => 'Pyin Oo Lwin District',
-        'delivery_fees' =>'3000',
-        'status' => 2,
-        'city_id' => 2,
+
+      Township::create([
+        'name' => 'Taunggyi Post Office',
+        'delivery_fees' =>'1000',
+        'status' => 3,
+        'city_id' => 5,
       ]);
-	Township::create([
-        'name' => 'Yamethin District',
-        'delivery_fees' =>'3000',
-        'status' => 2,
-        'city_id' => 2,
-      ]);
+
+      // complete post office
     }
 }

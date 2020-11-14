@@ -46,8 +46,8 @@ class TownshipController extends Controller
 
         $city=explode('_', $request->city);
         if($validator){
-            $gate=" gate";
-            $post=" post office";
+            $gate=" Gate";
+            $post=" Post Office";
             $township=new Township;
             if($request->rcity==2){
                $township->name=$city[1] .$gate; 

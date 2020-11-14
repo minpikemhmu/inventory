@@ -74,8 +74,8 @@
               <h5 class="card-header">{{$row->schedule->client->user->name}} ({{$row->schedule->quantity}}) <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->schedule->pickup_date}}</small></h5>
               <div class="card-body">
                 <h5 class="card-title">{{$row->schedule->client->address}}</h5>
-                <p class="card-text">{{$row->schedule->remark}}</p>
-              
+                <p class="card-text">Deposit: {{number_format($row->schedule->amount)}} Ks</p>
+                <p class="card-text">Quantity: {{$row->schedule->quantity}}</p>
                 @if($row->status==0)
                   <a href="#" class="btn btn-primary">Pending</a>
                   <a href="{{route('pickupdone',$row->id)}}" class="btn btn-success">Done</a>
