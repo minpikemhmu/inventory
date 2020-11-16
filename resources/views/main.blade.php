@@ -194,7 +194,7 @@
       $.get("/rejectnoti",function(res){
         //console.log(res);
         var count=res.length;
-        //console.log(count);
+        console.log(count);
         if(count>0){
           $(".rejectcount").html(count);
         }else{

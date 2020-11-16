@@ -291,7 +291,7 @@
       })
     })
 
-    seennoti();
+   /* seennoti();
     function seennoti(){
       $.get("/seennoti",function(res){
         //console.log(typeof res);
@@ -321,6 +321,6 @@
       //alert(JSON.stringify(data));
       seennoti();
       //$(".seen").html("seen");
-    });
+    });*/
   </script>
 @endsection

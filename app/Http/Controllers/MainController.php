@@ -320,9 +320,9 @@ public function profit(Request $request){
     $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->get();
     $successways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get(); 
     //$seen="seen";
-     Notification::send($ways,new SeenNotification($ways));
+     //Notification::send($ways,new SeenNotification($ways));
     //dd("ok");
-    event(new rejectitem($ways));
+   // event(new rejectitem($ways));
     return view('dashboard.ways',compact('ways','successways'));
   }
 
@@ -403,7 +403,8 @@ public function profit(Request $request){
     //$notidata=array();
     $cs=array();
     if(Auth::check()){
-      $rejectways=Way::where('refund_date','!=',null)->orderBy('id','desc')->get();
+      $rejectways=Way::where('status_code','003')->orderBy('id','desc')->get();
+     // dd($rejectways);
      foreach ($rejectways as $ways) {
         foreach ($ways->unreadNotifications as $notification) {
           
@@ -430,7 +431,7 @@ public function profit(Request $request){
 
    public function seennoti(){
      
-         $cs=array();
+        /* $cs=array();
     if(Auth::check()){
        $ways = Way::all();
      foreach ($ways as $way) {
@@ -442,6 +443,6 @@ public function profit(Request $request){
      }
     }
    // dd($cs);
-    return $cs;
+    return $cs;*/
    }
 }
