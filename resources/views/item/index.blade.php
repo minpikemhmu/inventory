@@ -103,21 +103,18 @@
                             </label>
                           </div>
                         </td>
-                        <td>{{$way->item->codeno}}  @if($way->status_code == '001')
-                      <span class="badge badge-info">{{'success'}}</span>
-                    @elseif($way->status_code == '002')
-                      <span class="badge badge-warning">{{'return'}}</span>
-                    @elseif($way->status_code == '003')
-                      <span class="badge badge-danger">{{'reject'}}</span>
-                    @endif
-                    
-                  </td>
-
-                    
-
+                        <td>{{$way->item->codeno}}  
+                          @if($way->status_code == '001')
+                            <span class="badge badge-info">{{'success'}}</span>
+                          @elseif($way->status_code == '002')
+                            <span class="badge badge-warning">{{'return'}}</span>
+                          @elseif($way->status_code == '003')
+                            <span class="badge badge-danger">{{'reject'}}</span>
+                          @endif
+                        </td>
                         <td>{{$way->item->township->name}}</td>
                         <td class="text-danger">
-                          {{$way->delivery_man->user->name}}<span class="badge badge-info seen"></span>
+                          {{$way->delivery_man->user->name}} <span class="badge badge-info seen"></span>
                         </td>
                         <td>{{$way->item->expired_date}}</td>
                         <td>{{$amount}}</td>

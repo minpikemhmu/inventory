@@ -43,8 +43,7 @@ class ItemController extends Controller
      */
     public function create()
     {
-
-        return view('item.create',compact('townships'));
+      return view('item.create',compact('townships'));
     }
 
     /**
@@ -67,7 +66,7 @@ class ItemController extends Controller
         'receiver_address'=>['required','string'],
         'receiver_township'=>['required'],
         'expired_date'=>['required','date'],
-        'deposit'=>['required'],
+        // 'deposit'=>['required'],
         'delivery_fees'=>['required'],
         'amount'=>['required'],
         'remark'=>['required','string']
@@ -265,7 +264,9 @@ class ItemController extends Controller
         //dd($itemcode);
         //dd($datecode);
         $pickup = Pickup::find($pid);
-        $townships=Township::all();
+        // $townships=Township::all();
+        $townships = Township::where('status',1)->get();
+
         $pickupeditem = Item::where('pickup_id',$pickup->id)->orderBy('id','desc')->first();
         return view('item.create',compact('client','pickup','townships','itemcode','pickupeditem'));
     }

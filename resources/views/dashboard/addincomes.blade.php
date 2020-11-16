@@ -71,7 +71,7 @@
             </select>
           </div>
 
-           <div class="form-group bankform">
+          <div class="form-group bankform">
             <label for="bank">Banks</label>
             <select class="form-control" id="bank" name="bank">
               <option>Choose Bank</option>
@@ -86,7 +86,11 @@
             <label for="cashamount">Cash amount</label>
             <input type="number" name="cash_amount" id="cashamount" class="form-control">
           </div>
-       
+
+          <div class="form-group carryfees">
+            <label for="carryfees">Carry Fees (တန်ဆာခ)</label>
+            <input type="number" name="carryfees" class="form-control">
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -100,6 +104,11 @@
 @section('script')
   <script type="text/javascript">
     $(document).ready(function () {
+      $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
       // $('#incomeform').hide();
       $(".bankform").hide();
       $(".bamountform").hide();
@@ -169,11 +178,21 @@
         $("#incomemodal").modal('show');
         var amount=$(this).data("amount");
         var id=$(this).data("id");
-        var delivery_fees=$(this).data("deliveryfee")
+        // alert(id);
+        var delivery_fees=$(this).data("deliveryfee");
         $(".totalamount").html(amount);
         $("#totalamount").val(amount);
         $("#way_id").val(id);
         $("#deliveryfee").val(delivery_fees);
+
+        // carry fees
+        $('.carryfees').hide();
+
+        $.post("{{route('getitembyway')}}",{wayid:id},function (response) {
+          if (response.deposit == null) {
+            $('.carryfees').show();
+          }
+        })
       })
 
       $("#paymenttype").change(function(){

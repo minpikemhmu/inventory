@@ -26,7 +26,7 @@
                   <th>Delivery Men</th>
                   <th>Amount</th>
                   <th>Remark</th>
-                  <th>Action</th>
+                  {{-- <th>Action</th> --}}
                 </tr>
               </thead>
               <tbody>
@@ -42,13 +42,13 @@
                   </td>
                   <td>{{$amount}} Ks</td>
                   <td>{{$row->remark}}</td>
-                  @foreach($row->notifications as $notification)
-                   @if($notification->unread())
-                  <td><a href="{{route('clearrejectnoti',$notification->id)}}" class="btn btn-sm btn-info">done</a></td>
-                  @else
-                  <td><a href="" class="btn btn-sm btn-primary">complete</a></td>
-                  @endif
-                  @endforeach
+                  {{-- @foreach($row->notifications as $notification)
+                    @if($notification->unread())
+                      <td><a href="{{route('clearrejectnoti',$notification->id)}}" class="btn btn-sm btn-info">done</a></td>
+                    @else
+                      <td><a href="" class="btn btn-sm btn-primary">complete</a></td>
+                    @endif
+                  @endforeach --}}
 
                 </tr>
                 @endforeach
