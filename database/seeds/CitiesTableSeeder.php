@@ -13,9 +13,8 @@ class CitiesTableSeeder extends Seeder
     {
       City::create(['name'=>'Yangon']);
       City::create(['name'=>'Mandalay']);
-      City::create(['name'=>'Naypyitaw']);
-      City::create(['name'=>'Myitkyinar']);
+      City::create(['name'=>'Pyay']);
+      City::create(['name'=>'Nay Pyi Taw']);
       City::create(['name'=>'Taunggyi']);
-      City::create(['name'=>'Monywa']);
     }
 }

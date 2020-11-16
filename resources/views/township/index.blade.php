@@ -43,7 +43,7 @@
                   <td>{{$i++}}</td>
                   <td>{{$row->name}}</td>
                   <td>{{$row->city->name}}</td>
-                  <td>{{number_format($row->delivery_fees)}}</td>
+                  <td>{{number_format($row->delivery_fees)}} Ks</td>
                   <td>
                     <a href="{{route('townships.edit',$row->id)}}" class="btn btn-warning">Edit</a>
                     <form action="{{ route('townships.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">

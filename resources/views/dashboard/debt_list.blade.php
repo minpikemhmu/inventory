@@ -232,14 +232,16 @@
           var html2="";
           let total2 = 0;
           for(let row of response.incomes){
+            let delivery_fees = 0;
+
             html2 +=`<tr>
                       <td>${j++}</td>
                       <td>${row.item.receiver_name} <span class="badge badge-info">${row.item.receiver_phone_no}</span></td>
-                      <td>${thousands_separators(row.item.delivery_fees)}</td>
+                      <td>${thousands_separators(delivery_fees)}</td>
                       <td>${thousands_separators(row.item.deposit)}</td>
-                      <td>${thousands_separators(row.item.amount)} Ks</td>
+                      <td>${thousands_separators(row.item.deposit + delivery_fees)} Ks</td>
                   </tr>`;
-                  total2 += Number(row.item.amount);
+                  total2 += Number(row.item.deposit + delivery_fees);
           }
           html2 +=`<tr>
                     <td colspan="4">Total: </td>

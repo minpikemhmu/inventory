@@ -20,7 +20,7 @@
           </div>
         @endif
         <div class="tile">
-          <h3 class="tile-title d-inline-block">Total deposit amount:{{$checkitems[0]->pickup->schedule->amount}}</h3>
+          <h3 class="tile-title d-inline-block">Total Deposit Amount: {{number_format($checkitems[0]->pickup->schedule->amount)}} Ks</h3>
           
           <div class="bs-component">
                 <div class="table-responsive">
@@ -32,9 +32,8 @@
                         <th>Reciver Township</th>
                         <th>Reciver Address</th>
                         <th>Reciver Phoneno</th>
-                        <th>Remark of item</th>
-                        <th>diposit amount</th>
-                        
+                        <th>Remark</th>
+                        <th>Deposit Amount</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -49,9 +48,7 @@
                       <td>{{$row->receiver_address}}</td>
                       <td>{{$row->receiver_phone_no}}</td>
                       <td>{{$row->remark}}</td>
-                      <td><input type="number" name="amount" value="{{$row->deposit}}" class="checkitemamount{{$j++}}" data-id="{{$row->id}}"></td>
-
-                      
+                      <td><input type="number" class="form-control" name="amount" value="@if($row->deposit){{$row->deposit}}@else{{0}}@endif" class="checkitemamount{{$j++}}" data-id="{{$row->id}}"></td>
                       @endforeach
                       
                     </tr>
@@ -60,7 +57,7 @@
                   </table>
                   <input type="hidden" name="totalamount" value="{{$checkitems[0]->pickup->schedule->amount}}" id="totaldeposit">
                   <input type="hidden" name="count" id="count" value="{{count($checkitems)}}">
-                  <button class="btn btn-primary checkitemsave">svae</button>
+                  <button class="btn btn-primary checkitemsave">Save</button>
 
                 </div>
               
@@ -85,35 +82,34 @@
       var totaldeposit=$("#totaldeposit").val()
       var myarray=[];
       for(var i=1;i<=count;i++){
-      var checkamount= $(".checkitemamount"+i).val();
-      var checkid= $(".checkitemamount"+i).data('id');
-      var checkobj={
-        id:checkid,
-        amount:checkamount
-      }
-      myarray.push(checkobj);
+        var checkamount= $(".checkitemamount"+i).val();
+        var checkid= $(".checkitemamount"+i).data('id');
+        var checkobj={
+          id:checkid,
+          amount:checkamount
+        }
+        myarray.push(checkobj);
       }
 
       var total=0;
       myarray.forEach( function(v, i) {
        total+=parseInt(v.amount);
       });
+
       if(totaldeposit==total){
-         $.ajaxSetup({
-         headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+        $.ajaxSetup({
+           headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
         });
-      $.post("/updateamount",{myarray:myarray},function(res){
-        if(res){
-          location.href="{{route('items.index')}}"
-        }
-      })
-    }else{
-      alert("amounts are not match");
-    }
-     
-      
+        $.post("/updateamount",{myarray:myarray},function(res){
+          if(res){
+            location.href="{{route('items.index')}}"
+          }
+        })
+      }else{
+        alert("amounts are not match");
+      }
     })
 
   })

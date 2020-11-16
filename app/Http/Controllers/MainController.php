@@ -285,6 +285,10 @@ public function profit(Request $request){
       $income->amount=null;
     }
     $income->save();
+
+    // if carry fees (carryfees)
+    // store into expense table 
+
     return redirect()->route('incomes.create')->with("successMsg",'Income added successfully');
   }
 
@@ -445,4 +449,13 @@ public function profit(Request $request){
    // dd($cs);
     return $cs;*/
    }
+
+  // for carry fees
+  public function getitembyway(Request $request)
+  {
+    $wayid = $request->wayid;
+    $way = Way::find($wayid);
+    $item =$way->item;
+    return $item;
+  }
 }

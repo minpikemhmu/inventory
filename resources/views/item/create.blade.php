@@ -55,7 +55,7 @@
                 <div class="row my-3">
               <div class="col-4">
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="rcity" id="incity" value="1">
+                  <input class="form-check-input" type="radio" name="rcity" id="incity" value="1" checked="checked">
                   <label class="form-check-label" for="incity">
                     In city
                   </label>
@@ -85,12 +85,9 @@
             <div class="form-group township">
                   <label for="InputReceiverTownship">Receiver Township:</label><br>
                   <select class="js-example-basic-single  mytownship" id="InputReceiverTownship" name="receiver_township"  >
-                    
-                    
-                      @foreach($townships as $row)
+                    @foreach($townships as $row)
                       <option value="{{$row->id}}">{{$row->name}}</option>
-                      @endforeach
-                  
+                    @endforeach
                   </select>
                   <div class="form-control-feedback text-danger"> {{$errors->first('receiver_township') }} </div>
                </div>
@@ -152,31 +149,33 @@
                     <input type="hidden" name="qty" value={{$pickup->schedule->quantity - count($pickup->items)}}>
                     <input type="hidden" name="myqty" value="{{$pickup->schedule->quantity}}">
                     <li class="list-group-item">Deposit for all item: {{number_format($pickup->schedule->amount-$total)}}KS</li>
+                    @if($pickup->schedule->quantity - count($pickup->items) == 1)
                     <li class="list-group-item">
                       <div class="row">
                         <div class="col-6">
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" >
+                            <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" checked="checked">
                             <label class="form-check-label" for="paid">
-                              paid
+                              Paid
                             </label>
                           </div>
                         </div>
-
                         <div class="col-6">
                           <div class="col-6">
-                          <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paystatus" id="unpaid" value="2" >
-                            <label class="form-check-label" for="unpaid">
-                              Unpaid
-                            </label>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="paystatus" id="unpaid" value="2" >
+                              <label class="form-check-label" for="unpaid">
+                                Unpaid
+                              </label>
+                            </div>
                           </div>
                         </div>
+                        <div class="col-md-12">
+                          <div class="form-control-feedback text-danger"> {{$errors->first('paystatus') }} </div>
                         </div>
-
-                        
                       </div>
                     </li>
+                    @endif
                   </ul>
                 </div>
 
@@ -197,7 +196,18 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
-    $(".township").hide();
+    // $(".township").hide();
+    // for in city
+    var today = new Date();
+    var numberofdays = 3;
+    today.setDate(today.getDate() + numberofdays); 
+    var day = ("0" + today.getDate()).slice(-2);
+    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    //console.log(month);
+    var incityday= today.getFullYear()+"-"+(month)+"-"+(day) ;
+    console.log(incityday);
+    $(".pickdate").val(incityday);
+
 
     $(".mytownship").change(function(){
       var id=$(this).val();
@@ -236,8 +246,6 @@
         $('#txtDate').attr('min', maxDate);
     });
 
-
-
     $("input[name=rcity]").click(function(){
     if ($(this).is(':checked'))
     {
@@ -254,6 +262,7 @@
         var incityday= today.getFullYear()+"-"+(month)+"-"+(day) ;
         console.log(incityday);
         $(".pickdate").val(incityday);
+        $('#InputDeposit').prop('disabled',false);
       }else{
         var today = new Date();
         var numberofdays = 7;
@@ -264,6 +273,8 @@
         var gateday= today.getFullYear()+"-"+(month)+"-"+(day) ;
         console.log(gateday);
         $(".pickdate").val(gateday);
+        $("#InputDeposit").val(0);
+        $('#InputDeposit').prop('disabled',true);
       }
 
       $.ajaxSetup({

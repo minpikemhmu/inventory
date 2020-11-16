@@ -96,7 +96,7 @@ Route::get('seennoti','MainController@seennoti')->name('seennoti');
   Route::get('incomes/addincomes', 'MainController@addincomeform')->name('incomes.create');
   Route::get('incomes/getsuccesswaysbydeliveryman/{id}', 'MainController@successways')->name('incomes.successways');
   Route::post('incomes/addincomes', 'MainController@addincomes')->name('incomes.store');
-
+  Route::post('getitembyway', 'MainController@getitembyway')->name('getitembyway');
   Route::resource('expenses','ExpenseController');
 
   // For Client
