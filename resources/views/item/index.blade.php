@@ -288,36 +288,6 @@
       })
     })
 
-   /* seennoti();
-    function seennoti(){
-      $.get("/seennoti",function(res){
-        //console.log(typeof res);
-        res.forEach( function(element, index) {
-          // statements
-          console.log(element.ways);
-          element.ways.forEach( function(v, i) {
-            if(v.item_id){
-              $(".seen").html("seen");
-            }
-            // statements
-          });
-        });
-
-      })
-    }
-
-    Pusher.logToConsole = true;
-
-    var pusher = new Pusher('12ebc307a9a06080ceea', {
-      cluster: 'mt1'
-    });
-
-
-    var channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data) {
-      //alert(JSON.stringify(data));
-      seennoti();
-      //$(".seen").html("seen");
-    });*/
+   
   </script>
 @endsection

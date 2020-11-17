@@ -16,6 +16,8 @@
         <div class="tile">
           @php $mytime = Carbon\Carbon::now(); @endphp
           <h3 class="tile-title d-inline-block">Delay List ({{$mytime->toFormattedDateString()}})</h3>
+
+          <a href="#" class="btn btn-primary float-right wayassign" id="submit_assign">Way Assign</a>
           <div class="table-responsive">
                   <table class="table table-bordered dataTable">
                     <thead>
@@ -42,7 +44,11 @@
                         $differentday=round($difference / 86400);
 
                        @endphp
-                        <td>{{$i++}}</td>
+                        <td><div class="animated-checkbox">
+                            <label class="mb-0">
+                              <input type="checkbox" name="assign[]" value="{{$row->id}}" data-codeno="{{$row->codeno}}"><span class="label-text"> </span>
+                            </label>
+                          </div></td>
                         <td>@if($differentday==1)<span class="badge badge-warning">{{$row->codeno}}</span> @elseif($differentday>1)<span class="badge badge-danger">{{$row->codeno}}</span>@endif</td>
                         <td class="text-danger">{{$row->township->name}}</td>
                         <td>
@@ -86,6 +92,42 @@
       </div>
     </div>
   </div>
+
+
+
+    <div class="modal fade" id="wayAssignModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Choose Delivery Man</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" action="{{route('wayassign')}}">
+          @csrf
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Way Code Numbers:</label>
+              <div id="selectedWays"></div>
+            </div>
+            <div class="form-group">
+              <label>Choose Delivery Man:</label>
+              <select class="js-example-basic-multiple form-control" name="delivery_man">
+                @foreach($deliverymen as $man)
+                  <option value="{{$man->id}}">{{$man->user->name}}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Assign</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 @endsection 
 @section('script')
 <script type="text/javascript">
@@ -107,6 +149,39 @@
           $("#rremark").html(res.remark);
           $(".rcode").html(res.codeno);
         })
+      })
+
+        $('.wayassign').click(function () {
+        var ways = [];
+        $.each($("input[name='assign[]']:checked"), function(){
+          let wayObj = {id:$(this).val(),codeno:$(this).data('codeno')};
+          ways.push(wayObj);
+        });
+        var html="";
+        for(let way of ways){
+          html+=`<input type="hidden" value="${way.id}" name="ways[]"><span class="badge badge-primary mx-2">${way.codeno}</span>`;
+        }
+        $('#selectedWays').html(html);
+
+        $('#wayAssignModal').modal('show');
+      })
+
+        $('.js-example-basic-multiple').select2({
+        width: '100%',
+        dropdownParent: $('#wayAssignModal')
+      });
+
+
+      var $submit = $("#submit_assign").hide();
+      $cbs = $('input[name="assign[]"]').click(function() {
+          $submit.toggle( $cbs.is(":checked") , 2000);
+      });
+
+      $(".wayedit").click(function(){
+        $('#editwayAssignModal').modal('show');
+        var id=$(this).data("id");
+        //console.log(id);
+        $("#wayid").val(id);
       })
 
   })

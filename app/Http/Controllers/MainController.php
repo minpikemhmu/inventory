@@ -108,12 +108,15 @@ class MainController extends Controller
   {
 
    // dd($delayitems);
-    $delayitems=Item::doesntHave('way')->get();
-    return view('dashboard.delay_list',compact('delayitems'));
+       $deliverymen = DeliveryMan::all();
+     $mytime = Carbon\Carbon::now();
+    $delayitems=Item::doesntHave('way')->whereDate('created_at','!=', Carbon\Carbon::today())->get();
+    return view('dashboard.delay_list',compact('delayitems','deliverymen'));
   }
 
   public function delaycount(){
-    $delayitems=Item::doesntHave('way')->get();
+    $mytime = Carbon\Carbon::now();
+    $delayitems=Item::doesntHave('way')->whereDate('created_at','!=', Carbon\Carbon::today())->get();
     $delaycount=count($delayitems);
     return $delaycount;
 
@@ -357,12 +360,16 @@ public function profit(Request $request){
   public function ways($value='')
   {
     // ways assigned for that user (must delivery_date and refund_date equal NULL)
-    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->get();
+    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('deleted_at',null)->get();
     $successways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get(); 
-    //$seen="seen";
-     //Notification::send($ways,new SeenNotification($ways));
-    //dd("ok");
-   // event(new rejectitem($ways));
+
+    foreach ($ways as $way) {
+      if(Carbon\Carbon::today()>$way->created_at){
+        //dd("hi");
+        $way->deleted_at=Carbon\Carbon::today();
+        $way->save();
+      }
+    }
     return view('dashboard.ways',compact('ways','successways'));
   }
 
