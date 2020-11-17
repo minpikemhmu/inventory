@@ -85,6 +85,7 @@
             <div class="form-group township">
                   <label for="InputReceiverTownship">Receiver Township:</label><br>
                   <select class="js-example-basic-single  mytownship" id="InputReceiverTownship" name="receiver_township"  >
+                    <option>Choose toenship</option>
                     @foreach($townships as $row)
                       <option value="{{$row->id}}">{{$row->name}}</option>
                     @endforeach
@@ -145,7 +146,7 @@
                     @endforeach
                     <input type="hidden" name="client_id" value="{{$client->id}}">
 
-                    <input type="hidden" name="depositamount" value={{$pickup->schedule->amount}}>
+                    <input type="hidden" name="depositamount" value="{{$pickup->schedule->amount}}" class="depositamount">
                     <input type="hidden" name="qty" value={{$pickup->schedule->quantity - count($pickup->items)}}>
                     <input type="hidden" name="myqty" value="{{$pickup->schedule->quantity}}">
                     <li class="list-group-item">Deposit for all item: {{number_format($pickup->schedule->amount-$total)}}KS</li>
@@ -225,9 +226,17 @@
 
     $("#InputAmount").focus(function(){
       var deposit=parseInt($('#InputDeposit').val());
+      var depositamount=$(".depositamount").val();
       var delivery_fees=parseInt($("#InputDeliveryFees").val());
-      var amount=deposit+delivery_fees;
+      if(deposit>depositamount){
+        alert("deposit amount is greate than total deposit amount!!please retype deposit fee again");
+        $("#InputDeposit").val(0);
+        $("#InputDeposit").focus();
+      }else{
+        var amount=deposit+delivery_fees;
       $(this).val(amount);
+      }
+     
     })
     
     $(function(){
