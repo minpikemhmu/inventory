@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
 
   // Delay List
   Route::get('delay_list','MainController@delay_list')->name('delay_list');
+  Route::get('delaycount','MainController@delaycount')->name('delaycount');
 
   // Financial Statement
   Route::get('statements','MainController@financial_statements')->name('statements');

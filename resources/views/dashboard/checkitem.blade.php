@@ -48,7 +48,7 @@
                       <td>{{$row->receiver_address}}</td>
                       <td>{{$row->receiver_phone_no}}</td>
                       <td>{{$row->remark}}</td>
-                      <td><input type="number" class="form-control" name="amount" value="@if($row->deposit){{$row->deposit}}@else{{0}}@endif" class="checkitemamount{{$j++}}" data-id="{{$row->id}}"></td>
+                      <td><input type="number" class="form-control checkitemamount{{$j++}}" name="amount" value="@if($row->deposit){{$row->deposit}}@else{{0}}@endif"  data-id="{{$row->id}}"></td>
                       @endforeach
                       
                     </tr>
@@ -79,11 +79,15 @@
 
     $(".checkitemsave").click(function(){
       var count=$("#count").val();
+      //console.log(count);
       var totaldeposit=$("#totaldeposit").val()
+      //console.log(totaldeposit);
+
       var myarray=[];
       for(var i=1;i<=count;i++){
         var checkamount= $(".checkitemamount"+i).val();
         var checkid= $(".checkitemamount"+i).data('id');
+        console.log(checkamount);
         var checkobj={
           id:checkid,
           amount:checkamount
@@ -92,9 +96,11 @@
       }
 
       var total=0;
+      //console.log(myarray);
       myarray.forEach( function(v, i) {
        total+=parseInt(v.amount);
       });
+      //console.log(total);
 
       if(totaldeposit==total){
         $.ajaxSetup({

@@ -32,6 +32,7 @@
                 </select>
               </div>
               <div class="form-group col-md-6 search_btn">
+                <input type="hidden" name="noti" value="" id="notiid">
                 <button class="btn btn-primary mt-4" type="submit">စာရင်းရှင်းမယ်</button>
               </div>
             </div>
@@ -199,7 +200,7 @@
         //alert(clientname)
         var url = `/debit/getdebitlistbyclient/${client_id}`;
         $.get(url,function (response) {
-          console.log(response);
+          $("#notiid").val(response.rejectnoti);
           if (response.expenses.length > 0 || response.incomes.length > 0) {
             $('.search_btn').show();
           }else{

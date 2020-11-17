@@ -25,6 +25,7 @@ use Notification;
 use App\User;
 use App\Events\rejectitem;
 use Illuminate\Notifications\DatabaseNotification;
+use App\Item;
 
 class MainController extends Controller
 {
@@ -105,9 +106,18 @@ class MainController extends Controller
   // for delay list page
   public function delay_list($value='')
   {
-    return view('dashboard.delay_list');
+
+   // dd($delayitems);
+    $delayitems=Item::doesntHave('way')->get();
+    return view('dashboard.delay_list',compact('delayitems'));
   }
 
+  public function delaycount(){
+    $delayitems=Item::doesntHave('way')->get();
+    $delaycount=count($delayitems);
+    return $delaycount;
+
+  }
   // financial_statements
   public function financial_statements($value='')
   {
@@ -133,7 +143,19 @@ class MainController extends Controller
         $query->where('client_id', $id);
     })->where('status_code','003')->where('refund_date',null)->get();
 
+    $myarray=[];
+    foreach ($incomes as $income) {
+     foreach ($income->unreadNotifications as $notification) {
+      //dd($notification->id);
+       array_push($myarray, $notification->id);
+     }
+      # code...
+    }
+
+    //dd($myarray);
+
     return Response::json(array(
+            'rejectnoti'=>$myarray,
            'expenses' => $expenses,
            'incomes' => $incomes,
       ));
@@ -141,9 +163,23 @@ class MainController extends Controller
 
   public function fix_debit(Request $request)
   {
+
+
     $request->validate([
       'client' => 'required'
     ]);
+
+    $notiarray=explode(",", $request->noti);
+    //dd($notiarray);
+    $mytime = Carbon\Carbon::now();
+    $date=$mytime->toDateString();
+
+    foreach ($notiarray as $notiid) {
+
+      $userconfirm= DB::table('notifications')->where('id', $notiid)->update(array('read_at' => $date));
+
+    }
+    
 
     $id = $request->client;
 
@@ -377,11 +413,9 @@ public function profit(Request $request){
             'remark' => 'required',
         ]);
       $wayid = $request->wayid;
-
-      
     
       $way = Way::where('id',$wayid)->first();
-      //dd($way);
+      if($way->status_id!=3){
       $way->status_id = 3;
       $way->status_code = '003';
       // $way->refund_date = date('Y-m-d');
@@ -392,6 +426,9 @@ public function profit(Request $request){
       Notification::send($way,new RejectNotification($way));
     //dd("ok");
     event(new rejectitem($way));
+      }
+      //dd($way);
+     
       
    return response()->json(['success'=>'successfully!']);
   }
@@ -425,32 +462,15 @@ public function profit(Request $request){
   }*/
    }
 
-   public function clearrejectnoti($id){
+   /*public function clearrejectnoti($id){
    // dd($id);
     $mytime = Carbon\Carbon::now();
       $date=$mytime->toDateString();
       $userconfirm= DB::table('notifications')->where('id', $id)->update(array('read_at' => $date));
       return redirect()->route('reject_list');
-   }
+   }*/
 
-   public function seennoti(){
-     
-        /* $cs=array();
-    if(Auth::check()){
-       $ways = Way::all();
-     foreach ($ways as $way) {
-        foreach ($way->unreadNotifications as $notification) {
-          
-          array_push($cs, $notification->data);
-        }
-       # code...
-     }
-    }
-   // dd($cs);
-    return $cs;*/
-   }
-
-  // for carry fees
+  
   public function getitembyway(Request $request)
   {
     $wayid = $request->wayid;

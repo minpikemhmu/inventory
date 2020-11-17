@@ -36,6 +36,8 @@ protected $waynoti;
 
     public function toDatabase($notifiable)
     {
+
+        
         return [
             'ways'=>$this->waynoti,
         ];
