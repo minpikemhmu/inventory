@@ -200,6 +200,7 @@
         //alert(clientname)
         var url = `/debit/getdebitlistbyclient/${client_id}`;
         $.get(url,function (response) {
+          console.log(response)
           $("#notiid").val(response.rejectnoti);
           if (response.expenses.length > 0 || response.incomes.length > 0) {
             $('.search_btn').show();
@@ -231,19 +232,57 @@
 
           let j=1;
           var html2="";
-          let total2 = 0;
-          for(let row of response.incomes){
+          let total2=totalreject=totalincome= 0;
+          for(let row of response.rejects){
             let delivery_fees = 0;
 
             html2 +=`<tr>
                       <td>${j++}</td>
-                      <td>${row.item.receiver_name} <span class="badge badge-info">${row.item.receiver_phone_no}</span></td>
+                      <td>${row.item.receiver_name}`; 
+            if(row.status_code == '003')
+                  html2 +=` <span class="badge badge-danger">reject</span>`;
+          
+            html2 +=`</td>
                       <td>${thousands_separators(delivery_fees)}</td>
                       <td>${thousands_separators(row.item.deposit)}</td>
                       <td>${thousands_separators(row.item.deposit + delivery_fees)} Ks</td>
                   </tr>`;
-                  total2 += Number(row.item.deposit + delivery_fees);
+                  totalreject += Number(row.item.deposit + delivery_fees);
           }
+
+          for(let row of response.incomes){
+            let delivery_fees=deposit=0;
+
+            html2 +=`<tr>
+                      <td>${j++}</td>
+                      <td>${row.way.item.receiver_name}`;
+
+            if(row.payment_type_id == 4){
+              delivery_fees = Number(row.way.item.delivery_fees);
+              deposit = Number(row.way.item.deposit);
+              html2 +=` <span class="badge badge-info">All OS</span>`;
+            }
+
+            if(row.payment_type_id == 5){
+              deposit = Number(row.way.item.deposit);
+              html2 +=` <span class="badge badge-info">Only Deposit</span>`;
+            }
+
+            if(row.payment_type_id == 6){
+              delivery_fees = Number(row.way.item.deposit);
+              html2 +=` <span class="badge badge-info">Only Deposit</span>`;
+            }
+
+            html2 +=`</td>
+                      <td>${thousands_separators(delivery_fees)}</td>
+                      <td>${thousands_separators(deposit)}</td>
+                      <td>${thousands_separators(delivery_fees+deposit)} Ks</td>
+                    </tr>`;
+                  totalincome += Number(delivery_fees + deposit);
+          }
+
+          total2  = Number(totalreject)+Number(totalincome);
+
           html2 +=`<tr>
                     <td colspan="4">Total: </td>
                     <td>${thousands_separators(total2)} Ks</td>
