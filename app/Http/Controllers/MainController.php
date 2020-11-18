@@ -361,15 +361,41 @@ public function profit(Request $request){
   {
     // ways assigned for that user (must delivery_date and refund_date equal NULL)
     $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('deleted_at',null)->get();
+    
     $successways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get(); 
 
     foreach ($ways as $way) {
-      if(Carbon\Carbon::today()>$way->created_at){
+      if(Carbon\Carbon::today()>$way->created_at && $way->status_code==005){
         //dd("hi");
         $way->deleted_at=Carbon\Carbon::today();
         $way->save();
       }
+     
+      $notifications=DB::table('notifications')->select('data')->get();
+        // dd($notifications);
+         $data = [];
+        if(count($notifications)>0){
+            //dd("hi");
+            foreach ($notifications as $noti) {
+                $notiarray=json_decode($noti->data);
+                $data[] = $notiarray->ways->id;
+            }
+        }
+
+          if(Carbon\Carbon::today()->toDateString()==$way->created_at->toDateString() && $way->status_code==005 && !in_array($way->id, $data)){
+            Notification::send($way,new SeenNotification($way));
+    //dd("ok");
+             event(new rejectitem($way));
+          }
+          
+      
+      
+        
+     
     }
+
+    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('deleted_at',null)->get();
+
     return view('dashboard.ways',compact('ways','successways'));
   }
 
@@ -455,12 +481,15 @@ public function profit(Request $request){
      // dd($rejectways);
      foreach ($rejectways as $ways) {
         foreach ($ways->unreadNotifications as $notification) {
-          
-          array_push($cs, $notification->data);
+          if($notification->data["ways"]["status_code"]=="003"){
+            array_push($cs, $notification->data);
+
+          }
         }
        # code...
      }
     }
+   // dd($cs);
     return $cs;
 
   /* for($i=0;$i<count($cs);$i++){
@@ -476,6 +505,7 @@ public function profit(Request $request){
       $userconfirm= DB::table('notifications')->where('id', $id)->update(array('read_at' => $date));
       return redirect()->route('reject_list');
    }*/
+
 
   
   public function getitembyway(Request $request)

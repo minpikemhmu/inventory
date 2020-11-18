@@ -173,7 +173,8 @@
 
   <!-- Page level custom scripts -->
   <script src="{{asset('demo/datatables-demo.js')}}"></script>
-  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+  <script src="{{ asset('assets/js/pusher.min.js') }}"></script>
+  <!-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> -->
     
     <!-- Google analytics script-->
     <script type="text/javascript">

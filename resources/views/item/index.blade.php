@@ -93,7 +93,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach($ways as $way)
+                     
+                      @foreach($ways as $way) 
                       @php $amount=number_format($way->item->amount) ;@endphp
                       <tr>
                         <td>
@@ -114,7 +115,13 @@
                         </td>
                         <td>{{$way->item->township->name}}</td>
                         <td class="text-danger">
-                          {{$way->delivery_man->user->name}} <span class="badge badge-info seen"></span>
+                          {{$way->delivery_man->user->name}} 
+                            @foreach($data as $dd)
+                            @if($dd->id==$way->id)
+                            <span class="badge badge-info seen">seen</span>
+                            @endif
+
+                           @endforeach
                         </td>
                         <td>{{$way->item->expired_date}}</td>
                         <td>{{$amount}}</td>
@@ -124,6 +131,7 @@
                           <a href="{{route('deletewayassign',$way->id)}}" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
                         </td>
                       </tr>
+                      
                       @endforeach
                     </tbody>
                   </table>
@@ -286,6 +294,8 @@
         //console.log(id);
         $("#wayid").val(id);
       })
+
+      
     })
 
    

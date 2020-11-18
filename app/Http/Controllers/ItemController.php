@@ -13,6 +13,8 @@ use Carbon;
 use Auth;
 use Session;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -33,7 +35,20 @@ class ItemController extends Controller
 
         $deliverymen = DeliveryMan::all();
         $ways = Way::all();
-        return view('item.index',compact('items','deliverymen','ways'));
+        
+        $notifications=DB::table('notifications')->select('data')->get();
+        $data=[];
+
+        foreach ($notifications as $noti) {
+
+          $notiway=json_decode($noti->data);
+          if($notiway->ways->status_code=="005"){
+            array_push($data, $notiway->ways);
+          }
+        }
+      // dd($data);
+
+        return view('item.index',compact('items','deliverymen','ways','data'));
     }
 
     /**
