@@ -295,6 +295,11 @@
         $("#wayid").val(id);
       })
 
+
+      setTimeout(function(){
+      window.location.reload(1);
+    }, 90000);
+
       
     })
 
