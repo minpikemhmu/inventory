@@ -234,6 +234,7 @@
           var html2="";
           let total2=totalreject=totalincome= 0;
           for(let row of response.rejects){
+            console.log(row)
             let delivery_fees = 0;
 
             html2 +=`<tr>

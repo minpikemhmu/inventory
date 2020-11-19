@@ -141,7 +141,9 @@ class MainController extends Controller
     // $client = Client::find($id);
     $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
 
-    $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item')->get();
+    $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
+      $query->where('client_id', $id);
+    })->get();
 
     // dd($incomes);
 
@@ -208,7 +210,9 @@ class MainController extends Controller
       $way->save();
     }
 
-    $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item')->get();
+    $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
+      $query->where('client_id', $id);
+    })->get();
     foreach ($incomes as $income) {
       $income->delivery_fees = $income->way->item->delivery_fees;
       $income->deposit = $income->way->item->deposit;
@@ -306,7 +310,7 @@ public function profit(Request $request){
 
     //validation
     $request->validate([
-      "carryfees" => 'required'
+      // "carryfees" => 'sometimes|required'
     ]);
 
     $income=new Income;
@@ -340,15 +344,17 @@ public function profit(Request $request){
     $income->save();
 
     // if carry fees (carryfees)
-    $expense = new Expense;
-    $expense->amount = $request->carryfees;
-    $expense->description = 'Carry Fees';
-    $expense->expense_type_id = 4;
-    $expense->staff_id = Auth::user()->staff->id;
-    $expense->city_id = 1;
-    $expense->item_id = $income->way->item_id;
-    $expense->status = 1;
-    $expense->save();
+    if($request->carryfees){
+      $expense = new Expense;
+      $expense->amount = $request->carryfees;
+      $expense->description = 'Carry Fees';
+      $expense->expense_type_id = 4;
+      $expense->staff_id = Auth::user()->staff->id;
+      $expense->city_id = 1;
+      $expense->item_id = $income->way->item_id;
+      $expense->status = 1;
+      $expense->save();
+    }
 
     return redirect()->route('incomes.create')->with("successMsg",'Income added successfully');
   }
