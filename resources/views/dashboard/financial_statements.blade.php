@@ -22,7 +22,7 @@
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="home">
-                <div class="row col-12">
+                <div class="row">
                   <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
                     <input type="date" name="" class="form-control start-date">
                   </div>

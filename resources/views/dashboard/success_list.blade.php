@@ -22,6 +22,7 @@
               {{-- <label for="InputMonth">Select Month:</label> --}}
               <select class="form-control" name="month" id="InputMonth">
                 <optgroup label="Select Month">
+                  <option value="null">Choose month</option>
                   <option value="01">Jan</option>
                   <option value="02">Feb</option>
                   <option value="03">Mar</option>
@@ -41,6 +42,7 @@
               {{-- <label for="InputDeliveryMan">Select Delivery Man:</label> --}}
               <select class="form-control" id="InputDeliveryMan" name="deliveryman">
                 <optgroup label="Select Delivery Man">
+                  <option value="null">Choose delivery</option>
                   @foreach($delivery_men as $deliveryman)
                     <option value="{{$deliveryman->id}}" data-name="{{$deliveryman->user->name}}">{{$deliveryman->user->name}}</option>
                   @endforeach
@@ -48,12 +50,12 @@
               </select>
             </div>
             <div class="form-group col-md-4">
-              <button class="btn btn-success search">Search</button>
+              <button class="btn btn-success btnsearch">Search</button>
             </div>
           </div>
 
           <div class="table-responsive">
-            <table class="table dataTable">
+            <table class="table" id="waystable">
               <thead>
                 <tr>
                   <th>#</th>
@@ -81,3 +83,38 @@
     </div>
   </main>
 @endsection 
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $(".btnsearch").click(function(){
+      //alert("ok");
+      var month=$("#InputMonth").val();
+      var deliveryman=$("#InputDeliveryMan").val();
+      //console.log(month);
+      $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+      var url="{{route('waysreport')}}";
+        $('#waystable').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        destroy:true,
+        "sort":false,
+        "stateSave": true,
+        "ajax": {
+            url: url,
+            type: "POST",
+            data:{month:month,deliveryman:deliveryman},
+            dataType:'json',
+        },
+        "info":false
+    } );
+    })
+
+  })
+</script>
+@endsection

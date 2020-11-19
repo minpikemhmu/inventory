@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
 
   Route::post('updateincome','MainController@updateincome')->name('updateincome');
   Route::post('incomesearch','MainController@incomesearch')->name('incomesearch');
+  Route::post('waysreport','MainController@waysreport')->name('waysreport');
  Route::post('expensesearch','MainController@expensesearch')->name('expensesearch');
   Route::post('profit','MainController@profit')->name('profit');
   //pickupdone by delivery man
