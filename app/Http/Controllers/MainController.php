@@ -537,4 +537,15 @@ public function profit(Request $request){
     $item =$way->item;
     return $item;
   }
+
+  public function waysreport(Request $request){
+    dd($request->month);
+
+    if($request->deliveryman==null){
+      dd("hi");
+    }else{
+      dd("hello");
+    }
+
+  }
 }
