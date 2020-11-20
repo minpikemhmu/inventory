@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
   // Financial Statement
   Route::get('statements','MainController@financial_statements')->name('statements');
 
+  Route::post('successreport','MainController@successreport')->name('successreport');
+
   // Debt List
   Route::get('debt_list','MainController@debt_list')->name('debt_list');
   Route::get('debit/getdebitlistbyclient/{id}', 'MainController@getdebitlistbyclient')->name('debit.getdebitlistbyclient');
