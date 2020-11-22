@@ -28,86 +28,67 @@
 
 
           <div class="bs-component">
-            @role('staff')
             <ul class="nav nav-tabs">
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedules">Schedules</a></li>
-              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#assigned">Assigned</a></li>
-            @endrole
+              <li class="nav-item"><a class="nav-link @role('client'){{'active'}}@endrole" data-toggle="tab" href="#schedules">Schedules</a></li>
+              <li class="nav-item"><a class="nav-link @role('staff'){{'active'}}@endrole" data-toggle="tab" href="#assigned">Assigned</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
-              <div class="tab-pane fade" id="schedules">
+              <div class="tab-pane fade @role('client'){{'active show'}}@endrole" id="schedules">
                 <div class="table-responsive">
                   <table class="table dataTable">
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Client Name</th>
+                        @role('staff')<th>Client Name</th>@endrole
                         <th>Pickup Date</th>
                         <th>Remark</th>
                         <th>Quantity</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    @role('staff')
-                    <tbody>
-                      @php $i=1; @endphp
-                      @foreach($staffschedules as $row)
-                      <tr>
-                        <td>{{$i++}}</td>
-                        <td class="text-danger">{{$row->client->user->name}}</td>
-                        <td>{{$row->pickup_date}}</td>
-                        <td>{{$row->remark}}</td>
-                        <td>{{$row->quantity}}</td>
-                        <td>
-                          <a href="#" class="btn btn-primary assign" data-id="{{$row->id}}">Assign</a>
-                          <a href="#" class="btn btn-info showfile" data-file="{{$row->file}}">show file</a>
-                        </td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                    @endrole
-
-                    @role('client')
                     <tbody>
                       @php $i=1; @endphp
                       @foreach($schedules as $row)
                       <tr>
                         <td>{{$i++}}</td>
-                        <td>{{$row->client->user->name}}</td>
+                        @role('staff')
+                          <td class="text-danger">{{$row->client->user->name}}</td>
+                        @endrole
                         <td>{{$row->pickup_date}}</td>
                         <td>{{$row->remark}}</td>
                         <td>{{$row->quantity}}</td>
                         <td>
-                          @if($row->status==0)
-                          <a href="#" class="btn btn-primary addfile" data-id="{{$row->id}}" data-file="{{$row->file}}">Add file for cpmplete</a>
-                          @else
-                         
-                            <a href="#" class="btn btn-info">completed</a>
-                         
-                          @endif
-                          <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">Edit</a>
-                          <form action="{{ route('schedules.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
-
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                          </form>
-                        
+                          @role('staff')
+                            <a href="#" class="btn btn-primary assign" data-id="{{$row->id}}">Assign</a>
+                            <a href="#" class="btn btn-info showfile" data-file="{{$row->file}}">show file</a>
+                          @endrole
+                          @role('client')
+                            @if($row->status==0)
+                              <a href="#" class="btn btn-primary addfile" data-id="{{$row->id}}" data-file="{{$row->file}}">Add file for cpmplete</a>
+                            @else
+                              <a href="#" class="btn btn-info">completed</a>
+                            @endif
+                            <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                            <form action="{{ route('schedules.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
+                              @csrf
+                              @method('DELETE')
+                              <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                          @endrole
                         </td>
                       </tr>
                       @endforeach
                     </tbody>
-                    @endrole
                   </table>
                 </div>
               </div>
-              <div class="tab-pane fade active show" id="assigned">
+              <div class="tab-pane fade @role('staff'){{'active show'}}@endrole" id="assigned">
                 <div class="table-responsive">
                   <table class="table dataTable">
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Client Name</th>
+                        @role('staff')<th>Client Name</th>@endrole
                         <th>Pickup Date</th>
                         <th>Remark</th>
                         <th>Delivery Man</th>
@@ -120,7 +101,7 @@
                       @foreach($pickups as $row)
                       <tr>
                         <td>{{$i++}}</td>
-                        <td class="text-danger">{{$row->schedule->client->user->name}}</td>
+                        @role('staff')<td class="text-danger">{{$row->schedule->client->user->name}}</td>@endrole
                         <td>{{$row->schedule->pickup_date}}</td>
                         <td>{{$row->schedule->remark}}</td>
                         <td class="text-danger">{{$row->delivery_man->user->name}}</td>
@@ -129,7 +110,7 @@
                           @if($row->status==1 && $row->schedule->quantity > count($row->items))
                             <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'pid'=>$row->id])}}" class="btn btn-primary">Collect</a>
                           @elseif($row->status == 1 && $row->schedule->quantity == count(($row->items)))
-                            <button type="button" class="btn btn-info">complete</button>
+                            <button type="button" class="btn btn-info">completed</button>
                           @elseif($row->status==2)
                            <a href="{{route('checkitem',$row->id)}}" class="btn btn-danger">fail</a>
                           @else

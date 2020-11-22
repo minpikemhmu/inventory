@@ -20,16 +20,20 @@ class ScheduleController extends Controller
         $role=Auth::user()->roles()->first();
         $rolename=$role->name;
          
-        $staffschedules=Schedule::doesntHave('pickup')->where('status',1)->get();
-        $schedules="";
-        if($rolename=="client"){
-        $user=Auth::user();
-        $client=$user->client->id;
-        $schedules=Schedule::where('client_id',$client)->get();
-        }
+        $schedules=Schedule::doesntHave('pickup')->where('status',1)->get();
         $pickups=Pickup::orderBy('id','desc')->get();
+
+        if($rolename=="client"){
+            $user=Auth::user();
+            $client=$user->client->id;
+            $schedules=Schedule::doesntHave('pickup')->where('status',1)->where('client_id',$client)->get();
+            $pickups=Pickup::orderBy('id','desc')->with('schedule')->whereHas('schedule', function ($query) use ($client){
+                $query->where('client_id', $client);
+            })->get();
+        }
+
         $deliverymen=DeliveryMan::all();
-        return view('schedule.index',compact('schedules','staffschedules','deliverymen','pickups'));
+        return view('schedule.index',compact('schedules','deliverymen','pickups'));
     }
 
     /**

@@ -39,6 +39,7 @@
                       <tr>
                         <th>#</th>
                         <th>Codeno</th>
+                        <th>Client Name</th>
                         <th>Township</th>
                         <th>Receiver Info</th>
                         <th>Expired Date</th>
@@ -57,6 +58,7 @@
                           </div>
                         </td>
                         <td>{{$row->codeno}}</td>
+                        <td>{{$row->pickup->schedule->client->user->name}}</td>
                         <td class="text-danger">{{$row->township->name}}</td>
                         <td>
                           {{$row->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span>

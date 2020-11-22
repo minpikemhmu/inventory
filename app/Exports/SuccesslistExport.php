@@ -23,7 +23,9 @@ protected $reportstdate,$reportenddate;
     public function view(): View
     {
 
-    $today = today(); 
+    $today = today();
+    $month = $today->format('m');
+    // dd($month);
     $dates = []; 
 
     for($i=1; $i < $today->daysInMonth + 1; ++$i) {
@@ -43,6 +45,6 @@ protected $reportstdate,$reportenddate;
     $query->WhereMonth('created_at',$mymonth)->where('status','1');
  	 })->orWhereDoesntHave('pickups')->with('user')->get();
   	//dd($ways);
-       return view('dashboard.successview',compact('ways','dates'));
+       return view('dashboard.successview',compact('ways','dates','month'));
     }
 }

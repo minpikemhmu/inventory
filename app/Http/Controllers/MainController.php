@@ -134,9 +134,28 @@ class MainController extends Controller
   // for debt list page
   public function debt_list($value='')
   {
-     // $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','=',Null)->get();
-     //dd($incomes);
-     $clients = Client::all();
+    // $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','=',Null)->get();
+    //dd($incomes);
+    $clients = Client::all();
+
+    $role=Auth::user()->roles()->first();
+    $rolename=$role->name;
+    if($rolename == "client") {
+      $client_id=Auth::user()->client->id;
+      $expenses = Expense::where('client_id',$client_id)->where('status',2)->with('expense_type')->get();
+
+      $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($client_id){
+        $query->where('client_id', $client_id);
+      })->get();
+
+      $rejects =  Way::with('item.pickup.schedule')
+      ->whereHas('item.pickup.schedule', function($query) use ($client_id){
+          $query->where('client_id', $client_id);
+      })->where('status_code','003')->where('refund_date',null)->get();
+
+      return view('dashboard.debt_list',compact('clients', 'expenses', 'incomes', 'rejects'));
+    }
+
     return view('dashboard.debt_list',compact('clients'));
   }
 
@@ -419,11 +438,6 @@ public function profit(Request $request){
     //dd("ok");
              event(new rejectitem($way));
           }
-          
-      
-      
-        
-     
     }
 
     $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('deleted_at',null)->get();
@@ -498,10 +512,16 @@ public function profit(Request $request){
    return response()->json(['success'=>'successfully!']);
   }
 
-  // for cancel list
+  // for cancel list => client side
   public function cancel($value='')
   {
-    $ways = Way::where('status_id',3)->get();
+    $client_id=Auth::user()->client->id;
+    // $ways = Way::where('status_id',3)->get();
+
+    $ways =  Way::with('item.pickup.schedule')->whereHas('item.pickup.schedule', function($query) use ($client_id){
+        $query->where('client_id', $client_id);
+    })->where('status_code','003')->get();
+
     return view('dashboard.cancel',compact('ways'));
   }
 
@@ -515,7 +535,6 @@ public function profit(Request $request){
         foreach ($ways->unreadNotifications as $notification) {
           if($notification->data["ways"]["status_code"]=="003"){
             array_push($cs, $notification->data);
-
           }
         }
        # code...
