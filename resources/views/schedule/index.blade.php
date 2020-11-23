@@ -108,7 +108,12 @@
                         <td>{{$row->schedule->quantity}}</td>
                         <td>
                           @if($row->status==1 && $row->schedule->quantity > count($row->items))
-                            <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'pid'=>$row->id])}}" class="btn btn-primary">Collect</a>
+                            @role('staff')
+                              <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'pid'=>$row->id])}}" class="btn btn-primary">Collect</a>
+                            @endrole
+                            @role('client')
+                              <button type="button" class="btn btn-info">Brought</button>
+                            @endrole
                           @elseif($row->status == 1 && $row->schedule->quantity == count(($row->items)))
                             <button type="button" class="btn btn-info">completed</button>
                           @elseif($row->status==2)

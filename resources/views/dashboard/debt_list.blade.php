@@ -17,7 +17,7 @@
         <div class="tile">
           @php $mytime = Carbon\Carbon::now(); @endphp
           <h3 class="tile-title d-inline-block">Debt List ({{$mytime->toFormattedDateString()}})</h3>
-          @role('staff')
+          @role('staff|admin')
           <form method="post" action="{{route('fix_debit')}}">
             @csrf
             <div class="row">
@@ -95,17 +95,36 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          @php $i=1; $total=0; @endphp
-                          @foreach($incomes as $row)
-                          <td>{{$i++}}</td>
-                          <td>{{$row->way->item->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span></td>
-                          <td>{{$row->payment_type->name}}</td>
-                          <td>{{number_format($row->way->item->delivery_fees)}}</td>
-                          <td>{{number_format($row->way->item->deposit)}}</td>
-                          <td>{{number_format($row->way->item->delivery_fees + $row->way->item->deposit)}}</td>
-                          @php $total += ($row->way->item->delivery_fees + $row->way->item->deposit); @endphp
-                        </tr>
+                        @php $i=1; $total=0; @endphp
+                        @foreach($incomes as $income)
+                          @php $delifees = 0; @endphp
+                          @if($income->payment_type_id == 5)
+                            @php $delifees = 0; @endphp
+                          @else
+                            @php $delifees = $income->way->item->delivery_fees; @endphp
+                          @endif
+                          <tr>
+                            <td>{{$i++}}</td>
+                            <td>{{$income->way->item->receiver_name}} <span class="badge badge-dark">{{$income->receiver_phone_no}}</span></td>
+                            <td>{{$income->payment_type->name}}</td>
+                            <td>
+                              {{number_format($delifees)}}
+                            </td>
+                            <td>{{number_format($income->way->item->deposit)}}</td>
+                            <td>{{number_format($delifees + $income->way->item->deposit)}}</td>
+                            @php $total += ($delifees + $income->way->item->deposit); @endphp
+                          </tr>
+                        @endforeach
+                        @foreach($rejects as $reject)
+                          <tr>
+                            <td>{{$i++}}</td>
+                            <td>{{$reject->way->item->receiver_name}} <span class="badge badge-dark">{{$reject->receiver_phone_no}}</span></td>
+                            <td>{{$reject->payment_type->name}}</td>
+                            <td>{{number_format($reject->way->item->delivery_fees)}}</td>
+                            <td>{{number_format($reject->way->item->deposit)}}</td>
+                            <td>{{number_format($reject->way->item->delivery_fees + $reject->way->item->deposit)}}</td>
+                            @php $total += ($reject->way->item->delivery_fees + $reject->way->item->deposit); @endphp
+                          </tr>
                         @endforeach
                         <tr>
                           <td colspan="5">Total:</td>

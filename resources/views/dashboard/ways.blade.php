@@ -78,9 +78,12 @@
                     <td>{{number_format($way->item->amount)}}</td>
                     <td>
                       @if($way->status_code == 005)
-                      <a href="#" class="btn btn-info btn-sm success" data-id="{{$way->id}}">Success</a>
-                      <a href="#" class="btn btn-warning btn-sm return" data-id="{{$way->id}}">Return</a>
-                      <a href="#" class="btn btn-danger btn-sm reject" data-id="{{$way->id}}">Reject</a>
+                        
+                          <a href="#" class="btn btn-info btn-sm success" data-id="{{$way->id}}">Success</a>
+                        @if($way->item->deposit != 0)
+                          <a href="#" class="btn btn-warning btn-sm return" data-id="{{$way->id}}">Return</a>
+                          <a href="#" class="btn btn-danger btn-sm reject" data-id="{{$way->id}}">Reject</a>
+                        @endif
                       @endif
                       <a href="#" class="btn btn-sm btn-primary detail" data-id="{{$way->item->id}}">Detail</a> 
                     </td>
