@@ -91,7 +91,7 @@
                         <h4 class="card-title">Delivery Man</h4>
                     </div>
                     <div class="card-body">
-                        <p class="card-text">deliveryman@gmail.com</p>
+                        <p class="card-text">deliveryman1@gmail.com, deliveryman2@gmail.com</p>
                         <p class="card-text">12345678</p>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                         <h4 class="card-title">Client Account</h4>
                     </div>
                     <div class="card-body">
-                        <p class="card-text">client@gmail.com</p>
+                        <p class="card-text">client1@gmail.com, client2@gmail.com</p>
                         <p class="card-text">12345678</p>
                     </div>
                 </div>
