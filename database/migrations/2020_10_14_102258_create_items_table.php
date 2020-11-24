@@ -30,6 +30,7 @@ class CreateItemsTable extends Migration
             $table->unsignedBigInteger('pickup_id');
             $table->unsignedBigInteger('township_id');
             $table->unsignedBigInteger('staff_id');
+            $table->string('error_remark')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

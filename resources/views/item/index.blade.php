@@ -63,7 +63,12 @@
                         <td>
                           {{$row->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span>
                         </td>
-                        <td>{{$row->expired_date}}</td>
+                        <td>
+                          {{$row->expired_date}}
+                          @if($row->error_remark !== null)
+                            <span class="badge badge-warning">date changed</span>
+                          @endif
+                        </td>
                         <td>{{number_format($row->amount)}}</td>
                         <td>
                           <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">Detail</a>
@@ -229,6 +234,8 @@
           <p><strong >Receiver Address:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
           <p><strong>Remark:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
 
+          <p id="error_remark" class="d-none"></p>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
@@ -271,6 +278,12 @@
           $("#rphone").html(res.receiver_phone_no);
           $("#raddress").html(res.receiver_address);
           $("#rremark").html(res.remark);
+
+          if(res.error_remark != null){
+            $('#error_remark').removeClass('d-none')
+            $("#error_remark").html(`<strong>Date Changed Remark:</strong> <span class="text-warning">${res.error_remark}</span>`)
+          }
+
           $(".rcode").html(res.codeno);
         })
       })
