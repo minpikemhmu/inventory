@@ -470,15 +470,13 @@ public function profit(Request $request){
       //dd($ways);
       $way = Way::where('id',$wayid)->first();
       //dd($way);
-      $way->status_id = 2;
-      $way->status_code = '002';
-      $way->remark = $request->remark;
-      $way->save();
-      // $way->deleted_at=$mytime;
-      
+      // $way->status_id = 2;
+      // $way->status_code = '002';
+      // $way->remark = $request->remark;
       $way->delete();
 
       $way->item->expired_date = $request->date;
+      $way->item->error_remark = $request->remark;
       $way->item->save();
 
     return response()->json(['success'=>'successfully!']);
