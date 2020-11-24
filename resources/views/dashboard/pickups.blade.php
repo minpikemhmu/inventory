@@ -91,3 +91,10 @@
       </div>
   </main>
 @endsection 
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+     setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+  })
+</script>
+@endsection

@@ -197,6 +197,7 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
+    setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
     // $(".township").hide();
     // for in city
     var today = new Date();
