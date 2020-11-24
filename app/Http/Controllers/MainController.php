@@ -240,7 +240,7 @@ class MainController extends Controller
       $income->delivery_fees = $income->way->item->delivery_fees;
       $income->deposit = $income->way->item->deposit;
       $income->amount = $income->way->item->amount;
-      $income->cash_amount = $way->item->amount;
+      $income->cash_amount = $income->way->item->amount;
       $income->payment_type_id = 1;
       $income->save();
     }

@@ -189,7 +189,7 @@
         $('.carryfees').hide();
 
         $.post("{{route('getitembyway')}}",{wayid:id},function (response) {
-          if (response.deposit == null) {
+          if (response.deposit == 0) {
             $('.carryfees').show();
           }
         })
