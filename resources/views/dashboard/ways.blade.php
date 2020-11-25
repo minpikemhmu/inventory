@@ -120,6 +120,7 @@
                     <td class="text-danger">{{$way->item->expired_date}}</td>
                     <td>{{number_format($way->item->amount)}}</td>
                     <td>
+                      <a href="{{route('normal',$way->id)}}" class="btn btn-warning">edit</a>
                       <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
                     </td>
                   </tr>

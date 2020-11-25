@@ -85,7 +85,7 @@
             <div class="form-group township">
                   <label for="InputReceiverTownship">Receiver Township:</label><br>
                   <select class="js-example-basic-single  mytownship" id="InputReceiverTownship" name="receiver_township"  >
-                    <option>Choose toenship</option>
+                    <option>Choose township</option>
                     @foreach($townships as $row)
                       <option value="{{$row->id}}">{{$row->name}}</option>
                     @endforeach

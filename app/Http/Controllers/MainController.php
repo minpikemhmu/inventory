@@ -315,7 +315,7 @@ public function profit(Request $request){
     $paymenttypes=PaymentType::all();
     $banks=Bank::all();
     $ways =Way::doesntHave('income')->where('ways.delivery_man_id',$id)
-            ->where('ways.status_code',001)
+            ->whereDate('created_at', Carbon\Carbon::today())
             ->get();
     $ways =  SuccesswayResource::collection($ways);
     //dd($ways);
@@ -443,8 +443,8 @@ public function profit(Request $request){
   public function ways($value='')
   {
     // ways assigned for that user (must delivery_date and refund_date equal NULL)
-    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('deleted_at',null)->get();
-    
+    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('status_code','!=',002)->where('deleted_at',null)->get();
+    //dd($ways);
     $successways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get(); 
 
     foreach ($ways as $way) {
@@ -452,7 +452,7 @@ public function profit(Request $request){
         $way->delete();
       }
      
-      $notifications=DB::table('notifications')->select('data')->get();
+      $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
         // dd($notifications);
          $data = [];
         if(count($notifications)>0){
@@ -470,7 +470,7 @@ public function profit(Request $request){
           }
     }
 
-    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('deleted_at',null)->get();
+    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('status_code','!=',002)->where('deleted_at',null)->get();
 
     return view('dashboard.ways',compact('ways','successways'));
   }
@@ -502,10 +502,10 @@ public function profit(Request $request){
       //dd($ways);
       $way = Way::where('id',$wayid)->first();
       //dd($way);
-      // $way->status_id = 2;
-      // $way->status_code = '002';
-      // $way->remark = $request->remark;
-      $way->delete();
+      $way->status_id = 2;
+      $way->status_code = '002';
+      $way->remark = $request->remark;
+      $way->save();
 
       $way->item->expired_date = $request->date;
       $way->item->error_remark = $request->remark;
@@ -642,5 +642,14 @@ public function profit(Request $request){
   }
 
 
+  }
+
+  public function normal($id){
+    $way=Way::find($id);
+    $way->status_code="005";
+    $way->delivery_date=Null;
+    $way->status_id=5;
+    $way->save();
+    return redirect()->route('ways')->with("successMsg",'edit successfully');
   }
 }

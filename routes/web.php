@@ -69,6 +69,8 @@ Route::middleware('auth')->group(function () {
   //amounta ad qty edit
    Route::post('editamountandqty','MainController@editamountandqty')->name('editamountandqty');
 
+//normal
+Route::get('normal/{id}','MainController@normal')->name('normal');
   // staff
   Route::resource('staff','StaffController');
 

@@ -172,7 +172,10 @@
               <label>Choose Delivery Man:</label>
               <select class="js-example-basic-multiple form-control" name="delivery_man">
                 @foreach($deliverymen as $man)
-                  <option value="{{$man->id}}">{{$man->user->name}}</option>
+                  <option value="{{$man->id}}">{{$man->user->name}}
+                  @foreach($man->townships as $township)
+                    ({{$township->name}})
+                  @endforeach</option>
                 @endforeach
               </select>
             </div>

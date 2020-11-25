@@ -29,14 +29,16 @@ class ItemController extends Controller
           $status=1;  
           $items=Item::whereHas('pickup',function($query)use($status){
         $query->where('status',1);
-          })->doesntHave('way')->get();
+          })->doesntHave('way')->orWhereHas('way', function($query) {
+        $query->where('status_code', '002' );
+    })->get();
          //dd($myitems);
         
 
         $deliverymen = DeliveryMan::all();
         $ways = Way::all();
         
-        $notifications=DB::table('notifications')->select('data')->get();
+        $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
         $data=[];
 
         foreach ($notifications as $noti) {

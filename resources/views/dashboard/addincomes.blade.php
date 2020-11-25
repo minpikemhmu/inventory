@@ -154,6 +154,7 @@
                 })
                 $("#bank").html(hh);
           for(let row of response.ways){
+            //console.log(row.status_code);
             total+=row.item_amount;
             html +=`
               <tr>
@@ -164,11 +165,21 @@
                       ${row.delivery_man.user.user_name}
                     </td>
                     <td>${row.delivery_date}</td>
-                    <td>${thousands_separators(row.item.item_amount)}</td>
-                    <td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.township.delivery_fees}">save</button></td>
+                    <td>${thousands_separators(row.item.item_amount)}</td>`
+
+                    if(row.status_code=="001"){
+                      html+=`<td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.township.delivery_fees}">save</button></td>
                   </tr>
-            `;
+            `
+                    }else if(row.status_code=="002"){
+                     html+= `<td><span class="badge badge-info">return way</span></td>`
+                    }else if(row.status_code=="003"){
+                     html+= `<td><span class="badge badge-danger">reject way</span></td>`
+                    }
+
+                    ;
           }
+          
 
           $('#incomeform').html(html);
         })
