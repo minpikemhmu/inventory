@@ -4,8 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 class Pickup extends Model
 {
+  use SoftDeletes;
+  use Notifiable;
   protected $fillable=[
   	'status', 'schedule_id', 'delivery_man_id', 'staff_id'
   ];

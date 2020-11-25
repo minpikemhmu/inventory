@@ -104,7 +104,14 @@
                         @role('staff')<td class="text-danger">{{$row->schedule->client->user->name}}</td>@endrole
                         <td>{{$row->schedule->pickup_date}}</td>
                         <td>{{$row->schedule->remark}}</td>
-                        <td class="text-danger">{{$row->delivery_man->user->name}}</td>
+                        <td class="text-danger">{{$row->delivery_man->user->name}}
+                          @foreach($data as $dd)
+                            @if($dd->id==$row->id)
+                            <span class="badge badge-info seen">seen</span>
+                            @endif
+
+                           @endforeach
+                        </td>
                         <td>{{$row->schedule->quantity}}</td>
                         <td>
                           @if($row->status==1 && $row->schedule->quantity > count($row->items))
@@ -118,6 +125,8 @@
                             <button type="button" class="btn btn-info">completed</button>
                           @elseif($row->status==2)
                            <a href="{{route('checkitem',$row->id)}}" class="btn btn-danger">fail</a>
+                          @elseif($row->status==3)
+                           <a href="#" class="btn btn-danger addamount" data-id="{{$row->schedule->id}}">Add amount and qty</a>
                           @else
                             <button type="button" class="btn btn-danger">pending</button>
                           @endif
@@ -233,6 +242,37 @@
   </div>
 </div>
 
+{{--Add amount modal--}}
+<div class="modal fade" id="addamount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Amount and Quantity</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="schedule" id="schedule_id" value="">
+       <div class="form-group quantity">
+              <label for="quantity">Quantity:</label>
+              <input type="number"  id="quantity" class="form-control" name="quantity">
+              <span class="Eamount error d-block" ></span>
+            </div>
+
+
+            <div class="form-group amount">
+              <label for="amount">Amount:</label>
+              <input type="number"  id="amount" class="form-control" name="amount">
+              <span class="Equantity error d-block" ></span>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary amountsave">save</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 @endsection 
 @section('script')
@@ -265,7 +305,61 @@
 
       })
 
+      $(".addamount").click(function(e){
+         e.preventDefault();
+        $('#addamount').modal('show');
+        var id=$(this).data('id');
+        $("#schedule_id").val(id);
+      })
+
+         $(".amountsave").click(function(){
+        var schedule_id=$("#schedule_id").val();
+        var amount=$("#amount").val();
+        var quantity=$("#quantity").val();
+        var url="{{route('editamountandqty')}}";
+
+          $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+          
+         $.ajax({
+          url:url,
+          type:"post",
+          data:{schedule_id:schedule_id,amount:amount,quantity:quantity},
+          dataType:'json',
+          success:function(response){
+            if(response.success){
+               $('#addamount').modal('hide');
+               $('.Eamount').text('');
+               $('.quantity').text('');
+              $('span.error').removeClass('text-danger');
+              location.href="{{route('schedules.index')}}";
+            }
+          },
+          error:function(error){
+            var message=error.responseJSON.message;
+            var errors=error.responseJSON.errors;
+            console.log(error.responseJSON.errors);
+            if(errors){
+              var amount=errors.amount;
+              var quantity=errors.quantity;
+              $('.Eamount').text(amount);
+              $('.Equantity').text(quantity);
+              $('span.error').addClass('text-danger');
+            }
+
+          }
+          
+
+        })
+      })
+
+
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
     })
   </script>
 @endsection
+
+

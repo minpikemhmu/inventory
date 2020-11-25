@@ -71,14 +71,16 @@
           @foreach($pickups as $row)
           <div class="col-md-4">
             <div class="card mb-3">
-              <h5 class="card-header">{{$row->schedule->client->user->name}} ({{$row->schedule->quantity}}) <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->schedule->pickup_date}}</small></h5>
+              <h5 class="card-header">{{$row->schedule->client->user->name}}  @if($row->schedule->amount!=null && $row->schedule->quantity!=null )({{$row->schedule->quantity}})@endif <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->schedule->pickup_date}}</small></h5>
               <div class="card-body">
                 <h5 class="card-title">{{$row->schedule->client->address}}</h5>
+                @if($row->schedule->amount!=null && $row->schedule->quantity!=null )
                 <p class="card-text">Deposit: {{number_format($row->schedule->amount)}} Ks</p>
                 <p class="card-text">Quantity: {{$row->schedule->quantity}}</p>
+                @endif
                 @if($row->status==0)
                   <a href="#" class="btn btn-primary">Pending</a>
-                  <a href="{{route('pickupdone',$row->id)}}" class="btn btn-success">Done</a>
+                  <a href="{{route('pickupdone',['id' => $row->id, 'qty' => $row->schedule->quantity])}}" class="btn btn-success">Done</a>
                 @else
                   <a href="#" class="btn btn-primary">completed pick up</a>
                 @endif

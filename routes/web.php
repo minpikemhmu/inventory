@@ -64,7 +64,10 @@ Route::middleware('auth')->group(function () {
  Route::post('expensesearch','MainController@expensesearch')->name('expensesearch');
   Route::post('profit','MainController@profit')->name('profit');
   //pickupdone by delivery man
-  Route::get('pickupdone/{id}','MainController@pickupdone')->name('pickupdone');
+  Route::get('pickupdone/{id}/{qty}','MainController@pickupdone')->name('pickupdone');
+
+  //amounta ad qty edit
+   Route::post('editamountandqty','MainController@editamountandqty')->name('editamountandqty');
 
   // staff
   Route::resource('staff','StaffController');

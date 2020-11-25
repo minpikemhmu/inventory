@@ -18,6 +18,7 @@ use App\Http\Resources\ExpenseResource;
 use App\Income;
 use App\Notifications\RejectNotification;
 use App\Notifications\SeenNotification;
+use App\Notifications\PickupNotification;
 use App\Expense;
 use Yajra\DataTables\Facades\DataTables;
 use App\Client;
@@ -28,6 +29,7 @@ use Illuminate\Notifications\DatabaseNotification;
 use App\Item;
 use App\Exports\SuccesslistExport;
 use Excel;
+use App\Schedule;
 
 class MainController extends Controller
 {
@@ -392,17 +394,48 @@ public function profit(Request $request){
       $user=Auth::user();
       $id=$user->delivery_man->id;
       $pickups=Pickup::where('delivery_man_id',$id)->doesntHave('items')->get();
+      //dd($pickups);
+        $data=[];
+      foreach ($pickups as $pickup) {
+        
+       //dd(count($pickup->unreadNotifications));
+        if(count($pickup->unreadNotifications)==0){
+          //dd("pike");
+           Notification::send($pickup,new PickupNotification($pickup));
+        }else{
+          //dd($pickup->unreadNotifications);
+          foreach ($pickup->unreadNotifications as $noti) {
+            $data[]=$noti->data['pickup']['id'];
+            if(!in_array($pickup->id, $data)){
+               Notification::send($pickup,new PickupNotification($pickup));
+            }
+            # code...
+          }
+        }   
+        
+      }
+      
+      
+      $pickups=Pickup::where('delivery_man_id',$id)->doesntHave('items')->get();
+
     }
     //dd($pickups);
     return view('dashboard.pickups',compact('pickups'));
   }
 
 
-  public function pickupdone($id){
+  public function pickupdone($id,$qty){
+
     //dd($id);
+    if($qty==0){
+    $pickup=Pickup::find($id);
+    $pickup->status=3;
+    $pickup->save();
+    }else{
     $pickup=Pickup::find($id);
     $pickup->status=1;
     $pickup->save();
+  }
   return redirect()->route('pickups')->with("successMsg",'Pickup successfully');
 
   }
@@ -434,7 +467,7 @@ public function profit(Request $request){
           if(Carbon\Carbon::today()->toDateString()==$way->created_at->toDateString() && $way->status_code==005 && !in_array($way->id, $data)){
             Notification::send($way,new SeenNotification($way));
     //dd("ok");
-             event(new rejectitem($way));
+             //event(new rejectitem($way));
           }
     }
 
@@ -585,6 +618,30 @@ public function profit(Request $request){
     $end_date=$request->end_date;
     $success_export=new SuccesslistExport($start_date,$end_date);
     return Excel::download($success_export,'success.xlsx');
+
+  }
+
+
+  public function editamountandqty(Request $request){
+     $validator = $request->validate([
+            'quantity'=>['required'],
+            'amount'=>['required']
+        ]);
+     if($validator){
+    $id=$request->schedule_id;
+    $amount=$request->amount;
+    $quantity=$request->quantity;
+
+    $schedule=Schedule::find($id);
+    $schedule->amount=$amount;
+    $schedule->quantity=$quantity;
+    $schedule->save();
+    $pickup=Pickup::where('schedule_id',$id)->first();
+    $pickup->status=1;
+    $pickup->save();
+    return response()->json(['success'=>'successfully!']);
+  }
+
 
   }
 }

@@ -51,13 +51,18 @@
             </div>
 
             <div class="form-group">
+              <input type="checkbox" id="know">
+              <label for="know">If you know quantity and amount</label> 
+            </div>
+
+            <div class="form-group quantity">
               <label for="quantity">Quantity:</label>
               <input type="number"  id="quantity" class="form-control" name="quantity">
               <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
             </div>
 
 
-            <div class="form-group">
+            <div class="form-group amount">
               <label for="amount">Amount:</label>
               <input type="number"  id="amount" class="form-control" name="amount">
               <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
@@ -97,14 +102,32 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $(".myfile").hide();
+
+    $(".quantity").hide();
+    $(".amount").hide();
+
+      $("#know").click(function(){
+        if(this.checked){
+          $(".quantity").show();
+          $(".amount").show();
+        }else{
+          $(".quantity").hide();
+        $(".amount").hide();
+
+        }
+      })
+
+
+
+
+    /*$(".myfile").hide();
     $(".mychangepsw").click(function(){
       if(this.checked){
     $(".myfile").show();
       }else{
       $(".myfile").hide();
       }
-    })
+    })*/
 
 
     $(function(){

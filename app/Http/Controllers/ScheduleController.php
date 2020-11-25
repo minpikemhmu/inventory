@@ -8,6 +8,9 @@ use Auth;
 use App\DeliveryMan;
 use App\Pickup;
 use App\Client;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\DB;
+
 class ScheduleController extends Controller
 {
     /**
@@ -31,9 +34,19 @@ class ScheduleController extends Controller
                 $query->where('client_id', $client);
             })->get();
         }
+        $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Pickup')->get();
+        //dd($notifications);
+        $data=[];
 
+        foreach ($notifications as $noti) {
+         $notipickup=json_decode($noti->data);
+       // dd($notipickup->pickup);
+            array_push($data, $notipickup->pickup);
+          
+        }
+       // dd($data);
         $deliverymen=DeliveryMan::all();
-        return view('schedule.index',compact('schedules','deliverymen','pickups'));
+        return view('schedule.index',compact('schedules','deliverymen','pickups','data'));
     }
 
     /**
@@ -56,11 +69,10 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
         $validator = $request->validate([
             'date'  => ['required','date'],
             'remark'=>['required','string'],
-            'quantity'=>['required'],
-            'amount'=>['required']
         ]);
 
 
@@ -83,8 +95,10 @@ class ScheduleController extends Controller
             $schedule->client_id=$client;
             $schedule->file=$path;
             $schedule->remark=$request->remark;
+            if($request->quantity && $request->amount){
             $schedule->quantity=$request->quantity;
             $schedule->amount=$request->amount;
+        }
             if($request->hasfile('file')){
                 $schedule->status=1;
             }else{
@@ -134,8 +148,6 @@ class ScheduleController extends Controller
          $validator = $request->validate([
             'date'  => ['required','date'],
             'remark'=>['required','string'],
-            'quantity'=>['required'],
-            'amount'=>['required']
         ]);
 
 
@@ -156,8 +168,10 @@ class ScheduleController extends Controller
             $schedule->pickup_date=$request->date;
             $schedule->file=$path;
             $schedule->remark=$request->remark;
+            if($request->quantity && $request->amount){
             $schedule->quantity=$request->quantity;
             $schedule->amount=$request->amount;
+        }
             if($request->hasfile('file')){
                 $schedule->status=1;
             }else{
@@ -210,10 +224,12 @@ class ScheduleController extends Controller
                 $schedule->pickup_date=$request->date;
                 $schedule->status=1;
                 $schedule->remark=$request->remark;
-                $schedule->quantity=$request->quantity;
                 $schedule->file=$path;
                 $schedule->client_id=$request->client;
+                 if($request->quantity && $request->amount){
+                $schedule->quantity=$request->quantity;
                 $schedule->amount=$request->amount;
+            }
                 $schedule->save();
                 $pickup->schedule_id=$schedule->id;
         }else{
