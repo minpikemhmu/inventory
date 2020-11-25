@@ -31,7 +31,7 @@
                   </optgroup>
                 </select>
               </div>
-              <div class="form-group col-md-6 search_btn">
+              <div class="form-group col-md-6 search_btn d-none">
                 <input type="hidden" name="noti" value="" id="notiid">
                 <button class="btn btn-primary mt-4" type="submit">စာရင်းရှင်းမယ်</button>
               </div>
@@ -174,7 +174,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('#debits').hide();
-    $('.search_btn').hide();
+    // $('.search_btn').hide();
 
     function thousands_separators(num)
     {
@@ -191,10 +191,10 @@
         $.get(url,function (response) {
           console.log(response)
           $("#notiid").val(response.rejectnoti);
-          if (response.expenses.length > 0 || response.incomes.length > 0) {
-            $('.search_btn').show();
+          if (response.expenses.length > 0 || response.incomes.length > 0 || response.rejects.length > 0 || response.carryfees > 0) {
+            $('.search_btn').removeClass('d-none');
           }else{
-            $('.search_btn').hide();
+            $('.search_btn').addClass('d-none');
           }
           var header = `<h4>ပေးရန် => ${clientname}:</h4>`;
           $('#topay').html(header);
@@ -221,9 +221,9 @@
 
           let j=1;
           var html2="";
-          let total2=totalreject=totalincome= 0;
+          let total2=totalreject=totalincome=totalcarryfees=0;
           for(let row of response.rejects){
-            console.log(row)
+            // console.log(row)
             let delivery_fees = 0;
 
             html2 +=`<tr>
@@ -271,7 +271,19 @@
                   totalincome += Number(delivery_fees + deposit);
           }
 
-          total2  = Number(totalreject)+Number(totalincome);
+          for(let row of response.carryfees){
+            // console.log(row)
+            html2 +=`<tr>
+                      <td>${j++}</td>
+                      <td>${row.item.receiver_name} - ${row.item.township.name}</td>
+                      <td>${0}</td>
+                      <td>${thousands_separators(row.amount)} <span class="badge badge-info">carryfees</span> </td>
+                      <td>${thousands_separators(row.amount)} Ks</td>
+                  </tr>`;
+                  totalcarryfees += Number(row.amount);
+          }
+
+          total2  = Number(totalreject)+Number(totalincome)+Number(totalcarryfees);
 
           html2 +=`<tr>
                     <td colspan="4">Total: </td>

@@ -161,34 +161,32 @@ class MainController extends Controller
 
   public function getdebitlistbyclient($id)
   {
-    // $client = Client::find($id);
-    $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
+    $expenses = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',1)->with('expense_type')->get();
 
     $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
       $query->where('client_id', $id);
     })->get();
-
-    // dd($incomes);
-
+   
     $rejects =  Way::with('item.pickup.schedule')
     ->whereHas('item.pickup.schedule', function($query) use ($id){
         $query->where('client_id', $id);
     })->where('status_code','003')->where('refund_date',null)->get();
 
+    $carryfees = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',4)->with('item.township')->get();
+
     $myarray=[];
     foreach ($rejects as $income) {
-     foreach ($income->unreadNotifications as $notification) {
-      //dd($notification->id);
-       array_push($myarray, $notification->id);
-     }
+      foreach ($income->unreadNotifications as $notification) {
+        array_push($myarray, $notification->id);
+      }
     }
-    //dd($myarray);
-
+    
     return Response::json(array(
             'rejectnoti'=>$myarray,
-           'expenses' => $expenses,
-           'rejects' => $rejects,
-           'incomes' => $incomes
+            'expenses' => $expenses,
+            'rejects' => $rejects,
+            'incomes' => $incomes,
+            'carryfees' => $carryfees,
       ));
   }
 
@@ -372,10 +370,11 @@ public function profit(Request $request){
       $expense->amount = $request->carryfees;
       $expense->description = 'Carry Fees';
       $expense->expense_type_id = 4;
+      $expense->client_id = $income->way->item->pickup->schedule->client_id;
       $expense->staff_id = Auth::user()->staff->id;
       $expense->city_id = 1;
       $expense->item_id = $income->way->item_id;
-      $expense->status = 1;
+      $expense->status = 2;
       $expense->save();
     }
 
