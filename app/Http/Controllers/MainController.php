@@ -314,9 +314,11 @@ public function profit(Request $request){
 
     $paymenttypes=PaymentType::all();
     $banks=Bank::all();
-    $ways =Way::doesntHave('income')->where('ways.delivery_man_id',$id)
+    $ways =Way::withTrashed()->doesntHave('income')->where('ways.delivery_man_id',$id)
             ->whereDate('created_at', Carbon\Carbon::today())
+            ->where('status_code', '!=', '005')
             ->get();
+
     $ways =  SuccesswayResource::collection($ways);
     //dd($ways);
     return Response::json(array(
@@ -506,7 +508,7 @@ public function profit(Request $request){
       $way->status_code = '002';
       $way->remark = $request->remark;
       $way->save();
-
+      $way->delete();
       $way->item->expired_date = $request->date;
       $way->item->error_remark = $request->remark;
       $way->item->save();

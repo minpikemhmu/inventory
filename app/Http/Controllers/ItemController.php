@@ -25,32 +25,27 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //$items=Item::doesntHave('way')->get();
-          $status=1;  
-          $items=Item::whereHas('pickup',function($query)use($status){
-        $query->where('status',1);
-          })->doesntHave('way')->orWhereHas('way', function($query) {
-        $query->where('status_code', '002' );
-    })->get();
-         //dd($myitems);
-        
-
-        $deliverymen = DeliveryMan::all();
-        $ways = Way::all();
-        
-        $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
-        $data=[];
-
-        foreach ($notifications as $noti) {
-
-          $notiway=json_decode($noti->data);
-          if($notiway->ways->status_code=="005"){
-            array_push($data, $notiway->ways);
-          }
+      //$items=Item::doesntHave('way')->get();
+      $items=Item::whereHas('pickup',function($query){
+              $query->where('status',1);
+            })
+            ->doesntHave('way')
+            ->get();
+  
+      // dd($myitems);
+      
+      $deliverymen = DeliveryMan::all();
+      $ways = Way::all();
+      $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
+      $data=[];
+      foreach ($notifications as $noti) {
+        $notiway=json_decode($noti->data);
+        if($notiway->ways->status_code=="005"){
+          array_push($data, $notiway->ways);
         }
+      }
       // dd($data);
-
-        return view('item.index',compact('items','deliverymen','ways','data'));
+      return view('item.index',compact('items','deliverymen','ways','data'));
     }
 
     /**
