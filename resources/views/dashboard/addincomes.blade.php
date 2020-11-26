@@ -13,22 +13,14 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        @if(session('successMsg') != NULL)
-            <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
-                <strong> ✅ SUCCESS!</strong>
-                {{ session('successMsg') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
+        <div class="alert alert-primary success d-none" role="alert"></div>
         <div class="tile">
           <h3 class="tile-title d-inline-block">Income Create Form</h3>
           
           <div class="row">
             <div class="form-group col-md-6">
               <label for="InputDeliveryMan">Select Delivery Man:</label>
-              <select class="form-control" id="InputDeliveryMan" name="deliveryman">
+              <select class="js-example-basic-single" id="InputDeliveryMan" name="deliveryman">
                 <optgroup label="Select Delivery Man">
                   @foreach($delivery_men as $deliveryman)
                     <option value="{{$deliveryman->id}}" data-name="{{$deliveryman->user->name}}">{{$deliveryman->user->name}}</option>
@@ -58,8 +50,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{route('incomes.store')}}" method="POST">
-          @csrf
+        <!-- <form action="{{route('incomes.store')}}" method="POST">
+          @csrf -->
           <h3 class="text-dark">Total amount:<span class="totalamount text-danger"></span></h3>
           <input type="hidden" id="totalamount" name="amount">
           <input type="hidden" name="way_id" id="way_id">
@@ -89,13 +81,13 @@
 
           <div class="form-group carryfees">
             <label for="carryfees">Carry Fees (တန်ဆာခ)</label>
-            <input type="number" name="carryfees" class="form-control">
+            <input type="number" name="carryfees" class="form-control" id="carryfees">
           </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save</button>
-        </form>
+        <button type="button" class="btn btn-primary incomesave">Save</button>
+        <!-- </form> -->
       </div>
     </div>
   </div>
@@ -104,6 +96,11 @@
 @section('script')
   <script type="text/javascript">
     $(document).ready(function () {
+
+        $('.js-example-basic-single').select2({
+        width: '100%',
+      });
+
       $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -118,7 +115,12 @@
         var deliveryman_id = $(this).val();
         var deliveryman = $("#InputDeliveryMan option:selected").text();
         //alert(deliveryman)
-        var url = `/incomes/getsuccesswaysbydeliveryman/${deliveryman_id}`;
+        getdata(deliveryman_id,deliveryman);
+       
+      })
+
+      function getdata(deliveryman_id,deliveryman){
+         var url = `/incomes/getsuccesswaysbydeliveryman/${deliveryman_id}`;
         $.get(url,function (response) {
           console.log(response);
           var html = `
@@ -163,9 +165,12 @@
                     <td>${row.item.township.township_name}</td>
                     <td>
                       ${row.delivery_man.user.user_name}
-                    </td>
-                    <td>${row.delivery_date}</td>
-                    <td>${thousands_separators(row.item.item_amount)}</td>`
+                    </td>`
+                    if(row.delivery_date){
+                    html+=`<td>${row.delivery_date}</td>`}else{
+                      html+=`<td>-</td>`}
+
+                    html+=`<td>${thousands_separators(row.item.item_amount)}</td>`
 
                     if(row.status_code=="001"){
                       html+=`<td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.township.delivery_fees}">save</button></td>
@@ -183,7 +188,7 @@
 
           $('#incomeform').html(html);
         })
-      })
+      }
 
       $("#incomeform").on('click','.btnsave',function(){
         $("#incomemodal").modal('show');
@@ -223,6 +228,42 @@
        // console.log(id);
       })
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+
+      $(".incomesave").click(function(){
+        //alert("ok");
+
+      var deliveryman_id = $("#InputDeliveryMan option:selected").val();
+      var deliveryman = $("#InputDeliveryMan option:selected").text();
+      var deliveryfee=$("#deliveryfee").val();
+      var amount=$("#totalamount").val();
+      var paymenttype=$("#paymenttype").val();
+      var way_id=$("#way_id").val();
+      var bank=$("#bank").val()
+      var bank_amount=$("#bankamount").val();
+      var cash_amount=$("#cashamount").val();
+      var carryfees=$("#carryfees").val();
+        var url="{{route('incomes.store')}}";
+             $.ajax({
+          url:url,
+          type:"post",
+          data:{deliveryfee:deliveryfee,amount:amount,paymenttype:paymenttype,way_id:way_id,bank:bank,bank_amount:bank_amount,cash_amount:cash_amount,carryfees:carryfees},
+          dataType:'json',
+          success:function(response){
+            if(response.success){
+               $('#incomemodal').modal('hide');
+              $('.success').removeClass('d-none');
+              $('.success').show();
+              $('.success').text('successfully added to income list');
+              $('.success').fadeOut(3000);
+              getdata(deliveryman_id,deliveryman);
+              //location.href="{{route('ways')}}";
+            }
+          }
+          
+
+        })
+      })
+
     })
 
       function thousands_separators(num)

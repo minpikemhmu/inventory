@@ -382,7 +382,7 @@ public function profit(Request $request){
       $expense->save();
     }
 
-    return redirect()->route('incomes.create')->with("successMsg",'Income added successfully');
+     return response()->json(['success'=>'successfully!']);
   }
 
   // for pickup page => delivery man view
