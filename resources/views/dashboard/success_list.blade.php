@@ -99,7 +99,7 @@
           {
           "data": "ways",
           render:function(data){
-                    return data.length;
+             return data.length;
                   }
           },
           {

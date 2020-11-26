@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reback extends Model
 {
+  use SoftDeletes;
   protected $fillable=[
     'remark', 'pickup_id', 'way_id'
   ];

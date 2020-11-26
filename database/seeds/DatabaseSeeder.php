@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
       $this->call(StaffTableSeeder::class);
       $this->call(DeliveryMenTableSeeder::class);
       $this->call(ClientsTableSeeder::class);
+      $this->call(SenderGateSeeder::class);
+      $this->call(SenderPostofficeSeeder::class);
 
     }
 }

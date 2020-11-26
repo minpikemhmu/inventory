@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Township extends Model
 {
+  use SoftDeletes;
   protected $fillable=[
   	'name', 'delivery_fees', 'status', 'city_id'
   ];

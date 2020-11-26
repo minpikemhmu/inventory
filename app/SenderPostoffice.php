@@ -4,15 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Bank extends Model
+
+class SenderPostoffice extends Model
 {
 	use SoftDeletes;
-  protected $fillable=[
+    protected $fillable=[
   	'name'
   ];
-
-  public function incomes()
-  {
-    return $this->hasMany('App\Income');
-  }
 }

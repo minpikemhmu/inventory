@@ -11,6 +11,8 @@ use App\Way;
 use App\Expense;
 use Carbon;
 use Auth;
+use App\SenderGate;
+use App\SenderPostoffice;
 use Session;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
@@ -66,6 +68,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+      //dd($request->mygate);
       $qty=$request->qty;
        // dd($qty);
       $myqty=$request->myqty;
@@ -100,6 +103,12 @@ class ItemController extends Controller
         $item->paystatus=0;
         $item->pickup_id=$request->pickup_id;
         $item->township_id=$request->receiver_township;
+        if($request->mygate!=null){
+              $item->sender_gate_id=$request->mygate;
+            }
+            if($request->myoffice!=null){
+              $item->sender_postoffice_id=$request->myoffice;
+            }
         $role=Auth::user()->roles()->first();
         $rolename=$role->name;
         if($rolename=="staff"){
@@ -217,6 +226,12 @@ class ItemController extends Controller
             $item->receiver_phone_no=$request->receiver_phoneno;
             $item->remark=$request->remark;
             $item->township_id=$request->receiver_township;
+            if($request->mygate){
+              $item->sender_gate_id=$request->mygate;
+            }
+            if($request->myoffice){
+              $item->sender_postoffice_id=$request->myoffice;
+            }
              $role=Auth::user()->roles()->first();
              $rolename=$role->name;
               if($rolename=="staff"){
@@ -279,8 +294,11 @@ class ItemController extends Controller
         // $townships=Township::all();
         $townships = Township::where('status',1)->get();
 
+        $sendergates=SenderGate::all();
+        $senderoffice=SenderPostoffice::all();
+
         $pickupeditem = Item::where('pickup_id',$pickup->id)->orderBy('id','desc')->first();
-        return view('item.create',compact('client','pickup','townships','itemcode','pickupeditem'));
+        return view('item.create',compact('client','pickup','townships','itemcode','pickupeditem','sendergates','senderoffice'));
     }
 
 

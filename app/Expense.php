@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Expense extends Model
 {
+  use SoftDeletes;
 	protected $fillable=[
   	'amount', 'description', 'expense_type_id' , 'status', 'client_id', 'staff_id', 'city_id', 'item_id'
   ];

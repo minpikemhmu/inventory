@@ -607,8 +607,21 @@ public function profit(Request $request){
     $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('status_code','001');
   })->orWhereDoesntHave('ways')->with('pickups')->whereHas('pickups',function($query) use($start_date,$end_date){
     $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('status','1');
-  })->orWhereDoesntHave('pickups')->with('user')->get();
-  
+  })->orWhereDoesntHave('pickups')->with('user')->with('ways.item')->get();
+
+  /*$ways=DB::table('delivery_men')
+        ->join('ways','ways.delivery_man_id','=','delivery_men.id')
+         ->join('pickups', 'pickups.delivery_man_id', '=', 'delivery_men.id')
+         ->join('users', 'users.id', '=', 'delivery_men.user_id')
+         ->join('items','ways.item_id','=','items.id')
+         ->whereBetween('ways.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])
+         ->where('ways.status_code','001')
+         ->whereBetween('pickups.created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])
+         ->where('pickups.status','1')
+         ->select('users.name as username','pickups.*','ways.*' )
+         ->get();*/
+
+   // dd($ways);
     return Datatables::of($ways)->addIndexColumn()->toJson();
   }
 
