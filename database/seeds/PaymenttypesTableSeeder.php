@@ -16,5 +16,6 @@ class PaymenttypesTableSeeder extends Seeder
          PaymentType::create(['name'=>'Cash+Bank']);
          PaymentType::create(['name'=>'Os']);
          PaymentType::create(['name'=>'Only Deli']);
+         PaymentType::create(['name'=>'Only Deposit']);
     }
 }

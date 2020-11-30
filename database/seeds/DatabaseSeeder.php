@@ -24,6 +24,5 @@ class DatabaseSeeder extends Seeder
       $this->call(ClientsTableSeeder::class);
       $this->call(SenderGateSeeder::class);
       $this->call(SenderPostofficeSeeder::class);
-
     }
 }

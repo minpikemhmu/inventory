@@ -56,6 +56,7 @@
           <input type="hidden" id="totalamount" name="amount">
           <input type="hidden" name="way_id" id="way_id">
            <input type="hidden" name="deliveryfee" id="deliveryfee">
+           <input type="hidden" name="deposit" id="deposit">
           <div class="form-group">
             <label for="exampleFormControlSelect1">Payment Types</label>
             <select class="form-control" id="paymenttype" name="paymenttype">
@@ -156,7 +157,7 @@
                 })
                 $("#bank").html(hh);
           for(let row of response.ways){
-            //console.log(row.status_code);
+            console.log(row);
             total+=row.item_amount;
             html +=`
               <tr>
@@ -173,7 +174,7 @@
                     html+=`<td>${thousands_separators(row.item.item_amount)}</td>`
 
                     if(row.status_code=="001"){
-                      html+=`<td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.township.delivery_fees}">save</button></td>
+                      html+=`<td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.township.delivery_fees}" data-deposit="${row.item.item_amount-row.item.township.delivery_fees}">save</button></td>
                   </tr>
             `
                     }else if(row.status_code=="002"){
@@ -196,11 +197,13 @@
         var id=$(this).data("id");
         // alert(id);
         var delivery_fees=$(this).data("deliveryfee");
+        var deposit = $(this).data("deposit");
+        // alert(deposit)
         $(".totalamount").html(amount);
         $("#totalamount").val(amount);
         $("#way_id").val(id);
         $("#deliveryfee").val(delivery_fees);
-
+        $("#deposit").val(deposit);
         // carry fees
         $('.carryfees').hide();
 
@@ -235,6 +238,7 @@
       var deliveryman_id = $("#InputDeliveryMan option:selected").val();
       var deliveryman = $("#InputDeliveryMan option:selected").text();
       var deliveryfee=$("#deliveryfee").val();
+      var deposit = $("#deposit").val();
       var amount=$("#totalamount").val();
       var paymenttype=$("#paymenttype").val();
       var way_id=$("#way_id").val();
@@ -246,7 +250,7 @@
              $.ajax({
           url:url,
           type:"post",
-          data:{deliveryfee:deliveryfee,amount:amount,paymenttype:paymenttype,way_id:way_id,bank:bank,bank_amount:bank_amount,cash_amount:cash_amount,carryfees:carryfees},
+          data:{deliveryfee:deliveryfee,deposit:deposit,amount:amount,paymenttype:paymenttype,way_id:way_id,bank:bank,bank_amount:bank_amount,cash_amount:cash_amount,carryfees:carryfees},
           dataType:'json',
           success:function(response){
             if(response.success){

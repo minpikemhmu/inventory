@@ -259,8 +259,8 @@
             }
 
             if(row.payment_type_id == 6){
-              delivery_fees = Number(row.way.item.deposit);
-              html2 +=` <span class="badge badge-info">Only Deposit</span>`;
+              delivery_fees = Number(row.way.item.delivery_fees);
+              html2 +=` <span class="badge badge-info">Only Deli</span>`;
             }
 
             html2 +=`</td>
