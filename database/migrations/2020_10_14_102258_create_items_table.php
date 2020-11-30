@@ -31,12 +31,20 @@ class CreateItemsTable extends Migration
             $table->unsignedBigInteger('township_id');
             $table->unsignedBigInteger('staff_id');
             $table->string('error_remark')->nullable();
+            $table->unsignedBigInteger('sender_gate_id')->nullable();
+            $table->unsignedBigInteger('sender_postoffice_id')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
             
             $table->foreign('pickup_id')
                     ->references('id')->on('pickups')
+                    ->onDelete('cascade');
+            $table->foreign('sender_gate_id')
+                    ->references('id')->on('sender_gates')
+                    ->onDelete('cascade');
+            $table->foreign('sender_postoffice_id')
+                    ->references('id')->on('sender_postoffices')
                     ->onDelete('cascade');
             $table->foreign('township_id')
                     ->references('id')->on('townships')

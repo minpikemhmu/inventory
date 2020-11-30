@@ -82,10 +82,32 @@
               <div class="form-control-feedback text-danger"> {{$errors->first('rcity') }} </div>
             </div>
 
+            <div class="form-group  mygate">
+                  <label for="mygate">Sender Gate:</label><br>
+                  <select class="js-example-basic-single  " id="mygate" name="mygate"  >
+                    <option value="">Choose Gate</option>
+                    @foreach($sendergates as $row)
+                      <option value="{{$row->id}}">{{$row->name}}</option>
+                    @endforeach
+                  </select>
+                  <div class="form-control-feedback text-danger"> {{$errors->first('receiver_township') }} </div>
+               </div>
+
+               <div class="form-group  myoffice">
+                  <label for="myoffice">Sender PostOffice:</label><br>
+                  <select class="js-example-basic-single  " id="myoffice" name="myoffice"  >
+                    <option value="">Choose Post Office</option>
+                    @foreach($senderoffice as $row)
+                      <option value="{{$row->id}}">{{$row->name}}</option>
+                    @endforeach
+                  </select>
+                  <div class="form-control-feedback text-danger"> {{$errors->first('receiver_township') }} </div>
+               </div>
+
             <div class="form-group township">
                   <label for="InputReceiverTownship">Receiver Township:</label><br>
                   <select class="js-example-basic-single  mytownship" id="InputReceiverTownship" name="receiver_township"  >
-                    <option>Choose township</option>
+                    <option value="null">Choose township</option>
                     @foreach($townships as $row)
                       <option value="{{$row->id}}">{{$row->name}}</option>
                     @endforeach
@@ -197,6 +219,8 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
+    $(".mygate").hide();
+    $(".myoffice").hide();
     setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
     // $(".township").hide();
     // for in city
@@ -303,6 +327,24 @@
       })
     }
   });
+
+  $("#gate").click(function(){
+    
+      $(".mygate").show();
+     $(".myoffice").hide();
+  })
+
+  $("#incity").click(function(){
+    $(".mygate").hide();
+    $(".myoffice").hide();
+  })
+
+  $("#post").click(function(){
+    
+      $(".mygate").hide();
+     $(".myoffice").show();
+  })
+
 
      $('.js-example-basic-single').select2({width:'100%'});
   })

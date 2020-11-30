@@ -3,9 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Income extends Model
 {
+  use SoftDeletes;
 	protected $fillable=[
     'delivery_fees', 'amount', 'bank_amount', 'cash_amount', 'way_id','payment_type_id', 'bank_id',
   ];
