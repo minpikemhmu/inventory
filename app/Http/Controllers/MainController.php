@@ -316,6 +316,7 @@ public function profit(Request $request){
     $banks=Bank::all();
     $ways =Way::withTrashed()->doesntHave('income')->where('ways.delivery_man_id',$id)
             ->whereDate('created_at', Carbon\Carbon::today())
+            // ->where('status_code', '006') // 006 => deliveryman နဲ့ရှင်းပြီး
             ->where('status_code', '!=', '005')
             ->get();
 
