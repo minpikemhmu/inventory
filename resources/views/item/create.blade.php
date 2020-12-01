@@ -308,7 +308,7 @@
         console.log(gateday);
         $(".pickdate").val(gateday);
         $("#InputDeposit").val(0);
-        $('#InputDeposit').prop('disabled',true);
+        $('#InputDeposit').prop('readonly',true);
       }
 
       $.ajaxSetup({

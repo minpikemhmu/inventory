@@ -191,7 +191,7 @@
         $.get(url,function (response) {
           console.log(response)
           $("#notiid").val(response.rejectnoti);
-          if (response.expenses.length > 0 || response.incomes.length > 0 || response.rejects.length > 0 || response.carryfees > 0) {
+          if (response.expenses.length > 0 || response.incomes.length > 0 || response.rejects.length > 0 || response.carryfees.length > 0) {
             $('.search_btn').removeClass('d-none');
           }else{
             $('.search_btn').addClass('d-none');

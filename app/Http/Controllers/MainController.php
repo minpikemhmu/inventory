@@ -169,14 +169,14 @@ class MainController extends Controller
 
     $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
       $query->where('client_id', $id);
-    })->get();
+    })->where('amount',null)->get();
    
     $rejects =  Way::with('item.pickup.schedule')
     ->whereHas('item.pickup.schedule', function($query) use ($id){
         $query->where('client_id', $id);
     })->where('status_code','003')->where('refund_date',null)->get();
 
-    $carryfees = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',4)->with('item.township')->get();
+    $carryfees = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',5)->with('item.township')->get();
 
     $myarray=[];
     foreach ($rejects as $income) {
@@ -200,24 +200,24 @@ class MainController extends Controller
     $sdate = $request->sdate;
     $edate = $request->edate;
 
-    $expenses = Expense::where('client_id',$id)->where('status',1)->where('expense_type_id',1)->with('expense_type')->whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
+    $expenses = Expense::where('client_id',$id)->where('status',1)->where('expense_type_id',1)->with('expense_type')->whereColumn('created_at','!=','updated_at')->whereBetween('updated_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
 
     $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
       $query->where('client_id', $id);
-    })->get();
+    })->where('amount','!=',null)->whereBetween('updated_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
    
-    $rejects =  Way::with('item.pickup.schedule')->whereHas('item.pickup.schedule', function($query) use ($id){
+    $rejects = Way::with('item.pickup.schedule')->whereHas('item.pickup.schedule', function($query) use ($id){
         $query->where('client_id', $id);
-    })->where('status_code','003')->where('refund_date',null)->get();
+    })->where('status_code','003')->where('refund_date','!=',null)->whereBetween('updated_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
 
-    $carryfees = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',4)->with('item.township')->whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
+    $carryfees = Expense::where('client_id',$id)->where('status',1)->where('expense_type_id',5)->with('item.township')->whereBetween('updated_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
     
     return Response::json(array(
-            'expenses' => $expenses,
-            'rejects' => $rejects,
-            'incomes' => $incomes,
-            'carryfees' => $carryfees,
-      ));
+      'expenses' => $expenses,
+      'rejects' => $rejects,
+      'incomes' => $incomes,
+      'carryfees' => $carryfees,
+    ));
   }
 
   public function fix_debit(Request $request)
@@ -269,7 +269,7 @@ class MainController extends Controller
       $income->deposit = $income->way->item->deposit;
       $income->amount = $income->way->item->amount;
       $income->cash_amount = $income->way->item->amount;
-      $income->payment_type_id = 1;
+      // $income->payment_type_id = 1;
       $income->save();
     }
 
@@ -405,7 +405,7 @@ public function profit(Request $request){
       $expense = new Expense;
       $expense->amount = $request->carryfees;
       $expense->description = 'Carry Fees';
-      $expense->expense_type_id = 4;
+      $expense->expense_type_id = 5;
       $expense->client_id = $income->way->item->pickup->schedule->client_id;
       $expense->staff_id = Auth::user()->staff->id;
       $expense->city_id = 1;
