@@ -55,7 +55,10 @@ Route::middleware('auth')->group(function () {
 
   // Debt List
   Route::get('debt_list','MainController@debt_list')->name('debt_list');
+  Route::get('debt_history','MainController@debt_history')->name('debt_history');
+
   Route::get('debit/getdebitlistbyclient/{id}', 'MainController@getdebitlistbyclient')->name('debit.getdebitlistbyclient');
+  Route::post('debit/getdebithistorybyclient', 'MainController@getdebithistorybyclient')->name('debit.getdebithistorybyclient');
   Route::post('fix_debit', 'MainController@fix_debit')->name('fix_debit');
 
   Route::post('updateincome','MainController@updateincome')->name('updateincome');

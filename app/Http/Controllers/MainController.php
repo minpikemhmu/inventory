@@ -155,6 +155,8 @@ class MainController extends Controller
           $query->where('client_id', $client_id);
       })->where('status_code','003')->where('refund_date',null)->get();
 
+      // dd($rejects);
+
       return view('dashboard.debt_list',compact('clients', 'expenses', 'incomes', 'rejects'));
     }
 
@@ -185,6 +187,32 @@ class MainController extends Controller
     
     return Response::json(array(
             'rejectnoti'=>$myarray,
+            'expenses' => $expenses,
+            'rejects' => $rejects,
+            'incomes' => $incomes,
+            'carryfees' => $carryfees,
+      ));
+  }
+
+  public function getdebithistorybyclient(Request $request)
+  {
+    $id = $request->client_id;
+    $sdate = $request->sdate;
+    $edate = $request->edate;
+
+    $expenses = Expense::where('client_id',$id)->where('status',1)->where('expense_type_id',1)->with('expense_type')->whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
+
+    $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
+      $query->where('client_id', $id);
+    })->get();
+   
+    $rejects =  Way::with('item.pickup.schedule')->whereHas('item.pickup.schedule', function($query) use ($id){
+        $query->where('client_id', $id);
+    })->where('status_code','003')->where('refund_date',null)->get();
+
+    $carryfees = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',4)->with('item.township')->whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
+    
+    return Response::json(array(
             'expenses' => $expenses,
             'rejects' => $rejects,
             'incomes' => $incomes,
@@ -670,5 +698,11 @@ public function profit(Request $request){
     $way->status_id=5;
     $way->save();
     return redirect()->route('ways')->with("successMsg",'edit successfully');
+  }
+
+  public function debt_history($value='')
+  {
+    $clients = Client::all();
+    return view('dashboard.debt_history',compact('clients'));
   }
 }

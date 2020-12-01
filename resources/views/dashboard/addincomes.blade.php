@@ -156,9 +156,10 @@
                   <option value="${v.id}">${v.name}</option>`
                 })
                 $("#bank").html(hh);
+          console.log(response.ways)
           for(let row of response.ways){
             console.log(row);
-            total+=row.item_amount;
+            total+=row.item.item_amount;
             html +=`
               <tr>
                     <td>${i++}</td>
@@ -174,19 +175,18 @@
                     html+=`<td>${thousands_separators(row.item.item_amount)}</td>`
 
                     if(row.status_code=="001"){
-                      html+=`<td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.township.delivery_fees}" data-deposit="${row.item.item_amount-row.item.township.delivery_fees}">save</button></td>
-                  </tr>
-            `
-                    }else if(row.status_code=="002"){
-                     html+= `<td><span class="badge badge-info">return way</span></td>`
-                    }else if(row.status_code=="003"){
-                     html+= `<td><span class="badge badge-danger">reject way</span></td>`
-                    }
-
-                    ;
+                      html+=`<td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.township.delivery_fees}" data-deposit="${row.item.item_amount-row.item.township.delivery_fees}">save</button></td>`
+                      }else if(row.status_code=="002"){
+                       html+= `<td><span class="badge badge-info">return way</span></td>`
+                      }else if(row.status_code=="003"){
+                       html+= `<td><span class="badge badge-danger">reject way</span></td>`
+                      }
+              html+=`</tr>`;
           }
-          
-
+          html+=`<tr>
+                    <td colspan="5">Total:</td>
+                    <td colspan="2">${thousands_separators(total)} Ks</td>
+                  </tr>`;
           $('#incomeform').html(html);
         })
       }
@@ -263,8 +263,6 @@
               //location.href="{{route('ways')}}";
             }
           }
-          
-
         })
       })
 

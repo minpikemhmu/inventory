@@ -105,7 +105,7 @@
                           @endif
                           <tr>
                             <td>{{$i++}}</td>
-                            <td>{{$income->way->item->receiver_name}} <span class="badge badge-dark">{{$income->receiver_phone_no}}</span></td>
+                            <td>{{$income->way->item->receiver_name}} <span class="badge badge-dark">{{$income->way->item->receiver_phone_no}}</span></td>
                             <td>{{$income->payment_type->name}}</td>
                             <td>
                               {{number_format($delifees)}}
@@ -118,12 +118,12 @@
                         @foreach($rejects as $reject)
                           <tr>
                             <td>{{$i++}}</td>
-                            <td>{{$reject->way->item->receiver_name}} <span class="badge badge-dark">{{$reject->receiver_phone_no}}</span></td>
-                            <td>{{$reject->payment_type->name}}</td>
-                            <td>{{number_format($reject->way->item->delivery_fees)}}</td>
-                            <td>{{number_format($reject->way->item->deposit)}}</td>
-                            <td>{{number_format($reject->way->item->delivery_fees + $reject->way->item->deposit)}}</td>
-                            @php $total += ($reject->way->item->delivery_fees + $reject->way->item->deposit); @endphp
+                            <td>{{$reject->item->receiver_name}} <span class="badge badge-dark">{{$reject->item->receiver_phone_no}}</span></td>
+                            <td>{{'Reject'}}</td>
+                            <td>{{number_format(0)}}</td>
+                            <td>{{number_format($reject->item->deposit)}}</td>
+                            <td>{{number_format(0 + $reject->item->deposit)}}</td>
+                            @php $total += (0 + $reject->item->deposit); @endphp
                           </tr>
                         @endforeach
                         <tr>

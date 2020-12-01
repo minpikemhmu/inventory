@@ -127,6 +127,7 @@
         <li><a class="app-menu__item {{ Request::is('statements') ? 'active' : '' }}" href="{{route('statements')}}"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Financial Statement</span></a></li>
         <li><a class="app-menu__item {{ Request::is('debt_list') ? 'active' : '' }}" href="{{route('debt_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Debit List</span></a></li>
         <li><a class="app-menu__item {{ Request::is('staff*') ? 'active' : '' }}" href="{{route('staff.index')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Staff</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('debt_history') ? 'active' : '' }}" href="{{route('debt_history')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Debit History</span></a></li>
         @endrole
 
         <!-- For Staff -->
