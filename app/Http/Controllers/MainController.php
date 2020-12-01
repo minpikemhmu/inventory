@@ -641,7 +641,7 @@ public function profit(Request $request){
     $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('status','1');
   })->orWhereDoesntHave('pickups')->with('user')->with('ways.item')->get();
 
-  /*$ways=DB::table('delivery_men')
+ /* $ways=DB::table('delivery_men')
         ->join('ways','ways.delivery_man_id','=','delivery_men.id')
          ->join('pickups', 'pickups.delivery_man_id', '=', 'delivery_men.id')
          ->join('users', 'users.id', '=', 'delivery_men.user_id')
@@ -653,7 +653,7 @@ public function profit(Request $request){
          ->select('users.name as username','pickups.*','ways.*' )
          ->get();*/
 
-   // dd($ways);
+    //dd($ways);
     return Datatables::of($ways)->addIndexColumn()->toJson();
   }
 
