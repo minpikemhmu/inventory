@@ -48,7 +48,7 @@
                       <td>{{$row->receiver_address}}</td>
                       <td>{{$row->receiver_phone_no}}</td>
                       <td>{{$row->remark}}</td>
-                      <td><input type="number" class="form-control checkitemamount{{$j++}}" name="amount" value="@if($row->deposit){{$row->deposit}}@else{{0}}@endif"  data-id="{{$row->id}}"></td>
+                      <td><input type="number" class="form-control checkitemamount{{$j++}}" name="amount" value="@if($row->deposit){{$row->deposit}}@else{{0}}@endif"  data-id="{{$row->id}}" @if($row->deposit == null){{'readonly'}}@endif></td>
                       @endforeach
                       
                     </tr>

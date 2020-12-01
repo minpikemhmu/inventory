@@ -316,6 +316,7 @@ public function profit(Request $request){
     $banks=Bank::all();
     $ways =Way::withTrashed()->doesntHave('income')->where('ways.delivery_man_id',$id)
             ->whereDate('created_at', Carbon\Carbon::today())
+            // ->where('status_code', '006') // 006 => deliveryman နဲ့ရှင်းပြီး
             ->where('status_code', '!=', '005')
             ->get();
 
@@ -359,12 +360,15 @@ public function profit(Request $request){
       $income->bank_amount=$request->bank_amount;
       $income->cash_amount=$request->cash_amount;
       }
-    }
-    else if($request->paymenttype==4){
+    }else if($request->paymenttype==4){
       $income->amount=null;
       $income->delivery_fees=null;
-    }else{
+    }else if($request->paymenttype==5){
       $income->amount=null;
+    }else if($request->paymenttype==6){
+      $income->amount=null;
+      $income->delivery_fees=null;
+      $income->deposit=$request->deposit;
     }
     $income->save();
 
