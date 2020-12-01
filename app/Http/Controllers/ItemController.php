@@ -90,6 +90,7 @@ class ItemController extends Controller
       if($validator){
 
             //dd('c');
+        //dd($request->deposit);
         $item=new Item;
         $item->codeno=$request->codeno;
         $item->expired_date=$request->expired_date;

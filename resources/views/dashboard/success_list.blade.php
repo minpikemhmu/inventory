@@ -41,6 +41,8 @@
                   <th>Delivery man</th>
                   <th>pickups</th>
                   <th>ways</th>
+                  <th>gate ways</th>
+                  <th>Postoffice ways</th>
                   <th>Total</th>
                 </tr>
               </thead>
@@ -73,7 +75,8 @@
                 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
             }
         });
-      var gatecount=0;
+     /* var gatecount=[];
+      var postofficecount=[];*/
       var url="{{route('waysreport')}}";
         $('#waystable').DataTable( {
         "processing": true,
@@ -99,32 +102,137 @@
           {
           "data": "ways",
           render:function(data){
-            var count=0;
-            var myarray=[];
+            var mycount=0
+          
              data.forEach( function(v, i) {
-              if(v.item.sender_gate_id==null && v.sender_postoffice_id==null){
-                myarray.push(v);
-                count++;
+              if(v.item.sender_gate_id==null && v.item.sender_postoffice_id==null){
+                //myarray.push(v);
+               mycount++
 
               }
              });
-              return count;
+            // console.log(myway);
+              return mycount;
                   }
           },
           {
+            "data":"ways",
+            render:function(data){
+              var gatearray=[];
+              data.forEach( function(v, i) {
+                if(v.item.sender_gate_id!=null){
+
+                var mydate=new Date(v.created_at);
+                //console.log(mydate.toLocaleDateString());
+
+                 var gateobj={
+                    id:v.item.sender_gate_id,
+                    date:mydate.toLocaleDateString(),
+                  }
+                  //console.log(gateobj);
+
+                  if(gatearray.length==0){
+                    gatearray.push(gateobj)
+                  }else{
+                      $.each(gatearray,function(k,e){
+                        if(e.id!=gateobj.id && e.date!=gateobj.date){
+                          gatearray.push(gateobj)
+                        }
+                      })
+                  }
+                }
+                // statements
+              });
+            //  console.log(gatearray);
+              return gatearray.length;
+          }
+        },
+        {
+            "data":"ways",
+            render:function(data){
+              var postarray=[];
+              data.forEach( function(v, i) {
+                if(v.item.sender_postoffice_id!=null){
+
+                var mydate=new Date(v.created_at);
+                //console.log(mydate.toLocaleDateString());
+
+                 var postobj={
+                    id:v.item.sender_postoffice_id,
+                    date:mydate.toLocaleDateString(),
+                  }
+                 // console.log(postobj);
+
+                  if(postarray.length==0){
+                    postarray.push(postobj)
+                  }else{
+                      $.each(postarray,function(k,e){
+                        if(e.id!=postobj.id && e.date!=postobj.date){
+                          postarray.push(postobj);
+                        }
+                      })
+                  }
+                }
+                // statements
+              });
+              //console.log(gatearray);
+              return postarray.length;
+          }
+        },
+          {
             "data": null,
             "render": function(data, type, full, meta){
+              var gatearray=[];
+              var postarray=[];
               var count=0;
-            var myarray=[];
-             full["ways"].forEach( function(v, i) {
-              if(v.item.sender_gate_id==null && v.sender_postoffice_id==null){
-                myarray.push(v);
-                count++;
+              full["ways"].forEach( function(v, i) {
+                if(v.item.sender_gate_id!=null){
 
-              }
-             });
+                var mydate=new Date(v.created_at);
+                //console.log(mydate.toLocaleDateString());
 
-             var mydata=count+full["pickups"].length;
+                 var gateobj={
+                    id:v.item.sender_gate_id,
+                    date:mydate.toLocaleDateString(),
+                  }
+                 // console.log(gateobj);
+
+                  if(gatearray.length==0){
+                    gatearray.push(gateobj)
+                  }else{
+                      $.each(gatearray,function(k,e){
+                        if(e.id!=gateobj.id && e.date!=gateobj.date){
+                          gatearray.push(gateobj)
+                        }
+                      })
+                  }
+                }else if(v.item.sender_postoffice_id!=null){
+                   var mydate=new Date(v.created_at);
+                //console.log(mydate.toLocaleDateString());
+
+                 var postobj={
+                    id:v.item.sender_postoffice_id,
+                    date:mydate.toLocaleDateString(),
+                  }
+                 // console.log(postobj);
+
+                  if(postarray.length==0){
+                    postarray.push(postobj)
+                  }else{
+                      $.each(postarray,function(k,e){
+                        if(e.id!=postobj.id && e.date!=postobj.date){
+                          postarray.push(postobj);
+                        }
+                      })
+                  }
+                }else{
+                  count++;
+                }
+                // statements
+              }); 
+
+
+             var mydata=count+postarray.length+gatearray.length+full["pickups"].length;
              return mydata;
             }
          }
