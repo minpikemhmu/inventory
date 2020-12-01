@@ -73,7 +73,7 @@
                 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
             }
         });
-      
+      var gatecount=0;
       var url="{{route('waysreport')}}";
         $('#waystable').DataTable( {
         "processing": true,
@@ -99,13 +99,32 @@
           {
           "data": "ways",
           render:function(data){
-             return data.length;
+            var count=0;
+            var myarray=[];
+             data.forEach( function(v, i) {
+              if(v.item.sender_gate_id==null && v.sender_postoffice_id==null){
+                myarray.push(v);
+                count++;
+
+              }
+             });
+              return count;
                   }
           },
           {
             "data": null,
             "render": function(data, type, full, meta){
-             var mydata=full["ways"].length+full["pickups"].length;
+              var count=0;
+            var myarray=[];
+             full["ways"].forEach( function(v, i) {
+              if(v.item.sender_gate_id==null && v.sender_postoffice_id==null){
+                myarray.push(v);
+                count++;
+
+              }
+             });
+
+             var mydata=count+full["pickups"].length;
              return mydata;
             }
          }
