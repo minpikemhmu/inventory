@@ -43,7 +43,7 @@ protected $reportstdate,$reportenddate;
     $query->WhereMonth('created_at',$mymonth)->where('status_code','001');
   	})->orWhereDoesntHave('ways')->with('pickups')->whereHas('pickups',function($query) use($mymonth){
     $query->WhereMonth('created_at',$mymonth)->where('status','1');
- 	 })->orWhereDoesntHave('pickups')->with('user')->get();
+ 	 })->orWhereDoesntHave('pickups')->with('user')->with('ways.item')->get();
   	//dd($ways);
        return view('dashboard.successview',compact('ways','dates','month'));
     }
