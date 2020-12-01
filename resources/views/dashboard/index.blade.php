@@ -16,7 +16,7 @@
         <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
           <div class="info">
             <h4>Incomes</h4>
-            <p><b>5</b></p>
+            <p><b>{{$incomes}}</b></p>
           </div>
         </div>
       </div>
@@ -24,23 +24,23 @@
         <div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-3x"></i>
           <div class="info">
             <h4>Expenses</h4>
-            <p><b>25</b></p>
+            <p><b>{{$expenses}}</b></p>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
         <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
           <div class="info">
-            <h4>Debt</h4>
-            <p><b>10</b></p>
+            <h4>Staff</h4>
+            <p><b>{{$staff}}</b></p>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
         <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
           <div class="info">
-            <h4>Staff</h4>
-            <p><b>500</b></p>
+            <h4>Delivery Man</h4>
+            <p><b>{{$deliverymen}}</b></p>
           </div>
         </div>
       </div>

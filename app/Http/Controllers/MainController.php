@@ -30,7 +30,7 @@ use App\Item;
 use App\Exports\SuccesslistExport;
 use Excel;
 use App\Schedule;
-
+use App\Staff;
 class MainController extends Controller
 {
 
@@ -38,7 +38,12 @@ class MainController extends Controller
   // for dashboard main page
   public function dashboard($value='')
   {
-    return view('dashboard.index');
+    $incomes = Income::whereMonth('created_at', Carbon\Carbon::now()->month)->sum('delivery_fees');
+    $expenses = Expense::whereMonth('created_at', Carbon\Carbon::now()->month)->where('expense_type_id',4)->sum('amount');
+    $staff = Staff::all()->count();
+    $deliverymen = DeliveryMan::all()->count();
+
+    return view('dashboard.index',compact('incomes','expenses','staff','deliverymen'));
   }
 
   public function getways($value='')
@@ -47,15 +52,30 @@ class MainController extends Controller
     ->groupBy('year', 'month')
     ->get();
     // dd($data);
-    $ways = [100,150,50,115,20,55,64,17,20,35,49,0];
 
-    $success_ways = 10;
-    $reject_ways = 1;
+    $month = [];
+    foreach ($data as $row) {
+      if($row->year == Carbon\Carbon::now()->year){
+        $month[$row->month] = $row->count;
+      }
+    }
+
+    $ways = [];
+    for ($i=0; $i < 12; $i++) { 
+      if(array_key_exists($i+1, $month)){
+        array_push($ways, $month[$i+1]);
+      }else{
+        array_push($ways, 0);
+      }
+    }
+
+    $success_ways = Way::whereMonth('created_at', Carbon\Carbon::now()->month)->where('status_code','001')->get();
+    $reject_ways = Way::whereMonth('created_at', Carbon\Carbon::now()->month)->where('status_code','003')->get();
     
     return Response::json(array(
       'ways' => $ways,
-      'success_ways' => $success_ways,
-      'reject_ways' => $reject_ways
+      'success_ways' => count($success_ways),
+      'reject_ways' => count($reject_ways)
     ));
   }
 
@@ -144,20 +164,20 @@ class MainController extends Controller
     $rolename=$role->name;
     if($rolename == "client") {
       $client_id=Auth::user()->client->id;
-      $expenses = Expense::where('client_id',$client_id)->where('status',2)->with('expense_type')->get();
+      $expenses = Expense::where('client_id',$client_id)->where('status',2)->where('expense_type_id',1)->with('expense_type')->get();
 
       $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($client_id){
         $query->where('client_id', $client_id);
-      })->get();
+      })->where('amount',null)->get();
 
       $rejects =  Way::with('item.pickup.schedule')
       ->whereHas('item.pickup.schedule', function($query) use ($client_id){
           $query->where('client_id', $client_id);
       })->where('status_code','003')->where('refund_date',null)->get();
 
-      // dd($rejects);
+      $carryfees = Expense::where('client_id',$client_id)->where('status',2)->where('expense_type_id',5)->with('item.township')->get();
 
-      return view('dashboard.debt_list',compact('clients', 'expenses', 'incomes', 'rejects'));
+      return view('dashboard.debt_list',compact('clients', 'expenses', 'incomes', 'rejects', 'carryfees'));
     }
 
     return view('dashboard.debt_list',compact('clients'));

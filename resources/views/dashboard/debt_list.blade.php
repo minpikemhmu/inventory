@@ -97,11 +97,17 @@
                       <tbody>
                         @php $i=1; $total=0; @endphp
                         @foreach($incomes as $income)
-                          @php $delifees = 0; @endphp
+                          @php $delifees = 0; $deposit=0;@endphp
                           @if($income->payment_type_id == 5)
                             @php $delifees = 0; @endphp
                           @else
                             @php $delifees = $income->way->item->delivery_fees; @endphp
+                          @endif
+
+                          @if($income->payment_type_id == 6)
+                            @php $deposit = 0; @endphp
+                          @else
+                            @php $deposit = $income->way->item->deposit; @endphp
                           @endif
                           <tr>
                             <td>{{$i++}}</td>
@@ -110,9 +116,9 @@
                             <td>
                               {{number_format($delifees)}}
                             </td>
-                            <td>{{number_format($income->way->item->deposit)}}</td>
-                            <td>{{number_format($delifees + $income->way->item->deposit)}}</td>
-                            @php $total += ($delifees + $income->way->item->deposit); @endphp
+                            <td>{{number_format($deposit)}}</td>
+                            <td>{{number_format($delifees + $deposit)}}</td>
+                            @php $total += ($delifees + $deposit); @endphp
                           </tr>
                         @endforeach
                         @foreach($rejects as $reject)
@@ -124,6 +130,17 @@
                             <td>{{number_format($reject->item->deposit)}}</td>
                             <td>{{number_format(0 + $reject->item->deposit)}}</td>
                             @php $total += (0 + $reject->item->deposit); @endphp
+                          </tr>
+                        @endforeach
+                        @foreach($carryfees as $carryfee)
+                          <tr>
+                            <td>{{$i++}}</td>
+                            <td>{{$carryfee->item->receiver_name}} <span class="badge badge-dark">{{$carryfee->item->receiver_phone_no}}</span></td>
+                            <td>{{'Carry Fees'}}</td>
+                            <td>{{number_format(0)}}</td>
+                            <td>{{number_format($carryfee->amount)}}</td>
+                            <td>{{number_format($carryfee->amount)}}</td>
+                            @php $total += $carryfee->amount; @endphp
                           </tr>
                         @endforeach
                         <tr>
