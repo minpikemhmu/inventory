@@ -16,9 +16,9 @@
         <div class="tile">
           <div class="bs-component">
             <ul class="nav nav-tabs">
-              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Income</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile">Expense</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profit">Profit</a></li>
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">{{ __("Income")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile">{{ __("Expense")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profit">{{ __("Profit")}}</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="home">
@@ -30,7 +30,7 @@
                     <input type="date" name="" class="form-control end-date">
                   </div>
                   <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
-                    <button class="btn btn-success search">Search</button>
+                    <button class="btn btn-success search">{{ __("Search")}}</button>
                   </div>
                 </div>
                 <div class="table-responsive mytable">
@@ -38,10 +38,10 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Item Code</th>
-                        <th>Delivery Men</th>
-                        <th>Cash Amount</th>
-                        <th>Bank Amount</th>
+                        <th>{{ __("Item Code")}}</th>
+                        <th>{{ __("Delivery Man")}}</th>
+                        <th>{{ __("Cash Amount")}}</th>
+                        <th>{{ __("Bank Amount")}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -59,7 +59,7 @@
                   <input type="date" name="" class="form-control exend-date">
                   </div>
                   <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
-                   <button class="btn btn-success exsearch">Search</button>
+                   <button class="btn btn-success exsearch">{{ __("Search")}}</button>
                   </div>
                 </div>
                 <div class="table-responsive mytable">
@@ -67,9 +67,9 @@
                     <thead>
                       <tr>  
                         <th>#</th>
-                        <th>Description</th>
-                        <th>Expense Type</th>
-                        <th>Amount</th>
+                        <th>{{ __("Description")}}</th>
+                        <th>{{ __("Expense Type")}}</th>
+                        <th>{{ __("Amount")}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -87,7 +87,7 @@
                   <input type="date" name="" class="form-control pend-date">
                   </div>
                   <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
-                   <button class="btn btn-success psearch">Search</button>
+                   <button class="btn btn-success psearch">{{ __("Search")}}</button>
                   </div>
                 </div>
 
@@ -95,10 +95,10 @@
                   <table class="table" id="profittable">
                     <thead>
                       <tr>  
-                        <th>Total Income</th>
-                        <th>Net Income</th>
-                        <th>Expense(အခြား+တန်ဆာခ)</th>
-                        <th>Net Profit</th>
+                        <th>{{ __("Total Income")}}</th>
+                        <th>{{ __("Net Income")}}</th>
+                        <th>{{ __("Expense")}}(အခြား+တန်ဆာခ)</th>
+                        <th>{{ __("Net Profit")}}</th>
                       </tr>
                     </thead>
                     <tbody class="searchTable">

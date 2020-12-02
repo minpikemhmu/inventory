@@ -3,7 +3,7 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Debt History</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Debt History")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
@@ -16,10 +16,10 @@
          <div class="alert alert-primary success d-none" role="alert"></div>
         <div class="tile">
           @php $mytime = Carbon\Carbon::now(); @endphp
-          <h3 class="tile-title d-inline-block">Debt History</h3>
+          <h3 class="tile-title d-inline-block">{{ __("Debt History")}}</h3>
           <div class="row">
             <div class="form-group col-md-3">
-              <label for="InputClient">Select Client:</label>
+              <label for="InputClient">{{ __("Select Client")}}:</label>
               <select class="form-control" id="InputClient" name="client">
                 <optgroup label="Select Client">
                   @foreach($clients as $client)
@@ -29,24 +29,24 @@
               </select>
             </div>
             <div class="form-group col-md-3">
-              <label for="InputStartDate">Start Date:</label>
+              <label for="InputStartDate">{{ __("Start Date")}}:</label>
               <input type="date" class="form-control" id="InputStartDate" name="start_date">
             </div>
             <div class="form-group col-md-3">
-              <label for="InputEndDate">End Date:</label>
+              <label for="InputEndDate">{{ __("End Date")}}:</label>
               <input type="date" class="form-control" id="InputEndDate" name="end_date">
             </div>
             <div class="form-group col-md-3">
-              <button class="btn btn-primary search_btn mt-4" type="button">Search</button>
+              <button class="btn btn-primary search_btn mt-4" type="button">{{ __("Search")}}</button>
             </div>
           </div>
         
           <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">To Get</a>
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{ __("To Get")}}</a>
             </li>
             <li class="nav-item" role="presentation">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">To Pay</a>
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{ __("To Pay")}}</a>
             </li>
           </ul>
           <div class="tab-content mt-4" id="myTabContent">
@@ -54,12 +54,12 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>Name</th>
+                    <th>{{ __("#")}}</th>
+                    <th>{{ __("Name")}}</th>
                     {{-- <th>Township</th> --}}
-                    <th>Delivery Fees</th>
-                    <th>Deposit Amount</th>
-                    <th>Total Amount</th>
+                    <th>{{ __("Delivery Fees")}}</th>
+                    <th>{{ __("Deposit Amount")}}</th>
+                    <th>{{ __("Total Amount")}}</th>
                   </tr>
                 </thead>
                 <tbody id="reject_list">
@@ -70,10 +70,10 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>Description</th>
-                    <th>Expense Type</th>
-                    <th>Amount</th>
+                    <th>{{ __("#")}}</th>
+                    <th>{{ __("Description")}}</th>
+                    <th>{{ __("Expense Type")}}</th>
+                    <th>{{ __("Amount")}}</th>
                   </tr>
                 </thead>
                 <tbody id="debit_list">

@@ -3,7 +3,7 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Reports</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Reports")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
@@ -15,11 +15,11 @@
       <div class="col-md-12">
         <div class="tile">
           @php $mytime = Carbon\Carbon::now(); @endphp
-          <h3 class="tile-title d-inline-block">Success List ({{$mytime->toFormattedDateString()}})</h3>
+          <h3 class="tile-title d-inline-block">{{ __("Success List")}} ({{$mytime->toFormattedDateString()}})</h3>
 
           <form  method="post" class="myform">
             @csrf
-            <button class="btn btn-info float-right generate">Generate Report</button>
+            <button class="btn btn-info float-right generate">{{ __("Generate Report")}}</button>
             <div class="row">
               <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-2">
                 <input type="date" name="start_date" class="form-control start-date">
@@ -28,7 +28,7 @@
                 <input type="date" name="end_date" class="form-control end-date">
               </div>
               <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 my-2">
-                <button class="btn btn-success search">Search</button>
+                <button class="btn btn-success search">{{ __("Search")}}</button>
               </div>
             </div>
           </form>
@@ -37,13 +37,13 @@
             <table class="table" id="waystable">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Delivery man</th>
-                  <th>pickups</th>
-                  <th>ways</th>
-                  <th>gate ways</th>
-                  <th>Postoffice ways</th>
-                  <th>Total</th>
+                  <th>{{ __("#")}}</th>
+                  <th>{{ __("Delivery man")}}</th>
+                  <th>{{ __("pickups")}}</th>
+                  <th>{{ __("ways")}}</th>
+                  <th>{{ __("gate ways")}}</th>
+                  <th>{{ __("Postoffice ways")}}</th>
+                  <th>{{ __("Total")}}</th>
                 </tr>
               </thead>
               <tbody>

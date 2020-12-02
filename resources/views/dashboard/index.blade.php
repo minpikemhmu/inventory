@@ -15,7 +15,7 @@
       <div class="col-md-6 col-lg-3">
         <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
           <div class="info">
-            <h4>Incomes</h4>
+            <h4>{{ __("Incomes")}}</h4>
             <p><b>{{$incomes}}</b></p>
           </div>
         </div>
@@ -23,7 +23,7 @@
       <div class="col-md-6 col-lg-3">
         <div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-3x"></i>
           <div class="info">
-            <h4>Expenses</h4>
+            <h4>{{ __("Expenses")}}</h4>
             <p><b>{{$expenses}}</b></p>
           </div>
         </div>
@@ -31,7 +31,7 @@
       <div class="col-md-6 col-lg-3">
         <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
           <div class="info">
-            <h4>Staff</h4>
+            <h4>{{ __("Staff")}}</h4>
             <p><b>{{$staff}}</b></p>
           </div>
         </div>
@@ -39,7 +39,7 @@
       <div class="col-md-6 col-lg-3">
         <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
           <div class="info">
-            <h4>Delivery Man</h4>
+            <h4>{{ __("Delivery Man")}}</h4>
             <p><b>{{$deliverymen}}</b></p>
           </div>
         </div>
@@ -48,7 +48,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="tile">
-          <h3 class="tile-title">Monthly Ways</h3>
+          <h3 class="tile-title">{{ __("Monthly Ways")}}</h3>
           <div class="embed-responsive embed-responsive-16by9">
             <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
           </div>

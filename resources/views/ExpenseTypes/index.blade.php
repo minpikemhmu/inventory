@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Expense Types</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Expense Types")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('expense_types.index')}}">Expense Types</a></li>
+        <li class="breadcrumb-item"><a href="{{route('expense_types.index')}}">{{ __("Expense Types")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -23,15 +23,15 @@
             </div>
         @endif
         <div class="tile">
-          <h3 class="tile-title d-inline-block">Expense Types List</h3>
-          <a href="{{route('expense_types.create')}}" class="btn btn-primary float-right">Add New</a>
+          <h3 class="tile-title d-inline-block">{{ __("Expense Types List")}}</h3>
+      <a href="{{route('expense_types.create')}}" class="btn btn-primary float-right">{{ __("Add New")}}</a>
           <div class="table-responsive">
             <table class="table dataTable">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Actions</th>
+                  <th>{{ __("#")}}</th>
+                  <th>{{ __("Name")}}</th>
+                  <th>{{ __("Actions")}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -41,12 +41,12 @@
                   <td>{{$i++}}</td>
                   <td>{{$row->name}}</td>
                   <td>
-                    <a href="{{route('expense_types.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                    <a href="{{route('expense_types.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
                     <form action="{{ route('expense_types.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
 
                       @csrf
                       @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
                   </form>
                   </td>
                 </tr>

@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Townships</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Townships")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('townships.index')}}">Townships</a></li>
+        <li class="breadcrumb-item"><a href="{{route('townships.index')}}">{{ __("Townships")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -24,7 +24,7 @@
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="rcity" id="incity" value="1" checked>
                   <label class="form-check-label" for="incity">
-                    In city
+                    {{ __("In city")}}
                   </label>
                 </div>
               </div>
@@ -33,7 +33,7 @@
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="rcity" id="gate" value="2" >
                   <label class="form-check-label" for="gate">
-                    Gate
+                    {{ __("Gate")}}
                   </label>
                 </div>
               </div>
@@ -42,26 +42,26 @@
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="rcity" id="post" value="3" >
                   <label class="form-check-label" for="post">
-                    Post Office
+                    {{ __("Post Office")}}
                   </label>
                 </div>
               </div>
               <div class="form-control-feedback text-danger"> {{$errors->first('rcity') }} </div>
             </div>
             <div class="form-group townshipname">
-              <label for="InputCityName">Name:</label>
+              <label for="InputCityName">{{ __("Name")}}:</label>
               <input class="form-control" id="InputCityName" type="text" placeholder="Enter name" name="name">
                <div class="form-control-feedback text-danger"> {{$errors->first('name') }} </div>
             </div>
 
             <div class="form-group deliveryfee">
-              <label for="delifee">Delivery Fees:</label>
+              <label for="delifee">{{ __("Delivery Fees")}}:</label>
               <input class="form-control" id="delifee" type="number" placeholder="Enter Delivery Fees" name="delifee">
                <div class="form-control-feedback text-danger"> {{$errors->first('delifee') }} </div>
             </div>
 
             <div class="form-group cityname">
-              <label for="city">City</label>
+              <label for="city">{{ __("City")}}:</label>
               <select class="form-control" id="city" name="city">
                 <option>Choose City</option>
                 @foreach($cities as $row)

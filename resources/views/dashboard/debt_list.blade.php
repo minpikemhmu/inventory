@@ -16,13 +16,13 @@
          <div class="alert alert-primary success d-none" role="alert"></div>
         <div class="tile">
           @php $mytime = Carbon\Carbon::now(); @endphp
-          <h3 class="tile-title d-inline-block">Debt List ({{$mytime->toFormattedDateString()}})</h3>
+          <h3 class="tile-title d-inline-block">{{ __("Debt List")}} ({{$mytime->toFormattedDateString()}})</h3>
           @role('staff|admin')
           <form method="post" action="{{route('fix_debit')}}">
             @csrf
             <div class="row">
               <div class="form-group col-md-6">
-                <label for="InputClient">Select Client:</label>
+                <label for="InputClient">{{ __("Select Client")}}:</label>
                 <select class="form-control" id="InputClient" name="client">
                   <optgroup label="Select Client">
                     @foreach($clients as $client)
@@ -44,9 +44,9 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Description</th>
-                    <th>Expense Type</th>
-                    <th>Amount</th>
+                    <th>{{ __("Description")}}</th>
+                    <th>{{ __("Expense Type")}}</th>
+                    <th>{{ __("Amount")}}</th>
                   </tr>
                 </thead>
                 <tbody id="debit_list">
@@ -59,12 +59,12 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>Name</th>
+                    <th>{{ __("#")}}</th>
+                    <th>{{ __("Name")}}</th>
                     {{-- <th>Township</th> --}}
-                    <th>Delivery Fees</th>
-                    <th>Deposit Amount</th>
-                    <th>Total Amount</th>
+                    <th>{{ __("Delivery Fees")}}</th>
+                    <th>{{ __("Deposit Amount")}}</th>
+                    <th>{{ __("Total Amount")}}</th>
                   </tr>
                 </thead>
                 <tbody id="reject_list">
@@ -87,11 +87,11 @@
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Name</th>
-                          <th>Description</th>
-                          <th>Delivery Fees</th>
-                          <th>Deposit Amount</th>
-                          <th>Total Amount</th>
+                          <th>{{ __("Name")}}</th>
+                          <th>{{ __("Description")}}</th>
+                          <th>{{ __("Delivery Fees")}}</th>
+                          <th>{{ __("Deposit Amount")}}</th>
+                          <th>{{ __("Total Amount")}}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -144,7 +144,7 @@
                           </tr>
                         @endforeach
                         <tr>
-                          <td colspan="5">Total:</td>
+                          <td colspan="5">{{ __("Total")}}:</td>
                           <td>{{number_format($total)}} Ks</td>
                         </tr>
                       </tbody>
@@ -157,8 +157,8 @@
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Description</th>
-                          <th>Amount</th>
+                          <th>{{ __("Description")}}</th>
+                          <th>{{ __("Amount")}}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -172,7 +172,7 @@
                         </tr>
                         @endforeach
                         <tr>
-                          <td colspan="2">Total:</td>
+                          <td colspan="2">{{ __("Total")}}:</td>
                           <td>{{number_format($etotal)}} Ks</td>
                         </tr>
                       </tbody>

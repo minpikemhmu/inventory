@@ -15,20 +15,20 @@
       <div class="col-md-12">
         <div class="tile">
           @php $mytime = Carbon\Carbon::now(); @endphp
-          <h3 class="tile-title d-inline-block">Delay List ({{$mytime->toFormattedDateString()}})</h3>
+          <h3 class="tile-title d-inline-block">{{ __("Delay List")}} ({{$mytime->toFormattedDateString()}})</h3>
 
-          <a href="#" class="btn btn-primary float-right wayassign" id="submit_assign">Way Assign</a>
+          <a href="#" class="btn btn-primary float-right wayassign" id="submit_assign">{{ __("Way Assign")}}</a>
           <div class="table-responsive">
                   <table class="table table-bordered dataTable">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th>Codeno</th>
-                        <th>Township</th>
-                        <th>Receiver Info</th>
-                        <th>Expired Date</th>
-                        <th>Amount</th>
-                        <th>Actions</th>
+                        <th>{{ __("#")}}</th>
+                        <th>{{ __("Codeno")}}</th>
+                        <th>{{ __("Township")}}</th>
+                        <th>{{ __("Receiver Info")}}</th>
+                        <th>{{ __("Expired Date")}}</th>
+                        <th>{{ __("Amount")}}</th>
+                        <th>{{ __("Actions")}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -57,7 +57,7 @@
                         <td>{{$row->expired_date}}</td>
                         <td>{{number_format($row->amount)}}</td>
                         <td>
-                          <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">Detail</a>
+                          <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">{{ __("Detail")}}</a>
                         </td>
                       </tr>
                       @endforeach
@@ -80,10 +80,10 @@
           </button>
         </div>
         <div class="modal-body">
-          <p><strong>Receiver Name:</strong> <span id="rname">Ma Mon</span></p>
-          <p ><strong >Receiver Phone No:</strong> <span id="rphone">09987654321</span></p>
-          <p><strong >Receiver Address:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
-          <p><strong>Remark:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
+          <p><strong>{{ __("Receiver Name")}}:</strong> <span id="rname">Ma Mon</span></p>
+          <p ><strong >{{ __("Receiver Phone No")}}:</strong> <span id="rphone">09987654321</span></p>
+          <p><strong >{{ __("Receiver Address")}}:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
+          <p><strong>{{ __("Remark")}}:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
 
         </div>
         <div class="modal-footer">
@@ -99,7 +99,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Choose Delivery Man</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{{ __("Choose Delivery Man")}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -108,11 +108,11 @@
           @csrf
           <div class="modal-body">
             <div class="form-group">
-              <label>Way Code Numbers:</label>
+              <label>{{ __("Way Code Numbers")}}:</label>
               <div id="selectedWays"></div>
             </div>
             <div class="form-group">
-              <label>Choose Delivery Man:</label>
+              <label>{{ __("Choose Delivery Man")}}:</label>
               <select class="js-example-basic-multiple form-control" name="delivery_man">
                 @foreach($deliverymen as $man)
                   <option value="{{$man->id}}">{{$man->user->name}}</option>
@@ -121,8 +121,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Assign</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("Close")}}</button>
+            <button type="submit" class="btn btn-primary">{{ __("Assign")}}</button>
           </div>
         </form>
       </div>

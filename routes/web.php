@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.custom_login');
 });
+//language
+Route::get('lang/{locale}', 'LocalizationController@index')->name('lang');
 
 Route::middleware('auth')->group(function () {
   Route::get('dashboard','MainController@dashboard')->name('dashboard');
@@ -119,6 +121,8 @@ Route::get('seennoti','MainController@seennoti')->name('seennoti');
   Route::post('makeDelivered','MainController@makeDeliver')->name('makeDeliver');
   Route::post('retuenDeliver','MainController@retuenDeliver')->name('retuenDeliver');
   Route::post('rejectDeliver','MainController@rejectDeliver')->name('rejectDeliver');
+  
+
 });
 
 Route::resource('profiles','ProfileController');

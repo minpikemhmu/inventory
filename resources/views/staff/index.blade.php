@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Staff</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Staff")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('staff.index')}}">Staff</a></li>
+        <li class="breadcrumb-item"><a href="{{route('staff.index')}}">{{ __("Staff")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -23,19 +23,19 @@
             </div>
         @endif
         <div class="tile">
-          <h3 class="tile-title d-inline-block">Staff List</h3>
-          <a href="{{route('staff.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
+          <h3 class="tile-title d-inline-block">{{ __("Staff List")}}</h3>
+          <a href="{{route('staff.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> {{ __("Add New")}}</a>
           <div class="table-responsive">
             <table class="table dataTable">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Phone No</th>
-                  <th>Address</th>
-                  <th>Designation</th>
-                  <th>Joined Date</th>
-                  <th>Actions</th>
+                  <th>{{ __("Name")}}</th>
+                  <th>{{ __("Phone No")}}</th>
+                  <th>{{ __("Address")}}</th>
+                  <th>{{ __("Designation")}}</th>
+                  <th>{{ __("Joined Date")}}</th>
+                  <th>{{ __("Actions")}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -49,13 +49,13 @@
                   <td>{{$row->designation}}</td>
                   <td>{{$row->joined_date}}</td>
                   <td>
-                    <a href="{{route('staff.show',$row->id)}}" class="btn btn-primary">Detail</a>
-                    <a href="{{route('staff.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                    <a href="{{route('staff.show',$row->id)}}" class="btn btn-primary">{{ __("Detail")}}</a>
+                    <a href="{{route('staff.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
                     <form action="{{ route('staff.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
 
                       @csrf
                       @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
                   </form>
                   </td>
                 </tr>

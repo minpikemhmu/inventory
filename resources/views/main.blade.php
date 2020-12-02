@@ -42,7 +42,7 @@
           <button class="app-search__button"><i class="fa fa-search"></i></button>
         </li> --}}
         <!--Notification Menu-->
-        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
+       {{--  <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
           <ul class="app-notification dropdown-menu dropdown-menu-right">
             <li class="app-notification__title">You have 4 new notifications.</li>
             <div class="app-notification__content">
@@ -81,8 +81,12 @@
             </div>
             <li class="app-notification__footer"><a href="#">See all notifications.</a></li>
           </ul>
-        </li>
+        </li> --}}
         <!-- User Menu-->
+          <li><a class="app-nav__item text-decoration-none" href="{{route('lang','mm')}}" ><img src="{{asset('myanmar.png')}}" class="img-fluid" style="width: 30px;height: 30px;"> {{ __("MM")}}</a></li>
+          <li>
+           <a class="app-nav__item text-decoration-none" href="{{route('lang','en')}}"><img src="{{asset('uk.png')}}" class="img-fluid" style="width: 30px;height: 30px;"> {{ __("ENG")}}</a>
+          </li>
         <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
             {{-- <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-cog fa-lg"></i> Settings</a></li> --}}
@@ -110,38 +114,45 @@
         <!-- For Admin -->
         @role('admin')
         <li><a class="app-menu__item {{ Request::is('dashboard') ? 'active' : '' }}" href="{{route('dashboard')}}"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Dashboard</span></a></li>
-        <li class="treeview {{ Request::is('settings/*') ? 'is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-cog" aria-hidden="true"></i><span class="app-menu__label">Settings</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+       {{--  <li class="treeview {{ Request::is('language/*') ? 'is-expanded' : '' }}">
+          <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-language" aria-hidden="true"></i><span class="app-menu__label">{{ __("Language")}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item {{ Request::is('settings/cities*') ? 'active' : '' }}" href="{{route('cities.index')}}"><i class="icon fa fa-circle-o"></i> Cities</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/townships*') ? 'active' : '' }}" href="{{route('townships.index')}}"><i class="icon fa fa-circle-o"></i> Townships</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/statuses*') ? 'active' : '' }}" href="{{route('statuses.index')}}"><i class="icon fa fa-circle-o"></i> Delivery Status Codes</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/expense_types*') ? 'active' : '' }}" href="{{route('expense_types.index')}}"><i class="icon fa fa-circle-o"></i> Expense Types</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/payment_types*') ? 'active' : '' }}" href="{{route('payment_types.index')}}"><i class="icon fa fa-circle-o"></i> Payment Types</a></li>
-            <li><a class="treeview-item {{ Request::is('settings/banks*') ? 'active' : '' }}" href="{{route('banks.index')}}"><i class="icon fa fa-circle-o"></i> Banks</a></li>
+            <li><a class="treeview-item {{ Request::is('language/mm*') ? 'active' : '' }}" href="{{route('lang','mm')}}"><img src="{{asset('myanmar.png')}}" class="img-fluid" style="width: 30px;height: 30px;"> {{ __("MM")}}</a></li>
+            <li><a class="treeview-item {{ Request::is('language/eng*') ? 'active' : '' }}" href="{{route('lang','en')}}"><img src="{{asset('uk.png')}}" class="img-fluid" style="width: 30px;height: 30px;"> {{ __("ENG")}}</a></li>
+          </ul>
+        </li> --}}
+        <li class="treeview {{ Request::is('settings/*') ? 'is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-cog" aria-hidden="true"></i><span class="app-menu__label">{{ __("Settings")}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item {{ Request::is('settings/cities*') ? 'active' : '' }}" href="{{route('cities.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Cities")}}</a></li>
+            <li><a class="treeview-item {{ Request::is('settings/townships*') ? 'active' : '' }}" href="{{route('townships.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Townships")}}</a></li>
+            <li><a class="treeview-item {{ Request::is('settings/statuses*') ? 'active' : '' }}" href="{{route('statuses.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Delivery Status Codes")}}</a></li>
+            <li><a class="treeview-item {{ Request::is('settings/expense_types*') ? 'active' : '' }}" href="{{route('expense_types.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Expense Types")}}</a></li>
+            <li><a class="treeview-item {{ Request::is('settings/payment_types*') ? 'active' : '' }}" href="{{route('payment_types.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Payment Types")}}</a></li>
+            <li><a class="treeview-item {{ Request::is('settings/banks*') ? 'active' : '' }}" href="{{route('banks.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Banks")}}</a></li>
           </ul>
         </li>
-        <li><a class="app-menu__item {{ Request::is('success_list') ? 'active' : '' }}" href="{{route('success_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Success Ways</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('reject_list') ? 'active' : '' }}" href="{{route('reject_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Reject Ways</span><span class="badge badge-danger rejectcount"></span></a></li>
+        <li><a class="app-menu__item {{ Request::is('success_list') ? 'active' : '' }}" href="{{route('success_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __("Success Ways")}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('reject_list') ? 'active' : '' }}" href="{{route('reject_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __("Reject Ways")}}</span><span class="badge badge-danger rejectcount"></span></a></li>
         {{-- <li><a class="app-menu__item {{ Request::is('return_list') ? 'active' : '' }}" href="{{route('return_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Return List</span></a></li> --}}
-        <li><a class="app-menu__item {{ Request::is('delay_list') ? 'active' : '' }}" href="{{route('delay_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Delay List</span><span class="badge badge-danger delaycount"></span></a></li>
-        <li><a class="app-menu__item {{ Request::is('statements') ? 'active' : '' }}" href="{{route('statements')}}"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Financial Statement</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('debt_list') ? 'active' : '' }}" href="{{route('debt_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Debit List</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('staff*') ? 'active' : '' }}" href="{{route('staff.index')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Staff</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('debt_history') ? 'active' : '' }}" href="{{route('debt_history')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Debit History</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('delay_list') ? 'active' : '' }}" href="{{route('delay_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __("Delay List")}}</span><span class="badge badge-danger delaycount"></span></a></li>
+        <li><a class="app-menu__item {{ Request::is('statements') ? 'active' : '' }}" href="{{route('statements')}}"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">{{ __("Financial Statement")}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('debt_list') ? 'active' : '' }}" href="{{route('debt_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __('Debit List') }}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('staff*') ? 'active' : '' }}" href="{{route('staff.index')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">{{ __("Staff")}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('debt_history') ? 'active' : '' }}" href="{{route('debt_history')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __("Debit History")}}</span></a></li>
         @endrole
 
         <!-- For Staff -->
         @role('staff')
-        <li><a class="app-menu__item {{ Request::is('schedules*') ? 'active' : '' }}" href="{{route('schedules.index')}}"><i class="app-menu__icon fa fa-calendar-check-o"></i><span class="app-menu__label">Pickup Schedules</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('items*') ? 'active' : '' }}" href="{{route('items.index')}}"><i class="app-menu__icon fa fa-archive"></i><span class="app-menu__label">Item List</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('clients*') ? 'active' : '' }}" href="{{route('clients.index')}}"><i class="app-menu__icon fa fa-user-circle"></i><span class="app-menu__label">Client List</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('delivery_men*') ? 'active' : '' }}" href="{{route('delivery_men.index')}}"><i class="app-menu__icon fa fa-user-circle-o"></i><span class="app-menu__label">Delivery Men</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('reject_list') ? 'active' : '' }}" href="{{route('reject_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label ">Reject Ways</span><span class="badge badge-danger rejectcount"></span></a></li>
-        <li><a class="app-menu__item {{ Request::is('delay_list') ? 'active' : '' }}" href="{{route('delay_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Delay List</span><span class="badge badge-danger delaycount"></span></a></li>
+        <li><a class="app-menu__item {{ Request::is('schedules*') ? 'active' : '' }}" href="{{route('schedules.index')}}"><i class="app-menu__icon fa fa-calendar-check-o"></i><span class="app-menu__label">{{ __("Pickup Schedules")}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('items*') ? 'active' : '' }}" href="{{route('items.index')}}"><i class="app-menu__icon fa fa-archive"></i><span class="app-menu__label">{{ __("Item List")}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('clients*') ? 'active' : '' }}" href="{{route('clients.index')}}"><i class="app-menu__icon fa fa-user-circle"></i><span class="app-menu__label">{{ __("Client List")}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('delivery_men*') ? 'active' : '' }}" href="{{route('delivery_men.index')}}"><i class="app-menu__icon fa fa-user-circle-o"></i><span class="app-menu__label">{{ __("Delivery Men")}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('reject_list') ? 'active' : '' }}" href="{{route('reject_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label ">{{ __("Reject Ways")}}</span><span class="badge badge-danger rejectcount"></span></a></li>
+        <li><a class="app-menu__item {{ Request::is('delay_list') ? 'active' : '' }}" href="{{route('delay_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __("Delay List")}}</span><span class="badge badge-danger delaycount"></span></a></li>
         {{-- <li><a class="app-menu__item {{ Request::is('return_list') ? 'active' : '' }}" href="{{route('return_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">Return List</span></a></li> --}}
-        <li><a class="app-menu__item {{ Request::is('debt_list') ? 'active' : '' }}" href="{{route('debt_list')}}"><i class="app-menu__icon fa fa-list-alt"></i><span class="app-menu__label">Debit List</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('incomes*') ? 'active' : '' }}" href="{{route('incomes')}}"><i class="app-menu__icon fa fa-files-o"></i><span class="app-menu__label">Income</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('expenses*') ? 'active' : '' }}" href="{{route('expenses.index')}}"><i class="app-menu__icon fa fa-files-o"></i><span class="app-menu__label">Expense</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('debt_list') ? 'active' : '' }}" href="{{route('debt_list')}}"><i class="app-menu__icon fa fa-list-alt"></i><span class="app-menu__label">{{ __("Debit List")}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('incomes*') ? 'active' : '' }}" href="{{route('incomes')}}"><i class="app-menu__icon fa fa-files-o"></i><span class="app-menu__label">{{ __("Income")}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('expenses*') ? 'active' : '' }}" href="{{route('expenses.index')}}"><i class="app-menu__icon fa fa-files-o"></i><span class="app-menu__label">{{ __("Expense")}}</span></a></li>
         @endrole
 
         <!-- For Delivery Men -->

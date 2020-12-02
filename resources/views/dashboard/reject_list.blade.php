@@ -3,7 +3,7 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Reports</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Reports")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
@@ -15,17 +15,17 @@
       <div class="col-md-12">
         <div class="tile">
           @php $mytime = Carbon\Carbon::now(); @endphp
-          <h3 class="tile-title d-inline-block">Reject List ({{$mytime->toFormattedDateString()}})</h3>
+          <h3 class="tile-title d-inline-block">{{ __("Reject List")}} ({{$mytime->toFormattedDateString()}})</h3>
           <div class="table-responsive">
             <table class="table dataTable">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Item Code</th>
-                  <th>Client</th>
-                  <th>Delivery Men</th>
-                  <th>Amount</th>
-                  <th>Remark</th>
+                  <th>{{ __("Item Code")}}</th>
+                  <th>{{ __("Client")}}</th>
+                  <th>{{ __("Delivery Man")}}</th>
+                  <th>{{ __("Amount")}}</th>
+                  <th>{{ __("Remark")}}</th>
                   {{-- <th>Action</th> --}}
                 </tr>
               </thead>
