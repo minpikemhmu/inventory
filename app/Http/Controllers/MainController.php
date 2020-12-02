@@ -721,7 +721,7 @@ public function profit(Request $request){
     $way->delivery_date=Null;
     $way->status_id=5;
     $way->save();
-    return redirect()->route('ways')->with("successMsg",'edit successfully');
+    return redirect()->route('success_ways')->with("successMsg",'edit successfully');
   }
 
   public function debt_history($value='')
