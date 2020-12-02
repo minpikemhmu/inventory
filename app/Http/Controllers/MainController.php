@@ -494,14 +494,13 @@ public function profit(Request $request){
   }
 
   // for way page => delivery man view
-  public function ways($value='')
+  public function pending_ways($value='')
   {
-    // ways assigned for that user (must delivery_date and refund_date equal NULL)
-    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('status_code','!=',002)->where('deleted_at',null)->get();
+    // pending_ways assigned for that user (must delivery_date and refund_date equal NULL)
+    $pending_ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('status_code','!=',002)->where('deleted_at',null)->orderBy('id','desc')->get();
     //dd($ways);
-    $successways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get(); 
 
-    foreach ($ways as $way) {
+    foreach ($pending_ways as $way) {
       if(Carbon\Carbon::today()>$way->created_at && $way->status_code==005){
         $way->delete();
       }
@@ -517,16 +516,21 @@ public function profit(Request $request){
             }
         }
 
-          if(Carbon\Carbon::today()->toDateString()==$way->created_at->toDateString() && $way->status_code==005 && !in_array($way->id, $data)){
-            Notification::send($way,new SeenNotification($way));
-    //dd("ok");
-             //event(new rejectitem($way));
-          }
+        if(Carbon\Carbon::today()->toDateString()==$way->created_at->toDateString() && $way->status_code==005 && !in_array($way->id, $data)){
+          Notification::send($way,new SeenNotification($way));
+          //dd("ok");
+          //event(new rejectitem($way));
+        }
     }
 
-    $ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('status_code','!=',002)->where('deleted_at',null)->get();
+    return view('dashboard.pending_ways',compact('pending_ways'));
+  }
 
-    return view('dashboard.ways',compact('ways','successways'));
+  public function success_ways($value='')
+  {
+    $success_ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get();
+
+    return view('dashboard.success_ways',compact('success_ways'));
   }
 
   public function makeDeliver(Request $request)
