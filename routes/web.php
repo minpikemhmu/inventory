@@ -117,7 +117,13 @@ Route::get('seennoti','MainController@seennoti')->name('seennoti');
   Route::get('pickups','MainController@pickups')->name('pickups');
   Route::post('pickups','MainController@donepickups')->name('donepickups');
   Route::post('delichargebytown','ItemController@delichargebytown')->name('delichargebytown');
-  Route::get('ways','MainController@ways')->name('ways');
+  // Route::get('ways','MainController@ways')->name('ways');
+
+  Route::prefix('ways')->group(function () {
+    Route::get('pending','MainController@pending_ways')->name('pending_ways');
+    Route::get('success','MainController@success_ways')->name('success_ways');
+  });
+
   Route::post('makeDelivered','MainController@makeDeliver')->name('makeDeliver');
   Route::post('retuenDeliver','MainController@retuenDeliver')->name('retuenDeliver');
   Route::post('rejectDeliver','MainController@rejectDeliver')->name('rejectDeliver');

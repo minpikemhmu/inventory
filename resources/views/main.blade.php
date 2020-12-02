@@ -104,7 +104,8 @@
     <!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image">
+      <div class="app-sidebar__user">
+        <img class="app-sidebar__user-avatar" src="{{asset('images/48.jpg')}}" alt="User Image">
         <div>
           <p class="app-sidebar__user-name">{{Auth::user()->name}}</p>
           <p class="app-sidebar__user-designation">{{Auth::user()->getRoleNames()[0]}}</p>
@@ -158,7 +159,13 @@
         <!-- For Delivery Men -->
         @role('delivery_man')
         <li><a class="app-menu__item {{ Request::is('pickups*') ? 'active' : '' }}" href="{{route('pickups')}}"><i class="app-menu__icon fa fa-get-pocket"></i><span class="app-menu__label">Pickup List</span></a></li>
-        <li><a class="app-menu__item {{ Request::is('ways*') ? 'active' : '' }}" href="{{route('ways')}}"><i class="app-menu__icon fa fa-hourglass-end"></i><span class="app-menu__label">Way List</span></a></li>
+        {{-- <li><a class="app-menu__item {{ Request::is('ways*') ? 'active' : '' }}" href="{{route('ways')}}"><i class="app-menu__icon fa fa-hourglass-end"></i><span class="app-menu__label">Way List</span></a></li> --}}
+        <li class="treeview {{ Request::is('ways/*') ? 'is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-hourglass-end"></i></i><span class="app-menu__label">Way List</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item {{ Request::is('ways/pending*') ? 'active' : '' }}" href="{{route('pending_ways')}}"><i class="icon fa fa-circle-o"></i> Pending Ways</a></li>
+            <li><a class="treeview-item {{ Request::is('ways/success*') ? 'active' : '' }}" href="{{route('success_ways')}}"><i class="icon fa fa-circle-o"></i> Success Ways</a></li>
+          </ul>
+        </li>
         @endrole
 
         <!-- For Client -->
