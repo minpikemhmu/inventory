@@ -3,7 +3,7 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Items</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Items")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       
@@ -20,20 +20,20 @@
           </div>
         @endif
         <div class="tile">
-          <h3 class="tile-title d-inline-block">Total Deposit Amount: {{number_format($checkitems[0]->pickup->schedule->amount)}} Ks</h3>
+          <h3 class="tile-title d-inline-block">{{ __("Total Deposit Amount")}}: {{number_format($checkitems[0]->pickup->schedule->amount)}} Ks</h3>
           
           <div class="bs-component">
                 <div class="table-responsive">
                   <table class="table table-bordered dataTable">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th>Codeno</th>
-                        <th>Reciver Township</th>
-                        <th>Reciver Address</th>
-                        <th>Reciver Phoneno</th>
-                        <th>Remark</th>
-                        <th>Deposit Amount</th>
+                        <th>{{ __("#")}}</th>
+                        <th>{{ __("Codeno")}}</th>
+                        <th>{{ __("Receiver Township")}}</th>
+                        <th>{{ __("Receiver Address")}}</th>
+                        <th>{{ __("Receiver Phone No")}}</th>
+                        <th>{{ __("Remark")}}</th>
+                        <th>{{ __("Deposit Amount")}}</th>
                       </tr>
                     </thead>
                     <tbody>

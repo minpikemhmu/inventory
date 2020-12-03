@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Items</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Items")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('items.index')}}">Items</a></li>
+        <li class="breadcrumb-item"><a href="{{route('items.index')}}">{{ __("Items")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -29,25 +29,25 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="InputCodeno">Codeno:</label>
+                  <label for="InputCodeno">{{ __("Codeno")}}:</label>
                   <input class="form-control" id="InputCodeno" type="text" value="{{$itemcode}}" name="codeno" readonly>
                 </div>
 
                 <div class="form-group">
-                  <label for="InputReceiverName">Receiver Name:</label>
+                  <label for="InputReceiverName">{{ __("Receiver Name")}}:</label>
                   <input class="form-control" id="InputReceiverName" type="text" name="receiver_name" value="{{ old('receiver_name') }}">
                   <div class="form-control-feedback text-danger"> {{$errors->first('receiver_name') }} </div>
                 </div>
 
 
                 <div class="form-group">
-                  <label for="InputReceiverPhoneNumber">Receiver Phone Number:</label>
+                  <label for="InputReceiverPhoneNumber">{{ __("Receiver Phone Number")}}:</label>
                   <input class="form-control" id="InputReceiverPhoneNumber" type="text" name="receiver_phoneno" value="{{ old('receiver_phoneno') }}" >
                   <div class="form-control-feedback text-danger"> {{$errors->first('receiver_phoneno') }} </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="InputReceiverAddress">Receiver Address:</label>
+                  <label for="InputReceiverAddress">{{ __("Receiver Address")}}:</label>
                   <textarea class="form-control" id="InputReceiverAddress" name="receiver_address">{{ old('receiver_address') }}</textarea>
                    <div class="form-control-feedback text-danger"> {{$errors->first('receiver_address') }} </div>
                 </div>
@@ -57,7 +57,7 @@
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="rcity" id="incity" value="1" checked="checked">
                   <label class="form-check-label" for="incity">
-                    In city
+                    {{ __("In city")}}
                   </label>
                 </div>
               </div>
@@ -66,7 +66,7 @@
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="rcity" id="gate" value="2" >
                   <label class="form-check-label" for="gate">
-                    Gate
+                    {{ __("Gate")}}
                   </label>
                 </div>
               </div>
@@ -75,7 +75,7 @@
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="rcity" id="post" value="3" >
                   <label class="form-check-label" for="post">
-                    Post Office
+                    {{ __("Post Office")}}
                   </label>
                 </div>
               </div>
@@ -83,9 +83,9 @@
             </div>
 
             <div class="form-group  mygate">
-                  <label for="mygate">Sender Gate:</label><br>
+                  <label for="mygate">{{ __("Sender Gate")}}:</label><br>
                   <select class="js-example-basic-single  " id="mygate" name="mygate"  >
-                    <option value="">Choose Gate</option>
+                    <option value="">{{ __("Choose Gate")}}</option>
                     @foreach($sendergates as $row)
                       <option value="{{$row->id}}">{{$row->name}}</option>
                     @endforeach
@@ -94,9 +94,9 @@
                </div>
 
                <div class="form-group  myoffice">
-                  <label for="myoffice">Sender PostOffice:</label><br>
+                  <label for="myoffice">{{ __("Sender PostOffice")}}:</label><br>
                   <select class="js-example-basic-single  " id="myoffice" name="myoffice"  >
-                    <option value="">Choose Post Office</option>
+                    <option value="">{{ __("Choose Post Office")}}</option>
                     @foreach($senderoffice as $row)
                       <option value="{{$row->id}}">{{$row->name}}</option>
                     @endforeach
@@ -105,9 +105,9 @@
                </div>
 
             <div class="form-group township">
-                  <label for="InputReceiverTownship">Receiver Township:</label><br>
+                  <label for="InputReceiverTownship">{{ __("Receiver Township")}}:</label><br>
                   <select class="js-example-basic-single  mytownship" id="InputReceiverTownship" name="receiver_township"  >
-                    <option value="null">Choose township</option>
+                    <option value="null">{{ __("Choose township")}}</option>
                     @foreach($townships as $row)
                       <option value="{{$row->id}}">{{$row->name}}</option>
                     @endforeach
@@ -116,31 +116,31 @@
                </div>
 
                 <div class="form-group">
-                  <label for="txtDate">Expired Date:</label>
+                  <label for="txtDate">{{ __("Expired Date")}}:</label>
                   <input class="form-control pickdate" id="txtDate" type="date" name="expired_date"  value="@if($pickupeditem){{ $pickupeditem->expired_date }}@else{{old('expired_date')}}@endif">
                   <div class="form-control-feedback text-danger"> {{$errors->first('expired_date') }} </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="InputDeposit">Deposit:</label>
+                  <label for="InputDeposit">{{ __("Deposit")}}:</label>
                   <input class="form-control" id="InputDeposit" type="number" name="deposit" value="@if($pickupeditem){{ $pickupeditem->deposit }}@else {{old('deposit')}} @endif">
                   <div class="form-control-feedback text-danger"> {{$errors->first('deposit') }} </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="InputDeliveryFees">Delivery Fees:</label>
+                  <label for="InputDeliveryFees">{{ __("Delivery Fees")}}:</label>
                   <input class="form-control" id="InputDeliveryFees" type="number" name="delivery_fees" value="{{ old('delivery_fees') }}">
                   <div class="form-control-feedback text-danger"> {{$errors->first('delivery_fees') }} </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="InputAmount">Amount: (deposit+delivery fees+others)</label>
+                  <label for="InputAmount">{{ __("Amount")}}: ({{ __("deposit+delivery fees+others")}})</label>
                   <input class="form-control" id="InputAmount" type="number" name="amount" value="{{ old('amount') }}">
                   <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="InputRemark">Remark:</label>
+                  <label for="InputRemark">{{ __("Remark")}}:</label>
                   <textarea class="form-control" id="InputRemark" name="remark">@if($pickupeditem){{ $pickupeditem->remark }} @else {{old('remark')}} @endif</textarea>
                   <div class="form-control-feedback text-danger"> {{$errors->first('remark') }} </div>
                 </div>
@@ -153,11 +153,11 @@
                     <h5 class="card-title">Client Informations:</h5>
                   </div>
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Name: {{$client->user->name}}</li>
-                    <li class="list-group-item">Contact Person: {{$client->contact_person}}</li>
-                    <li class="list-group-item">Phone Number: {{$client->phone_no}}</li>
-                    <li class="list-group-item">Township: {{$client->township->name}}</li>
-                    <li class="list-group-item">Left Item to collect: {{$pickup->schedule->quantity - count($pickup->items)}}</li>
+                    <li class="list-group-item">{{ __("Name")}}: {{$client->user->name}}</li>
+                    <li class="list-group-item">{{ __("Contact Person")}}: {{$client->contact_person}}</li>
+                    <li class="list-group-item">{{ __("Phone Number")}}: {{$client->phone_no}}</li>
+                    <li class="list-group-item">{{ __("Township")}}: {{$client->township->name}}</li>
+                    <li class="list-group-item">{{ __("Left Item to collect")}}: {{$pickup->schedule->quantity - count($pickup->items)}}</li>
 
                     @php
                     $total=0;
@@ -171,7 +171,7 @@
                     <input type="hidden" name="depositamount" value="{{$pickup->schedule->amount}}" class="depositamount">
                     <input type="hidden" name="qty" value={{$pickup->schedule->quantity - count($pickup->items)}}>
                     <input type="hidden" name="myqty" value="{{$pickup->schedule->quantity}}">
-                    <li class="list-group-item">Deposit for all item: {{number_format($pickup->schedule->amount-$total)}}KS</li>
+                    <li class="list-group-item">{{ __("Deposit for all item")}}: {{number_format($pickup->schedule->amount-$total)}}KS</li>
                     @if($pickup->schedule->quantity - count($pickup->items) == 1)
                     <li class="list-group-item">
                       <div class="row">
@@ -179,7 +179,7 @@
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" checked="checked">
                             <label class="form-check-label" for="paid">
-                              Paid
+                             {{ __("Paid")}}
                             </label>
                           </div>
                         </div>
@@ -188,7 +188,7 @@
                             <div class="form-check">
                               <input class="form-check-input" type="radio" name="paystatus" id="unpaid" value="2" >
                               <label class="form-check-label" for="unpaid">
-                                Unpaid
+                                {{ __("Unpaid")}}
                               </label>
                             </div>
                           </div>
@@ -207,7 +207,7 @@
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">Save</button>
+              <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
             </div>
           </form>
         </div>

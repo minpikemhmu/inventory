@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Expense Edit</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Expenses")}} </h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('expenses.index')}}">Expenses</a></li>
+        <li class="breadcrumb-item"><a href="{{route('expenses.index')}}">{{ __("Expenses")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -20,19 +20,19 @@
             @csrf
             @method('put')
           <div class="form-group">
-              <label for="description">description:</label>
+              <label for="description">{{ __("Description")}}:</label>
               <input class="form-control" id="description" name="description"type="text" placeholder="Enter description" value="{{$expense->description}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('description') }} </div>
             </div>
 
             <div class="form-group">
-              <label for="amount">Amount:</label>
+              <label for="amount">{{ __("Amount")}}:</label>
               <input class="form-control" id="amount" name="amount" type="number" placeholder="Enter amount" value="{{$expense->amount}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
             </div>
 
             <div class="form-group">
-              <label for="expensetype">Expense Types</label>
+              <label for="expensetype">{{ __("Expense Types")}}</label>
               <select class="form-control" id="expensetype" name="expensetype">
                 <option>Choose Expense Type</option>
                 @foreach($expensetypes as $row)
@@ -43,7 +43,7 @@
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">Save</button>
+              <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
             </div>
           </form>
         </div>

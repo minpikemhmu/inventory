@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Schedules</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Schedules")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('schedules.index')}}">Schedules</a></li>
+        <li class="breadcrumb-item"><a href="{{route('schedules.index')}}">{{ __("Schedules")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -23,14 +23,14 @@
           </div>
         @endif
         <div class="tile">
-          <h3 class="tile-title d-inline-block">Pickup List</h3>
-          <a href="{{route('schedules.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
+          <h3 class="tile-title d-inline-block">{{ __("Pickup List")}}</h3>
+          <a href="{{route('schedules.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> {{ __("Add New")}}</a>
 
 
           <div class="bs-component">
             <ul class="nav nav-tabs">
-              <li class="nav-item"><a class="nav-link @role('client'){{'active'}}@endrole" data-toggle="tab" href="#schedules">Schedules</a></li>
-              <li class="nav-item"><a class="nav-link @role('staff'){{'active'}}@endrole" data-toggle="tab" href="#assigned">Assigned</a></li>
+              <li class="nav-item"><a class="nav-link @role('client'){{'active'}}@endrole" data-toggle="tab" href="#schedules">{{ __("Schedules")}}</a></li>
+              <li class="nav-item"><a class="nav-link @role('staff'){{'active'}}@endrole" data-toggle="tab" href="#assigned">{{ __("Assigned")}}</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade @role('client'){{'active show'}}@endrole" id="schedules">
@@ -38,12 +38,12 @@
                   <table class="table dataTable">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        @role('staff')<th>Client Name</th>@endrole
-                        <th>Pickup Date</th>
-                        <th>Remark</th>
-                        <th>Quantity</th>
-                        <th>Actions</th>
+                        <th>{{ __("#")}}</th>
+                        @role('staff')<th>{{ __("Client Name")}}</th>@endrole
+                        <th>{{ __("Pickup Date")}}</th>
+                        <th>{{ __("Remark")}}</th>
+                        <th>{{ __("Quantity")}}</th>
+                        <th>{{ __("Actions")}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -59,20 +59,20 @@
                         <td>{{$row->quantity}}</td>
                         <td>
                           @role('staff')
-                            <a href="#" class="btn btn-primary assign" data-id="{{$row->id}}">Assign</a>
-                            <a href="#" class="btn btn-info showfile" data-file="{{$row->file}}">show file</a>
+                            <a href="#" class="btn btn-primary assign" data-id="{{$row->id}}">{{ __("Assign")}}</a>
+                            <a href="#" class="btn btn-info showfile" data-file="{{$row->file}}">{{ __("show file")}}</a>
                           @endrole
                           @role('client')
                             @if($row->status==0)
-                              <a href="#" class="btn btn-primary addfile" data-id="{{$row->id}}" data-file="{{$row->file}}">Add file for cpmplete</a>
+                              <a href="#" class="btn btn-primary addfile" data-id="{{$row->id}}" data-file="{{$row->file}}">{{ __("Add file for complete")}}</a>
                             @else
-                              <a href="#" class="btn btn-info">completed</a>
+                              <a href="#" class="btn btn-info">{{ __("completed")}}</a>
                             @endif
-                            <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                            <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
                             <form action="{{ route('schedules.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
                               @csrf
                               @method('DELETE')
-                              <button type="submit" class="btn btn-danger">Delete</button>
+                              <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
                             </form>
                           @endrole
                         </td>
@@ -87,13 +87,13 @@
                   <table class="table dataTable">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        @role('staff')<th>Client Name</th>@endrole
-                        <th>Pickup Date</th>
-                        <th>Remark</th>
-                        <th>Delivery Man</th>
-                        <th>Quantity</th>
-                        <th>Actions</th>
+                        <th>{{ __("#")}}</th>
+                        @role('staff')<th>{{ __("Client Name")}}</th>@endrole
+                        <th>{{ __("Pickup Date")}}</th>
+                        <th>{{ __("Remark")}}</th>
+                        <th>{{ __("Delivery Man")}}</th>
+                        <th>{{ __("Quantity")}}</th>
+                        <th>{{ __("Actions")}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -116,19 +116,19 @@
                         <td>
                           @if($row->status==1 && $row->schedule->quantity > count($row->items))
                             @role('staff')
-                              <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'pid'=>$row->id])}}" class="btn btn-primary">Collect</a>
+                              <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'pid'=>$row->id])}}" class="btn btn-primary">{{ __("Collect")}}</a>
                             @endrole
                             @role('client')
-                              <button type="button" class="btn btn-info">Brought</button>
+                              <button type="button" class="btn btn-info">{{ __("Brought")}}</button>
                             @endrole
                           @elseif($row->status == 1 && $row->schedule->quantity == count(($row->items)))
-                            <button type="button" class="btn btn-info">completed</button>
+                            <button type="button" class="btn btn-info">{{ __("completed")}}</button>
                           @elseif($row->status==2)
-                           <a href="{{route('checkitem',$row->id)}}" class="btn btn-danger">fail</a>
+                           <a href="{{route('checkitem',$row->id)}}" class="btn btn-danger">{{ __("fail")}}</a>
                           @elseif($row->status==3)
-                           <a href="#" class="btn btn-danger addamount" data-id="{{$row->schedule->id}}">Add amount and qty</a>
+                           <a href="#" class="btn btn-danger addamount" data-id="{{$row->schedule->id}}">{{ __("Add amount and qty")}}</a>
                           @else
-                            <button type="button" class="btn btn-danger">pending</button>
+                            <button type="button" class="btn btn-danger">{{ __("pending")}}</button>
                           @endif
 
                           {{-- <a href="#" class="btn btn-warning">Edit</a>
@@ -152,7 +152,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Assign Delivery Man</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{{ __("Assign Delivery Man")}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -163,7 +163,7 @@
           <input type="hidden" name="assignid" id="assignid" value="">
           <select class="form-control" name="deliveryman">
             <optgroup label="Choose Delivery Man">
-              <option>choose delivery man</option>
+              <option>{{ __("Choose Delivery Man")}}</option>
               @foreach($deliverymen as $row)
               <option value="{{$row->id}}">{{$row->user->name}}</option>
               @endforeach
@@ -171,8 +171,8 @@
           </select>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Assign</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("Close")}}</button>
+          <button type="submit" class="btn btn-primary">{{ __("Assign")}}</button>
         </form>
         </div>
       </div>
@@ -184,7 +184,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add File</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{{ __("Add File")}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -197,10 +197,10 @@
 
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">New file</a>
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{ __("New file")}}</a>
               </li>
               <li class="nav-item" role="presentation">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Old file</a>
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{ __("Old file")}}</a>
               </li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">save</button>
+          <button type="submit" class="btn btn-primary">{{ __("Save")}}</button>
         </form>
         </div>
       </div>
@@ -227,7 +227,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">File</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{ __("File")}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -236,7 +236,7 @@
         <img src="" class="img-fluid stafffile" width="100%" height="100%">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("Close")}}</button>
       </div>
     </div>
   </div>
@@ -247,7 +247,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Amount and Quantity</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{ __("Add Amount and Quantity")}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -255,20 +255,20 @@
       <div class="modal-body">
         <input type="hidden" name="schedule" id="schedule_id" value="">
        <div class="form-group quantity">
-              <label for="quantity">Quantity:</label>
+              <label for="quantity">{{ __("Quantity")}}:</label>
               <input type="number"  id="quantity" class="form-control" name="quantity">
               <span class="Eamount error d-block" ></span>
             </div>
 
 
             <div class="form-group amount">
-              <label for="amount">Amount:</label>
+              <label for="amount">{{ __("Amount")}}:</label>
               <input type="number"  id="amount" class="form-control" name="amount">
               <span class="Equantity error d-block" ></span>
             </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary amountsave">save</button>
+        <button type="button" class="btn btn-primary amountsave">{{ __("Save")}}</button>
       </div>
     </div>
   </div>

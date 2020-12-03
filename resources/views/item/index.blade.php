@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Items</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Items")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('items.index')}}">Items</a></li>
+        <li class="breadcrumb-item"><a href="{{route('items.index')}}">{{ __("Items")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -23,13 +23,13 @@
           </div>
         @endif
         <div class="tile">
-          <h3 class="tile-title d-inline-block">Item List</h3>
-          <a href="#" class="btn btn-primary float-right wayassign" id="submit_assign">Way Assign</a>
+          <h3 class="tile-title d-inline-block">{{ __("Item List")}}</h3>
+          <a href="#" class="btn btn-primary float-right wayassign" id="submit_assign">{{ __("Way Assign")}}</a>
 
           <div class="bs-component">
             <ul class="nav nav-tabs">
-              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#collect">On Collect</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#way">On Way</a></li>
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#collect">{{ __("On Collect")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#way">{{ __("On Way")}}</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="collect">
@@ -37,14 +37,14 @@
                   <table class="table table-bordered dataTable">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th>Codeno</th>
-                        <th>Client Name</th>
-                        <th>Township</th>
-                        <th>Receiver Info</th>
-                        <th>Expired Date</th>
-                        <th>Amount</th>
-                        <th>Actions</th>
+                        <th>{{ __("#")}}</th>
+                        <th>{{ __("Codeno")}}</th>
+                        <th>{{ __("Client Name")}}</th>
+                        <th>{{ __("Township")}}</th>
+                        <th>{{ __("Receiver Info")}}</th>
+                        <th>{{ __("Expired Date")}}</th>
+                        <th>{{ __("Amount")}}</th>
+                        <th>{{ __("Actions")}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -66,17 +66,17 @@
                         <td>
                           {{$row->expired_date}}
                           @if($row->error_remark !== null)
-                            <span class="badge badge-warning">date changed</span>
+                            <span class="badge badge-warning">{{ __("date changed")}}</span>
                           @endif
                         </td>
                         <td>{{number_format($row->amount)}}</td>
                         <td>
-                          <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">Detail</a>
-                          <a href="{{route('items.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                          <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">{{ __("Detail")}}</a>
+                          <a href="{{route('items.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
                           <form action="{{ route('items.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
                            @csrf
                             @method('DELETE')
-                          <button type="submit" class="btn btn-danger">Delete</button>
+                          <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
                         </form>
                         </td>
                       </tr>
@@ -90,26 +90,23 @@
                   <table class="table table-bordered dataTable">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th>Codeno</th>
-                        <th>Township</th>
-                        <th>Delivery Man</th>
-                        <th>Expired Date</th>
-                        <th>Amount</th>
-                        <th>Actions</th>
+                        <th>{{ __("#")}}</th>
+                        <th>{{ __("Codeno")}}</th>
+                        <th>{{ __("Township")}}</th>
+                        <th>{{ __("Delivery Man")}}</th>
+                        <th>{{ __("Expired Date")}}</th>
+                        <th>{{ __("Amount")}}</th>
+                        <th>{{ __("Actions")}}</th>
                       </tr>
                     </thead>
                     <tbody>
-                     
+                      @php $i=1;
+                      @endphp
                       @foreach($ways as $way) 
-                      @php $amount=number_format($way->item->amount) ;@endphp
+                      @php $amount=number_format($way->item->amount) ;  @endphp
                       <tr>
                         <td>
-                          <div class="animated-checkbox">
-                            <label class="mb-0">
-                              <input type="checkbox" name="item" value="{{1}}"><span class="label-text"> </span>
-                            </label>
-                          </div>
+                          {{$i++}}
                         </td>
                         <td>{{$way->item->codeno}}  
                           @if($way->status_code == '001')
@@ -133,9 +130,9 @@
                         <td>{{$way->item->expired_date}}</td>
                         <td>{{$amount}}</td>
                         <td>
-                          <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
-                          <a href="#" class="btn btn-warning wayedit" data-id="{{$way->id}}">Edit</a>
-                          <a href="{{route('deletewayassign',$way->id)}}" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                          <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">{{ __("Detail")}}</a>
+                          <a href="#" class="btn btn-warning wayedit" data-id="{{$way->id}}">{{ __("Edit")}}</a>
+                          <a href="{{route('deletewayassign',$way->id)}}" class="btn btn-danger" onclick="return confirm('Are you sure?')">{{ __("Delete")}}</a>
                         </td>
                       </tr>
                       
@@ -156,7 +153,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Choose Delivery Man</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{{ __("Choose Delivery Man")}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -165,11 +162,11 @@
           @csrf
           <div class="modal-body">
             <div class="form-group">
-              <label>Way Code Numbers:</label>
+              <label>{{ __("Way Code Numbers")}}:</label>
               <div id="selectedWays"></div>
             </div>
             <div class="form-group">
-              <label>Choose Delivery Man:</label>
+              <label>{{ __("Choose Delivery Man")}}:</label>
               <select class="js-example-basic-multiple form-control" name="delivery_man">
                 @foreach($deliverymen as $man)
                   <option value="{{$man->id}}">{{$man->user->name}}
@@ -181,8 +178,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Assign</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("Close")}}</button>
+            <button type="submit" class="btn btn-primary">{{ __("Assign")}}</button>
           </div>
         </form>
       </div>
@@ -194,7 +191,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Choose Delivery Man</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{{ __("Choose Delivery Man")}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -204,7 +201,7 @@
           <input type="hidden"  id="wayid" name="wayid">
           <div class="modal-body">
             <div class="form-group">
-              <label>Choose Delivery Man:</label>
+              <label>{{ __("Choose Delivery Man")}}:</label>
               <select class="js-example-basic-single form-control" name="delivery_man">
                 @foreach($deliverymen as $man)
                   <option value="{{$man->id}}">{{$man->user->name}}</option>
@@ -213,8 +210,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Assign</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("Close")}}</button>
+            <button type="submit" class="btn btn-primary">{{ __("Assign")}}</button>
           </div>
         </form>
       </div>
@@ -232,16 +229,16 @@
           </button>
         </div>
         <div class="modal-body">
-          <p><strong>Receiver Name:</strong> <span id="rname">Ma Mon</span></p>
-          <p ><strong >Receiver Phone No:</strong> <span id="rphone">09987654321</span></p>
-          <p><strong >Receiver Address:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
-          <p><strong>Remark:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
+          <p><strong>{{ __("Receiver Name")}}:</strong> <span id="rname">Ma Mon</span></p>
+          <p ><strong >{{ __("Receiver Phone No")}}:</strong> <span id="rphone">09987654321</span></p>
+          <p><strong >{{ __("Receiver Address")}}:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
+          <p><strong>{{ __("Remark")}}:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
 
           <p id="error_remark" class="d-none"></p>
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("OK")}}</button>
         </div>
       </div>
     </div>

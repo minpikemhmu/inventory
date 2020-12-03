@@ -3,7 +3,7 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Reports</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Reports")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
@@ -15,18 +15,18 @@
       <div class="col-md-12">
         <div class="tile">
           @php $mytime = Carbon\Carbon::now(); @endphp
-          <h3 class="tile-title d-inline-block">Incomes List ({{$mytime->toFormattedDateString()}})</h3>
-          <a href="{{route('incomes.create')}}" class="btn btn-primary float-right">Add Income</a>
+          <h3 class="tile-title d-inline-block">{{ __("Incomes List")}} ({{$mytime->toFormattedDateString()}})</h3>
+          <a href="{{route('incomes.create')}}" class="btn btn-primary float-right">{{ __("Add Income")}}</a>
           <div class="table-responsive">
             <table class="table dataTable">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Item Code</th>
-                  <th>Delivery Men</th>
-                  <th>Payment type</th>
-                  <th>Cash Amount</th>
-                  <th>Bank Amount</th>
+                  <th>{{ __("Item Code")}}</th>
+                  <th>{{ __("Delivery Men")}}</th>
+                  <th>{{ __("Payment Type")}}</th>
+                  <th>{{ __("Cash Amount")}}</th>
+                  <th>{{ __("Bank Amount")}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -46,7 +46,7 @@
                 </tr>
                 @endforeach
                 <tr>
-                  <td colspan="4">Total Amount:</td>
+                  <td colspan="4">{{ __("Total Amount")}}:</td>
                   <td>{{number_format($ctotal)}}</td>
                   <td>{{number_format($btotal)}}</td>
                 </tr>

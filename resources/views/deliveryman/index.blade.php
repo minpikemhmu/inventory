@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Delivery Men</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Delivery Men")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('delivery_men.index')}}">Delivery Men</a></li>
+        <li class="breadcrumb-item"><a href="{{route('delivery_men.index')}}">{{ __("Delivery Men")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -23,18 +23,18 @@
               </div>
           @endif
         <div class="tile">
-          <h3 class="tile-title d-inline-block">Delivery Men List</h3>
-          <a href="{{route('delivery_men.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
+          <h3 class="tile-title d-inline-block">{{ __("Delivery Men List")}}</h3>
+          <a href="{{route('delivery_men.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> {{ __("Add New")}}</a>
           <div class="table-responsive">
             <table class="table dataTable">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Phone No</th>
-                  <th>Address</th>
-                  <th>Townships</th>
-                  <th>Actions</th>
+                  <th>{{ __("#")}}</th>
+                  <th>{{ __("Name")}}</th>
+                  <th>{{ __("Phone No")}}</th>
+                  <th>{{ __("Address")}}</th>
+                  <th>{{ __("Townships")}}</th>
+                  <th>{{ __("Actions")}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -51,12 +51,12 @@
                     @endforeach
                   </td>
                   <td>
-                    <a href="{{route('delivery_men.edit',$row->id)}}" class="btn btn-warning">Edit</a>
+                    <a href="{{route('delivery_men.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
                     <form action="{{ route('delivery_men.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
 
                       @csrf
                       @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
                   </form>
                   </td>
                 </tr>

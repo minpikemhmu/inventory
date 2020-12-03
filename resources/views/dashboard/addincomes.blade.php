@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Incomes</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Incomes")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('incomes')}}">Incomes</a></li>
+        <li class="breadcrumb-item"><a href="{{route('incomes')}}">{{ __("Incomes")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -19,7 +19,7 @@
           
           <div class="row">
             <div class="form-group col-md-6">
-              <label for="InputDeliveryMan">Select Delivery Man:</label>
+              <label for="InputDeliveryMan">{{ __("Select Delivery Man")}}:</label>
               <select class="js-example-basic-single" id="InputDeliveryMan" name="deliveryman">
                 <optgroup label="Select Delivery Man">
                   @foreach($delivery_men as $deliveryman)
@@ -52,31 +52,31 @@
       <div class="modal-body">
         <!-- <form action="{{route('incomes.store')}}" method="POST">
           @csrf -->
-          <h3 class="text-dark">Total amount:<span class="totalamount text-danger"></span></h3>
+          <h3 class="text-dark">{{ __("Total Amount")}}:<span class="totalamount text-danger"></span></h3>
           <input type="hidden" id="totalamount" name="amount">
           <input type="hidden" name="way_id" id="way_id">
            <input type="hidden" name="deliveryfee" id="deliveryfee">
            <input type="hidden" name="deposit" id="deposit">
           <div class="form-group">
-            <label for="exampleFormControlSelect1">Payment Types</label>
+            <label for="exampleFormControlSelect1">{{ __("PaymentTypes")}}</label>
             <select class="form-control" id="paymenttype" name="paymenttype">
               <option>Choose Payment Type</option>
             </select>
           </div>
 
           <div class="form-group bankform">
-            <label for="bank">Banks</label>
+            <label for="bank">{{ __("Banks")}}</label>
             <select class="form-control" id="bank" name="bank">
               <option>Choose Bank</option>
             </select>
           </div>
 
           <div class="form-group bamountform">
-            <label for="bankamount">Bank amount</label>
+            <label for="bankamount">{{ __("Bank amount")}}</label>
             <input type="number" name="bank_amount" id="bankamount" class="form-control">
           </div>
           <div class="form-group camountform">
-            <label for="cashamount">Cash amount</label>
+            <label for="cashamount">{{ __("Cash amount")}}</label>
             <input type="number" name="cash_amount" id="cashamount" class="form-control">
           </div>
 
@@ -86,8 +86,8 @@
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary incomesave">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("Close")}}</button>
+        <button type="button" class="btn btn-primary incomesave">{{ __("Save")}}</button>
         <!-- </form> -->
       </div>
     </div>
@@ -260,7 +260,7 @@
               $('.success').text('successfully added to income list');
               $('.success').fadeOut(3000);
               getdata(deliveryman_id,deliveryman);
-              //location.href="{{route('ways')}}";
+              
             }
           }
         })

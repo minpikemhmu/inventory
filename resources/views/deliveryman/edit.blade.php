@@ -3,12 +3,12 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-dashboard"></i> Delivery Men</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Delivery Men")}}</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('delivery_men.index')}}">Delivery Men</a></li>
+        <li class="breadcrumb-item"><a href="{{route('delivery_men.index')}}">{{ __("Delivery Men")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -21,13 +21,13 @@
             @method('PUT')
             <input type="hidden" name="oldpassword" value="{{$deliveryMan->user->password}}">
            <div class="form-group">
-              <label for="InputCityName">Name:</label>
+              <label for="InputCityName">{{ __("Name")}}:</label>
               <input class="form-control" id="InputCityName" type="text" placeholder="Enter name" name="name" value="{{$deliveryMan->user->name}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('name') }} </div>
             </div>
 
             <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
+              <label for="exampleInputEmail1">{{ __("Email address")}}</label>
               <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="Enter email"value="{{$deliveryMan->user->email}}">
               <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
               <div class="form-control-feedback text-danger"> {{$errors->first('email') }} </div>
@@ -35,40 +35,40 @@
 
             <div class="form-group">
               <input type="checkbox" class="mychangepsw" id="cpassw">
-              <label for="cpassw">Want to change password?</label>
+              <label for="cpassw">{{ __("Want to change password?")}}</label>
             </div>
 
             <div class="form-group psw">
-              <label for="exampleInputPassword1">Password</label>
+              <label for="exampleInputPassword1">{{ __("Password")}}</label>
               <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Enter Password">
               <div class="form-control-feedback text-danger"> {{$errors->first('password') }} </div>
             </div>
 
             <div class="form-group cpsw">
-              <label for="password-confirm">Confirm Password</label>
+              <label for="password-confirm">{{ __("Confirm Password")}}</label>
                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
               
             </div>
 
             <div class="form-group">
-              <label for="phone">Phone No:</label>
+              <label for="phone">{{ __("Phone No")}}:</label>
               <input class="form-control" id="phone" type="text" placeholder="Enter Phone No" name="phone" value="{{$deliveryMan->phone_no}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('phone') }} </div>
             </div>
 
             <div class="form-group">
-              <label for="address">Address:</label>
+              <label for="address">{{ __("Address")}}:</label>
               <input class="form-control" id="address" type="text" placeholder="Enter Address" name="address" value="{{$deliveryMan->address}}">
               <div class="form-control-feedback text-danger"> {{$errors->first('address') }} </div>
             </div>
 
             <div class="form-group">
-              <label for="township">Delivery Townships:</label>
+              <label for="township">{{ __("Delivery Townships")}}:</label>
               @php
               $v = $deliveryMan->townships;
               @endphp
               <select class="js-example-basic-multiple form-control" name="township[]" multiple="multiple" id="township">
-                <option>Choose Delivery Township</option>
+                <option>{{ __("Choose township")}}</option>
                 @foreach($townships as $row)
                 <option value="{{$row->id}}"  @foreach($v as $key=> $value)
 
@@ -81,7 +81,7 @@
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">Save</button>
+              <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
             </div>
           </form>
         </div>

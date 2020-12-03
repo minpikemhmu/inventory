@@ -37,7 +37,7 @@ class ItemController extends Controller
       // dd($myitems);
       
       $deliverymen = DeliveryMan::all();
-      $ways = Way::all();
+      $ways = Way::orderBy('id', 'desc')->get();
       $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
       $data=[];
       foreach ($notifications as $noti) {
