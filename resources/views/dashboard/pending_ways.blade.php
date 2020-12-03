@@ -4,12 +4,12 @@
     <div class="app-title">
       <div>
         @php $mytime = Carbon\Carbon::now(); @endphp
-        <h1><i class="fa fa-dashboard"></i> Pending Ways ({{$mytime->toFormattedDateString()}})</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Pending Ways")}} ({{$mytime->toFormattedDateString()}})</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('pending_ways')}}">Pending Ways</a></li>
+        <li class="breadcrumb-item"><a href="{{route('pending_ways')}}">{{ __("Pending Ways")}}</a></li>
       </ul>
     </div>
 
@@ -149,8 +149,8 @@
             @endif
             <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->item->expired_date}}</small></h5>
           <div class="card-body">
-            <h5 class="card-title">Item Code: {{$row->item->codeno}}</h5>
-            <h5 class="card-title">Deliver Address: 
+            <h5 class="card-title">{{ __("Item Code")}}: {{$row->item->codeno}}</h5>
+          <h5 class="card-title">{{ __("Delivered Address")}}: 
               @if($row->item->sender_gate_id != null)
                 {{$row->item->SenderGate->name}}
               @elseif($row->item->sender_postoffice_id != null)
@@ -160,14 +160,14 @@
               @endif
             </h5>
             <h5 class="card-title">{{$row->item->receiver_address}} - {{$row->item->receiver_phone_no}}</h5>
-            <p class="card-text">Amount: {{$row->item->amount}}</p>
+          <p class="card-text">{{ __("Amount")}}: {{$row->item->amount}}</p>
             
             @if($row->status_code == 005)
-              <a href="#" class="btn btn-info btn-sm success" data-id="{{$row->id}}">Success</a>
-              <a href="#" class="btn btn-warning btn-sm return" data-id="{{$row->id}}">Return</a>
-              <a href="#" class="btn btn-danger btn-sm reject" data-id="{{$row->id}}">Reject</a>
+            <a href="#" class="btn btn-info btn-sm success" data-id="{{$row->id}}">{{ __("Success")}}</a>
+            <a href="#" class="btn btn-warning btn-sm return" data-id="{{$row->id}}">{{ __("Return")}}</a>
+            <a href="#" class="btn btn-danger btn-sm reject" data-id="{{$row->id}}">{{ __("Reject")}}</a>
             @endif
-            <a href="#" class="btn btn-sm btn-primary detail" data-id="{{$row->item->id}}">Detail</a> 
+          <a href="#" class="btn btn-sm btn-primary detail" data-id="{{$row->item->id}}">Detail</a> 
           </div>
         </div>
       </div>
@@ -186,10 +186,10 @@
           </button>
         </div>
         <div class="modal-body">
-          <p><strong>Receiver Name:</strong> <span id="rname">Ma Mon</span></p>
-          <p ><strong >Receiver Phone No:</strong> <span id="rphone">09987654321</span></p>
-          <p><strong >Receiver Address:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
-          <p><strong>Remark:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
+          <p><strong>{{ __("Receiver Name")}}:</strong> <span id="rname">Ma Mon</span></p>
+          <p ><strong >{{ __("Receiver Phone No")}}:</strong> <span id="rphone">09987654321</span></p>
+          <p><strong >{{ __("Receiver Address:")}}</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
+          <p><strong>{{ __("Remark")}}:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
 
         </div>
         <div class="modal-footer">
@@ -214,11 +214,11 @@
             <input type="hidden" name="wayid" id="returnway" value="">
           </div>
           <div class="form-group">
-            <label for="InputDate">Date:</label>
+            <label for="InputDate">{{ __("Date")}}:</label>
             <input type="date" name="return_date" class="form-control returndate" id="InputDate">
           </div>
           <div class="form-group">
-            <label for="InputRemark">Remark:</label>
+            <label for="InputRemark">{{ __("Remark")}}:</label>
             <textarea class="form-control returnremark" id="InputRemark" name="remark"></textarea>
             <span class="Eremark error d-block" ></span>
           </div>
@@ -246,7 +246,7 @@
               <input type="hidden" name="wayid" id="rejectway" value="">
             </div>
           <div class="form-group">
-                  <label for="InputRemark">Remark:</label>
+                  <label for="InputRemark">{{ __("Remark")}}:</label>
                   <textarea class="form-control rejectremark" id="InputRemark" name="remark"></textarea>
                   <span class="Ejremark error d-block" ></span>
           </div>
@@ -281,7 +281,7 @@
         }
         });
 
-        $.post('itemdetail',{id:id},function(res){
+        $.post("{{route('itemdetail')}}",{id:id},function(res){
           $("#rname").html(res.receiver_name);
           $("#rphone").html(res.receiver_phone_no);
           $("#raddress").html(res.receiver_address);

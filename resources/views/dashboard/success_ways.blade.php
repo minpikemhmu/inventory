@@ -4,12 +4,12 @@
     <div class="app-title">
       <div>
         @php $mytime = Carbon\Carbon::now(); @endphp
-        <h1><i class="fa fa-dashboard"></i> Success Ways ({{$mytime->toFormattedDateString()}})</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Success Ways")}} ({{$mytime->toFormattedDateString()}})</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('success_ways')}}">Success Ways</a></li>
+        <li class="breadcrumb-item"><a href="{{route('success_ways')}}">{{ __("Success Ways")}}</a></li>
       </ul>
     </div>
 
@@ -149,8 +149,8 @@
             @endif
             <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->item->expired_date}}</small></h5>
           <div class="card-body">
-            <h5 class="card-title">Item Code: {{$row->item->codeno}}</h5>
-            <h5 class="card-title">Delivered Address: 
+            <h5 class="card-title">{{ __("Item Code")}}: {{$row->item->codeno}}</h5>
+            <h5 class="card-title">{{ __("Delivered Address")}}: 
               @if($row->item->sender_gate_id != null)
                 {{$row->item->SenderGate->name}}
               @elseif($row->item->sender_postoffice_id != null)
@@ -162,8 +162,8 @@
             <h5 class="card-title">{{$row->item->receiver_address}} - {{$row->item->receiver_phone_no}}</h5>
             <p class="card-text">Amount: {{$row->item->amount}}</p>
             
-            <a href="{{route('normal',$row->id)}}" class="btn btn-warning">edit</a>
-            <a href="#" class="btn btn-primary detail" data-id="{{$row->item->id}}">Detail</a> 
+            <a href="{{route('normal',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
+            <a href="#" class="btn btn-primary detail" data-id="{{$row->item->id}}">{{ __("Detail")}}</a> 
           </div>
         </div>
       </div>
@@ -182,10 +182,10 @@
           </button>
         </div>
         <div class="modal-body">
-          <p><strong>Receiver Name:</strong> <span id="rname">Ma Mon</span></p>
-          <p ><strong >Receiver Phone No:</strong> <span id="rphone">09987654321</span></p>
-          <p><strong >Receiver Address:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
-          <p><strong>Remark:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
+          <p><strong>{{ __("Receiver Name")}}:</strong> <span id="rname">Ma Mon</span></p>
+          <p ><strong >{{ __("Receiver Phone No")}}:</strong> <span id="rphone">09987654321</span></p>
+          <p><strong >{{ __("Receiver Address")}}:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
+          <p><strong>{{ __("Remark")}}:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
 
         </div>
         <div class="modal-footer">
@@ -269,7 +269,7 @@
 
       $('.detail').click(function () {
         var id=$(this).data('id');
-        //console.log(id);
+        console.log(id);
         $('#itemDetailModal').modal('show');
         $.ajaxSetup({
          headers: {
@@ -277,7 +277,7 @@
         }
         });
 
-        $.post('itemdetail',{id:id},function(res){
+        $.post("{{route('itemdetail')}}",{id:id},function(res){
           $("#rname").html(res.receiver_name);
           $("#rphone").html(res.receiver_phone_no);
           $("#raddress").html(res.receiver_address);

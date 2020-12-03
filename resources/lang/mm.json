@@ -137,7 +137,7 @@
 "Items" : "ပစ္စည်းများ",
 "On Collect" : "စုဆောင်းထားသောပစ္စည်းများ",
 "On Way" : "ဝယ်ယူသူစီသို့ပို့ဆောင်နေသောပစ္စည်းများ",
-"date changed": "ကြိုသွင်းငွေ",
+"date changed": "ရက်ချိန်း",
 "Way Code Numbers" : "wayကုဒ်နာပတ်များ",
 "Sender Gate" : "ပို့ဆောင်သူဂိတ်",
 "Choose Gate" : "ဂိတ်ရွေးပါ",
@@ -152,5 +152,12 @@
 "Unpaid" : "မပေးရသေး",
 "Total Deposit Amount" : "စုစုပေါင်းကြိုသွင်းငွေ",
 "Delivery Townships" : "ပို့ဆောင်နိုင်သောမြို့နယ်များ",
-"Want to change password?" : "password ချိန်းရန်"
+"Want to change password?" : "password ချိန်းရန်",
+"Pickup List" : "ကောက်ယူရမည့်pickupများ",
+"Way List" : "ပို့ဆောင်ရန်wayများ",
+"Pending Ways" : "ပို့ဆောင်ဆဲwayများ",
+"Pickups" : "ကောက်ယူရမည့်pickupများ",
+"Done" : "ကောက်ယူမည်",
+"completed pick up" : "ကောက်ယူပီးပါပီ",
+"Delivered Address" : "ပို့ဆောင်ရမည့်လိပ်စာ"
 }

@@ -4,12 +4,12 @@
     <div class="app-title">
       <div>
         @php $mytime = Carbon\Carbon::now(); @endphp
-        <h1><i class="fa fa-dashboard"></i> Pickups ({{$mytime->toFormattedDateString()}})</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Pickups")}} ({{$mytime->toFormattedDateString()}})</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('pickups')}}">Pickups</a></li>
+        <li class="breadcrumb-item"><a href="{{route('pickups')}}">{{ __("Pickups")}}</a></li>
       </ul>
     </div>
     <div class="row">
@@ -73,17 +73,17 @@
             <div class="card mb-3">
               <h5 class="card-header">{{$row->schedule->client->user->name}}  @if($row->schedule->amount!=null && $row->schedule->quantity!=null )({{$row->schedule->quantity}})@endif <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->schedule->pickup_date}}</small></h5>
               <div class="card-body">
-                <h5 class="card-title">Phone No: {{$row->schedule->client->phone_no}}</h5>
+                <h5 class="card-title">{{ __("Phone No")}}: {{$row->schedule->client->phone_no}}</h5>
                 <h5 class="card-title">{{$row->schedule->client->address}}</h5>
                 @if($row->schedule->amount!=null && $row->schedule->quantity!=null )
-                <p class="card-text">Deposit: {{number_format($row->schedule->amount)}} Ks</p>
-                <p class="card-text">Quantity: {{$row->schedule->quantity}}</p>
+                <p class="card-text">{{ __("Deposit")}}: {{number_format($row->schedule->amount)}} Ks</p>
+                <p class="card-text">{{ __("Quantity")}}: {{$row->schedule->quantity}}</p>
                 @endif
                 @if($row->status==0)
-                  <a href="#" class="btn btn-primary">Pending</a>
-                  <a href="{{route('pickupdone',['id' => $row->id, 'qty' => $row->schedule->quantity])}}" class="btn btn-success">Done</a>
+                  <a href="#" class="btn btn-primary">{{ __("Pending")}}</a>
+                  <a href="{{route('pickupdone',['id' => $row->id, 'qty' => $row->schedule->quantity])}}" class="btn btn-success">{{ __("Done")}}</a>
                 @else
-                  <a href="#" class="btn btn-primary">completed pick up</a>
+                  <a href="#" class="btn btn-primary">{{ __("completed pick up")}}</a>
                 @endif
 
               </div>
