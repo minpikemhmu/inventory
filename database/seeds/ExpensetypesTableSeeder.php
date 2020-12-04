@@ -15,5 +15,6 @@ class ExpensetypesTableSeeder extends Seeder
          ExpenseType::create(['name'=>'Office']);
          ExpenseType::create(['name'=>'Salary']);
          ExpenseType::create(['name'=>'Others']);
+         ExpenseType::create(['name'=>'Carry fees']);
     }
 }

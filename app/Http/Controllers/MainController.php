@@ -661,8 +661,7 @@ public function profit(Request $request){
    $end_date=$request->end_date;
    //dd($start_date);
   $ways=DeliveryMan::with('ways')->whereHas('ways',function($query) use($start_date,$end_date){
-    $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59']);
-    $query->orWhere('status_code','001');
+    $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('status_code','001');
   })
   //->orWhereDoesntHave('ways')
   ->with('pickups')->orwhereHas('pickups',function($query) use($start_date,$end_date){
