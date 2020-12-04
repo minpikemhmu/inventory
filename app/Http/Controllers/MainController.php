@@ -664,11 +664,11 @@ public function profit(Request $request){
     $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59']);
     $query->orWhere('status_code','001');
   })
-  ->orWhereDoesntHave('ways')
+  //->orWhereDoesntHave('ways')
   ->with('pickups')->orwhereHas('pickups',function($query) use($start_date,$end_date){
     $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('status','1');
   })
-  ->orWhereDoesntHave('pickups')
+ // ->orWhereDoesntHave('pickups')
   ->with('user')->with('ways.item')->get();
 
  
