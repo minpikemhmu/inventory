@@ -123,12 +123,12 @@
               data.forEach( function(v, i) {
                 if(v.item.sender_gate_id!=null && v.status_code=="001"){
 
-                var mydate=new Date(v.created_at);
+                // var mydate=new Date(v.delivery_date);
                 //console.log(mydate.toLocaleDateString());
 
                  var gateobj={
                     id:v.item.sender_gate_id,
-                    date:mydate.toLocaleDateString(),
+                    date:v.delivery_date,
                   }
                   //console.log(gateobj);
 
@@ -137,6 +137,10 @@
                   }else{
                       $.each(gatearray,function(k,e){
                         if(e.id!=gateobj.id && e.date!=gateobj.date){
+                          gatearray.push(gateobj)
+                        }else if(e.id!=gateobj.id && e.date==gateobj.date){
+                          gatearray.push(gateobj)
+                        }else if(e.date==gateobj.date){
                           gatearray.push(gateobj)
                         }
                       })
