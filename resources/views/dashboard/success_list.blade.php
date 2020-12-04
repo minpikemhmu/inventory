@@ -132,19 +132,22 @@
                     gatearray.push(gateobj)
                   }else{
                       $.each(gatearray,function(k,e){
-                        if(e.id!=gateobj.id && e.date!=gateobj.date){
+                        if(e.id!=gateobj.id){
                           gatearray.push(gateobj)
-                        }else if(e.id!=gateobj.id && e.date==gateobj.date){
+                          return false
+                        }else if(e.id==gateobj.id && e.date!=gateobj.date){
                           gatearray.push(gateobj)
-                        }else if(e.date==gateobj.date){
-                          gatearray.push(gateobj)
+                          return false
                         }
+                        // else if(e.date==gateobj.date){
+                        //   gatearray.push(gateobj)
+                        // }
                       })
                   }
                 }
                 // statements
               });
-            //  console.log(gatearray);
+             console.log(gatearray);
               return gatearray.length;
           }
         },
