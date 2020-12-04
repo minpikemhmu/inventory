@@ -28,7 +28,7 @@
 
           <div class="bs-component">
             <ul class="nav nav-tabs">
-              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#collect">{{ __("On Collect")}}</a></li>
+              <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#collect">{{ __("In Stock")}}</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#way">{{ __("On Way")}}</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
