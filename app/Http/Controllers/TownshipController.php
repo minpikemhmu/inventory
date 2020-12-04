@@ -110,6 +110,7 @@ class TownshipController extends Controller
             'delifee'=>['required','numeric'],
             'city'=>['required']
         ]);
+        $city=explode('_', $request->city);
 
         if($validator){
             $gate="gate";
