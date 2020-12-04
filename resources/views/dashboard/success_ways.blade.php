@@ -161,8 +161,9 @@
             </h5>
             <h5 class="card-title">{{$row->item->receiver_address}} - {{$row->item->receiver_phone_no}}</h5>
             <p class="card-text">Amount: {{$row->item->amount}}</p>
-            
+            @if($row->income==null)
             <a href="{{route('normal',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
+            @endif
             <a href="#" class="btn btn-primary detail" data-id="{{$row->item->id}}">{{ __("Detail")}}</a> 
           </div>
         </div>

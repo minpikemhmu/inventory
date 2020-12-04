@@ -105,7 +105,8 @@
             var mycount=0
           
              data.forEach( function(v, i) {
-              if(v.item.sender_gate_id==null && v.item.sender_postoffice_id==null){
+              if(v.item.sender_gate_id==null && v.item.sender_postoffice_id==null && v.status_code=="001"){
+                //alert("ok");
                 //myarray.push(v);
                mycount++
 
@@ -120,7 +121,7 @@
             render:function(data){
               var gatearray=[];
               data.forEach( function(v, i) {
-                if(v.item.sender_gate_id!=null){
+                if(v.item.sender_gate_id!=null && v.status_code=="001"){
 
                 var mydate=new Date(v.created_at);
                 //console.log(mydate.toLocaleDateString());
@@ -152,7 +153,7 @@
             render:function(data){
               var postarray=[];
               data.forEach( function(v, i) {
-                if(v.item.sender_postoffice_id!=null){
+                if(v.item.sender_postoffice_id!=null && v.status_code=="001"){
 
                 var mydate=new Date(v.created_at);
                 //console.log(mydate.toLocaleDateString());
@@ -186,7 +187,7 @@
               var postarray=[];
               var count=0;
               full["ways"].forEach( function(v, i) {
-                if(v.item.sender_gate_id!=null){
+                if(v.item.sender_gate_id!=null && v.status_code=="001"){
 
                 var mydate=new Date(v.created_at);
                 //console.log(mydate.toLocaleDateString());
@@ -206,7 +207,7 @@
                         }
                       })
                   }
-                }else if(v.item.sender_postoffice_id!=null){
+                }else if(v.item.sender_postoffice_id!=null && v.status_code=="001"){
                    var mydate=new Date(v.created_at);
                 //console.log(mydate.toLocaleDateString());
 
@@ -225,7 +226,7 @@
                         }
                       })
                   }
-                }else{
+                }else if(v.item.sender_gate_id==null && v.item.sender_postoffice_id==null && v.status_code=="001"){
                   count++;
                 }
                 // statements

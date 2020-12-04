@@ -363,7 +363,7 @@ public function profit(Request $request){
     $paymenttypes=PaymentType::all();
     $banks=Bank::all();
     $ways =Way::withTrashed()->doesntHave('income')->where('ways.delivery_man_id',$id)
-            ->whereDate('created_at', Carbon\Carbon::today())
+            //->whereDate('created_at', Carbon\Carbon::today())
             // ->where('status_code', '006') // 006 => deliveryman နဲ့ရှင်းပြီး
             ->where('status_code', '!=', '005')
             ->get();
@@ -528,7 +528,8 @@ public function profit(Request $request){
 
   public function success_ways($value='')
   {
-    $success_ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->get();
+    $success_ways = Way::with('income')->where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->orderBy('id','desc')->get();
+    //dd($success_ways);
 
     return view('dashboard.success_ways',compact('success_ways'));
   }
@@ -546,7 +547,7 @@ public function profit(Request $request){
       $way->delivery_date = date('Y-m-d');
       $way->save();
     }
-    return 'success';
+   return response()->json(['success'=>'successfully!']);
   }
    public function retuenDeliver(Request $request)
   {
@@ -660,24 +661,17 @@ public function profit(Request $request){
    $end_date=$request->end_date;
    //dd($start_date);
   $ways=DeliveryMan::with('ways')->whereHas('ways',function($query) use($start_date,$end_date){
-    $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('status_code','001');
-  })->orWhereDoesntHave('ways')->with('pickups')->whereHas('pickups',function($query) use($start_date,$end_date){
+    $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59']);
+    $query->orWhere('status_code','001');
+  })
+  ->orWhereDoesntHave('ways')
+  ->with('pickups')->orwhereHas('pickups',function($query) use($start_date,$end_date){
     $query->whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('status','1');
-  })->orWhereDoesntHave('pickups')->with('user')->with('ways.item')->get();
+  })
+  ->orWhereDoesntHave('pickups')
+  ->with('user')->with('ways.item')->get();
 
- /* $ways=DB::table('delivery_men')
-        ->join('ways','ways.delivery_man_id','=','delivery_men.id')
-         ->join('pickups', 'pickups.delivery_man_id', '=', 'delivery_men.id')
-         ->join('users', 'users.id', '=', 'delivery_men.user_id')
-         ->join('items','ways.item_id','=','items.id')
-         ->whereBetween('ways.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])
-         ->where('ways.status_code','001')
-         ->whereBetween('pickups.created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])
-         ->where('pickups.status','1')
-         ->select('users.name as username','pickups.*','ways.*' )
-         ->get();*/
-
-    //dd($ways);
+ 
     return Datatables::of($ways)->addIndexColumn()->toJson();
   }
 

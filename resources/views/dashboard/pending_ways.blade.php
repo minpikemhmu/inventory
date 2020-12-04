@@ -136,6 +136,9 @@
     </div> --}}
 
     <div class="row">
+      <div class="col-12">
+            <div class="alert alert-primary alertsuccess d-none" role="alert"></div>
+      </div>
       @foreach($pending_ways as $row)
       <div class="col-md-4">
         <div class="card mb-3">
@@ -311,8 +314,15 @@
         }
         $.post("{{route('makeDeliver')}}",{ways:ways},function (response) {
           console.log(response);
-          alert('successfully changed!')
-          location.href="{{route('success_ways')}}";
+          //alert('successfully changed!')
+          if(response.success){
+              $('.alertsuccess').removeClass('d-none');
+              $('.alertsuccess').show();
+              $('.alertsuccess').text('successfully changed');
+              $('.alertsuccess').fadeOut(3000);
+              location.href="{{route('pending_ways')}}";
+            }
+          
         })
       })
 
@@ -338,10 +348,10 @@
                $('#returnModal').modal('hide');
                $('.Eremark').text('');
               $('span.error').removeClass('text-danger');
-              $('.success').removeClass('d-none');
-              $('.success').show();
-              $('.success').text('successfully added to return list');
-              $('.success').fadeOut(3000);
+              $('.alertsuccess').removeClass('d-none');
+              $('.alertsuccess').show();
+              $('.alertsuccess').text('successfully added to return list');
+              $('.alertsuccess').fadeOut(3000);
               location.href="{{route('pending_ways')}}";
             }
           },
@@ -384,10 +394,10 @@
                $('#rejectModal').modal('hide');
                $('.Ejremark').text('');
               $('span.error').removeClass('text-danger');
-              $('.success').removeClass('d-none');
-              $('.success').show();
-              $('.success').text('successfully added to reject list');
-              $('.success').fadeOut(3000);
+              $('.alertsuccess').removeClass('d-none');
+              $('.alertsuccess').show();
+              $('.alertsuccess').text('successfully added to reject list');
+              $('.alertsuccess').fadeOut(3000);
               location.href="{{route('pending_ways')}}";
             }
           },

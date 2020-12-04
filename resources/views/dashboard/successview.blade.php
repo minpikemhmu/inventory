@@ -19,10 +19,10 @@
 				@endforeach
 
 				@foreach($man->ways as $way) 
-					@if($way->created_at->format('d-m-y')==$date && $way->item->sender_gate_id==null && $way->item->sender_postoffice_id==null)
+					@if($way->created_at->format('d-m-y')==$date && $way->item->sender_gate_id==null && $way->item->sender_postoffice_id==null && $way->status_code=="001")
 						@php $count++; @endphp
 					
-					@elseif($way->created_at->format('d-m-y')==$date && $way->item->sender_gate_id!=null)
+					@elseif($way->created_at->format('d-m-y')==$date && $way->item->sender_gate_id!=null && $way->status_code=="001")
 					@php
 					$gateobj=[
 					"id"=>$way->item->sender_gate_id,
@@ -43,7 +43,7 @@
 
 					@endphp
 
-					@elseif($way->created_at->format('d-m-y')==$date && $way->item->sender_postoffice_id!=null)
+					@elseif($way->created_at->format('d-m-y')==$date && $way->item->sender_postoffice_id!=null && $way->status_code=="001")
 					@php
 					$postobj=[
 					"id"=>$way->item->sender_postoffice_id,
@@ -86,7 +86,7 @@
 				@endforeach
 
 				@foreach($man->ways as $way) 
-					@if($way->created_at->format('m')==$month)
+					@if($way->created_at->format('m')==$month && $way->status_code=="001")
 						@php $tcount++; @endphp
 					@endif
 				@endforeach
