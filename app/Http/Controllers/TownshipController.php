@@ -45,6 +45,7 @@ class TownshipController extends Controller
         ]);
 
         $city=explode('_', $request->city);
+        //dd($city);
         if($validator){
             $gate=" Gate";
             $post=" Post Office";
@@ -111,17 +112,18 @@ class TownshipController extends Controller
             'city'=>['required']
         ]);
         $city=explode('_', $request->city);
+        //dd($city);
 
         if($validator){
-            $gate="gate";
+            $gate="Gate";
             $post="post office";
             $township=$township;
             if($request->rcity==2){
-               $township->name=$city[1] .$gate; 
+               $township->name=$request->name; 
                //dd("gate");
             }
              else if($request->rcity==3){
-               $township->name=$city[1] .$post; 
+               $township->name=$request->name; 
                //dd("post");
             }else{
                  $township->name=$request->name;

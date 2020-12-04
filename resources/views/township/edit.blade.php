@@ -66,7 +66,7 @@
               <select class="form-control" id="city" name="city">
                 <option>Choose City</option>
                 @foreach($cities as $row)
-                <option value="{{$row->id}}" @if($township->city_id==$row->id) selected @endif>{{$row->name}}</option>
+                <option value="{{$row->id}}_{{$row->name}}" @if($township->city_id==$row->id) selected @endif>{{$row->name}}</option>
                 @endforeach
               </select>
             </div>
@@ -81,3 +81,39 @@
     </div>
   </main>
 @endsection 
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+    //alert("ok");
+    $("#incity").click(function(){
+      if ($(this).is(':checked'))
+      {
+        $(".townshipname").show();
+        $(".deliveryfee input").val("");
+        $(".deliveryfee").show();
+        $(".cityname").show();
+      }
+    });
+
+    $("#gate").click(function(){
+      if ($(this).is(':checked'))
+      {
+        $(".townshipname").hide();
+        $(".deliveryfee input").val(1000);
+        $(".deliveryfee").show();
+        $(".cityname").show();
+      }
+    });
+
+    $("#post").click(function(){
+      if ($(this).is(':checked'))
+      {
+        $(".townshipname").hide();
+        $(".deliveryfee input").val(1000);
+        $(".deliveryfee").show();
+        $(".cityname").show();
+      }
+    });
+  })
+</script>
+@endsection
