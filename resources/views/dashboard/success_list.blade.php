@@ -122,16 +122,12 @@
               var gatearray=[];
               data.forEach( function(v, i) {
                 if(v.item.sender_gate_id!=null && v.status_code=="001"){
-
-                // var mydate=new Date(v.delivery_date);
                 //console.log(mydate.toLocaleDateString());
-
                  var gateobj={
                     id:v.item.sender_gate_id,
                     date:v.delivery_date,
                   }
                   //console.log(gateobj);
-
                   if(gatearray.length==0){
                     gatearray.push(gateobj)
                   }else{
@@ -154,20 +150,17 @@
         },
         {
             "data":"ways",
-            render:function(data){
+           render:function(data){
               var postarray=[];
               data.forEach( function(v, i) {
                 if(v.item.sender_postoffice_id!=null && v.status_code=="001"){
-
                 var mydate=new Date(v.created_at);
                 //console.log(mydate.toLocaleDateString());
-
                  var postobj={
                     id:v.item.sender_postoffice_id,
                     date:mydate.toLocaleDateString(),
                   }
                  // console.log(postobj);
-
                   if(postarray.length==0){
                     postarray.push(postobj)
                   }else{

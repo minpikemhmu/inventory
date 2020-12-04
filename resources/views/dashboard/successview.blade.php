@@ -11,7 +11,7 @@
 		<tr>
 			<td valign="center" style="width: 20px;height: 30px;">{{$date}}</td>
 			@foreach($ways as $man)
-				@php $count=0; $gate=[];$office=[]; @endphp
+				@php $count=0;$mycount=0; $gate=[];$office=[]; @endphp
 				@foreach($man->pickups as $pickup) 
 					@if($pickup->created_at->format('d-m-y')==$date)
 						@php $count++; @endphp
@@ -20,7 +20,7 @@
 
 				@foreach($man->ways as $way) 
 					@if($way->created_at->format('d-m-y')==$date && $way->item->sender_gate_id==null && $way->item->sender_postoffice_id==null && $way->status_code=="001")
-						@php $count++; @endphp
+						@php $mycount++; @endphp
 					
 					@elseif($way->created_at->format('d-m-y')==$date && $way->item->sender_gate_id!=null && $way->status_code=="001")
 					@php
@@ -69,7 +69,7 @@
 				@php 
 				$gatecount=count($gate);
 				$officecount=count($office);
-				$mycount=$count+$gatecount+$officecount; @endphp
+				$mycount=$count+$gatecount+$officecount+$mycount; @endphp
 				<td valign="center" style="width:20px;height: 30px;">{{$mycount}}</td>
 			@endforeach
 		</tr>
