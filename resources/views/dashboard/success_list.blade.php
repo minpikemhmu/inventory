@@ -122,26 +122,32 @@
               var gatearray=[];
               data.forEach( function(v, i) {
                 if(v.item.sender_gate_id!=null && v.status_code=="001"){
-                var mydate=new Date(v.created_at);
                 //console.log(mydate.toLocaleDateString());
                  var gateobj={
                     id:v.item.sender_gate_id,
-                    date:mydate.toLocaleDateString(),
+                    date:v.delivery_date,
                   }
                   //console.log(gateobj);
                   if(gatearray.length==0){
                     gatearray.push(gateobj)
                   }else{
                       $.each(gatearray,function(k,e){
-                        if(e.id!=gateobj.id && e.date!=gateobj.date){
+                        if(e.id!=gateobj.id){
                           gatearray.push(gateobj)
+                          return false
+                        }else if(e.id==gateobj.id && e.date!=gateobj.date){
+                          gatearray.push(gateobj)
+                          return false
                         }
+                        // else if(e.date==gateobj.date){
+                        //   gatearray.push(gateobj)
+                        // }
                       })
                   }
                 }
                 // statements
               });
-            //  console.log(gatearray);
+             console.log(gatearray);
               return gatearray.length;
           }
         },
