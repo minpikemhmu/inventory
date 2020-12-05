@@ -23,7 +23,7 @@ class CreateItemsTable extends Migration
             $table->string('receiver_name');
             $table->text('receiver_address');
             $table->string('receiver_phone_no');
-            $table->longText('remark');
+            $table->longText('remark')->nullable();
             $table->string('paystatus')->default(0); 
             // 0,1 (ပုံမှန်ဆို မပေးရသေးတာ)
             

@@ -72,7 +72,7 @@ class ScheduleController extends Controller
         //dd($request);
         $validator = $request->validate([
             'date'  => ['required','date'],
-            'remark'=>['required','string'],
+            /*'remark'=>['required','string'],*/
         ]);
 
 
@@ -147,7 +147,7 @@ class ScheduleController extends Controller
     {
          $validator = $request->validate([
             'date'  => ['required','date'],
-            'remark'=>['required','string'],
+            /*'remark'=>['required','string'],*/
         ]);
 
 

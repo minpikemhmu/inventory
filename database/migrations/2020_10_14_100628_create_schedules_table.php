@@ -18,7 +18,7 @@ class CreateSchedulesTable extends Migration
             $table->date('pickup_date');
             $table->integer('status')->default(0); 
             // 0 (ချိန်းထားတုန်း) ,1 (လာယူပြီးပြီ)
-            $table->longText('remark');
+            $table->longText('remark')->nullable();
             $table->text('file')->nullable();
             $table->integer('quantity')->default(0);
             $table->integer('amount')->default(0);
