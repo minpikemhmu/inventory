@@ -157,19 +157,23 @@
               var postarray=[];
               data.forEach( function(v, i) {
                 if(v.item.sender_postoffice_id!=null && v.status_code=="001"){
-                var mydate=new Date(v.created_at);
+                //var mydate=new Date(v.created_at);
                 //console.log(mydate.toLocaleDateString());
                  var postobj={
                     id:v.item.sender_postoffice_id,
-                    date:mydate.toLocaleDateString(),
+                    date:v.delivery_date,
                   }
                  // console.log(postobj);
                   if(postarray.length==0){
                     postarray.push(postobj)
                   }else{
                       $.each(postarray,function(k,e){
-                        if(e.id!=postobj.id && e.date!=postobj.date){
-                          postarray.push(postobj);
+                         if(e.id!=postobj.id){
+                          postarray.push(postobj)
+                          return false
+                        }else if(e.id==postobj.id && e.date!=postobj.date){
+                          postarray.push(postobj)
+                          return false
                         }
                       })
                   }
@@ -189,12 +193,12 @@
               full["ways"].forEach( function(v, i) {
                 if(v.item.sender_gate_id!=null && v.status_code=="001"){
 
-                var mydate=new Date(v.created_at);
+                
                 //console.log(mydate.toLocaleDateString());
 
                  var gateobj={
                     id:v.item.sender_gate_id,
-                    date:mydate.toLocaleDateString(),
+                   date:v.delivery_date,
                   }
                  // console.log(gateobj);
 
@@ -202,18 +206,22 @@
                     gatearray.push(gateobj)
                   }else{
                       $.each(gatearray,function(k,e){
-                        if(e.id!=gateobj.id && e.date!=gateobj.date){
+                        if(e.id!=gateobj.id){
                           gatearray.push(gateobj)
+                          return false
+                        }else if(e.id==gateobj.id && e.date!=gateobj.date){
+                          gatearray.push(gateobj)
+                          return false
                         }
                       })
                   }
                 }else if(v.item.sender_postoffice_id!=null && v.status_code=="001"){
-                   var mydate=new Date(v.created_at);
+                  
                 //console.log(mydate.toLocaleDateString());
 
                  var postobj={
                     id:v.item.sender_postoffice_id,
-                    date:mydate.toLocaleDateString(),
+                    date:v.delivery_date,
                   }
                  // console.log(postobj);
 
@@ -221,8 +229,12 @@
                     postarray.push(postobj)
                   }else{
                       $.each(postarray,function(k,e){
-                        if(e.id!=postobj.id && e.date!=postobj.date){
-                          postarray.push(postobj);
+                         if(e.id!=postobj.id){
+                          postarray.push(postobj)
+                          return false
+                        }else if(e.id==postobj.id && e.date!=postobj.date){
+                          postarray.push(postobj)
+                          return false
                         }
                       })
                   }

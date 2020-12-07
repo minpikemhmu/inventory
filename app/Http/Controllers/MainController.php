@@ -501,9 +501,7 @@ public function profit(Request $request){
     //dd($ways);
 
     foreach ($pending_ways as $way) {
-      if(Carbon\Carbon::today()>$way->created_at && $way->status_code==005){
-        $way->delete();
-      }
+      
      
       $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
         // dd($notifications);

@@ -285,9 +285,16 @@
         $(".pickdate").val(gateday);
         $("#InputDeposit").val(0);
         $('#InputDeposit').prop('readonly',true);
-      }
 
-      $.ajaxSetup({
+        getTownship(id);
+      } 
+    }
+  });
+
+
+
+function getTownship(id){
+    $.ajaxSetup({
          headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
@@ -301,19 +308,18 @@
         })
         $("#InputReceiverTownship").html(html);
       })
-    }
-  });
-
-
+}
 
   var checked=$("input[name='rcity']:checked").val();
   console.log(checked);
   if(checked==2){
+    getTownship(checked);
       $(".mygate").show();
      $(".myoffice").hide();
   }else if(checked==3){
      $(".mygate").hide();
      $(".myoffice").show();
+     getTownship(checked);
   }
 
   $("#gate").click(function(){
