@@ -45,6 +45,64 @@
                    <div class="form-control-feedback text-danger"> {{$errors->first('receiver_address') }} </div>
                 </div>
 
+                  <div class="row my-3">
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="incity" value="1" @if($item->sender_gate_id==null && $item->sender_postoffice_id==null)
+                    checked="checked" 
+                   @endif>
+                  <label class="form-check-label" for="incity">
+                    {{ __("In city")}}
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="gate" value="2" @if($item->sender_gate_id!=null)
+                    checked="checked" 
+                   @endif>
+                  <label class="form-check-label" for="gate" >
+                    {{ __("Gate")}}
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="rcity" id="post" value="3" @if($item->sender_postoffice_id!=null)
+                    checked="checked" 
+                   @endif >
+                  <label class="form-check-label" for="post">
+                    {{ __("Post Office")}}
+                  </label>
+                </div>
+              </div>
+              <div class="form-control-feedback text-danger"> {{$errors->first('rcity') }} </div>
+            </div>
+
+             <div class="form-group  mygate">
+                  <label for="mygate">{{ __("Sender Gate")}}:</label><br>
+                  <select class="js-example-basic-single  " id="mygate" name="mygate"  >
+                    <option value="">{{ __("Choose Gate")}}</option>
+                    @foreach($sendergates as $row)
+                      <option value="{{$row->id}}" @if($item->sender_gate_id==$row->id) selected @endif>{{$row->name}}</option>
+                    @endforeach
+                  </select>
+                  <div class="form-control-feedback text-danger"> {{$errors->first('receiver_township') }} </div>
+               </div>
+
+               <div class="form-group  myoffice">
+                  <label for="myoffice">{{ __("Sender PostOffice")}}:</label><br>
+                  <select class="js-example-basic-single  " id="myoffice" name="myoffice"  >
+                    <option value="">{{ __("Choose Post Office")}}</option>
+                    @foreach($senderoffice as $row)
+                      <option value="{{$row->id}}" @if($item->sender_postoffice_id==$row->id) selected @endif>{{$row->name}}</option>
+                    @endforeach
+                  </select>
+                  <div class="form-control-feedback text-danger"> {{$errors->first('receiver_township') }} </div>
+               </div>
+
                 <div class="form-group">
                   <label for="InputReceiverTownship">Receiver Township:</label>
                   <select class="form-control mytownship" id="InputReceiverTownship" name="receiver_township">
@@ -102,6 +160,22 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
+    $(".mygate").hide();
+    $(".myoffice").hide();
+    setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+    // $(".township").hide();
+    // for in city
+    var today = new Date();
+    var numberofdays = 3;
+    today.setDate(today.getDate() + numberofdays); 
+    var day = ("0" + today.getDate()).slice(-2);
+    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    //console.log(month);
+    var incityday= today.getFullYear()+"-"+(month)+"-"+(day) ;
+    console.log(incityday);
+    $(".pickdate").val(incityday);
+
+
     $(".mytownship").change(function(){
       var id=$(this).val();
       //console.log(id);
@@ -116,12 +190,151 @@
       })
     })
 
-    $("#InputDeposit").change(function(){
-      var deposit=parseInt($(this).val());
+    $("#InputAmount").focus(function(){
+      var deposit=parseInt($('#InputDeposit').val());
+      var depositamount=$(".depositamountforcheck").val();
       var delivery_fees=parseInt($("#InputDeliveryFees").val());
-      var amount=deposit+delivery_fees;
-      $("#InputAmount").val(amount);
+      if(deposit>depositamount){
+        alert("deposit amount is greate than total deposit amount!!please retype deposit fee again");
+        $("#InputDeposit").val(0);
+        $("#InputDeposit").focus();
+      }else{
+        var amount=deposit+delivery_fees;
+      $(this).val(amount);
+      }
+     
     })
+
+    $("#InputDeposit").change(function(){
+      var deposit=parseInt($('#InputDeposit').val());
+      var depositamount=$(".depositamountforcheck").val();
+      var delivery_fees=parseInt($("#InputDeliveryFees").val());
+      
+      if(deposit>depositamount){
+        alert("deposit amount is greate than total deposit amount!!please retype deposit fee again");
+        $("#InputDeposit").val(0);
+        $("#InputDeposit").focus();
+      }else{
+        var amount=deposit+delivery_fees;
+      $("#InputAmount").val(amount);
+      }
+      
+     
+    })
+
+
+    $("#InputRemark").focus(function(){
+      var deposit=parseInt($('#InputDeposit').val());
+      var depositamount=$(".depositamountforcheck").val();
+      var delivery_fees=parseInt($("#InputDeliveryFees").val());
+      
+      if(deposit>depositamount){
+        alert("deposit amount is greate than total deposit amount!!please retype deposit fee again");
+        $("#InputDeposit").val(0);
+        $("#InputDeposit").focus();
+      }else{
+        var amount=deposit+delivery_fees;
+      $("#InputAmount").val(amount);
+      }
+      
+     
+    })
+    
+    $(function(){
+        var dtToday = new Date();
+        
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        
+        var maxDate = year + '-' + month + '-' + day;
+        //alert(maxDate);
+        $('#txtDate').attr('min', maxDate);
+    });
+
+    $("input[name=rcity]").click(function(){
+    if ($(this).is(':checked'))
+    {
+      $(".township").show();
+      var id=$(this).val();
+
+      if(id==1){
+        var today = new Date();
+        var numberofdays = 3;
+        today.setDate(today.getDate() + numberofdays); 
+        var day = ("0" + today.getDate()).slice(-2);
+        var month = ("0" + (today.getMonth() + 1)).slice(-2);
+        //console.log(month);
+        var incityday= today.getFullYear()+"-"+(month)+"-"+(day) ;
+        console.log(incityday);
+        $(".pickdate").val(incityday);
+        $('#InputDeposit').prop('disabled',false);
+      }else{
+        var today = new Date();
+        var numberofdays = 7;
+        today.setDate(today.getDate() + numberofdays); 
+        var day = ("0" + today.getDate()).slice(-2);
+        var month = ("0" + (today.getMonth() + 1)).slice(-2);
+        //console.log(month);
+        var gateday= today.getFullYear()+"-"+(month)+"-"+(day) ;
+        console.log(gateday);
+        $(".pickdate").val(gateday);
+        $("#InputDeposit").val(0);
+        $('#InputDeposit').prop('readonly',true);
+      }
+
+      $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+      $.post("/townshipbystatus",{id:id},function(res){
+       // console.log(res);
+        var html="";
+        html+=`<option>Choose township</option>`
+        $.each(res,function(i,v){
+          html+=`<option value="${v.id}">${v.name}</option>`
+        })
+        $("#InputReceiverTownship").html(html);
+      })
+    }
+  });
+
+
+
+  var checked=$("input[name='rcity']:checked").val();
+  console.log(checked);
+  if(checked==2){
+      $(".mygate").show();
+     $(".myoffice").hide();
+  }else if(checked==3){
+     $(".mygate").hide();
+     $(".myoffice").show();
+  }
+
+  $("#gate").click(function(){
+    
+      $(".mygate").show();
+     $(".myoffice").hide();
+  })
+
+  $("#incity").click(function(){
+    $(".mygate").hide();
+    $(".myoffice").hide();
+  })
+
+  $("#post").click(function(){
+    
+      $(".mygate").hide();
+     $(".myoffice").show();
+  })
+
+
+     $('.js-example-basic-single').select2({width:'100%'});
   })
 </script>
 @endsection

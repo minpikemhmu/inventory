@@ -84,7 +84,6 @@ class ItemController extends Controller
         // 'deposit'=>['required'],
         'delivery_fees'=>['required'],
         'amount'=>['required'],
-        'remark'=>['required','string']
       ]);
 
       if($validator){
@@ -124,8 +123,9 @@ class ItemController extends Controller
           
 
           $checkitems = Item::orderBy('id', 'desc')->take($myqty)->get();
+          //dd($checkitems->sum('deposit'));
           if($checkitems->sum('deposit')!=$damount){
-                //dd($checkitems);
+                //dd("hi");
 
             //foreach ($checkitems as $value) {
               $pickup=Pickup::find($checkitems[0]->pickup_id);
@@ -152,7 +152,7 @@ class ItemController extends Controller
           }
         }
 
-
+        //dd("hello");
         $pickup = Pickup::find($item->pickup_id);
         if (($pickup->schedule->quantity - count($pickup->items)) > 0) {
           return redirect()->back()->with("successMsg",'New Item is ADDED');
@@ -191,7 +191,9 @@ class ItemController extends Controller
     {
         $item=$item;
         $townships=Township::all();
-        return view('item.edit',compact('item','townships'));
+        $sendergates=SenderGate::all();
+        $senderoffice=SenderPostoffice::all();
+        return view('item.edit',compact('item','townships','sendergates','senderoffice'));
     }
 
     /**
@@ -212,7 +214,6 @@ class ItemController extends Controller
             'deposit'=>['required'],
             'delivery_fees'=>['required'],
             'amount'=>['required'],
-            'remark'=>['required','string']
         ]);
 
          if($validator){
@@ -227,10 +228,10 @@ class ItemController extends Controller
             $item->receiver_phone_no=$request->receiver_phoneno;
             $item->remark=$request->remark;
             $item->township_id=$request->receiver_township;
-            if($request->mygate){
+           if($request->mygate!=null){
               $item->sender_gate_id=$request->mygate;
             }
-            if($request->myoffice){
+            if($request->myoffice!=null){
               $item->sender_postoffice_id=$request->myoffice;
             }
              $role=Auth::user()->roles()->first();

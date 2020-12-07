@@ -169,6 +169,9 @@
                     <input type="hidden" name="client_id" value="{{$client->id}}">
 
                     <input type="hidden" name="depositamount" value="{{$pickup->schedule->amount}}" class="depositamount">
+
+                    <input type="hidden" name="depositamountforcheck" value="{{$pickup->schedule->amount-$total}}" class="depositamountforcheck">
+
                     <input type="hidden" name="qty" value={{$pickup->schedule->quantity - count($pickup->items)}}>
                     <input type="hidden" name="myqty" value="{{$pickup->schedule->quantity}}">
                     <li class="list-group-item">{{ __("Deposit for all item")}}: {{number_format($pickup->schedule->amount-$total)}}KS</li>
@@ -251,7 +254,7 @@
 
     $("#InputAmount").focus(function(){
       var deposit=parseInt($('#InputDeposit').val());
-      var depositamount=$(".depositamount").val();
+      var depositamount=$(".depositamountforcheck").val();
       var delivery_fees=parseInt($("#InputDeliveryFees").val());
       if(deposit>depositamount){
         alert("deposit amount is greate than total deposit amount!!please retype deposit fee again");
@@ -261,6 +264,41 @@
         var amount=deposit+delivery_fees;
       $(this).val(amount);
       }
+     
+    })
+
+    $("#InputDeposit").change(function(){
+      var deposit=parseInt($('#InputDeposit').val());
+      var depositamount=$(".depositamountforcheck").val();
+      var delivery_fees=parseInt($("#InputDeliveryFees").val());
+      
+      if(deposit>depositamount){
+        alert("deposit amount is greate than total deposit amount!!please retype deposit fee again");
+        $("#InputDeposit").val(0);
+        $("#InputDeposit").focus();
+      }else{
+        var amount=deposit+delivery_fees;
+      $("#InputAmount").val(amount);
+      }
+      
+     
+    })
+
+
+    $("#InputRemark").focus(function(){
+      var deposit=parseInt($('#InputDeposit').val());
+      var depositamount=$(".depositamountforcheck").val();
+      var delivery_fees=parseInt($("#InputDeliveryFees").val());
+      
+      if(deposit>depositamount){
+        alert("deposit amount is greate than total deposit amount!!please retype deposit fee again");
+        $("#InputDeposit").val(0);
+        $("#InputDeposit").focus();
+      }else{
+        var amount=deposit+delivery_fees;
+      $("#InputAmount").val(amount);
+      }
+      
      
     })
     
