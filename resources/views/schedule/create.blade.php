@@ -50,6 +50,7 @@
               <input type="file" id="file" name="file" class="form-control-file">
             </div>
 
+            @role('staff')
             <div class="form-group">
               <input type="checkbox" id="know">
               <label for="know">{{ __("If you know quantity and amount")}}</label> 
@@ -67,12 +68,29 @@
               <input type="number"  id="amount" class="form-control" name="amount">
               <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
             </div>
+            @endrole
+
+            @role('client')
+              <div class="form-group ">
+              <label for="quantity">{{ __("Quantity")}}:</label>
+              <input type="number"  id="quantity" class="form-control" name="quantity">
+              <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
+            </div>
+
+
+            <div class="form-group ">
+              <label for="amount">{{ __("Amount")}}:</label>
+              <input type="number"  id="amount" class="form-control" name="amount">
+              <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
+            </div>
+            @endrole
             
             @role('staff')
             <div class="form-group">
               <label for="InputDeliveryMan">{{ __("Delivery Man")}}:</label>
               <select class="form-control" name="deliveryman" id="InputDeliveryMan">
                 <optgroup label="Choose Delivery Man">
+                   <option value="">{{ __("Choose Delivery Man")}}</option>
                  @foreach($deliverymen as $row)
                   <option value="{{$row->id}}">{{$row->user->name}}</option>
                   @endforeach
@@ -88,7 +106,7 @@
             @role('client')
             
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">{{ __("Save<")}}/button>
+              <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
             </div>
             @endrole
           </form>

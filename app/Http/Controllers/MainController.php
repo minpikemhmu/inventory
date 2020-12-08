@@ -719,4 +719,42 @@ public function profit(Request $request){
     $clients = Client::all();
     return view('dashboard.debt_history',compact('clients'));
   }
+
+  public function way_history($value='')
+  {
+    return view('dashboard.way_history');
+  }
+
+
+  public function getwayhistory(Request $request){
+    $sdate = $request->sdate;
+    $edate = $request->edate;
+   // dd($sdate);
+    $ways = Way::withTrashed()->with('item.pickup.schedule.client.user','delivery_man.user')->where('status_code','!=','005')->whereBetween('updated_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
+   // dd($ways);
+    return Datatables::of($ways)->addIndexColumn()->toJson();
+  }
+
+  public function pickup_history(){
+       // dd($pickups);
+      return view("dashboard.pickup_history");
+  }
+
+  public function pickupbyclient(Request $request){
+
+    $sdate = $request->sdate;
+    $edate = $request->edate;
+   
+    $role=Auth::user()->roles()->first();
+     $rolename=$role->name;
+     if($rolename=="client"){
+      $client_id=Auth::user()->client->id;
+     // dd($client_id);
+      $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
+        $query->where('client_id', $client_id)->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
+      })->where("status",1)->get();
+     // dd($pickups);
+      return Datatables::of($pickups)->addIndexColumn()->toJson();
+     }
+  }
 }

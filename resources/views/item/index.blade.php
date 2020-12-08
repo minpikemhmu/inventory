@@ -59,7 +59,15 @@
                         </td>
                         <td>{{$row->codeno}}</td>
                         <td>{{$row->pickup->schedule->client->user->name}}</td>
-                        <td class="text-danger">{{$row->township->name}}</td>
+                        <td class="text-danger">
+                          @if($row->sender_gate_id!=null)
+                          {{$row->SenderGate->name}}({{$row->township->name}})
+                          @elseif($row->sender_postoffice_id!=null)
+                          {{$row->SenderPostoffice->name}}({{$row->township->name}})
+                          @else
+                          {{$row->township->name}}
+                          @endif
+                        </td>
                         <td>
                           {{$row->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span>
                         </td>
@@ -117,7 +125,9 @@
                             <span class="badge badge-danger">{{'reject'}}</span>
                           @endif
                         </td>
-                        <td>{{$way->item->township->name}}</td>
+                        <td>
+                          {{$way->item->township->name}}
+                        </td>
                         <td class="text-danger">
                           {{$way->delivery_man->user->name}} 
                             @foreach($data as $dd)

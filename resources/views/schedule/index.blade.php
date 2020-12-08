@@ -28,10 +28,12 @@
 
 
           <div class="bs-component">
+            @role('staff')
             <ul class="nav nav-tabs">
-              <li class="nav-item"><a class="nav-link @role('client'){{'active'}}@endrole" data-toggle="tab" href="#schedules">{{ __("Schedules")}}</a></li>
-              <li class="nav-item"><a class="nav-link @role('staff'){{'active'}}@endrole" data-toggle="tab" href="#assigned">{{ __("Assigned")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedules">{{ __("Schedules")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#assigned">{{ __("Assigned")}}</a></li>
             </ul>
+            @endrole
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade @role('client'){{'active show'}}@endrole" id="schedules">
                 <div class="table-responsive">
@@ -63,17 +65,7 @@
                             <a href="#" class="btn btn-info showfile" data-file="{{$row->file}}">{{ __("show file")}}</a>
                           @endrole
                           @role('client')
-                            @if($row->status==0)
-                              <a href="#" class="btn btn-primary addfile" data-id="{{$row->id}}" data-file="{{$row->file}}">{{ __("Add file for complete")}}</a>
-                            @else
-                              <a href="#" class="btn btn-info">{{ __("completed")}}</a>
-                            @endif
                             <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
-                            <form action="{{ route('schedules.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
-                              @csrf
-                              @method('DELETE')
-                              <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
-                            </form>
                           @endrole
                         </td>
                       </tr>
@@ -126,11 +118,16 @@
                           @elseif($row->status==2)
                            <a href="{{route('checkitem',$row->id)}}" class="btn btn-danger">{{ __("fail")}}</a>
                           @elseif($row->status==3)
-                           <a href="#" class="btn btn-danger addamount" data-id="{{$row->schedule->id}}">{{ __("Add amount and qty")}}</a>
+                           <a href="#" class="btn btn-secondary addamount" data-id="{{$row->schedule->id}}">{{ __("Add amount and qty")}}</a>
                           @else
                             <button type="button" class="btn btn-danger">{{ __("pending")}}</button>
                           @endif
-
+                          <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
+                            <form action="{{ route('schedules.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
+                              @csrf
+                              @method('DELETE')
+                              <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
+                            </form>
                           {{-- <a href="#" class="btn btn-warning">Edit</a>
                           <a href="#" class="btn btn-danger">Delete</a> --}}
                         </td>

@@ -23,13 +23,13 @@ class ScheduleController extends Controller
         $role=Auth::user()->roles()->first();
         $rolename=$role->name;
          
-        $schedules=Schedule::doesntHave('pickup')->where('status',1)->get();
+        $schedules=Schedule::doesntHave('pickup')->get();
         $pickups=Pickup::orderBy('id','desc')->get();
 
         if($rolename=="client"){
             $user=Auth::user();
             $client=$user->client->id;
-            $schedules=Schedule::doesntHave('pickup')->where('status',1)->where('client_id',$client)->get();
+            $schedules=Schedule::where('client_id',$client)->get();
             $pickups=Pickup::orderBy('id','desc')->with('schedule')->whereHas('schedule', function ($query) use ($client){
                 $query->where('client_id', $client);
             })->get();
@@ -133,7 +133,9 @@ class ScheduleController extends Controller
     public function edit(Schedule $schedule)
     {
         $schedule=$schedule;
-        return view('schedule.edit',compact('schedule'));
+        $clients=client::all();
+        $deliverymen=DeliveryMan::all();
+        return view('schedule.edit',compact('schedule','clients','deliverymen'));
     }
 
     /**
@@ -145,6 +147,7 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, Schedule $schedule)
     {
+       // dd($request);
          $validator = $request->validate([
             'date'  => ['required','date'],
             /*'remark'=>['required','string'],*/
@@ -161,10 +164,16 @@ class ScheduleController extends Controller
             {
                 $path=$request->oldfile;
             }
-             $user=Auth::user();
-             $client=$user->client->id;
+             
              //dd($client);
             $schedule=$schedule;
+            if($request->client){
+            $schedule->client_id=$request->client;
+        }else{
+            $user=Auth::user();
+             $client=$user->client->id;
+            $schedule->client_id=$client;
+        }
             $schedule->pickup_date=$request->date;
             $schedule->file=$path;
             $schedule->remark=$request->remark;
@@ -178,6 +187,14 @@ class ScheduleController extends Controller
               $schedule->status=0;  
             }
             $schedule->save();
+            if($request->deliveryman){
+                $pickup=Pickup::where('schedule_id',$schedule->id)->first();
+                $pickup->delivery_man_id=$request->deliveryman;
+                $user=Auth::user();
+                $staff=$user->staff->id;
+                $pickup->staff_id=$staff;
+                $pickup->save();
+            }
             return redirect()->route('schedules.index')->with("successMsg",'Updated Successfully');
         }
         else
