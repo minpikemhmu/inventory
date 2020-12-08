@@ -95,7 +95,7 @@ class ScheduleController extends Controller
             $schedule->client_id=$client;
             $schedule->file=$path;
             $schedule->remark=$request->remark;
-            if($request->quantity && $request->amount){
+            if($request->quantity!=null && $request->amount!=null){
             $schedule->quantity=$request->quantity;
             $schedule->amount=$request->amount;
         }
@@ -147,7 +147,7 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, Schedule $schedule)
     {
-       // dd($request);
+      // dd($request);
          $validator = $request->validate([
             'date'  => ['required','date'],
             /*'remark'=>['required','string'],*/
@@ -177,7 +177,8 @@ class ScheduleController extends Controller
             $schedule->pickup_date=$request->date;
             $schedule->file=$path;
             $schedule->remark=$request->remark;
-            if($request->quantity && $request->amount){
+            if($request->quantity!=null && $request->amount!=null){
+               // dd("hi");
             $schedule->quantity=$request->quantity;
             $schedule->amount=$request->amount;
         }
@@ -212,6 +213,8 @@ class ScheduleController extends Controller
     public function destroy(Schedule $schedule)
     {
          $schedule=$schedule;
+         $pickup=Pickup::where('schedule_id',$schedule->id)->first();
+         $pickup->delete();
         $schedule->delete();
        return redirect()->route('schedules.index')->with('successMsg','Existing Schedule is DELETED in your data');
     }
@@ -243,7 +246,7 @@ class ScheduleController extends Controller
                 $schedule->remark=$request->remark;
                 $schedule->file=$path;
                 $schedule->client_id=$request->client;
-                 if($request->quantity && $request->amount){
+                 if($request->quantity!=null && $request->amount!=null){
                 $schedule->quantity=$request->quantity;
                 $schedule->amount=$request->amount;
             }

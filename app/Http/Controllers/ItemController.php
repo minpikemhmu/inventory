@@ -79,7 +79,7 @@ class ItemController extends Controller
         'receiver_name'  => ['required','string'],
         'receiver_phoneno'=>['required','string'],
         'receiver_address'=>['required','string'],
-        'receiver_township'=>['required'],
+        'receiver_township'=>['required','not_in:null'],
         'expired_date'=>['required','date'],
         // 'deposit'=>['required'],
         'delivery_fees'=>['required'],

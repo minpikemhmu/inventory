@@ -96,7 +96,13 @@
         { "data": "schedule.pickup_date",},
         { "data": "schedule.quantity" },
         { "data": "schedule.amount" },
-        
+        { "data": "id",
+                    sortable:false,
+                    render:function(data){
+                      var url=
+                      return `<a class="btn btn-primary btn-sm d-inline-block btnEdit " href="${routeurl}" data-id="${data}">Detail</a>`;
+                    }
+                   }
         ],
         "info":false
     });
