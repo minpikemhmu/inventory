@@ -88,7 +88,7 @@
                         <th>{{ __("Actions")}}</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="assigntbody">
                       @php $i=1; @endphp
                       @foreach($pickups as $row)
                       <tr>
@@ -302,7 +302,7 @@
 
       })
 
-      $(".addamount").click(function(e){
+      $(".assigntbody").on('click','.addamount',function(e){
          e.preventDefault();
         $('#addamount').modal('show');
         var id=$(this).data('id');
