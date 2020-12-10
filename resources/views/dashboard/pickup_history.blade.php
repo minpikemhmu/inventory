@@ -27,6 +27,17 @@
               <label for="InputEndDate">{{ __("End Date")}}:</label>
               <input type="date" class="form-control" id="InputEndDate" name="end_date">
             </div>
+            @role('staff')
+            <div class="form-group col-md-3">
+              <label for="InputClient">{{ __("Select Client")}}:</label>
+                <select class="js-example-basic-single" id="InputClient" name="client">
+                  <option value="">Choose Client</option>
+                    @foreach($clients as $client)
+                      <option value="{{$client->id}}" data-name="{{$client->user->name}}">{{$client->user->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            @endrole
             <div class="form-group col-md-3">
               <button class="btn btn-primary search_btn mt-4" type="button">{{ __("Search")}}</button>
             </div>
@@ -60,6 +71,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
+ $('.js-example-basic-single').select2({width:'100%'});
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -76,6 +88,7 @@
     $('.search_btn').click(function () {
         var sdate = $('#InputStartDate').val();
         var edate = $('#InputEndDate').val();
+        var client_id=$("#InputClient").val();
 // console.log(start_date, end_date)
         var url="{{route('pickupbyclient')}}";
         var i=1;
@@ -88,7 +101,7 @@
         "ajax": {
             url: url,
             type: "POST",
-            data:{sdate:sdate,edate:edate},
+            data:{sdate:sdate,edate:edate,client_id:client_id},
             dataType:'json',
         },
         "columns": [
@@ -99,7 +112,8 @@
         { "data": "id",
                     sortable:false,
                     render:function(data){
-                      var url=
+                      var routeurl="{{route('historydetails',':id')}}";
+                      routeurl=routeurl.replace(':id',data);
                       return `<a class="btn btn-primary btn-sm d-inline-block btnEdit " href="${routeurl}" data-id="${data}">Detail</a>`;
                     }
                    }

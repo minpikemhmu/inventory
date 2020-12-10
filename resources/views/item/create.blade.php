@@ -84,7 +84,7 @@
 
             <div class="form-group  mygate">
                   <label for="mygate">{{ __("Sender Gate")}}:</label><br>
-                  <select class="js-example-basic-single  " id="mygate" name="mygate"  >
+                  <select class="js-example-basic-single " id="mygate" name="mygate"  >
                     <option value="">{{ __("Choose Gate")}}</option>
                     @foreach($sendergates as $row)
                       <option value="{{$row->id}}">{{$row->name}}</option>
@@ -139,6 +139,31 @@
                   <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
                 </div>
 
+
+                <div class="row">
+                        <div class="col-6">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="amountstatus" id="amountpaid" value="1" checked="checked">
+                            <label class="form-check-label" for="amountpaid">
+                             {{ __("Amount unpaid")}}
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="col-6">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="amountstatus" id="amountunpaid"  value="2" >
+                              <label class="form-check-label" for="amountunpaid">
+                                {{ __("Amount paid")}}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-control-feedback text-danger"> {{$errors->first('paystatus') }} </div>
+                        </div>
+                 </div>
+                 
                 <div class="form-group">
                   <label for="InputRemark">{{ __("Remark")}}:</label>
                   <textarea class="form-control" id="InputRemark" name="remark">@if($pickupeditem){{ $pickupeditem->remark }} @else {{old('remark')}} @endif</textarea>

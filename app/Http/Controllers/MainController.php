@@ -737,24 +737,43 @@ public function profit(Request $request){
 
   public function pickup_history(){
        // dd($pickups);
-      return view("dashboard.pickup_history");
+      $clients=Client::all();
+      return view('dashboard.pickup_history',compact('clients'));
   }
 
   public function pickupbyclient(Request $request){
 
     $sdate = $request->sdate;
     $edate = $request->edate;
-   
+    $client_id=$request->client_id;
     $role=Auth::user()->roles()->first();
-     $rolename=$role->name;
-     if($rolename=="client"){
+    $rolename=$role->name;
+    $pickups="";
+    if($rolename=="client"){
       $client_id=Auth::user()->client->id;
      // dd($client_id);
       $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
         $query->where('client_id', $client_id)->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
       })->where("status",1)->get();
-     // dd($pickups);
-      return Datatables::of($pickups)->addIndexColumn()->toJson();
+    }else if($rolename=="staff"){
+      if($client_id==null){
+       $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($sdate,$edate){
+        $query->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
+      })->where("status",1)->get();
+     }else{
+       $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
+        $query->where('client_id', $client_id)->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
+      })->where("status",1)->get();
      }
+   }
+     return Datatables::of($pickups)->addIndexColumn()->toJson();
+ }
+
+
+  public function historydetails($id){
+    //dd($id);
+    $items=Item::with('way')->where('pickup_id',$id)->get();
+    //dd($items);
+    return view('dashboard.itembyclient',compact('items'));
   }
 }

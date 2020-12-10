@@ -100,7 +100,7 @@ class ItemController extends Controller
         $item->receiver_address=$request->receiver_address;
         $item->receiver_phone_no=$request->receiver_phoneno;
         $item->remark=$request->remark;
-        $item->paystatus=0;
+        $item->paystatus=$request->amountstatus;
         $item->pickup_id=$request->pickup_id;
         $item->township_id=$request->receiver_township;
         if($request->mygate!=null){
@@ -227,6 +227,7 @@ class ItemController extends Controller
             $item->receiver_address=$request->receiver_address;
             $item->receiver_phone_no=$request->receiver_phoneno;
             $item->remark=$request->remark;
+            $item->paystatus=$request->amountstatus;
             $item->township_id=$request->receiver_township;
            if($request->mygate!=null){
               $item->sender_gate_id=$request->mygate;

@@ -163,7 +163,14 @@
               @endif
             </h5>
             <h5 class="card-title">{{$row->item->receiver_address}} - {{$row->item->receiver_phone_no}}</h5>
-          <p class="card-text">{{ __("Amount")}}: {{$row->item->amount}}</p>
+          <p class="card-text">
+            @if($row->item->paystatus==1)
+              {{ __("Amount")}}: {{$row->item->amount}}
+             <span class="badge badge-success">ma shin ya thay</span>
+            @else
+             <span class="badge badge-success">shin pee</span>
+            @endif
+          </p>
             
             @if($row->status_code == 005)
             <a href="#" class="btn btn-info btn-sm success" data-id="{{$row->id}}">{{ __("Success")}}</a>

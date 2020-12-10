@@ -59,7 +59,7 @@
         </form>
       </div>
     </section>
-    <div class="container">
+    {{-- <div class="container">
         <div class="row mt-5">
             <div class="col-md-3">
                 <div class="card">
@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Essential javascripts for application to work-->
     <script src="{{ asset('assets/js/jquery-3.3.1.min.js')}}"></script>
     <script src="{{ asset('assets/js/popper.min.js')}}"></script>
