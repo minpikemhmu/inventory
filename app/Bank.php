@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Bank extends Model
 {
 	use SoftDeletes;
+  
   protected $fillable=[
-  	'name'
+  	'name', 'amount',
   ];
 
-  public function incomes()
+  public function transactions()
   {
     return $this->hasMany('App\Income');
   }

@@ -199,10 +199,15 @@
 
                     <input type="hidden" name="qty" value={{$pickup->schedule->quantity - count($pickup->items)}}>
                     <input type="hidden" name="myqty" value="{{$pickup->schedule->quantity}}">
-                    <li class="list-group-item">{{ __("Deposit for all item")}}: {{number_format($pickup->schedule->amount-$total)}}KS</li>
-                    @if($pickup->schedule->quantity - count($pickup->items) == 1)
+                    <li class="list-group-item">{{ __("Deposit Balance")}}: {{number_format($pickup->schedule->amount-$total)}} KS</li>
+                    {{-- @if($pickup->schedule->quantity - count($pickup->items) == 1)
                     <li class="list-group-item">
                       <div class="row">
+                        <div class="col-12">
+                          <p>
+                            {{ __("Deposit for all item")}}: {{number_format($pickup->schedule->amount)}} KS
+                          </p>
+                        </div>
                         <div class="col-6">
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" checked="checked">
@@ -222,11 +227,27 @@
                           </div>
                         </div>
                         <div class="col-md-12">
-                          <div class="form-control-feedback text-danger"> {{$errors->first('paystatus') }} </div>
+                          <div class="form-control-feedback text-danger">
+                            {{$errors->first('paystatus') }} 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="form-row col-md-12">
+                          <div class="col-md-4">
+                            <label>Choose Bank or Cash:</label>
+                          </div>
+                          <div class="col-md-8">
+                            <select class="form-control" name="payment_method">
+                              @foreach($banks as $bank)
+                              <option value="{{$bank->id}}">{{$bank->name}} ({{$bank->amount}})</option>
+                              @endforeach
+                            </select>
+                          </div>
                         </div>
                       </div>
                     </li>
-                    @endif
+                    @endif --}}
                   </ul>
                 </div>
 
@@ -234,9 +255,78 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
+            @if($pickup->schedule->quantity - count($pickup->items) == 1)
+              <div class="form-group">
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#depositModal">{{ __("Save")}}</button>
+              </div>
+            @else
+              <div class="form-group">
+                <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
+              </div>
+            @endif
+
+<!-- Modal -->
+<div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Deposit Amount: {{number_format($pickup->schedule->amount)}} KS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" checked="checked">
+              <label class="form-check-label" for="paid">
+               {{ __("Paid")}}
+              </label>
             </div>
+          </div>
+          <div class="col-6">
+            <div class="col-6">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="paystatus" id="unpaid" value="2" >
+                <label class="form-check-label" for="unpaid">
+                  {{ __("Unpaid")}}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-control-feedback text-danger">
+              {{$errors->first('paystatus') }} 
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3 bank">
+          <div class="form-row col-md-12">
+            <div class="col-md-4">
+              <label>Choose Bank or Cash:</label>
+            </div>
+            <div class="col-md-8">
+              <select class="form-control payment_method" name="payment_method">
+                <option value="" data-amount="0">Choose Bank</option>
+                @foreach($banks as $bank)
+                <option value="{{$bank->id}}" data-amount="{{$bank->amount}}">{{$bank->name}} ({{$bank->amount}})</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="col-md-12">
+              <span class="d-none text-danger errormsg">Not Enough To Paid!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+        <button type="submit" class="btn btn-primary confirm_and_save">Confirm and Save</button>
+      </div>
+    </div>
+  </div>
+</div>
           </form>
         </div>
       </div>
@@ -247,6 +337,34 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
+    $('input[name="paystatus"]').click(function(){
+      var inputValue = $(this).val();
+      if(inputValue == 1){
+        $('.bank').show();
+      }else{
+        $('.bank').hide();
+        $('.confirm_and_save').prop('disabled',false);
+      }
+    });
+
+    $('.confirm_and_save').prop('disabled',true);
+    $('#depositModal').on('change','.payment_method',function () {
+      let depositamount = Number($('.depositamount').val());
+      let amount = Number($(this).find('option:selected').attr('data-amount'));
+      // console.log(amount)
+      if(amount==0){
+        $('.errormsg').addClass('d-none');
+        $('.confirm_and_save').prop('disabled',true);
+      }else if(depositamount>amount){
+        // console.log('hi')
+        $('.errormsg').removeClass('d-none');
+        $('.confirm_and_save').prop('disabled',true);
+      }else{
+        $('.errormsg').addClass('d-none');
+        $('.confirm_and_save').prop('disabled',false);
+      }
+    })
+
     $(".mygate").hide();
     $(".myoffice").hide();
     setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
@@ -409,7 +527,7 @@
   })
 
 
-     $('.js-example-basic-single').select2({width:'100%'});
+    $('.js-example-basic-single').select2({width:'100%'});
   })
 </script>
 @endsection

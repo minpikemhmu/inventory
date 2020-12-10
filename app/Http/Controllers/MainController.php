@@ -31,6 +31,8 @@ use App\Exports\SuccesslistExport;
 use Excel;
 use App\Schedule;
 use App\Staff;
+use App\Transaction;
+
 class MainController extends Controller
 {
 
@@ -180,7 +182,9 @@ class MainController extends Controller
       return view('dashboard.debt_list',compact('clients', 'expenses', 'incomes', 'rejects', 'carryfees'));
     }
 
-    return view('dashboard.debt_list',compact('clients'));
+    $banks = Bank::all();
+
+    return view('dashboard.debt_list',compact('clients','banks'));
   }
 
   public function getdebitlistbyclient($id)
@@ -261,6 +265,22 @@ class MainController extends Controller
     foreach ($expenses as $expense) {
       $expense->status = 1;
       $expense->save();
+
+      // insert into transaction (expense_id - ဘာနဲ့ရှင်းလိုက်တာလဲ)
+      $transaction = new Transaction;
+      $transaction->bank_id = $request->payment_method;
+      $transaction->expense_id = $expense->id;
+      $transaction->amount = $expense->amount;
+      $transaction->description = "Fix Debit List";
+      $transaction->save();
+
+      $bank = Bank::find($request->payment_method);
+      if($expense->expense_type_id == 5){
+        $bank->amount = $bank->amount+$expense->amount;
+      }else{
+        $bank->amount = $bank->amount-$expense->amount;
+      }
+      $bank->save();
     }
 
     $rejects =  Way::with('item.pickup.schedule')->whereHas('item.pickup.schedule', function($query) use ($id){
@@ -277,6 +297,18 @@ class MainController extends Controller
       $income->payment_type_id = 1;
       $income->save();
 
+      // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
+      $transaction = new Transaction;
+      $transaction->bank_id = $request->payment_method;
+      $transaction->income_id = $income->id;
+      $transaction->amount = $income->amount;
+      $transaction->description = "Fix Debit List";
+      $transaction->save();
+
+      $bank = Bank::find($request->payment_method);
+      $bank->amount = $bank->amount+$income->amount;
+      $bank->save();
+
       $way->refund_date = date('Y-m-d');
       $way->save();
     }
@@ -291,6 +323,35 @@ class MainController extends Controller
       $income->cash_amount = $income->way->item->amount;
       // $income->payment_type_id = 1;
       $income->save();
+
+      // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
+      $bank = Bank::find($request->payment_method);
+
+      $transaction = new Transaction;
+      $transaction->bank_id = $request->payment_method;
+      $transaction->income_id = $income->id;
+      $transaction->description = "Fix Debit List";
+
+      if ($income->payment_type_id == 4) {
+        $transaction->amount = $income->amount;
+        $transaction->save();
+
+        $bank->amount = $bank->amount+$income->amount;
+        $bank->save();
+      }else if($income->payment_type_id == 5){
+        $transaction->amount = $income->deposit;
+        $transaction->save();
+
+        $bank->amount = $bank->amount+$income->amount;
+        $bank->save();
+      }else if($income->payment_type_id == 6){
+        $transaction->amount = $income->delivery_fees;
+        $transaction->save();
+
+        $bank->amount = $bank->amount+$income->amount;
+        $bank->save();
+      }
+      
     }
 
     return back();
@@ -335,7 +396,7 @@ public function profit(Request $request){
   $end_date=$request->end_date;
   $allincomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('amount');
   $netincomes=Income::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->sum('delivery_fees');
-  $allexpenses=Expense::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('expense_type_id','!=',1)->sum('amount');
+  $allexpenses=Expense::whereBetween('created_at', [$start_date.' 00:00:00',$end_date.' 23:59:59'])->where('expense_type_id','!=',1)->where('status',2)->sum('amount');
   return Response::json(array(
            'allincomes' => $allincomes,
            'netincomes' => $netincomes,
@@ -398,15 +459,15 @@ public function profit(Request $request){
     }
     else if($request->paymenttype==2){
       if($request->bank!="null"){
-        $income->bank_id=$request->bank;
-        $income->cash_amount=null;
+        // $income->bank_id=$request->bank;
+        $income->cash_amount=0;
         $income->bank_amount=$request->amount;
       } 
     }else if($request->paymenttype==3){
       if($request->bank!="null"){
-      $income->bank_id=$request->bank;
-      $income->bank_amount=$request->bank_amount;
-      $income->cash_amount=$request->cash_amount;
+        // $income->bank_id=$request->bank;
+        $income->bank_amount=$request->bank_amount;
+        $income->cash_amount=$request->cash_amount;
       }
     }else if($request->paymenttype==4){
       $income->amount=null;
@@ -419,6 +480,88 @@ public function profit(Request $request){
       $income->deposit=$request->deposit;
     }
     $income->save();
+
+    // insert into transaction
+    if($request->paymenttype==1){
+       // insert into transaction
+       $transaction = new Transaction;
+       $transaction->bank_id = 1;
+       $transaction->income_id = $income->id;
+       $transaction->amount = $request->amount;
+       $transaction->description = "Success Way";
+       $transaction->save();
+
+       $bank = Bank::find(1);
+       $bank->amount = $bank->amount+$request->amount;
+       $bank->save();
+    }
+    else if($request->paymenttype==2){
+      if($request->bank!="null"){
+        $transaction = new Transaction;
+        $transaction->bank_id = $request->bank;
+        $transaction->income_id = $income->id;
+        $transaction->amount = $request->amount;
+        $transaction->description = "Success Way";
+        $transaction->save();
+
+        $bank = Bank::find($request->bank);
+        $bank->amount = $bank->amount+$request->amount;
+        $bank->save();
+      } 
+    }else if($request->paymenttype==3){
+      if($request->bank!="null"){
+        // $income->bank_id=$request->bank;
+        $income->bank_amount=$request->bank_amount;
+        $income->cash_amount=$request->cash_amount;
+
+        // to bank
+        $transaction = new Transaction;
+        $transaction->bank_id = $request->bank;
+        $transaction->income_id = $income->id;
+        $transaction->amount = $request->bank_amount;
+        $transaction->description = "Success Way";
+        $transaction->save();
+
+        $bank = Bank::find($request->bank);
+        $bank->amount = $bank->amount+$request->amount;
+        $bank->save();
+
+        // to bank
+        $transaction = new Transaction;
+        $transaction->bank_id = 1;
+        $transaction->income_id = $income->id;
+        $transaction->amount = $request->cash_amount;
+        $transaction->description = "Success Way";
+        $transaction->save();
+
+        $bank = Bank::find(1);
+        $bank->amount = $bank->amount+$request->amount;
+        $bank->save();
+      }
+    }else if($request->paymenttype==5){
+      $transaction = new Transaction;
+      $transaction->bank_id = $request->bank;
+      $transaction->income_id = $income->id;
+      $transaction->amount = $request->deliveryfee;
+      $transaction->description = "Only Deli";
+      $transaction->save();
+
+      $bank = Bank::find($request->bank);
+      $bank->amount = $bank->amount+$request->deliveryfee;
+      $bank->save();
+    }else if($request->paymenttype==6){
+      $transaction = new Transaction;
+      $transaction->bank_id = $request->bank;
+      $transaction->income_id = $income->id;
+      $transaction->amount = $request->deposit;
+      $transaction->description = "Only Deli";
+      $transaction->save();
+
+      $bank = Bank::find($request->bank);
+      $bank->amount = $bank->amount+$request->deposit;
+      $bank->save();
+    }
+
 
     // if carry fees (carryfees)
     if($request->carryfees){

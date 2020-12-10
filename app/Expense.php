@@ -35,4 +35,9 @@ class Expense extends Model
   {
     return $this->belongsTo('App\Item');
   }
+
+  public function transactions()
+  {
+    return $this->hasMany('App\Transaction');
+  }
 }

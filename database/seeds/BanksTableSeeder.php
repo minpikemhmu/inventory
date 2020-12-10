@@ -11,9 +11,10 @@ class BanksTableSeeder extends Seeder
      */
     public function run()
     {
-      Bank::create(['name'=>'KBZ']);
-      Bank::create(['name'=>'AYA']);
-      Bank::create(['name'=>'MAU']);
-      Bank::create(['name'=>'CB']);
+      Bank::create(['name'=>'Cash','amount'=>100000]);
+      Bank::create(['name'=>'KBZ','amount'=>100000]);
+      Bank::create(['name'=>'AYA','amount'=>100000]);
+      Bank::create(['name'=>'KBZ Pay','amount'=>100000]);
+      Bank::create(['name'=>'CB','amount'=>100000]);
     }
 }

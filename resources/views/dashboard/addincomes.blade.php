@@ -97,8 +97,7 @@
 @section('script')
   <script type="text/javascript">
     $(document).ready(function () {
-
-        $('.js-example-basic-single').select2({
+      $('.js-example-basic-single').select2({
         width: '100%',
       });
 
@@ -107,6 +106,7 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
+
       // $('#incomeform').hide();
       $(".bankform").hide();
       $(".bamountform").hide();
@@ -117,11 +117,10 @@
         var deliveryman = $("#InputDeliveryMan option:selected").text();
         //alert(deliveryman)
         getdata(deliveryman_id,deliveryman);
-       
       })
 
       function getdata(deliveryman_id,deliveryman){
-         var url = `/incomes/getsuccesswaysbydeliveryman/${deliveryman_id}`;
+        var url = `/incomes/getsuccesswaysbydeliveryman/${deliveryman_id}`;
         $.get(url,function (response) {
           console.log(response);
           var html = `
@@ -219,33 +218,37 @@
         var id=$(this).val();
         if(id==2){
           $(".bankform").show();
+          $('.bankform option[value="1"]').hide();
         }else if(id==3){
           $(".bankform").show();
-      $(".bamountform").show();
-      $(".camountform").show();
+          $('.bankform option[value="1"]').hide();
+          $(".bamountform").show();
+          $(".camountform").show();
+        }else if(id==5 || id==6){
+          $(".bankform").show();
         }else{
-        $(".bankform").hide();
-      $(".bamountform").hide();
-      $(".camountform").hide();
+          $(".bankform").hide();
+          $(".bamountform").hide();
+          $(".camountform").hide();
         }
        // console.log(id);
       })
+
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
 
       $(".incomesave").click(function(){
         //alert("ok");
-
-      var deliveryman_id = $("#InputDeliveryMan option:selected").val();
-      var deliveryman = $("#InputDeliveryMan option:selected").text();
-      var deliveryfee=$("#deliveryfee").val();
-      var deposit = $("#deposit").val();
-      var amount=$("#totalamount").val();
-      var paymenttype=$("#paymenttype").val();
-      var way_id=$("#way_id").val();
-      var bank=$("#bank").val()
-      var bank_amount=$("#bankamount").val();
-      var cash_amount=$("#cashamount").val();
-      var carryfees=$("#carryfees").val();
+        var deliveryman_id = $("#InputDeliveryMan option:selected").val();
+        var deliveryman = $("#InputDeliveryMan option:selected").text();
+        var deliveryfee=$("#deliveryfee").val();
+        var deposit = $("#deposit").val();
+        var amount=$("#totalamount").val();
+        var paymenttype=$("#paymenttype").val();
+        var way_id=$("#way_id").val();
+        var bank=$("#bank").val()
+        var bank_amount=$("#bankamount").val();
+        var cash_amount=$("#cashamount").val();
+        var carryfees=$("#carryfees").val();
         var url="{{route('incomes.store')}}";
              $.ajax({
           url:url,
@@ -254,25 +257,22 @@
           dataType:'json',
           success:function(response){
             if(response.success){
-               $('#incomemodal').modal('hide');
+              $('#incomemodal').modal('hide');
               $('.success').removeClass('d-none');
               $('.success').show();
               $('.success').text('successfully added to income list');
               $('.success').fadeOut(3000);
               getdata(deliveryman_id,deliveryman);
-              
             }
           }
         })
       })
-
     })
 
-      function thousands_separators(num)
-  {
-    var num_parts = num.toString().split(".");
-    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return num_parts.join(".");
-  }
+    function thousands_separators(num){
+      var num_parts = num.toString().split(".");
+      num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return num_parts.join(".");
+    }
   </script>
 @endsection

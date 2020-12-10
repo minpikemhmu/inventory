@@ -17,6 +17,8 @@ use Session;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\DB;
+use App\Bank;
+use App\Transaction;
 
 class ItemController extends Controller
 {
@@ -68,7 +70,8 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-      //dd($request->mygate);
+      // dd($request);
+
       $qty=$request->qty;
        // dd($qty);
       $myqty=$request->myqty;
@@ -120,8 +123,6 @@ class ItemController extends Controller
 
         if($qty==1){
 
-          
-
           $checkitems = Item::orderBy('id', 'desc')->take($myqty)->get();
           //dd($checkitems->sum('deposit'));
           if($checkitems->sum('deposit')!=$damount){
@@ -137,18 +138,34 @@ class ItemController extends Controller
 
           }else{
             $expense=new Expense;
-          $expense->amount=$damount;
-          $expense->client_id=$request->client_id;
-          if($rolename=="staff"){
-          $user=Auth::user();
-          $staffid=$user->staff->id;
-          $expense->staff_id=$staffid;
-        }
-          $expense->status=$request->paystatus;
-          $expense->description="Client Deposit";
-          $expense->city_id=1;
-          $expense->expense_type_id=1;
-          $expense->save();
+            $expense->amount=$damount;
+            $expense->client_id=$request->client_id;
+            if($rolename=="staff"){
+              $user=Auth::user();
+              $staffid=$user->staff->id;
+              $expense->staff_id=$staffid;
+            }
+            $expense->status=$request->paystatus;
+            $expense->description="Client Deposit";
+            $expense->city_id=1;
+            $expense->expense_type_id=1;
+            $expense->save();
+
+            // insert into transaction if paid
+
+            if($request->paystatus == 1){
+              $transaction = new Transaction;
+              $transaction->bank_id = $request->payment_method;
+              $transaction->expense_id = $expense->id;
+              $transaction->amount = $request->depositamount;
+              $transaction->description = "Client Deposit";
+              $transaction->save();
+
+              $bank = Bank::find($request->payment_method);
+              $bank->amount = $bank->amount-$request->depositamount;
+              $bank->save();
+            }
+
           }
         }
 
@@ -301,7 +318,8 @@ class ItemController extends Controller
         $senderoffice=SenderPostoffice::all();
 
         $pickupeditem = Item::where('pickup_id',$pickup->id)->orderBy('id','desc')->first();
-        return view('item.create',compact('client','pickup','townships','itemcode','pickupeditem','sendergates','senderoffice'));
+        $banks = Bank::all();
+        return view('item.create',compact('banks','client','pickup','townships','itemcode','pickupeditem','sendergates','senderoffice'));
     }
 
 

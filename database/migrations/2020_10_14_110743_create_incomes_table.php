@@ -24,7 +24,6 @@ class CreateIncomesTable extends Migration
 
             $table->unsignedBigInteger('way_id');
             $table->unsignedBigInteger('payment_type_id');
-            $table->unsignedBigInteger('bank_id')->nullable();
             
             $table->softDeletes();
             $table->timestamps();
@@ -34,9 +33,6 @@ class CreateIncomesTable extends Migration
                     ->onDelete('cascade');
             $table->foreign('payment_type_id')
                     ->references('id')->on('payment_types')
-                    ->onDelete('cascade');
-            $table->foreign('bank_id')
-                    ->references('id')->on('banks')
                     ->onDelete('cascade');
         });
     }
