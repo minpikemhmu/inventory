@@ -174,10 +174,14 @@
 
                     <input type="hidden" name="qty" value={{$pickup->schedule->quantity - count($pickup->items)}}>
                     <input type="hidden" name="myqty" value="{{$pickup->schedule->quantity}}">
-                    <li class="list-group-item">{{ __("Deposit for all item")}}: {{number_format($pickup->schedule->amount-$total)}}KS</li>
+                    <li class="list-group-item">{{ __("Deposit Balance")}}: {{number_format($pickup->schedule->amount-$total)}} KS</li>
                     @if($pickup->schedule->quantity - count($pickup->items) == 1)
                     <li class="list-group-item">
                       <div class="row">
+                        <div class="col-12">
+                          <p>{{ __("Deposit for all item")}}: {{number_format($pickup->schedule->amount)}} KS</p>
+                        </div>
+
                         <div class="col-6">
                           <div class="form-check">
                             <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" checked="checked">
@@ -186,6 +190,7 @@
                             </label>
                           </div>
                         </div>
+
                         <div class="col-6">
                           <div class="col-6">
                             <div class="form-check">
@@ -200,6 +205,21 @@
                           <div class="form-control-feedback text-danger"> {{$errors->first('paystatus') }} </div>
                         </div>
                       </div>
+                      <div class="row mt-3">
+                        <div class="form-row col-md-12">
+                          <div class="col-md-4">
+                            <label>Choose Bank or Cash:</label>
+                          </div>
+                          <div class="col-md-8">
+                            <select class="form-control" name="payment_method">
+                              @foreach($banks as $bank)
+                              <option value="{{$bank->id}}">{{$bank->name}} ({{$bank->amount}})</option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                        
                     </li>
                     @endif
                   </ul>

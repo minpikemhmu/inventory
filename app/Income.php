@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Income extends Model
 {
   use SoftDeletes;
+
 	protected $fillable=[
-    'delivery_fees', 'amount', 'bank_amount', 'cash_amount', 'way_id','payment_type_id', 'bank_id',
+    'delivery_fees', 'amount', 'bank_amount', 'cash_amount', 'way_id','payment_type_id',
   ];
 
   public function way()
@@ -21,8 +22,8 @@ class Income extends Model
     return $this->belongsTo('App\PaymentType');
   }
 
-  public function bank()
+  public function transactions()
   {
-    return $this->belongsTo('App\Bank');
+    return $this->hasMany('App\Transaction');
   }
 }

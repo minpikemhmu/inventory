@@ -261,6 +261,8 @@ class MainController extends Controller
     foreach ($expenses as $expense) {
       $expense->status = 1;
       $expense->save();
+
+      // insert into transaction (expense_id - ဘာနဲ့ရှင်းလိုက်တာလဲ)
     }
 
     $rejects =  Way::with('item.pickup.schedule')->whereHas('item.pickup.schedule', function($query) use ($id){
@@ -277,6 +279,8 @@ class MainController extends Controller
       $income->payment_type_id = 1;
       $income->save();
 
+      // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
+
       $way->refund_date = date('Y-m-d');
       $way->save();
     }
@@ -291,6 +295,9 @@ class MainController extends Controller
       $income->cash_amount = $income->way->item->amount;
       // $income->payment_type_id = 1;
       $income->save();
+
+      // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
+      
     }
 
     return back();
@@ -395,18 +402,24 @@ public function profit(Request $request){
    
     if($request->paymenttype==1){
        $income->cash_amount=$request->amount;
+
+       // insert into transaction
     }
     else if($request->paymenttype==2){
       if($request->bank!="null"){
-        $income->bank_id=$request->bank;
+        // $income->bank_id=$request->bank;
         $income->cash_amount=null;
         $income->bank_amount=$request->amount;
+
+        // insert into transaction
       } 
     }else if($request->paymenttype==3){
       if($request->bank!="null"){
-      $income->bank_id=$request->bank;
-      $income->bank_amount=$request->bank_amount;
-      $income->cash_amount=$request->cash_amount;
+        // $income->bank_id=$request->bank;
+        $income->bank_amount=$request->bank_amount;
+        $income->cash_amount=$request->cash_amount;
+
+        // insert into transaction
       }
     }else if($request->paymenttype==4){
       $income->amount=null;

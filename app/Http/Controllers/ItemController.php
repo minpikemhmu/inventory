@@ -17,6 +17,7 @@ use Session;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\DB;
+use App\Bank;
 
 class ItemController extends Controller
 {
@@ -137,18 +138,20 @@ class ItemController extends Controller
 
           }else{
             $expense=new Expense;
-          $expense->amount=$damount;
-          $expense->client_id=$request->client_id;
-          if($rolename=="staff"){
-          $user=Auth::user();
-          $staffid=$user->staff->id;
-          $expense->staff_id=$staffid;
-        }
-          $expense->status=$request->paystatus;
-          $expense->description="Client Deposit";
-          $expense->city_id=1;
-          $expense->expense_type_id=1;
-          $expense->save();
+            $expense->amount=$damount;
+            $expense->client_id=$request->client_id;
+            if($rolename=="staff"){
+              $user=Auth::user();
+              $staffid=$user->staff->id;
+              $expense->staff_id=$staffid;
+            }
+            $expense->status=$request->paystatus;
+            $expense->description="Client Deposit";
+            $expense->city_id=1;
+            $expense->expense_type_id=1;
+            $expense->save();
+
+            // insert into transaction if paid
           }
         }
 
@@ -300,7 +303,8 @@ class ItemController extends Controller
         $senderoffice=SenderPostoffice::all();
 
         $pickupeditem = Item::where('pickup_id',$pickup->id)->orderBy('id','desc')->first();
-        return view('item.create',compact('client','pickup','townships','itemcode','pickupeditem','sendergates','senderoffice'));
+        $banks = Bank::all();
+        return view('item.create',compact('banks','client','pickup','townships','itemcode','pickupeditem','sendergates','senderoffice'));
     }
 
 
