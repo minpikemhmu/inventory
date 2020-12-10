@@ -21,7 +21,7 @@
         @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">{{ __("Total Deposit Amount")}}: {{number_format($checkitems[0]->pickup->schedule->amount)}} Ks</h3>
-          
+          @php $i=1;$j=1;  @endphp
           <div class="bs-component">
                 <div class="table-responsive">
                   <table class="table table-bordered dataTable">
@@ -36,10 +36,8 @@
                         <th>{{ __("Deposit Amount")}}</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      @php $i=1;$j=1;
-                      @endphp
-                     
+                    <tbody class="mytbody">
+                      
                       @foreach($checkitems as $row)
                       <tr>
                       <td>{{$i++}}</td>
@@ -48,18 +46,21 @@
                       <td>{{$row->receiver_address}}</td>
                       <td>{{$row->receiver_phone_no}}</td>
                       <td>{{$row->remark}}</td>
-                      <td><input type="number" class="form-control checkitemamount{{$j++}}" name="amount" value="@if($row->deposit){{$row->deposit}}@else{{0}}@endif"  data-id="{{$row->id}}" @if($row->deposit == null){{'readonly'}}@endif></td>
+                      <td class="mytd"><input type="number" class="form-control checkitemamount{{$j++}}" name="amount" value="@if($row->deposit){{$row->deposit}}@else{{0}}@endif"  data-id="{{$row->id}}" @if($row->deposit == null){{'readonly'}}@endif></td>
                       @endforeach
                       
                     </tr>
                       
                     </tbody>
                   </table>
+                  
                   <input type="hidden" name="totalamount" value="{{$checkitems[0]->pickup->schedule->amount}}" id="totaldeposit">
                   <input type="hidden" name="count" id="count" value="{{count($checkitems)}}">
                   <button class="btn btn-primary checkitemsave">Save</button>
 
                 </div>
+                
+              
               
            
           </div>
@@ -79,14 +80,14 @@
 
     $(".checkitemsave").click(function(){
       var count=$("#count").val();
-      //console.log(count);
+     // alert(count);
       var totaldeposit=$("#totaldeposit").val()
       //console.log(totaldeposit);
 
       var myarray=[];
       for(var i=1;i<=count;i++){
-        var checkamount= $(".checkitemamount"+i).val();
-        var checkid= $(".checkitemamount"+i).data('id');
+        var checkamount= $(".mytbody .mytd .checkitemamount"+i).val();
+        var checkid= $(".mytbody .mytd .checkitemamount"+i).data('id');
         console.log(checkamount);
         var checkobj={
           id:checkid,
@@ -96,11 +97,11 @@
       }
 
       var total=0;
-      //console.log(myarray);
+      console.log(myarray);
       myarray.forEach( function(v, i) {
        total+=parseInt(v.amount);
       });
-      //console.log(total);
+      alert(total);
 
       if(totaldeposit==total){
         $.ajaxSetup({

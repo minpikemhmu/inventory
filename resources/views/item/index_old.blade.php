@@ -59,7 +59,15 @@
                         </td>
                         <td>{{$row->codeno}}</td>
                         <td>{{$row->pickup->schedule->client->user->name}}</td>
-                        <td class="text-danger">{{$row->township->name}}</td>
+                        <td class="text-danger">
+                          @if($row->sender_gate_id!=null)
+                          {{$row->SenderGate->name}}({{$row->township->name}})
+                          @elseif($row->sender_postoffice_id!=null)
+                          {{$row->SenderPostoffice->name}}({{$row->township->name}})
+                          @else
+                          {{$row->township->name}}
+                          @endif
+                        </td>
                         <td>
                           {{$row->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span>
                         </td>
@@ -117,7 +125,9 @@
                             <span class="badge badge-danger">{{'reject'}}</span>
                           @endif
                         </td>
-                        <td>{{$way->item->township->name}}</td>
+                        <td>
+                          {{$way->item->township->name}}
+                        </td>
                         <td class="text-danger">
                           {{$way->delivery_man->user->name}} 
                             @foreach($data as $dd)
@@ -250,12 +260,10 @@
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
       $('.wayassign').click(function () {
         var ways = [];
-        $.each($(".dataTable tbody input[name='assign[]']:checked"), function(){
+        $.each($("input[name='assign[]']:checked"), function(){
           let wayObj = {id:$(this).val(),codeno:$(this).data('codeno')};
           ways.push(wayObj);
         });
-
-        // console.log(ways)
         var html="";
         for(let way of ways){
           html+=`<input type="hidden" value="${way.id}" name="ways[]"><span class="badge badge-primary mx-2">${way.codeno}</span>`;
@@ -300,23 +308,10 @@
         dropdownParent: $('#editwayAssignModal')
       });
 
-      var submit = $("#submit_assign").hide();
-      cbs = $('.dataTable tbody').on('click', 'input[name="assign[]"]', function () {
-      // cbs = $('input[name="assign[]').click(function() {
-          // submit.toggle(cbs.is(":checked") , 2000);
-          // submit.toggle(cbs.is(":checked"));
-
-          if($('.dataTable tbody :input[type="checkbox"]:checked').length>0)
-          {
-            $("#submit_assign").show();
-          }else{
-            $("#submit_assign").hide();
-          }
-
-        // submit.toggle();
-        console.log(submit)
+      var $submit = $("#submit_assign").hide();
+      $cbs = $('input[name="assign[]"]').click(function() {
+          $submit.toggle( $cbs.is(":checked") , 2000);
       });
-      // console.log($cbs)
 
       $(".wayedit").click(function(){
         $('#editwayAssignModal').modal('show');
