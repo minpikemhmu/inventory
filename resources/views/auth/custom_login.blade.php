@@ -59,57 +59,7 @@
         </form>
       </div>
     </section>
-    {{-- <div class="container">
-        <div class="row mt-5">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Admin Account</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">admin@gmail.com</p>
-                        <p class="card-text">123456789</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Staff Account</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">staff@gmail.com</p>
-                        <p class="card-text">12345678</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Delivery Man</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">deliveryman1@gmail.com, deliveryman2@gmail.com</p>
-                        <p class="card-text">12345678</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Client Account</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">client1@gmail.com, client2@gmail.com</p>
-                        <p class="card-text">12345678</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+  
     <!-- Essential javascripts for application to work-->
     <script src="{{ asset('assets/js/jquery-3.3.1.min.js')}}"></script>
     <script src="{{ asset('assets/js/popper.min.js')}}"></script>

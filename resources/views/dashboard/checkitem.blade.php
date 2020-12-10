@@ -59,7 +59,6 @@
                   <button class="btn btn-primary checkitemsave">Save</button>
 
                 </div>
-                   
           </div>
         </div>
       </div>
@@ -91,7 +90,6 @@
       $(".checkitemsave").click(function(){
 
       var count=$("#count").val();
-      //alert(count);
       var totaldeposit=$("#totaldeposit").val()
       //console.log(totaldeposit);
 
