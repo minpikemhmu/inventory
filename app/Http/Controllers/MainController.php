@@ -164,6 +164,8 @@ class MainController extends Controller
 
     $role=Auth::user()->roles()->first();
     $rolename=$role->name;
+    $banks = Bank::all();
+
     if($rolename == "client") {
       $client_id=Auth::user()->client->id;
       $expenses = Expense::where('client_id',$client_id)->where('status',2)->where('expense_type_id',1)->with('expense_type')->get();
@@ -179,10 +181,8 @@ class MainController extends Controller
 
       $carryfees = Expense::where('client_id',$client_id)->where('status',2)->where('expense_type_id',5)->with('item.township')->get();
 
-      return view('dashboard.debt_list',compact('clients', 'expenses', 'incomes', 'rejects', 'carryfees'));
+      return view('dashboard.debt_list',compact('clients', 'expenses', 'incomes', 'rejects', 'carryfees','banks'));
     }
-
-    $banks = Bank::all();
 
     return view('dashboard.debt_list',compact('clients','banks'));
   }
@@ -342,13 +342,13 @@ class MainController extends Controller
         $transaction->amount = $income->deposit;
         $transaction->save();
 
-        $bank->amount = $bank->amount+$income->amount;
+        $bank->amount = $bank->amount+$income->deposit;
         $bank->save();
       }else if($income->payment_type_id == 6){
         $transaction->amount = $income->delivery_fees;
         $transaction->save();
 
-        $bank->amount = $bank->amount+$income->amount;
+        $bank->amount = $bank->amount+$income->delivery_fees;
         $bank->save();
       }
       
@@ -523,7 +523,7 @@ public function profit(Request $request){
         $transaction->save();
 
         $bank = Bank::find($request->bank);
-        $bank->amount = $bank->amount+$request->amount;
+        $bank->amount = $bank->amount+$request->bank_amount;
         $bank->save();
 
         // to bank
@@ -535,7 +535,7 @@ public function profit(Request $request){
         $transaction->save();
 
         $bank = Bank::find(1);
-        $bank->amount = $bank->amount+$request->amount;
+        $bank->amount = $bank->amount+$request->cash_amount;
         $bank->save();
       }
     }else if($request->paymenttype==5){

@@ -150,14 +150,14 @@
                           </div>
                         </div>
                         <div class="col-6">
-                          <div class="col-6">
-                            <div class="form-check">
-                              <input class="form-check-input" type="radio" name="amountstatus" id="amountunpaid"  value="2" >
-                              <label class="form-check-label" for="amountunpaid">
-                                {{ __("Amount paid")}}
-                              </label>
-                            </div>
+                          
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="amountstatus" id="amountunpaid"  value="2" >
+                            <label class="form-check-label" for="amountunpaid">
+                              {{ __("Amount paid")}}
+                            </label>
                           </div>
+                          
                         </div>
                         <div class="col-md-12">
                           <div class="form-control-feedback text-danger"> {{$errors->first('paystatus') }} </div>

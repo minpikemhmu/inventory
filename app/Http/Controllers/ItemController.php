@@ -152,7 +152,6 @@ class ItemController extends Controller
             $expense->save();
 
             // insert into transaction if paid
-
             if($request->paystatus == 1){
               $transaction = new Transaction;
               $transaction->bank_id = $request->payment_method;
@@ -395,8 +394,8 @@ return redirect()->route('items.index')->with("successMsg",'way assign successfu
     public function checkitem($pickupid){
     
     $checkitems=Item::where('pickup_id',$pickupid)->get();
-
-    return view('dashboard.checkitem',compact('checkitems'))->with("successMsg",'items amount are wrong');
+    $banks = Bank::all();
+    return view('dashboard.checkitem',compact('checkitems','banks'))->with("successMsg",'items amount are wrong');
       //dd($pickupid);
       
     }
@@ -407,13 +406,44 @@ return redirect()->route('items.index')->with("successMsg",'way assign successfu
 
        $item=Item::find($value["id"]);
        $deliveryfee=$item->delivery_fees;
-       //dd($deliveryfee);
        $item->deposit=$value["amount"];
        $item->amount=$value["amount"]+$deliveryfee;
        $item->save();
+
        $pickup=Pickup::find($item->pickup_id);
        $pickup->status=1;
        $pickup->save();
+      }
+
+      $expense=new Expense;
+      $expense->amount=$request->totaldeposit;
+      $expense->client_id=$pickup->schedule->client_id;
+      $role=Auth::user()->roles()->first();
+      $rolename=$role->name;
+      
+      if($rolename=="staff"){
+        $user=Auth::user();
+        $staffid=$user->staff->id;
+        $expense->staff_id=$staffid;
+      }
+      $expense->status=$request->paystatus;
+      $expense->description="Client Deposit";
+      $expense->city_id=1;
+      $expense->expense_type_id=1;
+      $expense->save();
+
+      // insert into transaction if paid
+      if($request->paystatus == 1){
+        $transaction = new Transaction;
+        $transaction->bank_id = $request->payment_method;
+        $transaction->expense_id = $expense->id;
+        $transaction->amount = $request->totaldeposit;
+        $transaction->description = "Client Deposit";
+        $transaction->save();
+
+        $bank = Bank::find($request->payment_method);
+        $bank->amount = $bank->amount-$request->totaldeposit;
+        $bank->save();
       }
 
       return "success";

@@ -51,8 +51,8 @@
                   <th>{{ __("#")}}</th>
                   <th>{{ __("Pickup Date")}}</th>
                   <th>{{ __("Quantity")}}</th>
-                  <th>{{ __(" Amount")}}</th>
-                  <th>{{ __("Action")}}</th>
+                  <th>{{ __("Amount")}}</th>
+                  <th>{{ __("Actions")}}</th>
                 </tr>
               </thead>
               <tbody>

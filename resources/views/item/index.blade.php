@@ -34,7 +34,7 @@
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="collect">
                 <div class="table-responsive">
-                  <table class="table table-bordered dataTable">
+                  <table class="table table-bordered" id="checktable">
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -248,10 +248,27 @@
   <script type="text/javascript">
     $(document).ready(function () {
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+      $('#checktable').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": true,
+            "bStateSave": true,
+            "aoColumnDefs": [
+                { 'bSortable': false, 'aTargets': [ -1,0] }
+            ]
+        });
+
       $('.wayassign').click(function () {
         var ways = [];
-        $.each($(".dataTable tbody input[name='assign[]']:checked"), function(){
-          let wayObj = {id:$(this).val(),codeno:$(this).data('codeno')};
+        var oTable = $('#checktable').dataTable();
+        // console.log(oTable);
+        var rowcollection =  oTable.$("input[name='assign[]']:checked", {"page": "all"});
+        
+        $.each(rowcollection,function(index,elem){
+          let wayObj = {id:$(elem).val(),codeno:$(elem).data('codeno')};
           ways.push(wayObj);
         });
 

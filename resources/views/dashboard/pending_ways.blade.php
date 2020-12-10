@@ -165,10 +165,10 @@
             <h5 class="card-title">{{$row->item->receiver_address}} - {{$row->item->receiver_phone_no}}</h5>
           <p class="card-text">
             @if($row->item->paystatus==1)
-              {{ __("Amount")}}: {{$row->item->amount}}
-             <span class="badge badge-success">ma shin ya thay</span>
+              {{ __("Amount")}}: {{$row->item->amount}} Ks
+             {{-- <span class="badge badge-success">ma shin ya thay</span> --}}
             @else
-             <span class="badge badge-success">shin pee</span>
+             <span class="badge badge-success">All Paid!</span>
             @endif
           </p>
             
