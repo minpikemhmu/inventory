@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\DB;
 use App\Bank;
+use App\Transaction;
 
 class ItemController extends Controller
 {
@@ -69,7 +70,8 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-      //dd($request->mygate);
+      // dd($request);
+
       $qty=$request->qty;
        // dd($qty);
       $myqty=$request->myqty;
@@ -121,8 +123,6 @@ class ItemController extends Controller
 
         if($qty==1){
 
-          
-
           $checkitems = Item::orderBy('id', 'desc')->take($myqty)->get();
           //dd($checkitems->sum('deposit'));
           if($checkitems->sum('deposit')!=$damount){
@@ -152,6 +152,20 @@ class ItemController extends Controller
             $expense->save();
 
             // insert into transaction if paid
+
+            if($request->paystatus == 1){
+              $transaction = new Transaction;
+              $transaction->bank_id = $request->payment_method;
+              $transaction->expense_id = $expense->id;
+              $transaction->amount = $request->depositamount;
+              $transaction->description = "Client Deposit";
+              $transaction->save();
+
+              $bank = Bank::find($request->payment_method);
+              $bank->amount = $bank->amount-$request->depositamount;
+              $bank->save();
+            }
+
           }
         }
 

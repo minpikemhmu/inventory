@@ -22,6 +22,18 @@ class CreateTransactionsTable extends Migration
             $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('bank_id')
+                    ->references('id')->on('banks')
+                    ->onDelete('cascade');
+
+            $table->foreign('income_id')
+                    ->references('id')->on('incomes')
+                    ->onDelete('cascade');
+
+            $table->foreign('expense_id')
+                    ->references('id')->on('expenses')
+                    ->onDelete('cascade');
         });
     }
 

@@ -18,8 +18,7 @@
           @php $mytime = Carbon\Carbon::now(); @endphp
           <h3 class="tile-title d-inline-block">{{ __("Debt List")}} ({{$mytime->toFormattedDateString()}})</h3>
           @role('staff|admin')
-          <form method="post" action="{{route('fix_debit')}}">
-            @csrf
+          
             <div class="row">
               <div class="form-group col-md-6">
                 <label for="InputClient">{{ __("Select Client")}}:</label>
@@ -32,11 +31,11 @@
                 </select>
               </div>
               <div class="form-group col-md-6 search_btn d-none">
-                <input type="hidden" name="noti" value="" id="notiid">
-                <button class="btn btn-primary mt-4" type="submit">စာရင်းရှင်းမယ်</button>
+                
+                <button class="btn btn-primary mt-4" type="button" data-toggle="modal" data-target="#fixDebitModal">စာရင်းရှင်းမယ်</button>
               </div>
             </div>
-          </form>
+          
           <div id="debits">
             <span id="topay"></span>
             <div class="table-responsive">
@@ -186,6 +185,44 @@
       </div>
     </div>
   </main>
+
+  <!-- Modal -->
+  <div class="modal fade" id="fixDebitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Choose Payment Method:</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" action="{{route('fix_debit')}}">
+          @csrf
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="col-md-4">
+              <label>Choose Bank or Cash:</label>
+            </div>
+            <div class="col-md-8">
+              <select class="form-control payment_method" name="payment_method">
+                <option value="" data-amount="0">Choose Bank</option>
+                @foreach($banks as $bank)
+                <option value="{{$bank->id}}" data-amount="{{$bank->amount}}">{{$bank->name}} ({{$bank->amount}})</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <input type="hidden" name="client" value="" id="client_id">
+          <input type="hidden" name="noti" value="" id="notiid">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Fix Debit</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
 @endsection 
 @section('script')
 <script type="text/javascript">
@@ -210,6 +247,7 @@
           $("#notiid").val(response.rejectnoti);
           if (response.expenses.length > 0 || response.incomes.length > 0 || response.rejects.length > 0 || response.carryfees.length > 0) {
             $('.search_btn').removeClass('d-none');
+            $('#client_id').val(client_id)
           }else{
             $('.search_btn').addClass('d-none');
           }
