@@ -19,6 +19,7 @@
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">{{ __("Income")}}</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile">{{ __("Expense")}}</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profit">{{ __("Profit")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#banks">{{ __("Banks")}}</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="home">
@@ -105,6 +106,31 @@
                     </tbody>
                   </table>
                 </div>
+              </div>
+
+              <div class="tab-pane fade" id="banks">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>  
+                        <th>{{ __("#")}}</th>
+                        <th>{{ __("Banks")}}</th>
+                        <th>{{ __("Amount")}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @php $i=1; @endphp
+                      @foreach($banks as $row)
+                      <tr>
+                        <td>{{ $i++ }}</td>
+                        <td>{{$row->name}}</td>
+                        <td>{{$row->amount}}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+                
               </div>
             </div>
           </div>

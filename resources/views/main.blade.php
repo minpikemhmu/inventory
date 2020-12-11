@@ -141,6 +141,9 @@
         <li><a class="app-menu__item {{ Request::is('staff*') ? 'active' : '' }}" href="{{route('staff.index')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">{{ __("Staff")}}</span></a></li>
         <li><a class="app-menu__item {{ Request::is('debt_history') ? 'active' : '' }}" href="{{route('debt_history')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __("Debit History")}}</span></a></li>
          <li><a class="app-menu__item {{ Request::is('way_history') ? 'active' : '' }}" href="{{route('way_history')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __("Ways History")}}</span></a></li>
+         <li>
+           <a class="app-menu__item {{ Request::is('banktransfer') ? 'active' : '' }}" href="{{route('banktransfer')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __("Banks Transfer")}}</span></a>
+         </li>
         @endrole
 
         <!-- For Staff -->

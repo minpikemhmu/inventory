@@ -75,6 +75,8 @@ Route::middleware('auth')->group(function () {
   Route::post('waysreport','MainController@waysreport')->name('waysreport');
  Route::post('expensesearch','MainController@expensesearch')->name('expensesearch');
   Route::post('profit','MainController@profit')->name('profit');
+  Route::get('banktransfer','MainController@banktransfer')->name('banktransfer');
+   Route::post('transfer','MainController@transfer')->name('transfer.store');
   //pickupdone by delivery man
   Route::get('pickupdone/{id}/{qty}','MainController@pickupdone')->name('pickupdone');
 

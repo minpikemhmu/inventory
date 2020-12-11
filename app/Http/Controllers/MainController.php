@@ -152,7 +152,8 @@ class MainController extends Controller
   // financial_statements
   public function financial_statements($value='')
   {
-    return view('dashboard.financial_statements');
+    $banks=Bank::all();
+    return view('dashboard.financial_statements',compact('banks'));
   }
 
   // for debt list page
@@ -918,5 +919,44 @@ public function profit(Request $request){
     $items=Item::with('way')->where('pickup_id',$id)->get();
     //dd($items);
     return view('dashboard.itembyclient',compact('items'));
+  }
+
+  public function banktransfer(){
+    $banks=Bank::all();
+    return view('dashboard.banktransfer',compact('banks'));
+  }
+
+  public function transfer(Request $request){
+    $validator = $request->validate([
+            'frombank'  => ['required'],
+            'tobank'  => ['required'],
+            'amount'  => ['required']
+      ]);
+
+       if($validator){
+        $amount=$request->amount;
+           $frombank=Bank::find($request->frombank);
+           $fromamount=$frombank->amount;
+           //dd($fromamount);
+           $tobank=Bank::find($request->tobank);
+           $toamount=$tobank->amount;
+
+           if($amount<=$fromamount && $frombank->id!=$tobank->id ){
+
+             $frombank->amount=$fromamount-$amount;
+            
+             $tobank->amount=$tobank->amount+$amount;
+              $frombank->save();
+             $tobank->save();
+            return redirect()->route('banktransfer')->with("successMsg",'transfer successfully');
+
+           }else{
+             return redirect()->route('banktransfer')->with("successMsg",'transfer not success try again!');
+           }
+        }
+        else
+        {
+            return redirect::back()->withErrors($validator);
+        }
   }
 }
