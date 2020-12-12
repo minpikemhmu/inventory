@@ -38,11 +38,13 @@ class BankController extends Controller
     {
          $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
+            'amount'=>['required']
         ]);
 
         if($validator){
             $bank=new Bank;
             $bank->name=$request->name;
+            $bank->amount=$request->amount;
             $bank->save();
             return redirect()->route('banks.index')->with("successMsg",'New Bank is ADDED in your data');
         }
@@ -86,11 +88,13 @@ class BankController extends Controller
     {
          $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
+            'amount'=>['required']
         ]);
 
         if($validator){
             $bank=$bank;
             $bank->name=$request->name;
+            $bank->amount=$request->amount;
             $bank->save();
             return redirect()->route('banks.index')->with("successMsg",'update successfully');
         }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     /**
@@ -70,7 +70,19 @@ class ProfileController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validator = $request->validate([
+            'name'  => ['required', 'string', 'max:255'],
+            'email'  => ['required','string','email','max:255'],
+            'password'  => ['required','min:6','confirmed'],
+        ]);
+        if($validator){
+        $user=User::find($request->oldid);
+        $user->name=$request->name;
+        $user->email=$request->email;
+        $user->password=Hash::make($request->password); 
+        $user->save();
+        return redirect()->route('dashboard')->with("successMsg",'changed successfully');
+            }
     }
 
     /**

@@ -23,6 +23,11 @@
               <input class="form-control" id="bank" type="text" placeholder="Enter name" name="name">
                <div class="form-control-feedback text-danger"> {{$errors->first('name') }} </div>
             </div>
+             <div class="form-group amount">
+              <label for="amount">{{ __("Amount")}}:</label>
+              <input type="number"  id="amount" class="form-control" name="amount">
+              <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
+            </div>
 
             <div class="form-group">
               <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>

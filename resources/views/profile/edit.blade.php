@@ -19,6 +19,8 @@
             @csrf
             @method('PUT')
             
+            <input type="hidden" name="oldid" value="{{$user->id}}">
+            <input type="hidden" name="oldpassword" value="{{$user->password}}">
             <div class="form-group">
               <label for="InputName">Name:</label>
               <input class="form-control" id="InputName" type="text" placeholder="Enter name" name="name" value="{{$user->name}}">
@@ -32,6 +34,24 @@
             </div>
 
             <div class="form-group">
+              <input type="checkbox" id="know">
+              <label for="know">{{ __("If you want to change change password")}}</label> 
+            </div>
+
+            <div class="form-group psw">
+              <label for="exampleInputPassword1">{{ __("New Password")}}</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Enter Password">
+              <div class="form-control-feedback text-danger"> {{$errors->first('Enter new password') }} </div>
+            </div>
+
+            <div class="form-group cpsw">
+              <label for="password-confirm">{{ __("Confirm Password")}}</label>
+               <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+              
+            </div>
+
+
+            <div class="form-group">
               <button class="btn btn-primary" type="submit">Update</button>
             </div>
           </form>
@@ -41,3 +61,22 @@
     </div>
   </main>
 @endsection 
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+
+     $(".psw").hide();
+        $(".cpsw").hide();
+     $("#know").click(function(){
+        if(this.checked){
+          $(".psw").show();
+          $(".cpsw").show();
+        }else{
+          $(".psw").hide();
+        $(".cpsw").hide();
+
+        }
+      })
+  })
+</script>
+@endsection

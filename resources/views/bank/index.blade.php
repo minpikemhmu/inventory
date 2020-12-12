@@ -31,6 +31,7 @@
                 <tr>
                   <th>{{ __("#")}}</th>
                   <th>{{ __("Name")}}</th>
+                  <th>{{__("Amount")}}</th>
                   <th>{{ __("Actions")}}</th>
                 </tr>
               </thead>
@@ -40,6 +41,7 @@
                 <tr>
                   <td>{{$i++}}</td>
                   <td>{{$row->name}}</td>
+                  <td>{{$row->amount}}</td>
                   <td>
                     <a href="{{route('banks.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
                     <form action="{{ route('banks.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">

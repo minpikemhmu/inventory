@@ -11,6 +11,15 @@
         <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
       </ul>
     </div>
+     @if(session('successMsg') != NULL)
+          <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
+              <strong> ✅ SUCCESS!</strong>
+              {{ session('successMsg') }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        @endif
     <div class="row">
       <div class="col-md-6 col-lg-3">
         <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
