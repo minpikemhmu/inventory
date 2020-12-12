@@ -21,7 +21,7 @@
             @method('put')
           <div class="form-group">
               <label for="description">{{ __("Description")}}:</label>
-              <input class="form-control" id="description" name="description"type="text" placeholder="Enter description" value="{{$expense->description}}">
+              <textarea class="form-control" id="description" name="description"type="text" placeholder="Enter description">{{$expense->description}}</textarea>
               <div class="form-control-feedback text-danger"> {{$errors->first('description') }} </div>
             </div>
 

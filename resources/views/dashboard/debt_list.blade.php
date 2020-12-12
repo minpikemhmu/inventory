@@ -300,12 +300,12 @@
 
             html2 +=`<tr>
                       <td>${j++}</td>
-                      <td>${row.way.item.receiver_name}`;
+                      <td>${row.way.item.receiver_name} - ${row.way.item.township.name}`;
 
             if(row.payment_type_id == 4){
               delivery_fees = Number(row.way.item.delivery_fees);
               deposit = Number(row.way.item.deposit);
-              html2 +=` <span class="badge badge-info">All OS</span>`;
+              html2 +=` <span class="badge badge-info">All Paid</span>`;
             }
 
             if(row.payment_type_id == 5){
@@ -330,9 +330,9 @@
             // console.log(row)
             html2 +=`<tr>
                       <td>${j++}</td>
-                      <td>${row.item.receiver_name} - ${row.item.township.name}</td>
+                      <td>${row.item.receiver_name} - ${row.item.township.name} <span class="badge badge-info">carryfees</span></td>
                       <td>${0}</td>
-                      <td>${thousands_separators(row.amount)} <span class="badge badge-info">carryfees</span> </td>
+                      <td>${thousands_separators(row.amount)}</td>
                       <td>${thousands_separators(row.amount)} Ks</td>
                   </tr>`;
                   totalcarryfees += Number(row.amount);

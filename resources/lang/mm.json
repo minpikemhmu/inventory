@@ -76,7 +76,7 @@
 "Deposit" : "ကြိုသွင်းငွေ",
 "Total Amount" : "စုစုပေါင်းငွေ",
 "Phone No" : "ဖုန်းနာပတ်",
-"Phone Number" : "ဖုန်းနာပတ်",
+"Phone Number" : "ဖုန်းနံပါတ်",
 "Address" : "လိပ်စာ",
 "Designation" : "ရာထူး",
 "Joined Date" : "အလုပ်စဝင်သည့်ရက်",
@@ -167,5 +167,7 @@
 "Ways History" :"wayများပြန်ကြည့်ရန်",
 "Pickup History":"Pickupများပြန်ကြည့်ရန်",
 "Way State":"wayအခြေအနေမျာ",
-"Banks Transfer":"ငွေလွှဲရန်"
+"Banks Transfer":"ငွေလွှဲရန်",
+"Unpaid":"မရှင်းရသေး",
+"All paid":"ရှင်းပြီး"
 }

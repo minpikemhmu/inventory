@@ -134,9 +134,10 @@
                     <th>#</th>
                     <th>Codeno</th>
                     <th>Township</th>
-                    <th>Delivery Man</th>
+                    <th>Customer Name</th>
                     <th>Delivered Date</th>
-                    <th>Amount</th>
+                    <th>Delivery Fees</th>
+                    <th>Deposit</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -162,19 +163,25 @@
             html +=`
               <tr>
                     <td>${i++}</td>
-                    <td>${row.item.item_code}</td>
+                    <td>
+                      ${row.item.item_code}`
+                    if(row.item.paystatus == 2){
+                      html+=` <span class="badge badge-success">All Paid</span>`
+                    }
+                    html+=`</td>
                     <td>${row.item.township.township_name}</td>
                     <td>
-                      ${row.delivery_man.user.user_name}
+                      ${row.item.receiver_name}
                     </td>`
                     if(row.delivery_date){
-                    html+=`<td>${row.delivery_date}</td>`}else{
-                      html+=`<td>-</td>`}
-
-                    html+=`<td>${thousands_separators(row.item.item_amount)}</td>`
+                      html+=`<td>${row.delivery_date}</td>`
+                    }else{
+                      html+=`<td>-</td>`
+                    }
+                    html+=`<td>${thousands_separators(row.item.delivery_fees)}</td><td>${thousands_separators(row.item.deposit)}</td>`
 
                     if(row.status_code=="001"){
-                      html+=`<td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.township.delivery_fees}" data-deposit="${row.item.item_amount-row.item.township.delivery_fees}">save</button></td>`
+                      html+=`<td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.delivery_fees}" data-deposit="${row.item.deposit}" data-paystatus="${row.item.paystatus}">save</button></td>`
                       }else if(row.status_code=="002"){
                        html+= `<td><span class="badge badge-info">return way</span></td>`
                       }else if(row.status_code=="003"){
@@ -184,7 +191,7 @@
           }
           html+=`<tr>
                     <td colspan="5">Total:</td>
-                    <td colspan="2">${thousands_separators(total)} Ks</td>
+                    <td colspan="3">${thousands_separators(total)} Ks</td>
                   </tr>`;
           $('#incomeform').html(html);
         })
@@ -194,15 +201,22 @@
         $("#incomemodal").modal('show');
         var amount=$(this).data("amount");
         var id=$(this).data("id");
-        // alert(id);
         var delivery_fees=$(this).data("deliveryfee");
         var deposit = $(this).data("deposit");
-        // alert(deposit)
+        let paystatus = $(this).data("paystatus");
+
         $(".totalamount").html(amount);
         $("#totalamount").val(amount);
         $("#way_id").val(id);
         $("#deliveryfee").val(delivery_fees);
         $("#deposit").val(deposit);
+
+        if (paystatus == 2) {
+          $("#paymenttype").val(4)
+          $('#paymenttype').attr('disabled',true)
+        }else{
+          $('#paymenttype').attr('disabled',false)
+        }
         // carry fees
         $('.carryfees').hide();
 
@@ -214,7 +228,6 @@
       })
 
       $("#paymenttype").change(function(){
-        //alert("ok");
         var id=$(this).val();
         if(id==2){
           $(".bankform").show();
@@ -231,13 +244,11 @@
           $(".bamountform").hide();
           $(".camountform").hide();
         }
-       // console.log(id);
       })
 
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
 
       $(".incomesave").click(function(){
-        //alert("ok");
         var deliveryman_id = $("#InputDeliveryMan option:selected").val();
         var deliveryman = $("#InputDeliveryMan option:selected").text();
         var deliveryfee=$("#deliveryfee").val();
@@ -250,7 +261,7 @@
         var cash_amount=$("#cashamount").val();
         var carryfees=$("#carryfees").val();
         var url="{{route('incomes.store')}}";
-             $.ajax({
+        $.ajax({
           url:url,
           type:"post",
           data:{deliveryfee:deliveryfee,deposit:deposit,amount:amount,paymenttype:paymenttype,way_id:way_id,bank:bank,bank_amount:bank_amount,cash_amount:cash_amount,carryfees:carryfees},

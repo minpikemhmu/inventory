@@ -20,7 +20,7 @@
             @csrf
             <div class="form-group">
               <label for="description">{{ __("Description")}}:</label>
-              <input class="form-control" id="description" name="description"type="text" placeholder="Enter description">
+              <textarea class="form-control" id="description" name="description"type="text" placeholder="Enter description"></textarea>
               <div class="form-control-feedback text-danger"> {{$errors->first('description') }} </div>
             </div>
 

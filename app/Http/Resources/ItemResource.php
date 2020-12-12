@@ -18,7 +18,11 @@ class ItemResource extends JsonResource
          return [
             'id'=>$this->id,
             'item_code' => $this->codeno,
-            'item_amount'=>$this->amount,
+            'item_amount'=> $this->amount,
+            'delivery_fees' => $this->delivery_fees,
+            'deposit' => $this->deposit,
+            'receiver_name' => $this->receiver_name,
+            'paystatus' => $this->paystatus,
             'township'=>new TownshipResource(Township::find($this->township_id)),
         ];
     }

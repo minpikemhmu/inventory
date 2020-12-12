@@ -30,8 +30,8 @@
           <div class="bs-component">
             @role('staff')
             <ul class="nav nav-tabs">
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedules">{{ __("Schedules")}}</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#assigned">{{ __("Assigned")}}</a></li>
+              <li class="nav-item"><a class="nav-link @role('client'){{'active'}}@endrole" data-toggle="tab" href="#schedules">{{ __("Schedules")}}</a></li>
+              <li class="nav-item"><a class="nav-link @role('staff'){{'active'}}@endrole" data-toggle="tab" href="#assigned">{{ __("Assigned")}}</a></li>
             </ul>
             @endrole
             <div class="tab-content mt-3" id="myTabContent">

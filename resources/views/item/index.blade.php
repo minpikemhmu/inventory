@@ -74,10 +74,10 @@
                           <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">{{ __("Detail")}}</a>
                           <a href="{{route('items.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
                           <form action="{{ route('items.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
-                           @csrf
+                            @csrf
                             @method('DELETE')
-                          <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
-                        </form>
+                            <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
+                          </form>
                         </td>
                       </tr>
                       @endforeach
