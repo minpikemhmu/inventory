@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom.css')}}">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Login - Better Ways</title>
+    <title>Login - {{ config('app.name', 'Better Ways') }}</title>
   </head>
   <body>
     <section class="material-half-bg">
@@ -19,7 +19,7 @@
     </section>
     <section class="login-content">
       <div class="logo">
-        <h1>Better Ways</h1>
+        <h1>{{ config('app.name', 'Better Ways') }}</h1>
       </div>
       <div class="login-box">
         <form class="login-form" method="POST" action="{{ route('login') }}">
@@ -57,6 +57,56 @@
             <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
           </div>
         </form>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Admin Account</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">admin@gmail.com</p>
+                    <p class="card-text">123456789</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Staff Account</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">staff@gmail.com</p>
+                    <p class="card-text">12345678</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">DeliMan Account</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">deliveryman1@gmail.com, deliveryman2@gmail.com</p>
+                    <p class="card-text">12345678</p>
+                </div>
+            </div>
+        </div>
+
+          <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Client Account</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">client1@gmail.com, client2@gmail.com</p>
+                    <p class="card-text">12345678</p>
+                </div>
+            </div>
+          </div>
       </div>
     </section>
   

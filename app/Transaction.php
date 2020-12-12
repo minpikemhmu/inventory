@@ -9,11 +9,16 @@ class Transaction extends Model
 {
   use SoftDeletes;
 
-  protected $fillable = ['bank_id', 'income_id', 'expense_id', 'amount', 'description'];
+  protected $fillable = ['bank_id', 'income_id', 'expense_id', 'tobank_id', 'amount', 'description'];
 
   public function bank()
   {
     return $this->belongsTo('App\Bank');
+  }
+
+  public function tobank()
+  {
+    return $this->belongsTo('App\Bank','tobank_id');
   }
 
   public function income()

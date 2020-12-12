@@ -18,6 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('bank_id');
             $table->unsignedBigInteger('income_id')->nullable();
             $table->unsignedBigInteger('expense_id')->nullable();
+            $table->unsignedBigInteger('tobank_id')->nullable();
             $table->integer('amount');
             $table->text('description')->nullable();
             $table->softDeletes();
@@ -33,6 +34,10 @@ class CreateTransactionsTable extends Migration
 
             $table->foreign('expense_id')
                     ->references('id')->on('expenses')
+                    ->onDelete('cascade');
+
+            $table->foreign('tobank_id')
+                    ->references('id')->on('banks')
                     ->onDelete('cascade');
         });
     }
