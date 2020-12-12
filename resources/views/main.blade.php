@@ -83,9 +83,10 @@
           </ul>
         </li> --}}
         <!-- User Menu-->
-          <li><a class="app-nav__item text-decoration-none" href="{{route('lang','mm')}}" ><img src="{{asset('myanmar.png')}}" class="img-fluid" style="width: 30px;height: 30px;"> {{ __("MM")}}</a></li>
+          <li><a class="app-nav__item text-decoration-none" href="{{route('lang','mm')}}" ><img src="{{asset('myanmar.png')}}" class="img-fluid" style="width: 30px;height: 30px;"> <span class="d-none d-md-inline-block">{{ __("MM")}}</span></a>
+          </li>
           <li>
-           <a class="app-nav__item text-decoration-none" href="{{route('lang','en')}}"><img src="{{asset('uk.png')}}" class="img-fluid" style="width: 30px;height: 30px;"> {{ __("ENG")}}</a>
+           <a class="app-nav__item text-decoration-none" href="{{route('lang','en')}}"><img src="{{asset('uk.png')}}" class="img-fluid" style="width: 30px;height: 30px;"> <span class="d-none d-md-inline-block">{{ __("ENG")}}</span></a>
           </li>
         <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
