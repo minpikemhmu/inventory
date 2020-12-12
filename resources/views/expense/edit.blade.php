@@ -42,6 +42,18 @@
               <div class="form-control-feedback text-danger"> {{$errors->first('expensetype') }} </div>
             </div>
 
+
+             <div class="form-group cityname">
+              <label for="bank">{{ __("Banks")}}:</label>
+              <select class="form-control" id="bank" name="bank">
+                <option value="">Choose Bank</option>
+                @foreach($banks as $row)
+                <option value="{{$row->id}}">{{$row->name}}({{$row->amount}})</option>
+                @endforeach
+              </select>
+              <div class="form-control-feedback text-danger"> {{$errors->first('bank') }} </div>
+            </div>
+
             <div class="form-group">
               <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
             </div>

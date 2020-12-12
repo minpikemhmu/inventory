@@ -6,6 +6,8 @@ use App\Expense;
 use App\ExpenseType;
 use Illuminate\Http\Request;
 use Auth;
+use App\Bank;
+use App\Transaction;
 
 class ExpenseController extends Controller
 {
@@ -17,6 +19,7 @@ class ExpenseController extends Controller
     public function index()
     {
         $expenses=Expense::all();
+       
         return view('expense.index',compact('expenses'));
     }
 
@@ -28,7 +31,8 @@ class ExpenseController extends Controller
     public function create()
     {
         $expensetypes=ExpenseType::all();
-        return view('expense.create',compact('expensetypes'));
+         $banks=Bank::all();
+        return view('expense.create',compact('expensetypes','banks'));
     }
 
     /**
@@ -42,10 +46,15 @@ class ExpenseController extends Controller
         $validator = $request->validate([
             'description'  => ['required', 'string', 'max:255'],
             'expensetype'=>['required'],
-            'amount'=>['required']
+            'amount'=>['required'],
+            'bank'=>['required']
         ]);
 
         if($validator){
+            
+
+            $bank= Bank::find($request->bank);
+            if($request->amount <= $bank->amount){
             $expense=new Expense;
             $expense->description=$request->description;
             $expense->amount=$request->amount;
@@ -54,7 +63,19 @@ class ExpenseController extends Controller
             $expense->city_id = 1; // default yangon
             $expense->status = 2;
             $expense->save();
-            return redirect()->route('expenses.index')->with("successMsg",'New Expense is ADDED in your data');
+            $bank->amount=$bank->amount-$request->amount;
+            $bank->save();
+            $transaction=new Transaction;
+            $transaction->bank_id=$request->bank;
+            $transaction->expense_id=$expense->id;
+            $transaction->amount=$request->amount;
+            $transaction->description=$request->description;
+            $transaction->save();
+             return redirect()->route('expenses.index')->with("successMsg",'New Expense is ADDED in your data');
+            }else{
+                return redirect()->route('expenses.index')->with("successMsg",'New Expense added is not successfully.Try again!');
+            }
+           
         }
         else
         {
@@ -83,7 +104,8 @@ class ExpenseController extends Controller
     {
         $expensetypes=ExpenseType::all();
         $expense=$expense;
-        return view('expense.edit',compact('expense','expensetypes'));
+         $banks=Bank::all();
+        return view('expense.edit',compact('expense','expensetypes','banks'));
     }
 
     /**
@@ -102,12 +124,24 @@ class ExpenseController extends Controller
         ]);
 
         if($validator){
+            $bank= Bank::find($request->bank);
+            if($request->amount <= $bank->amount){
             $expense=$expense;
             $expense->description=$request->description;
             $expense->amount=$request->amount;
             $expense->expense_type_id=$request->expensetype;
             $expense->save();
+            $bank->amount=$bank->amount-$request->amount;
+            $bank->save();
+            $transaction=Transaction::where('expense_id',$expense->id)->first();
+            $transaction->bank_id=$request->bank;
+            $transaction->expense_id=$expense->id;
+            $transaction->amount=$request->amount;
+            $transaction->description=$request->description;
+            $transaction->save();
             return redirect()->route('expenses.index')->with("successMsg",'New Expense updated successfully');
+            }
+           
         }
         else
         {

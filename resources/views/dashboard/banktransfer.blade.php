@@ -33,7 +33,7 @@
               <select class="form-control" id="frombank" name="frombank">
                 <option value="">Choose Bank</option>
                 @foreach($banks as $row)
-                <option value="{{$row->id}}_{{$row->name}}">{{$row->name}}</option>
+                <option value="{{$row->id}}">{{$row->name}}({{$row->amount}})</option>
                 @endforeach
               </select>
               <div class="form-control-feedback text-danger"> {{$errors->first('frombank') }} </div>
@@ -44,7 +44,7 @@
               <select class="form-control" id="tobank" name="tobank">
                 <option value="">Choose Bank</option>
                 @foreach($banks as $row)
-                <option value="{{$row->id}}_{{$row->name}}">{{$row->name}}</option>
+                <option value="{{$row->id}}">{{$row->name}}({{$row->amount}})</option>
                 @endforeach
               </select>
               <div class="form-control-feedback text-danger"> {{$errors->first('tobank') }} </div>
