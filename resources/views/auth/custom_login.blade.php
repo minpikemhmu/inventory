@@ -59,7 +59,7 @@
         </form>
       </div>
 
-      <div class="row mt-5">
+      {{-- <div class="row mt-5">
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
@@ -107,7 +107,7 @@
                 </div>
             </div>
           </div>
-      </div>
+      </div> --}}
     </section>
   
     <!-- Essential javascripts for application to work-->
