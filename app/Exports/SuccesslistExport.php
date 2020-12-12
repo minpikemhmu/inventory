@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Deliveryman;
+use App\DeliveryMan;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -34,11 +34,8 @@ protected $reportstdate,$reportenddate;
     
     $now = Carbon\Carbon::now();
     $mymonth=$now->month;
-    //dd($mymonth);
     $reportstdate=$this->reportstdate;
     $reportenddate=$this->reportenddate;
-    //$deliverymen=Deliveryman::with('user')->get();
-    //dd($Deliveryman);
     $ways=DeliveryMan::with('ways')->whereHas('ways',function($query) use($mymonth){
     $query->WhereMonth('created_at',$mymonth)->where('status_code','001');
   	})->orWhereDoesntHave('ways')->with('pickups')->orWhereHas('pickups',function($query) use($mymonth){
