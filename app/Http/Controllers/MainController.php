@@ -948,6 +948,12 @@ public function profit(Request $request){
              $tobank->amount=$tobank->amount+$amount;
               $frombank->save();
              $tobank->save();
+             $transaction=new Transaction;
+             $transaction->bank_id=$request->frombank;
+             $transaction->amount=$request->amount;
+             $transaction->tobank_id=$request->tobank;
+             $transaction->description="Transaction bank";
+             $transaction->save();
             return redirect()->route('banktransfer')->with("successMsg",'transfer successfully');
 
            }else{

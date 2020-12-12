@@ -131,7 +131,10 @@ class ExpenseController extends Controller
             $expense->amount=$request->amount;
             $expense->expense_type_id=$request->expensetype;
             $expense->save();
-            $bank->amount=$bank->amount-$request->amount;
+            //dd($expense->transactions);
+            $transaction_amount=$expense->transactions->amount;
+            $addingamount==$bank->amount+$transaction_amount;
+            $bank->amount=$bankaddingamount-$request->amount;
             $bank->save();
             $transaction=Transaction::where('expense_id',$expense->id)->first();
             $transaction->bank_id=$request->bank;
