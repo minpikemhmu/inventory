@@ -265,7 +265,7 @@
         var ways = [];
         var oTable = $('#checktable').dataTable();
         // console.log(oTable);
-        var rowcollection =  oTable.$("input[name='assign[]']:checked", {"page": "all"});
+        var rowcollection = oTable.$("input[name='assign[]']:checked", {"page": "all"});
         
         $.each(rowcollection,function(index,elem){
           let wayObj = {id:$(elem).val(),codeno:$(elem).data('codeno')};
@@ -312,7 +312,7 @@
         dropdownParent: $('#wayAssignModal')
       });
 
-       $('.js-example-basic-single').select2({
+      $('.js-example-basic-single').select2({
         width: '100%',
         dropdownParent: $('#editwayAssignModal')
       });
@@ -320,16 +320,14 @@
       var submit = $("#submit_assign").hide();
       cbs = $('.dataTable tbody').on('click', 'input[name="assign[]"]', function () {
       // cbs = $('input[name="assign[]').click(function() {
-          // submit.toggle(cbs.is(":checked") , 2000);
-          // submit.toggle(cbs.is(":checked"));
-
-          if($('.dataTable tbody :input[type="checkbox"]:checked').length>0)
-          {
-            $("#submit_assign").show();
-          }else{
-            $("#submit_assign").hide();
-          }
-
+      // submit.toggle(cbs.is(":checked") , 2000);
+      // submit.toggle(cbs.is(":checked"));
+        if($('.dataTable tbody :input[type="checkbox"]:checked').length>0)
+        {
+          $("#submit_assign").show();
+        }else{
+          $("#submit_assign").hide();
+        }
         // submit.toggle();
         console.log(submit)
       });
@@ -341,13 +339,10 @@
         //console.log(id);
         $("#wayid").val(id);
       })
-
-
       setTimeout(function(){
       window.location.reload(1);
     }, 90000);
 
-      
     })
 
    

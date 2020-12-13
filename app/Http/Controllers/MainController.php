@@ -247,6 +247,7 @@ class MainController extends Controller
 
   public function fix_debit(Request $request)
   {
+    // dd(json_decode($request->expenses)[0]->amount);
     $request->validate([
       'client' => 'required'
     ]);
@@ -261,98 +262,133 @@ class MainController extends Controller
     }
     
     $id = $request->client;
-    $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
+    // $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
+    if ($request->expenses) {
+      $expenses = json_decode($request->expenses);
+      foreach ($expenses as $row) {
+        $expense = Expense::find($row->id);
+        $expense->status = 1;
+        $expense->save();
 
-    foreach ($expenses as $expense) {
-      $expense->status = 1;
-      $expense->save();
-
-      // insert into transaction (expense_id - ဘာနဲ့ရှင်းလိုက်တာလဲ)
-      $transaction = new Transaction;
-      $transaction->bank_id = $request->payment_method;
-      $transaction->expense_id = $expense->id;
-      $transaction->amount = $expense->amount;
-      $transaction->description = "Fix Debit List";
-      $transaction->save();
-
-      $bank = Bank::find($request->payment_method);
-      if($expense->expense_type_id == 5){
-        $bank->amount = $bank->amount+$expense->amount;
-      }else{
-        $bank->amount = $bank->amount-$expense->amount;
-      }
-      $bank->save();
-    }
-
-    $rejects =  Way::with('item.pickup.schedule')->whereHas('item.pickup.schedule', function($query) use ($id){
-        $query->where('client_id', $id);
-    })->where('status_code','003')->where('refund_date',null)->get();
-
-    foreach ($rejects as $way) {
-      $income = new Income;
-      $income->delivery_fees = 0;
-      $income->deposit = $way->item->deposit;
-      $income->amount = $way->item->deposit;
-      $income->cash_amount = $way->item->deposit;
-      $income->way_id = $way->id;
-      $income->payment_type_id = 1;
-      $income->save();
-
-      // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
-      $transaction = new Transaction;
-      $transaction->bank_id = $request->payment_method;
-      $transaction->income_id = $income->id;
-      $transaction->amount = $income->amount;
-      $transaction->description = "Fix Debit List";
-      $transaction->save();
-
-      $bank = Bank::find($request->payment_method);
-      $bank->amount = $bank->amount+$income->amount;
-      $bank->save();
-
-      $way->refund_date = date('Y-m-d');
-      $way->save();
-    }
-
-    $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
-      $query->where('client_id', $id);
-    })->get();
-    foreach ($incomes as $income) {
-      $income->delivery_fees = $income->way->item->delivery_fees;
-      $income->deposit = $income->way->item->deposit;
-      $income->amount = $income->way->item->amount;
-      $income->cash_amount = $income->way->item->amount;
-      // $income->payment_type_id = 1;
-      $income->save();
-
-      // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
-      $bank = Bank::find($request->payment_method);
-
-      $transaction = new Transaction;
-      $transaction->bank_id = $request->payment_method;
-      $transaction->income_id = $income->id;
-      $transaction->description = "Fix Debit List";
-
-      if ($income->payment_type_id == 4) {
-        $transaction->amount = $income->amount;
+        // insert into transaction (expense_id - ဘာနဲ့ရှင်းလိုက်တာလဲ)
+        $transaction = new Transaction;
+        $transaction->bank_id = $request->payment_method;
+        $transaction->expense_id = $expense->id;
+        $transaction->amount = $expense->amount;
+        $transaction->description = "Fix Debit List";
         $transaction->save();
 
+        $bank = Bank::find($request->payment_method);
+        if($expense->expense_type_id == 5){
+          $bank->amount = $bank->amount+$expense->amount;
+        }else{
+          $bank->amount = $bank->amount-$expense->amount;
+        }
+        $bank->save();
+      }
+    }
+
+    // carry fees
+    if ($request->carryfees) {
+      $carryfees = json_decode($request->carryfees);
+      foreach ($carryfees as $row) {
+        $expense = Expense::find($row->id);
+        $expense->status = 1;
+        $expense->save();
+
+        // insert into transaction (expense_id - ဘာနဲ့ရှင်းလိုက်တာလဲ)
+        $transaction = new Transaction;
+        $transaction->bank_id = $request->payment_method;
+        $transaction->expense_id = $expense->id;
+        $transaction->amount = $expense->amount;
+        $transaction->description = "Fix Debit List";
+        $transaction->save();
+
+        $bank = Bank::find($request->payment_method);
+        if($expense->expense_type_id == 5){
+          $bank->amount = $bank->amount+$expense->amount;
+        }else{
+          $bank->amount = $bank->amount-$expense->amount;
+        }
+        $bank->save();
+      }
+    }
+
+    // $rejects =  Way::with('item.pickup.schedule')->whereHas('item.pickup.schedule', function($query) use ($id){
+    //     $query->where('client_id', $id);
+    // })->where('status_code','003')->where('refund_date',null)->get();
+    if ($request->rejects) {
+      $rejects = json_decode($request->rejects);
+      foreach ($rejects as $row) {
+        $way = Way::find($row->id);
+        $income = new Income;
+        $income->delivery_fees = 0;
+        $income->deposit = $way->item->deposit;
+        $income->amount = $way->item->deposit;
+        $income->cash_amount = $way->item->deposit;
+        $income->way_id = $way->id;
+        $income->payment_type_id = 1;
+        $income->save();
+
+        // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
+        $transaction = new Transaction;
+        $transaction->bank_id = $request->payment_method;
+        $transaction->income_id = $income->id;
+        $transaction->amount = $income->amount;
+        $transaction->description = "Fix Debit List";
+        $transaction->save();
+
+        $bank = Bank::find($request->payment_method);
         $bank->amount = $bank->amount+$income->amount;
         $bank->save();
-      }else if($income->payment_type_id == 5){
-        $transaction->amount = $income->deposit;
-        $transaction->save();
 
-        $bank->amount = $bank->amount+$income->deposit;
-        $bank->save();
-      }else if($income->payment_type_id == 6){
-        $transaction->amount = $income->delivery_fees;
-        $transaction->save();
-
-        $bank->amount = $bank->amount+$income->delivery_fees;
-        $bank->save();
+        $way->refund_date = date('Y-m-d');
+        $way->save();
       }
-      
+    }
+
+    // $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
+    //   $query->where('client_id', $id);
+    // })->get();
+    if ($request->incomes) {
+      $incomes = json_decode($request->incomes);
+      foreach ($incomes as $row) {
+        $income = Income::find($row->id);
+        $income->delivery_fees = $income->way->item->delivery_fees;
+        $income->deposit = $income->way->item->deposit;
+        $income->amount = $income->way->item->amount;
+        $income->cash_amount = $income->way->item->amount;
+        // $income->payment_type_id = 1;
+        $income->save();
+
+        // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
+        $bank = Bank::find($request->payment_method);
+
+        $transaction = new Transaction;
+        $transaction->bank_id = $request->payment_method;
+        $transaction->income_id = $income->id;
+        $transaction->description = "Fix Debit List";
+
+        if ($income->payment_type_id == 4) {
+          $transaction->amount = $income->amount;
+          $transaction->save();
+
+          $bank->amount = $bank->amount+$income->amount;
+          $bank->save();
+        }else if($income->payment_type_id == 5){
+          $transaction->amount = $income->deposit;
+          $transaction->save();
+
+          $bank->amount = $bank->amount+$income->deposit;
+          $bank->save();
+        }else if($income->payment_type_id == 6){
+          $transaction->amount = $income->delivery_fees;
+          $transaction->save();
+
+          $bank->amount = $bank->amount+$income->delivery_fees;
+          $bank->save();
+        }
+      }
     }
 
     return back();
