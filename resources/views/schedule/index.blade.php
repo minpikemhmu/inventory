@@ -56,7 +56,7 @@
                         @role('staff')
                           <td class="text-danger">{{$row->client->user->name}}</td>
                         @endrole
-                        <td>{{$row->pickup_date}}</td>
+                        <td>{{\Carbon\Carbon::parse($row->pickup_date)->format('d/m/Y')}}</td>
                         <td>{{$row->remark}}</td>
                         <td>{{$row->quantity}}</td>
                         <td>
@@ -94,7 +94,7 @@
                       <tr>
                         <td>{{$i++}}</td>
                         @role('staff')<td class="text-danger">{{$row->schedule->client->user->name}}</td>@endrole
-                        <td>{{$row->schedule->pickup_date}}</td>
+                        <td>{{\Carbon\Carbon::parse($row->pickup_date)->format('d-m-Y')}}</td>
                         <td>{{$row->schedule->remark}}</td>
                         <td class="text-danger">{{$row->delivery_man->user->name}}
                           @foreach($data as $dd)

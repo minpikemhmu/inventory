@@ -30,11 +30,12 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Phone No</th>
-                  <th>Address</th>
-                  <th>Contact_Person</th>
-                  <th>Township</th>
+                  <th>{{ __('Name')}}</th>
+                  <th>{{ __('Phone No')}}</th>
+                  <th>{{ __('Address')}}</th>
+                  <th>{{ __('Contact_Person')}}</th>
+                  <th>{{ __('Township')}}</th>
+                  <th>{{ __('Bank Owner and Acccount')}}</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -48,6 +49,7 @@
                   <td>{{$row->address}}</td>
                   <td>{{$row->contact_person}}</td>
                   <td>{{$row->township->name}}</td>
+                  <td>{{$row->owner}}({{$row->account}})</td>
                   <td>
                     <a href="{{route('clients.edit',$row->id)}}" class="btn btn-warning">Edit</a>
                     <form action="{{ route('clients.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">

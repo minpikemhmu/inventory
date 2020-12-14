@@ -169,5 +169,9 @@
 "Way State":"wayအခြေအနေမျာ",
 "Banks Transfer":"ငွေလွှဲရန်",
 "Unpaid":"မရှင်းရသေး",
-"All paid":"ရှင်းပြီး"
+"All paid":"ရှင်းပြီး",
+"Bank Account" : "Bank အကောင့်",
+"Bank Acccount Owner" :"Bank အကောင့်ပိုင်ရှင်",
+"Bank Owner and Acccount": "Bankအကောင့်ပိုင်ရှင်နှင့်အကောင့်",
+"Full Address":"လိပ်စာအပြည့်အစုံ"
 }

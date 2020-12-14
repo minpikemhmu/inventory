@@ -159,7 +159,13 @@
                 {{$row->item->township->name}}
               @endif
             </h5>
-            <h5 class="card-title">{{$row->item->receiver_address}} - {{$row->item->receiver_phone_no}}</h5>
+          <p class="card-text">{{ __("Full Address")}}:{{$row->item->receiver_address}}</p>
+          <p class="card-text">
+            {{ __("Receiver Phone No")}}:{{$row->item->receiver_phone_no}}
+          </p>
+          <p class="card-text">
+           Client {{ __("Phone No")}}: {{$row->item->pickup->schedule->client->phone_no}}
+          </p>
             <p class="card-text">Amount: {{$row->item->amount}}</p>
             @if($row->income==null)
             <a href="{{route('normal',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>

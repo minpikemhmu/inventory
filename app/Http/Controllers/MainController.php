@@ -917,9 +917,19 @@ public function profit(Request $request){
 
   public function pickup_history(){
        // dd($pickups);
-      $clients=Client::all();
-      return view('dashboard.pickup_history',compact('clients'));
-  }
+    $clients=Client::all();
+    $role=Auth::user()->roles()->first();
+    $rolename=$role->name;
+    $pickups="";
+    if($rolename=="client"){
+      $client_id=Auth::user()->client->id;
+      $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($client_id){
+        $query->where('client_id', $client_id);
+      })->where("status",1)->get();
+      //dd($pickups);
+    }
+      return view('dashboard.pickup_history',compact('clients','pickups'));
+    }
 
   public function pickupbyclient(Request $request){
 
@@ -939,6 +949,10 @@ public function profit(Request $request){
       if($client_id==null){
        $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($sdate,$edate){
         $query->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
+      })->where("status",1)->get();
+     }else if($sdate==null && $edate==null){
+       $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($client_id){
+        $query->where('client_id', $client_id);
       })->where("status",1)->get();
      }else{
        $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
