@@ -70,7 +70,7 @@
                           @endif
                         </td>
                         <td>{{number_format($row->amount)}}</td>
-                        <td>
+                        <td class="mytd">
                           <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">{{ __("Detail")}}</a>
                           <a href="{{route('items.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
                           <form action="{{ route('items.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
@@ -129,7 +129,7 @@
                         </td>
                         <td>{{$way->item->expired_date}}</td>
                         <td>{{$amount}}</td>
-                        <td>
+                        <td class="mytd">
                           <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">{{ __("Detail")}}</a>
                           <a href="#" class="btn btn-warning wayedit" data-id="{{$way->id}}">{{ __("Edit")}}</a>
                           <a href="{{route('deletewayassign',$way->id)}}" class="btn btn-danger" onclick="return confirm('Are you sure?')">{{ __("Delete")}}</a>
@@ -265,7 +265,7 @@
         var ways = [];
         var oTable = $('#checktable').dataTable();
         // console.log(oTable);
-        var rowcollection =  oTable.$("input[name='assign[]']:checked", {"page": "all"});
+        var rowcollection = oTable.$("input[name='assign[]']:checked", {"page": "all"});
         
         $.each(rowcollection,function(index,elem){
           let wayObj = {id:$(elem).val(),codeno:$(elem).data('codeno')};
@@ -282,7 +282,9 @@
         $('#wayAssignModal').modal('show');
       })
 
-      $('.detail').click(function () {
+
+      //item detail
+      $('.dataTable .mytd .detail').click(function () {
         var id=$(this).data('id');
         //console.log(id);
         $('#itemDetailModal').modal('show');
@@ -307,12 +309,39 @@
         })
       })
 
+
+      //check detail
+
+        $('#checktable .mytd .detail').click(function () {
+        var id=$(this).data('id');
+        //console.log(id);
+        $('#itemDetailModal').modal('show');
+        $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+
+        $.post('itemdetail',{id:id},function(res){
+          $("#rname").html(res.receiver_name);
+          $("#rphone").html(res.receiver_phone_no);
+          $("#raddress").html(res.receiver_address);
+          $("#rremark").html(res.remark);
+
+          if(res.error_remark != null){
+            $('#error_remark').removeClass('d-none')
+            $("#error_remark").html(`<strong>Date Changed Remark:</strong> <span class="text-warning">${res.error_remark}</span>`)
+          }
+
+          $(".rcode").html(res.codeno);
+        })
+      })
       $('.js-example-basic-multiple').select2({
         width: '100%',
         dropdownParent: $('#wayAssignModal')
       });
 
-       $('.js-example-basic-single').select2({
+      $('.js-example-basic-single').select2({
         width: '100%',
         dropdownParent: $('#editwayAssignModal')
       });
@@ -320,16 +349,14 @@
       var submit = $("#submit_assign").hide();
       cbs = $('.dataTable tbody').on('click', 'input[name="assign[]"]', function () {
       // cbs = $('input[name="assign[]').click(function() {
-          // submit.toggle(cbs.is(":checked") , 2000);
-          // submit.toggle(cbs.is(":checked"));
-
-          if($('.dataTable tbody :input[type="checkbox"]:checked').length>0)
-          {
-            $("#submit_assign").show();
-          }else{
-            $("#submit_assign").hide();
-          }
-
+      // submit.toggle(cbs.is(":checked") , 2000);
+      // submit.toggle(cbs.is(":checked"));
+        if($('.dataTable tbody :input[type="checkbox"]:checked').length>0)
+        {
+          $("#submit_assign").show();
+        }else{
+          $("#submit_assign").hide();
+        }
         // submit.toggle();
         console.log(submit)
       });
@@ -341,13 +368,10 @@
         //console.log(id);
         $("#wayid").val(id);
       })
-
-
       setTimeout(function(){
       window.location.reload(1);
     }, 90000);
 
-      
     })
 
    

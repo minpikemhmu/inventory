@@ -32,7 +32,7 @@
               </div>
               <div class="form-group col-md-6 search_btn d-none">
                 
-                <button class="btn btn-primary mt-4" type="button" data-toggle="modal" data-target="#fixDebitModal">စာရင်းရှင်းမယ်</button>
+                <button class="btn btn-primary mt-4 fix_debit" type="button">စာရင်းရှင်းမယ်</button>
               </div>
             </div>
           
@@ -211,6 +211,8 @@
                 @endforeach
               </select>
             </div>
+            <div class="checked_debt_list">
+            </div>
           </div>
           <input type="hidden" name="client" value="" id="client_id">
           <input type="hidden" name="noti" value="" id="notiid">
@@ -237,6 +239,45 @@
       return num_parts.join(".");
     }
 
+    $('.fix_debit').click(function () {
+      let expenses = [];
+      let rejects = [];
+      let incomes = []; 
+      let carryfees = [];
+      $("input:checkbox[name='expenses[]']:checked").each(function() { 
+          let expense_obj = {id:$(this).val(),amount:$(this).data('amount')}
+          expenses.push(expense_obj);
+      });
+      $("input:checkbox[name='rejects[]']:checked").each(function() { 
+          let reject_obj = {id:$(this).val(),amount:$(this).data('amount')}
+          rejects.push(reject_obj);
+      });
+      $("input:checkbox[name='incomes[]']:checked").each(function() { 
+          let income_obj = {id:$(this).val(),amount:$(this).data('amount')}
+          incomes.push(income_obj);
+      });
+      $("input:checkbox[name='carryfees[]']:checked").each(function() { 
+          let carryfee_obj = {id:$(this).val(),amount:$(this).data('amount')}
+          carryfees.push(carryfee_obj);
+      });
+      // console.log(expenses)
+      let totalexpenses = expenses.reduce((a, c) => (a + c.amount),0)
+      let totalincomes = rejects.reduce((a, c) => (a + c.amount),0) + incomes.reduce((a, c) => (a + c.amount),0) + carryfees.reduce((a, c) => (a + c.amount),0)
+
+      if ((totalexpenses+totalincomes) > 0){
+        let html = `<input type="hidden" name="expenses" value='${JSON.stringify(expenses)}'>
+                <input type="hidden" name="rejects" value='${JSON.stringify(rejects)}'>
+                <input type="hidden" name="incomes" value='${JSON.stringify(incomes)}'>
+                <input type="hidden" name="carryfees" value='${JSON.stringify(carryfees)}'>
+                <p>ပေးရန် => ${thousands_separators(totalexpenses)}</p>
+                <p>ရရန် => ${thousands_separators(totalincomes)}</p>`;
+        $('.checked_debt_list').html(html);
+        $('#fixDebitModal').modal('show');
+      }else{
+        alert('You Not Select Any Bebt List!');
+      }
+    })
+
     $('#InputClient').change(function () {
         var client_id = $(this).val();
         var clientname = $("#InputClient option:selected").text();
@@ -262,7 +303,13 @@
           let total = 0;
           for(let row of response.expenses){
             html +=`<tr>
-                    <td>${i++}</td>
+                    <td>
+                      <div class="animated-checkbox">
+                        <label class="mb-0">
+                          <input type="checkbox" name="expenses[]" value="${row.id}" data-amount="${row.amount}"><span class="label-text"> </span>
+                        </label>
+                      </div>
+                    </td>
                     <td>${row.description}</td>
                     <td>${row.expense_type.name}</td>
                     <td>${thousands_separators(row.amount)} Ks</td>
@@ -282,7 +329,13 @@
             let delivery_fees = 0;
 
             html2 +=`<tr>
-                      <td>${j++}</td>
+                      <td>
+                        <div class="animated-checkbox">
+                          <label class="mb-0">
+                            <input type="checkbox" name="rejects[]" value="${row.id}" data-amount="${row.item.deposit + delivery_fees}"><span class="label-text"> </span>
+                          </label>
+                        </div>
+                      </td>
                       <td>${row.item.receiver_name}`; 
             if(row.status_code == '003')
                   html2 +=` <span class="badge badge-danger">reject</span>`;
@@ -297,24 +350,30 @@
 
           for(let row of response.incomes){
             let delivery_fees=deposit=0;
-
-            html2 +=`<tr>
-                      <td>${j++}</td>
-                      <td>${row.way.item.receiver_name} - ${row.way.item.township.name}`;
-
             if(row.payment_type_id == 4){
               delivery_fees = Number(row.way.item.delivery_fees);
               deposit = Number(row.way.item.deposit);
-              html2 +=` <span class="badge badge-info">All Paid</span>`;
-            }
-
-            if(row.payment_type_id == 5){
+            }else if(row.payment_type_id == 5){
               deposit = Number(row.way.item.deposit);
-              html2 +=` <span class="badge badge-info">Only Deposit</span>`;
+            }else if(row.payment_type_id == 6){
+              delivery_fees = Number(row.way.item.delivery_fees);
             }
 
-            if(row.payment_type_id == 6){
-              delivery_fees = Number(row.way.item.delivery_fees);
+            html2 +=`<tr>
+                      <td>
+                        <div class="animated-checkbox">
+                          <label class="mb-0">
+                            <input type="checkbox" name="incomes[]" value="${row.id}" data-amount="${delivery_fees+deposit}"><span class="label-text"> </span>
+                          </label>
+                        </div>
+                      </td>
+                      <td>${row.way.item.receiver_name} - ${row.way.item.township.name}`;
+
+            if(row.payment_type_id == 4){
+              html2 +=` <span class="badge badge-info">All Paid</span>`;
+            }else if(row.payment_type_id == 5){
+              html2 +=` <span class="badge badge-info">Only Deposit</span>`;
+            }else if(row.payment_type_id == 6){
               html2 +=` <span class="badge badge-info">Only Deli</span>`;
             }
 
@@ -329,7 +388,13 @@
           for(let row of response.carryfees){
             // console.log(row)
             html2 +=`<tr>
-                      <td>${j++}</td>
+                      <td>
+                        <div class="animated-checkbox">
+                          <label class="mb-0">
+                            <input type="checkbox" name="carryfees[]" value="${row.id}" data-amount="${row.amount}"><span class="label-text"> </span>
+                          </label>
+                        </div>
+                      </td>
                       <td>${row.item.receiver_name} - ${row.item.township.name} <span class="badge badge-info">carryfees</span></td>
                       <td>${0}</td>
                       <td>${thousands_separators(row.amount)}</td>

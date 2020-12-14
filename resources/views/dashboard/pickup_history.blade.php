@@ -56,6 +56,24 @@
                 </tr>
               </thead>
               <tbody>
+              @role('client')
+                @php $i=1; @endphp
+                @foreach($pickups as $row)
+
+                <tr>
+                  <td>{{$i++}}</td>
+                  <td>{{$row->schedule->pickup_date}}</td>
+                  <td>{{$row->schedule->quantity}}</td>
+                  <td>{{$row->schedule->amount}}</td>
+                  
+                  @if($row->items)
+                  <td><a class="btn btn-primary btn-sm d-inline-block btnEdit " href="{{route('historydetails',$row->id)}}">Detail</a></td>
+                  @endif
+                  
+                </tr>
+
+                @endforeach
+              @endrole
                 
               </tbody>
             </table>
@@ -86,6 +104,7 @@
     }
 
     $('.search_btn').click(function () {
+      //alert("ok");
         var sdate = $('#InputStartDate').val();
         var edate = $('#InputEndDate').val();
         var client_id=$("#InputClient").val();

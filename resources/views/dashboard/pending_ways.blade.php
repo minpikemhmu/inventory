@@ -162,7 +162,13 @@
                 {{$row->item->township->name}}
               @endif
             </h5>
-            <h5 class="card-title">{{$row->item->receiver_address}} - {{$row->item->receiver_phone_no}}</h5>
+          <p class="card-text">{{ __("Full Address")}}:{{$row->item->receiver_address}}</p>
+          <p class="card-text">
+            {{ __("Receiver Phone No")}}:{{$row->item->receiver_phone_no}}
+          </p>
+          <p class="card-text">
+           Client {{ __("Phone No")}}: {{$row->item->pickup->schedule->client->phone_no}}
+          </p>
           <p class="card-text">
             @if($row->item->paystatus==1)
               {{ __("Amount")}}: {{$row->item->amount}} Ks
@@ -171,6 +177,7 @@
              <span class="badge badge-success">All Paid!</span>
             @endif
           </p>
+          
             
             @if($row->status_code == 005)
             <a href="#" class="btn btn-info btn-sm success" data-id="{{$row->id}}">{{ __("Success")}}</a>

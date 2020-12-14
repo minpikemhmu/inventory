@@ -54,6 +54,18 @@
               <div class="form-control-feedback text-danger"> {{$errors->first('address') }} </div>
             </div>
 
+             <div class="form-group">
+              <label for="account">Bank Account:</label>
+              <input class="form-control" id="account" type="text" placeholder="Enter Bank Account" name="account">
+              <div class="form-control-feedback text-danger"> {{$errors->first('account') }} </div>
+            </div>
+
+             <div class="form-group">
+              <label for="owner">Bank Acccount Owner:</label>
+              <input class="form-control" id="owner" type="text" name="owner" placeholder="enter bank acccount owner">
+              <div class="form-control-feedback text-danger"> {{$errors->first('owner') }} </div>
+            </div>
+
             <div class="form-group">
               <label for="contactp">Contact Person:</label>
               <input class="form-control" id="contactp" type="text" name="person" placeholder="enter contact person">

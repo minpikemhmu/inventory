@@ -159,8 +159,9 @@
         if(day < 10)
             day = '0' + day.toString();
         
-        var maxDate = year + '-' + month + '-' + day;
+        var maxDate = day+ '-' +month+ '-' +year;
         //alert(maxDate);
+        //console.log(maxDate);
         $('#txtDate').attr('min', maxDate);
     });
   })

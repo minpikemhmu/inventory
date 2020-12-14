@@ -30,6 +30,8 @@ class ClientsTableSeeder extends Seeder
       $client1->contact_person = "Ma One";
       $client1->phone_no = '09-123456789';
       $client1->address = 'Home Street, Hlaing Township';
+      $client1->account="1234567892345678";
+      $client1->owner="client One";
       $client1->codeno = $array[0].$array[1]."001";
       $client1->user_id = $user1->id;
       $client1->township_id = 6;
@@ -48,6 +50,8 @@ class ClientsTableSeeder extends Seeder
       $client2->contact_person = "Ma Two";
       $client2->phone_no = '09-123456789';
       $client2->address = 'Mati Street, Botahtaung Township';
+      $client2->account="1234567892345678";
+      $client2->owner="client two";
       $client2->codeno = $array[0].$array[1]."002";
       $client2->user_id = $user2->id;
       $client2->township_id = 22;

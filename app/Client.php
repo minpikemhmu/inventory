@@ -9,7 +9,7 @@ class Client extends Model
 {
   use SoftDeletes;
   protected $fillable=[
-  	'contact_person', 'phone_no', 'address', 'codeno', 'user_id', 'township_id'
+  	'contact_person', 'phone_no', 'address', 'codeno', 'user_id', 'township_id','account','owner'
   ];
 
   public function user()

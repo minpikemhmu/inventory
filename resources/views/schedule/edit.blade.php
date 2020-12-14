@@ -36,7 +36,7 @@
             @method('PUT')  
             <div class="form-group">
               <label for="txtDate">{{ __("Date")}}:</label>
-              <input class="form-control" id="txtDate" type="date" name="date" value="{{$schedule->pickup_date}}">
+              <input class="form-control" id="txtDate" type="date" name="date" value="{{$schedule->pickup_date}}" min="">
               <div class="form-control-feedback text-danger"> {{$errors->first('date') }} </div>
             </div>   
             <div class="form-group">
@@ -139,7 +139,7 @@
         if(day < 10)
             day = '0' + day.toString();
         
-        var maxDate = year + '-' + month + '-' + day;
+        var maxDate =day+ '-' +month+ '-' +year;
         //alert(maxDate);
         $('#txtDate').attr('min', maxDate);
     });

@@ -120,7 +120,8 @@ class ExpenseController extends Controller
         $validator = $request->validate([
             'description'  => ['required', 'string', 'max:255'],
             'expensetype'=>['required'],
-            'amount'=>['required']
+            'amount'=>['required'],
+            'bank'=>['required']
         ]);
 
         if($validator){
@@ -131,12 +132,14 @@ class ExpenseController extends Controller
             $expense->amount=$request->amount;
             $expense->expense_type_id=$request->expensetype;
             $expense->save();
-            //dd($expense->transactions);
-            $transaction_amount=$expense->transactions->amount;
-            $addingamount==$bank->amount+$transaction_amount;
-            $bank->amount=$bankaddingamount-$request->amount;
+
+            $oldbank=Bank::find($expense->transaction->bank_id);
+            $oldbank->amount=$oldbank->amount+$expense->transaction->amount;
+            $oldbank->save();
+
+            $bank->amount=$bank->amount-$request->amount;
             $bank->save();
-            $transaction=Transaction::where('expense_id',$expense->id)->first();
+            $transaction=Transaction::where('bank_id',$expense->transaction->bank_id)->first();
             $transaction->bank_id=$request->bank;
             $transaction->expense_id=$expense->id;
             $transaction->amount=$request->amount;
