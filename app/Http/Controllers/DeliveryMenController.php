@@ -28,7 +28,7 @@ class DeliveryMenController extends Controller
      */
     public function create()
     {
-        $townships=Township::all();
+        $townships=Township::orderBy('name','asc')->get();
         return view('deliveryman.create',compact('townships'));
     }
 
@@ -89,7 +89,7 @@ class DeliveryMenController extends Controller
      */
     public function edit(DeliveryMan $deliveryMan)
     {
-         $townships=Township::all();
+         $townships=Township::orderBy('name','asc')->get();
         $deliveryMan=$deliveryMan;
         return view('deliveryman.edit',compact('deliveryMan','townships'));
     }

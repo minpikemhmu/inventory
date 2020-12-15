@@ -150,7 +150,7 @@
                  <div class="col-6">
                   <div class="form-group">
                     <label>{{ __("Choose Delivery Man")}}:</label>
-                    <select class="deliveryman form-control" name="delivery_man">
+                    <select class="deliverymanway form-control" name="delivery_man">
                       @foreach($deliverymen as $man)
                       <option value="{{$man->id}}">{{$man->user->name}}
                       </option>
@@ -159,6 +159,27 @@
                   </div>
                 </div>
               </div>
+
+               <div class="table-responsive">
+                  <table class="table table-bordered" id="checktable">
+                    <thead>
+                      <tr>
+                        <th>{{ __("#")}}</th>
+                        <th>{{ __("Codeno")}}</th>
+                        <th>{{ __("Client Name")}}</th>
+                        <th>{{ __("Township")}}</th>
+                        <th>{{ __("Receiver Info")}}</th>
+                        <th>{{ __("Expired Date")}}</th>
+                        <th>{{ __("Amount")}}</th>
+                        <th>{{ __("Actions")}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     
+                    </tbody>
+                  </table>
+                </div>
+
             </div>
 
             </div>
@@ -365,7 +386,7 @@
         width: '100%',
         dropdownParent: $('#editwayAssignModal')
       });
-       $('.deliveryman').select2({
+       $('.deliverymanway').select2({
         width: '100%',
       })
 
@@ -391,9 +412,19 @@
         //console.log(id);
         $("#wayid").val(id);
       })
-      setTimeout(function(){
+
+
+     setTimeout(function(){
       window.location.reload(1);
     }, 90000);
+
+
+    $(".deliverymanway").change(function(){
+      //alert("ok");
+
+
+    })
+
 
     })
 

@@ -23,7 +23,7 @@
               <select class="js-example-basic-single" id="InputDeliveryMan" name="deliveryman">
                 <optgroup label="Select Delivery Man">
                   @foreach($delivery_men as $deliveryman)
-                    <option value="{{$deliveryman->id}}" data-name="{{$deliveryman->user->name}}">{{$deliveryman->user->name}}</option>
+                    <option value="{{$deliveryman->id}}" data-name="{{$deliveryman->deliveryname}}">{{$deliveryman->deliveryname}}</option>
                   @endforeach
                 </optgroup>
               </select>

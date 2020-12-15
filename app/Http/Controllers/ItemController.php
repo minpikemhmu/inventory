@@ -210,9 +210,9 @@ class ItemController extends Controller
     public function edit(Item $item)
     {
         $item=$item;
-        $townships=Township::all();
-        $sendergates=SenderGate::all();
-        $senderoffice=SenderPostoffice::all();
+        $townships=Township::orderBy('name','asc')->get();
+        $sendergates=SenderGate::orderBy('name','asc')->get();
+        $senderoffice=SenderPostoffice::orderBy('name','asc')->get();
         return view('item.edit',compact('item','townships','sendergates','senderoffice'));
     }
 
@@ -315,13 +315,13 @@ class ItemController extends Controller
         //dd($datecode);
         $pickup = Pickup::find($pid);
         // $townships=Township::all();
-        $townships = Township::where('status',1)->get();
+        $townships = Township::orderBy('name','asc')->where('status',1)->get();
 
-        $sendergates=SenderGate::all();
-        $senderoffice=SenderPostoffice::all();
+        $sendergates=SenderGate::orderBy('name','asc')->get();
+        $senderoffice=SenderPostoffice::orderBy('name','asc')->get();
 
         $pickupeditem = Item::where('pickup_id',$pickup->id)->orderBy('id','desc')->first();
-        $banks = Bank::all();
+        $banks = Bank::orderBy('name','asc')->get();
         return view('item.create',compact('banks','client','pickup','townships','itemcode','pickupeditem','sendergates','senderoffice'));
     }
 

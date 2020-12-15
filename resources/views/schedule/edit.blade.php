@@ -26,7 +26,7 @@
               <select class="form-control" name="client" id="InputClient">
                 <optgroup label="Choose Client">
                   @foreach($clients as $row)
-                  <option value="{{$row->id}}" @if($row->id==$schedule->client_id) {{'selected'}} @endif>{{$row->user->name}}</option>
+                  <option value="{{$row->id}}" @if($row->id==$schedule->client_id) {{'selected'}} @endif>{{$row->clientname}}</option>
                   @endforeach
                 </optgroup>
               </select>
@@ -85,7 +85,7 @@
               <select class="form-control" name="deliveryman" id="InputDeliveryMan">
                 <optgroup label="Choose Delivery Man">
                  @foreach($deliverymen as $row)
-                  <option value="{{$row->id}}" @if($schedule->pickup->delivery_man_id==$row->id) {{'selected'}} @endif>{{$row->user->name}}</option>
+                  <option value="{{$row->id}}" @if($schedule->pickup->delivery_man_id==$row->id) {{'selected'}} @endif>{{$row->deliveryname}}</option>
                   @endforeach
                 </optgroup>
               </select>

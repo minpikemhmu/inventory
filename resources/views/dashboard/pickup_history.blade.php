@@ -33,7 +33,7 @@
                 <select class="js-example-basic-single" id="InputClient" name="client">
                   <option value="">Choose Client</option>
                     @foreach($clients as $client)
-                      <option value="{{$client->id}}" data-name="{{$client->user->name}}">{{$client->user->name}}</option>
+                      <option value="{{$client->id}}" data-name="{{$client->clientname}}">{{$client->clientname}}</option>
                     @endforeach
                 </select>
             </div>

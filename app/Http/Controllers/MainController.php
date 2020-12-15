@@ -161,7 +161,11 @@ class MainController extends Controller
   {
     // $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','=',Null)->get();
     //dd($incomes);
-    $clients = Client::all();
+    $clients=DB::table('clients')
+                ->join('users', 'users.id', '=', 'clients.user_id')
+                ->select('clients.*', 'users.name as clientname')
+                ->orderBy('users.name')
+                ->get();
 
     $role=Auth::user()->roles()->first();
     $rolename=$role->name;
@@ -450,7 +454,11 @@ public function profit(Request $request){
   // for add incomes form page
   public function addincomeform($value='')
   {
-    $delivery_men = DeliveryMan::all();
+    $delivery_men=DB::table('delivery_men')
+                ->join('users', 'users.id', '=', 'delivery_men.user_id')
+                ->select('delivery_men.*', 'users.name as deliveryname')
+                ->orderBy('users.name')
+                ->get();
     return view('dashboard.addincomes',compact('delivery_men'));
   }
 
@@ -896,7 +904,11 @@ public function profit(Request $request){
 
   public function debt_history($value='')
   {
-    $clients = Client::all();
+     $clients=DB::table('clients')
+                ->join('users', 'users.id', '=', 'clients.user_id')
+                ->select('clients.*', 'users.name as clientname')
+                ->orderBy('users.name')
+                ->get();
     return view('dashboard.debt_history',compact('clients'));
   }
 
@@ -917,7 +929,11 @@ public function profit(Request $request){
 
   public function pickup_history(){
        // dd($pickups);
-    $clients=Client::all();
+  $clients=DB::table('clients')
+                ->join('users', 'users.id', '=', 'clients.user_id')
+                ->select('clients.*', 'users.name as clientname')
+                ->orderBy('users.name')
+                ->get();
     $role=Auth::user()->roles()->first();
     $rolename=$role->name;
     $pickups="";

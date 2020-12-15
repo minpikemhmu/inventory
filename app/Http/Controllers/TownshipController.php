@@ -26,7 +26,7 @@ class TownshipController extends Controller
      */
     public function create()
     {
-        $cities=City::all();
+        $cities=City::orderBy('name','asc')->get();
         return view('township.create',compact('cities'));
     }
 
@@ -92,7 +92,7 @@ class TownshipController extends Controller
      */
     public function edit(Township $township)
     {
-        $cities=City::all();
+        $cities=City::orderBy('name','asc')->get();
         $township=$township;
         return view('township.edit',compact('cities','township'));
     }

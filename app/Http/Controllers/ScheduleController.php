@@ -56,8 +56,23 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        $clients=client::all();
-        $deliverymen=DeliveryMan::all();
+        /*$clients=client::with('user')->whereHas('user', function($q){
+                     $q->orderBy('name','asc');
+                      })->get();*/
+        $clients=DB::table('clients')
+                ->join('users', 'users.id', '=', 'clients.user_id')
+                ->select('clients.*', 'users.name as clientname')
+                ->orderBy('users.name')
+                ->get();
+        /*$deliverymen=DeliveryMan::with(['user'=> function($q){
+                     $q->orderBy('name','asc');
+                      }])->get();*/
+        $deliverymen=DB::table('delivery_men')
+                ->join('users', 'users.id', '=', 'delivery_men.user_id')
+                ->select('delivery_men.*', 'users.name as deliveryname')
+                ->orderBy('users.name')
+                ->get();
+
         return view('schedule.create',compact('deliverymen','clients'));
     }
 
@@ -133,8 +148,22 @@ class ScheduleController extends Controller
     public function edit(Schedule $schedule)
     {
         $schedule=$schedule;
-        $clients=client::all();
-        $deliverymen=DeliveryMan::all();
+        /*$clients=client::with('user')->whereHas('user', function($q){
+                     $q->orderBy('name','asc');
+                      })->get();*/
+        $clients=DB::table('clients')
+                ->join('users', 'users.id', '=', 'clients.user_id')
+                ->select('clients.*', 'users.name as clientname')
+                ->orderBy('users.name')
+                ->get();
+        /*$deliverymen=DeliveryMan::with(['user'=> function($q){
+                     $q->orderBy('name','asc');
+                      }])->get();*/
+        $deliverymen=DB::table('delivery_men')
+                ->join('users', 'users.id', '=', 'delivery_men.user_id')
+                ->select('delivery_men.*', 'users.name as deliveryname')
+                ->orderBy('users.name')
+                ->get();
         return view('schedule.edit',compact('schedule','clients','deliverymen'));
     }
 
