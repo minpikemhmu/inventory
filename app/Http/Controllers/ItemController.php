@@ -38,7 +38,11 @@ class ItemController extends Controller
   
       // dd($myitems);
       
-      $deliverymen = DeliveryMan::all();
+      $deliverymen = DeliveryMan::with(['townships'=> function($q){
+                     $q->orderBy('name','asc');
+                      }])->get();
+
+        //dd($deliverymen);
       $ways = Way::orderBy('id', 'desc')->get();
       $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
       $data=[];
