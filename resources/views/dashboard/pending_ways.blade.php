@@ -167,6 +167,9 @@
             {{ __("Receiver Phone No")}}:{{$row->item->receiver_phone_no}}
           </p>
           <p class="card-text">
+           Client {{ __("Name")}}: {{$row->item->pickup->schedule->client->user->name}}
+          </p>
+          <p class="card-text">
            Client {{ __("Phone No")}}: {{$row->item->pickup->schedule->client->phone_no}}
           </p>
           <p class="card-text">

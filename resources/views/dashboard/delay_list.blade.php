@@ -19,7 +19,7 @@
 
           <a href="#" class="btn btn-primary float-right wayassign" id="submit_assign">{{ __("Way Assign")}}</a>
           <div class="table-responsive">
-                  <table class="table table-bordered dataTable">
+                  <table class="table table-bordered dataTable" id="delaytable">
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -56,7 +56,7 @@
                         </td>
                         <td>{{$row->expired_date}}</td>
                         <td>{{number_format($row->amount)}}</td>
-                        <td>
+                        <td class="mytd">
                           <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">{{ __("Detail")}}</a>
                         </td>
                       </tr>
@@ -132,7 +132,7 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
-       $('.detail').click(function () {
+       $('#delaytable .mytd .detail').click(function () {
         var id=$(this).data('id');
         //console.log(id);
         $('#itemDetailModal').modal('show');

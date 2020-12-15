@@ -19,8 +19,8 @@ class CreateClientsTable extends Migration
             $table->string('phone_no');
             $table->text('address');
             $table->string('codeno');
-            $table->string('account');
-            $table->string('owner');
+            $table->string('account')->nullable();
+            $table->string('owner')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('township_id');
 
