@@ -12,10 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*Route::get('pdf',function(){
-  $pdf=PDF::loadview('dashboard.itempdf');
-  return $pdf->download('itemlist.pdf');
-});*/
+
 Route::get('/','Auth\LoginController@showLoginForm');
 //language
 Route::get('lang/{locale}', 'LocalizationController@index')->name('lang');
