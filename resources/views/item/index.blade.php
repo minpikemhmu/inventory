@@ -30,6 +30,7 @@
             <ul class="nav nav-tabs">
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#collect">{{ __("In Stock")}}</a></li>
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#way">{{ __("On Way")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#print">{{ __("print way")}}</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="collect">
@@ -141,6 +142,27 @@
                   </table>
                 </div>
               </div>
+
+             {{--  print --}}
+
+             <div class="tab-pane fade" id="print">
+               <div class="row">
+                 <div class="col-12">
+                  <div class="form-group">
+                    <label>{{ __("Choose Delivery Man")}}:</label>
+                    <select class="js-example-basic-multiple form-control" name="delivery_man">
+                      @foreach($deliverymen as $man)
+                      <option value="{{$man->id}}">{{$man->user->name}}
+                        @foreach($man->townships as $township)
+                        ({{$township->name}})
+                      @endforeach</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             </div>
           </div>
         </div>

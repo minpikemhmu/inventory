@@ -122,7 +122,7 @@
                           @else
                             <button type="button" class="btn btn-danger">{{ __("pending")}}</button>
                           @endif
-                          <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
+                          <a href="{{route('schedules.edit',$row->schedule->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
                             <form action="{{ route('schedules.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
                               @csrf
                               @method('DELETE')
