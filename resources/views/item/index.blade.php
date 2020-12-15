@@ -284,7 +284,7 @@
 
 
       //item detail
-      $('.dataTable .mytd .detail').click(function () {
+      $(".dataTable tbody").on('click','.detail',function(){
         var id=$(this).data('id');
         //console.log(id);
         $('#itemDetailModal').modal('show');
@@ -312,7 +312,7 @@
 
       //check detail
 
-        $('#checktable .mytd .detail').click(function () {
+      $("#checktable tbody").on('click','.detail',function(){
         var id=$(this).data('id');
         //console.log(id);
         $('#itemDetailModal').modal('show');

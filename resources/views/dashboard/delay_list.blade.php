@@ -19,7 +19,7 @@
 
           <a href="#" class="btn btn-primary float-right wayassign" id="submit_assign">{{ __("Way Assign")}}</a>
           <div class="table-responsive">
-                  <table class="table table-bordered dataTable" id="delaytable">
+                  <table class="table table-bordered dataTable">
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -132,7 +132,7 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
-       $('#delaytable .mytd .detail').click(function () {
+       $(".dataTable tbody").on('click','.detail',function(){
         var id=$(this).data('id');
         //console.log(id);
         $('#itemDetailModal').modal('show');
