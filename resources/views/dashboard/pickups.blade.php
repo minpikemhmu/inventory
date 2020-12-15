@@ -71,7 +71,7 @@
           @foreach($pickups as $row)
           <div class="col-md-4">
             <div class="card mb-3">
-              <h5 class="card-header">{{$row->schedule->client->user->name}}  @if($row->schedule->amount!=null && $row->schedule->quantity!=null )({{$row->schedule->quantity}})@endif <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->schedule->pickup_date}}</small></h5>
+              <h5 class="card-header">{{$row->schedule->client->user->name}}  @if($row->schedule->amount!=null && $row->schedule->quantity!=null )({{$row->schedule->quantity}})@endif <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{\Carbon\Carbon::parse($row->schedule->pickup_date)->format('d-m-Y')}}</small></h5>
               <div class="card-body">
                 <h5 class="card-title">{{ __("Phone No")}}: {{$row->schedule->client->phone_no}}</h5>
                 <h5 class="card-title">{{$row->schedule->client->address}}</h5>

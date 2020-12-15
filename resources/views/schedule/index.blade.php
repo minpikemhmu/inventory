@@ -94,7 +94,7 @@
                       <tr>
                         <td>{{$i++}}</td>
                         @role('staff')<td class="text-danger">{{$row->schedule->client->user->name}}</td>@endrole
-                        <td>{{\Carbon\Carbon::parse($row->pickup_date)->format('d-m-Y')}}</td>
+                        <td>{{\Carbon\Carbon::parse($row->schedule->pickup_date)->format('d-m-Y')}}</td>
                         <td>{{$row->schedule->remark}}</td>
                         <td class="text-danger">{{$row->delivery_man->user->name}}
                           @foreach($data as $dd)
