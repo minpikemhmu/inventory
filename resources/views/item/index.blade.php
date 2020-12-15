@@ -147,15 +147,13 @@
 
              <div class="tab-pane fade" id="print">
                <div class="row">
-                 <div class="col-12">
+                 <div class="col-6">
                   <div class="form-group">
                     <label>{{ __("Choose Delivery Man")}}:</label>
-                    <select class="js-example-basic-multiple form-control" name="delivery_man">
+                    <select class="deliveryman form-control" name="delivery_man">
                       @foreach($deliverymen as $man)
                       <option value="{{$man->id}}">{{$man->user->name}}
-                        @foreach($man->townships as $township)
-                        ({{$township->name}})
-                      @endforeach</option>
+                      </option>
                       @endforeach
                     </select>
                   </div>
@@ -367,6 +365,9 @@
         width: '100%',
         dropdownParent: $('#editwayAssignModal')
       });
+       $('.deliveryman').select2({
+        width: '100%',
+      })
 
       var submit = $("#submit_assign").hide();
       cbs = $('.dataTable tbody').on('click', 'input[name="assign[]"]', function () {
