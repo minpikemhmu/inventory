@@ -32,6 +32,7 @@ use Excel;
 use App\Schedule;
 use App\Staff;
 use App\Transaction;
+use PDF;
 
 class MainController extends Controller
 {
@@ -1030,5 +1031,32 @@ public function profit(Request $request){
         {
             return redirect::back()->withErrors($validator);
         }
+  }
+
+
+  public function waybydeliveryman(Request $request){
+    $id=$request->id;
+    $ways = Way::where('delivery_man_id',$id)->where('status_code','!=',001)->where('status_code','!=',002)->where('deleted_at',null)->orderBy('id','desc')->with('item.pickup.schedule.client.user')->get();
+    
+    return $ways;
+  }
+
+  public function createpdf(Request $request){
+    $id=$request->id;
+    $deliveryman=DeliveryMan::find($id);
+    $deliname=$deliveryman->user->name;
+
+   // dd($id);
+    $ways = Way::where('delivery_man_id',$id)->where('status_code','!=',001)->where('status_code','!=',002)->where('deleted_at',null)->orderBy('id','desc')->get();
+      $data = array(
+    'ways' => $ways,
+    'deliveryman' => $deliveryman,
+        );
+      view()->share('data',$data);
+      $pdf = PDF::loadView('dashboard.waypdf');
+
+      // download PDF file with download method
+      return $pdf->download( $deliname.'.pdf');
+      
   }
 }

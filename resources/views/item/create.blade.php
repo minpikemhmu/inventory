@@ -301,6 +301,27 @@
             </div>
           </div>
         </div>
+
+        <div class="form-group myknow">
+              <input type="checkbox" id="know">
+              <label for="know">{{ __("If you do not paid all deposit")}}</label> 
+        </div>
+
+       <div class="row mt-3 paidamount">
+          <div class="form-row col-md-12">
+            <div class="col-md-4">
+            <label>Paid Amount:</label>
+          </div>
+          <div class="col-md-8">
+            <input type="number" name="paidamount" class="form-control" id="paidamount">
+          </div>
+          <div class="col-md-12">
+              <span class="d-none text-danger amounterrormsg">paidamount must be between 1 and depositamount!</span>
+        </div>
+        </div>
+        </div>
+
+
         <div class="row mt-3 bank">
           <div class="form-row col-md-12">
             <div class="col-md-4">
@@ -337,17 +358,42 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
+
+    $(".paidamount").hide();
+     $("#know").click(function(){
+        if(this.checked){
+          $(".paidamount").show();
+        }else{
+          $(".paidamount").hide();
+
+        }
+      })
+
     $('input[name="paystatus"]').click(function(){
       var inputValue = $(this).val();
       if(inputValue == 1){
         $('.bank').show();
+        $('.myknow').show();
       }else{
         $('.bank').hide();
+        $('.myknow').hide();
         $('.confirm_and_save').prop('disabled',false);
       }
     });
 
     $('.confirm_and_save').prop('disabled',true);
+    $('#depositModal').on('change','#paidamount',function () {
+      let depositamount = Number($('.depositamount').val());
+      let paidamount=$(this).val();
+      console.log(depositamount);
+     if(paidamount>depositamount){
+      $('.amounterrormsg').removeClass('d-none');
+        $('.confirm_and_save').prop('disabled',true);
+     }else{
+       $('.errormsg').addClass('d-none');
+        $('.confirm_and_save').prop('disabled',false);
+     }
+    })
     $('#depositModal').on('change','.payment_method',function () {
       let depositamount = Number($('.depositamount').val());
       let amount = Number($(this).find('option:selected').attr('data-amount'));

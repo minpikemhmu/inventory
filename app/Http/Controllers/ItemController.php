@@ -141,7 +141,37 @@ class ItemController extends Controller
             return redirect()->route('checkitem',$pickup->id); 
 
           }else{
-            $expense=new Expense;
+            if($request->paidamount!=null){
+              $expense=new Expense;
+              $expense->amount=$request->paidamount;
+              $expense->client_id=$request->client_id;
+              if($rolename=="staff"){
+              $user=Auth::user();
+              $staffid=$user->staff->id;
+              $expense->staff_id=$staffid;
+               }
+             $expense->status=$request->paystatus;
+            $expense->description="Client Deposit";
+            $expense->city_id=1;
+            $expense->expense_type_id=1;
+            $expense->save();
+
+             $expense=new Expense;
+             $unexpenseamount=$request->depositamount-$request->paidamount;
+              $expense->amount=$unexpenseamount;
+              $expense->client_id=$request->client_id;
+              if($rolename=="staff"){
+              $user=Auth::user();
+              $staffid=$user->staff->id;
+              $expense->staff_id=$staffid;
+               }
+             $expense->status=2;
+            $expense->description="Client Deposit";
+            $expense->city_id=1;
+            $expense->expense_type_id=1;
+            $expense->save();
+            }else{
+              $expense=new Expense;
             $expense->amount=$damount;
             $expense->client_id=$request->client_id;
             if($rolename=="staff"){
@@ -154,18 +184,27 @@ class ItemController extends Controller
             $expense->city_id=1;
             $expense->expense_type_id=1;
             $expense->save();
-
-            // insert into transaction if paid
+            }
+           // insert into transaction if paid
             if($request->paystatus == 1){
               $transaction = new Transaction;
               $transaction->bank_id = $request->payment_method;
               $transaction->expense_id = $expense->id;
-              $transaction->amount = $request->depositamount;
+              if($request->paidamount!=null){
+                 $transaction->amount = $request->paidamount;
+              }else{
+                $transaction->amount = $request->depositamount;
+              }
+              
               $transaction->description = "Client Deposit";
               $transaction->save();
 
               $bank = Bank::find($request->payment_method);
-              $bank->amount = $bank->amount-$request->depositamount;
+               if($request->paidamount!=null){
+                $bank->amount=$bank->amount-$request->paidamount;
+               }else{
+                 $bank->amount = $bank->amount-$request->depositamount;
+               }
               $bank->save();
             }
 

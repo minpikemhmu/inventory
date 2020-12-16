@@ -71,18 +71,18 @@ Route::middleware('auth')->group(function () {
   Route::post('updateincome','MainController@updateincome')->name('updateincome');
   Route::post('incomesearch','MainController@incomesearch')->name('incomesearch');
   Route::post('waysreport','MainController@waysreport')->name('waysreport');
- Route::post('expensesearch','MainController@expensesearch')->name('expensesearch');
+  Route::post('expensesearch','MainController@expensesearch')->name('expensesearch');
   Route::post('profit','MainController@profit')->name('profit');
   Route::get('banktransfer','MainController@banktransfer')->name('banktransfer');
-   Route::post('transfer','MainController@transfer')->name('transfer.store');
+  Route::post('transfer','MainController@transfer')->name('transfer.store');
   //pickupdone by delivery man
   Route::get('pickupdone/{id}/{qty}','MainController@pickupdone')->name('pickupdone');
 
   //amounta ad qty edit
-   Route::post('editamountandqty','MainController@editamountandqty')->name('editamountandqty');
+  Route::post('editamountandqty','MainController@editamountandqty')->name('editamountandqty');
 
 //normal
-Route::get('normal/{id}','MainController@normal')->name('normal');
+  Route::get('normal/{id}','MainController@normal')->name('normal');
   // staff
   Route::resource('staff','StaffController');
 
@@ -103,9 +103,9 @@ Route::get('normal/{id}','MainController@normal')->name('normal');
   Route::get('checkitem/{pickupid}','ItemController@checkitem')->name('checkitem');
   Route::post('updateamount','ItemController@updateamount')->name('updateamount');
   
-Route::get('rejectnoti','MainController@rejectnoti')->name('rejectnoti');
-Route::get('clearrejectnoti/{id}','MainController@clearrejectnoti')->name('clearrejectnoti');
-Route::get('seennoti','MainController@seennoti')->name('seennoti');
+  Route::get('rejectnoti','MainController@rejectnoti')->name('rejectnoti');
+  Route::get('clearrejectnoti/{id}','MainController@clearrejectnoti')->name('clearrejectnoti');
+  Route::get('seennoti','MainController@seennoti')->name('seennoti');
   Route::post('updatewayassign','ItemController@updatewayassign')->name('updatewayassign');
   Route::post('townshipbystatus','ItemController@townshipbystatus')->name('townshipbystatus');
   Route::get('deletewayassign/{id}','ItemController@deletewayassign')->name('deletewayassign');
@@ -130,6 +130,9 @@ Route::get('seennoti','MainController@seennoti')->name('seennoti');
     Route::get('pending','MainController@pending_ways')->name('pending_ways');
     Route::get('success','MainController@success_ways')->name('success_ways');
   });
+
+  Route::post('waybydeliveryman','MainController@waybydeliveryman')->name('waybydeliveryman');
+  Route::post('/createpdf', 'MainController@createpdf')->name('createpdf');
 
   Route::post('makeDelivered','MainController@makeDeliver')->name('makeDeliver');
   Route::post('retuenDeliver','MainController@retuenDeliver')->name('retuenDeliver');

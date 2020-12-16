@@ -164,24 +164,28 @@
                   <table class="table table-bordered" id="checktable">
                     <thead>
                       <tr>
-                        <th>{{ __("#")}}</th>
-                        <th>{{ __("Codeno")}}</th>
-                        <th>{{ __("Client Name")}}</th>
-                        <th>{{ __("Township")}}</th>
-                        <th>{{ __("Receiver Info")}}</th>
-                        <th>{{ __("Expired Date")}}</th>
+                        <th>{{ __("Item Cod")}}</th>
+                        <th>{{ __("Receiver Name")}}</th>
+                        <th>{{ __("Full Address")}}</th>
+                        <th>{{ __("Receiver Phone No")}}</th>
+                        <th>{{ __("Client")}}</th>
                         <th>{{ __("Amount")}}</th>
-                        <th>{{ __("Actions")}}</th>
                       </tr>
                     </thead>
-                    <tbody>
+
+                    <tbody class="tbody">
                      
                     </tbody>
                   </table>
                 </div>
-
             </div>
-
+            <form action="{{route("createpdf")}}" method="post">
+              @csrf
+              <input type="hidden" name="id" value="" id="exportid">
+             <div class="justify-content-end mb-4" id="export">
+                  <button type="submit" class="btn btn-primary exportpdf">Export to PDF</button>
+              </div>
+            </form>
             </div>
           </div>
         </div>
@@ -288,6 +292,7 @@
 @section('script')
   <script type="text/javascript">
     $(document).ready(function () {
+      $("#export").hide();
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
       $('#checktable').dataTable({
             "bPaginate": true,
@@ -386,6 +391,7 @@
         width: '100%',
         dropdownParent: $('#editwayAssignModal')
       });
+
        $('.deliverymanway').select2({
         width: '100%',
       })
@@ -414,16 +420,49 @@
       })
 
 
-     setTimeout(function(){
+     /*setTimeout(function(){
       window.location.reload(1);
-    }, 90000);
+    }, 90000);*/
 
 
     $(".deliverymanway").change(function(){
       //alert("ok");
+      var id=$(this).val();
+      //console.log(id);
+      var url="{{route('waybydeliveryman')}}";
 
+       $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+
+      $.post(url,{id:id},function(res){
+        var html="";
+        console.log(res);
+        $.each(res,function(i,v){
+          html+=`<tr>
+                <td>${v.item.codeno}</td>
+                <td>${v.item.receiver_name}</td>
+                <td>${v.item.receiver_address}</td>
+                <td>${v.item.receiver_phone_no}</td>
+                <td>${v.item.pickup.schedule.client.user.name}</br>(${v.item.pickup.schedule.client.phone_no})</td>
+                <td>${v.item.amount}</td>
+              </tr>`
+        })
+        $(".tbody").html(html);
+        if(res.length==0){
+           $("#export").hide();
+        }else{
+          $("#export").show();
+        }
+       
+        $("#exportid").val(id);
+      })
 
     })
+
+
 
 
     })
