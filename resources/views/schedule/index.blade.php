@@ -94,7 +94,7 @@
                       <tr>
                         <td>{{$i++}}</td>
                         @role('staff')<td class="text-danger">{{$row->schedule->client->user->name}}</td>@endrole
-                        <td>{{\Carbon\Carbon::parse($row->pickup_date)->format('d-m-Y')}}</td>
+                        <td>{{\Carbon\Carbon::parse($row->schedule->pickup_date)->format('d-m-Y')}}</td>
                         <td>{{$row->schedule->remark}}</td>
                         <td class="text-danger">{{$row->delivery_man->user->name}}
                           @foreach($data as $dd)
@@ -123,7 +123,7 @@
                             <button type="button" class="btn btn-danger">{{ __("pending")}}</button>
                           @endif
                           <a href="{{route('schedules.edit',$row->schedule->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
-                            <form action="{{ route('schedules.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
+                            <form action="{{ route('schedules.destroy',$row->schedule->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
                               @csrf
                               @method('DELETE')
                               <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
