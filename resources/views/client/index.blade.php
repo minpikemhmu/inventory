@@ -26,7 +26,7 @@
           <h3 class="tile-title d-inline-block">Clients List</h3>
           <a href="{{route('clients.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
           <div class="table-responsive">
-            <table class="table dataTable">
+            <table class="table" id="dataTable">
               <thead>
                 <tr>
                   <th>#</th>
@@ -75,6 +75,11 @@
   $(document).ready(function(){
     //alert("ok");
     setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+
+    // Call the dataTables jQuery plugin
+    $('#dataTable').DataTable( {
+      "aaSorting": [[1,'asc']]
+    });
   })
   
 </script>
