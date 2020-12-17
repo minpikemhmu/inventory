@@ -524,6 +524,8 @@
         console.log(incityday);
         $(".pickdate").val(incityday);
         $('#InputDeposit').prop('disabled',false);
+        $("#InputDeposit").val();
+        $('#InputDeposit').prop('readonly',false);
       }else{
         var today = new Date();
         var numberofdays = 7;

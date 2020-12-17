@@ -25,41 +25,7 @@
         <div class="tile">
           <h3 class="tile-title d-inline-block">{{ __("Expense List")}}</h3>
           <a href="{{route('expenses.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> {{ __("Add New")}}</a>
-          <div class="table-responsive">
-            <table class="table dataTable">
-              <thead>
-                <tr>
-                  <th>{{ __("#")}}</th>
-                  <th>{{ __("Date")}}</th>
-                  <th>{{ __("Amount")}}</th>
-                  <th>{{ __("Type")}}</th>
-                  <th>{{ __("Description")}}</th>
-                  <th>{{ __("Actions")}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                 @php $i=1; @endphp
-                 @foreach($expenses as $row)
-                <tr>
-                  <td>{{$i++}}</td>
-                  <td>{{$row->created_at->format('Y-m-d')}}</td>
-                  <td>{{number_format($row->amount)}} Ks</td>
-                  <td>{{$row->expense_type->name}}</td>
-                  <td>{{$row->description}}</td>
-                  <td>
-                    <a href="{{route('expenses.edit',$row->id)}}" class="btn btn-warning">Edit</a>
-                    <form action="{{ route('expenses.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
-
-                      @csrf
-                      @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                  </form>
-                  </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
+         
         </div>
       </div>
       
