@@ -20,19 +20,24 @@
           @role('staff|admin')
           
             <div class="row">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
                 <label for="InputClient">{{ __("Select Client")}}:</label>
                 <select class="form-control" id="InputClient" name="client">
                   <optgroup label="Select Client">
                     @foreach($clients as $client)
-                      <option value="{{$client->id}}" data-name="{{$client->clientname}}">{{$client->clientname}}</option>
+                      <option value="{{$client->id}}" data-name="{{$client->clientname}}" data-owner="{{$client->owner}}" data-account="{{$client->account}}">{{$client->clientname}}</option>
                     @endforeach
                   </optgroup>
                 </select>
               </div>
-              <div class="form-group col-md-6 search_btn d-none">
-                
+              <div class="form-group col-md-3 search_btn d-none">
                 <button class="btn btn-primary mt-4 fix_debit" type="button">စာရင်းရှင်းမယ်</button>
+              </div>
+              <div class="form-group col-md-3 account">
+                
+              </div>
+              <div class="form-group col-md-3 owner">
+                
               </div>
             </div>
           
@@ -281,6 +286,9 @@
     $('#InputClient').change(function () {
         var client_id = $(this).val();
         var clientname = $("#InputClient option:selected").text();
+        var owner = $("#InputClient option:selected").data('owner');
+        var account = $("#InputClient option:selected").data('account');
+
         //alert(clientname)
         var url = `/debit/getdebitlistbyclient/${client_id}`;
         $.get(url,function (response) {
@@ -288,9 +296,15 @@
           $("#notiid").val(response.rejectnoti);
           if (response.expenses.length > 0 || response.incomes.length > 0 || response.rejects.length > 0 || response.carryfees.length > 0) {
             $('.search_btn').removeClass('d-none');
+            $('.account').removeClass('d-none');
+            $('.owner').removeClass('d-none');
+            $('.account').html(`<p class="mt-5">Bank Account:  <strong>${account}</strong></p>`)
+            $('.owner').html(`<p class="mt-5">Owner: <strong>${owner}</strong></p>`)
             $('#client_id').val(client_id)
           }else{
             $('.search_btn').addClass('d-none');
+            $('.account').addClass('d-none');
+            $('.owner').addClass('d-none');
           }
           var header = `<h4>ပေးရန် => ${clientname}:</h4>`;
           $('#topay').html(header);

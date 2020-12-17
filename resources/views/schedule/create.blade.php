@@ -26,7 +26,7 @@
               <select class="form-control" name="client" id="InputClient">
                 <optgroup label="Choose Client">
                   @foreach($clients as $row)
-                  <option value="{{$row->id}}">{{$row->clientname}}</option>
+                  <option value="{{$row->id}}">{{$row->clientname}} ({{$row->address}})</option>
                   @endforeach
                 </optgroup>
               </select>
