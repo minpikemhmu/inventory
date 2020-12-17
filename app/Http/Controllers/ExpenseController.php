@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Bank;
 use App\Transaction;
+use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseController extends Controller
 {
@@ -18,9 +19,10 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        $expenses=Expense::all();
+         $expensetypes=ExpenseType::all();
+         $expenses=Expense::where('status',1)->get();
        
-        return view('expense.index',compact('expenses'));
+        return view('expense.index',compact('expensetypes','expenses'));
     }
 
     /**
@@ -61,7 +63,7 @@ class ExpenseController extends Controller
             $expense->expense_type_id=$request->expensetype;
             $expense->staff_id = Auth::user()->staff->id;
             $expense->city_id = 1; // default yangon
-            $expense->status = 2;
+            $expense->status = 1;
             $expense->save();
             $bank->amount=$bank->amount-$request->amount;
             $bank->save();
@@ -167,5 +169,22 @@ class ExpenseController extends Controller
          $expense=$expense;
         $expense->delete();
        return redirect()->route('expenses.index')->with('successMsg','Existing Expense is DELETED in your data');
+    }
+
+    public function expensebytype(Request $request){
+        $sdate = $request->sdate;
+        $edate = $request->edate;
+        $type_id=$request->type_id;
+        $expenses="";
+       // dd($type_id);
+        if($type_id==null){
+        $expenses=Expense::whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->where('status',1)->with('expense_type')->get();
+        }else if($sdate==null && $edate==null){
+        $expenses=Expense::where('expense_type_id',$type_id)->where('status',1)->with('expense_type')->get();
+        }else{
+            $expenses=Expense::whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->where('expense_type_id',$type_id)->where('status',1)->with('expense_type')->get();
+        }
+        
+        return Datatables::of($expenses)->addIndexColumn()->toJson();
     }
 }

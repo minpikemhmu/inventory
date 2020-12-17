@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('banks','BankController');
   });
 
+Route::post('expensebytype','ExpenseController@expensebytype')->name('expensebytype');
   // Success List
   Route::get('success_list','MainController@success_list')->name('success_list');
 
