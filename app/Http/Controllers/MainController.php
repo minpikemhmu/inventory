@@ -1043,6 +1043,7 @@ public function profit(Request $request){
 
   public function createpdf(Request $request){
     $id=$request->id;
+    //dd($id);
     $deliveryman=DeliveryMan::find($id);
     $deliname=$deliveryman->user->name;
 

@@ -161,10 +161,10 @@
               </div>
 
                <div class="table-responsive">
-                  <table class="table table-bordered" id="checktable">
+                  <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th>{{ __("Item Cod")}}</th>
+                        <th>{{ __("Item Code")}}</th>
                         <th>{{ __("Receiver Name")}}</th>
                         <th>{{ __("Full Address")}}</th>
                         <th>{{ __("Receiver Phone No")}}</th>

@@ -221,7 +221,7 @@
         $('.carryfees').hide();
 
         $.post("{{route('getitembyway')}}",{wayid:id},function (response) {
-          if (response.deposit == 0) {
+          if (response.deposit == 0 && (response.sender_gate_id!=null || response.sender_postoffice_id!=null)) {
             $('.carryfees').show();
           }
         })

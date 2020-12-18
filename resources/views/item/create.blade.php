@@ -255,15 +255,15 @@
               </div>
             </div>
 
-            @if($pickup->schedule->quantity - count($pickup->items) == 1)
+            {{-- @if($pickup->schedule->quantity - count($pickup->items) == 1) --}}
               <div class="form-group">
-                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#depositModal">{{ __("Save")}}</button>
+                <button class="btn btn-primary savebtn" data-items="{{$pickup->items}}" type="button" data-toggle="modal" data-target="#depositModal">{{ __("Save")}}</button>
               </div>
-            @else
+            {{-- @else
               <div class="form-group">
                 <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
               </div>
-            @endif
+            @endif --}}
 
 <!-- Modal -->
 <div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -358,6 +358,15 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
+
+    $(".savebtn").click(function () {
+      let total = $(this).data('items');
+      alert(total);
+      
+      $.get("{{}}",function (response) {
+        
+      })
+    })
 
     $(".paidamount").hide();
      $("#know").click(function(){
