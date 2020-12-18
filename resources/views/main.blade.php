@@ -131,6 +131,8 @@
             <li><a class="treeview-item {{ Request::is('settings/expense_types*') ? 'active' : '' }}" href="{{route('expense_types.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Expense Types")}}</a></li>
             <li><a class="treeview-item {{ Request::is('settings/payment_types*') ? 'active' : '' }}" href="{{route('payment_types.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Payment Types")}}</a></li>
             <li><a class="treeview-item {{ Request::is('settings/banks*') ? 'active' : '' }}" href="{{route('banks.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Banks")}}</a></li>
+            <li><a class="treeview-item {{ Request::is('settings/sendergate*') ? 'active' : '' }}" href="{{route('sendergate.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Sender Gate")}}</a></li>
+             <li><a class="treeview-item {{ Request::is('settings/senderoffice*') ? 'active' : '' }}" href="{{route('senderoffice.index')}}"><i class="icon fa fa-circle-o"></i> {{ __("Sender Post Office")}}</a></li>
           </ul>
         </li>
         <li><a class="app-menu__item {{ Request::is('success_list') ? 'active' : '' }}" href="{{route('success_list')}}"><i class="app-menu__icon fa fa-list-alt" aria-hidden="true"></i><span class="app-menu__label">{{ __("Success Ways")}}</span></a></li>

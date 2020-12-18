@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\City;
+use App\SenderGate;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class SenderGateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CityController extends Controller
      */
     public function index()
     {
-        $cities=City::all();
-        return view('city.index',compact('cities'));
+        $gates=SenderGate::all();
+        return view('sender_gate.index',compact('gates'));
     }
 
     /**
@@ -25,7 +25,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        return view('city.create');
+        return view('sender_gate.create');
     }
 
     /**
@@ -41,10 +41,10 @@ class CityController extends Controller
         ]);
 
         if($validator){
-            $city=new City;
-            $city->name=$request->name;
-            $city->save();
-            return redirect()->route('cities.index')->with("successMsg",'New City is ADDED in your data');
+            $gate=new SenderGate;
+            $gate->name=$request->name;
+            $gate->save();
+            return redirect()->route('sendergate.index')->with("successMsg",'New Gate is ADDED in your data');
         }
         else
         {
@@ -55,10 +55,10 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\City  $city
+     * @param  \App\SenderGate  $senderGate
      * @return \Illuminate\Http\Response
      */
-    public function show(City $city)
+    public function show(SenderGate $senderGate)
     {
         //
     }
@@ -66,34 +66,35 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\City  $city
+     * @param  \App\SenderGate  $senderGate
      * @return \Illuminate\Http\Response
      */
-    public function edit(City $city)
+    public function edit(SenderGate $senderGate,$id)
     {
-        $city=$city;
-        //dd($city);
-        return view('city.edit',compact('city'));
+        ///dd($id);
+        $gate=SenderGate::find($id);
+        //dd($gate);
+        return view('sender_gate.edit',compact('gate'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\City  $city
+     * @param  \App\SenderGate  $senderGate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, City $city)
+    public function update(Request $request, SenderGate $senderGate,$id)
     {
-        $validator = $request->validate([
+         $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
         ]);
 
         if($validator){
-            $city=$city;
-            $city->name=$request->name;
-            $city->save();
-            return redirect()->route('cities.index')->with("successMsg",'update successfully');
+            $gate=SenderGate::find($id);
+            $gate->name=$request->name;
+            $gate->save();
+            return redirect()->route('sendergate.index')->with("successMsg",'update successfully');
         }
         else
         {
@@ -104,13 +105,13 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\City  $city
+     * @param  \App\SenderGate  $senderGate
      * @return \Illuminate\Http\Response
      */
-    public function destroy(City $city)
+    public function destroy(SenderGate $senderGate,$id)
     {
-        $city=$city;
-        $city->delete();
-       return redirect()->route('cities.index')->with('successMsg','Existing City is DELETED in your data');
+        $gate=SenderGate::find($id);
+        $gate->delete();
+       return redirect()->route('sendergate.index')->with('successMsg','Existing Gate is DELETED in your data');
     }
 }
