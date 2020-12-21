@@ -143,7 +143,7 @@
                 <div class="form-group row">
                   <div class="col-6">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="amountstatus" id="amountpaid" value="1" checked="checked">
+                      <input class="form-check-input" type="radio" name="amountstatus" id="amountpaid" value="1" >
                       <label class="form-check-label" for="amountpaid">
                        {{ __("Unpaid")}}
                       </label>
@@ -151,7 +151,7 @@
                   </div>
                   <div class="col-6">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="amountstatus" id="amountunpaid"  value="2" >
+                      <input class="form-check-input" type="radio" name="amountstatus" id="amountunpaid"  value="2"  >
                       <label class="form-check-label" for="amountunpaid">
                         {{ __("All paid")}}
                       </label>
@@ -197,7 +197,7 @@
 
                     <input type="hidden" name="qty" value={{$pickup->schedule->quantity - count($pickup->items)}}>
                     <input type="hidden" name="myqty" value="{{$pickup->schedule->quantity}}">
-                    <li class="list-group-item">{{ __("Deposit Balance")}}: {{number_format($pickup->schedule->amount-$total)}} KS</li>
+                    <li class="list-group-item">{{ __("Balance")}}: {{number_format($pickup->schedule->amount-$total)}} KS</li>
                     {{-- @if($pickup->schedule->quantity - count($pickup->items) == 1)
                     <li class="list-group-item">
                       <div class="row">
@@ -257,8 +257,9 @@
 
             {{-- @if($pickup->schedule->quantity - count($pickup->items) == 1) --}}
               <div class="form-group">
-                <button class="btn btn-primary savebtn" data-items="{{$pickup->items}}" type="button" data-toggle="modal" data-target="#depositModal">{{ __("Save")}}</button>
+                <button class="btn btn-primary savebtn" data-items="{{$pickup->items}}" type="button">{{ __("Save")}}</button>
               </div>
+              {{-- data-toggle="modal" data-target="#depositModal" --}}
             {{-- @else
               <div class="form-group">
                 <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
@@ -368,6 +369,7 @@
       })
     })
 
+    $('#amountpaid').attr('checked','checked');
     $(".paidamount").hide();
      $("#know").click(function(){
         if(this.checked){
@@ -523,6 +525,7 @@
       var id=$(this).val();
 
       if(id==1){
+        //alert("ok");
         var today = new Date();
         var numberofdays = 3;
         today.setDate(today.getDate() + numberofdays); 
@@ -530,12 +533,16 @@
         var month = ("0" + (today.getMonth() + 1)).slice(-2);
         //console.log(month);
         var incityday= today.getFullYear()+"-"+(month)+"-"+(day) ;
-        console.log(incityday);
+        //console.log(incityday);
         $(".pickdate").val(incityday);
         $('#InputDeposit').prop('disabled',false);
         $("#InputDeposit").val();
         $('#InputDeposit').prop('readonly',false);
+        $('#amountunpaid').removeAttr('checked');
+        $('#amountpaid').attr('checked','checked');
+        
       }else{
+        //alert("ok");
         var today = new Date();
         var numberofdays = 7;
         today.setDate(today.getDate() + numberofdays); 
@@ -547,6 +554,8 @@
         $(".pickdate").val(gateday);
         $("#InputDeposit").val(0);
         $('#InputDeposit').prop('readonly',true);
+        $('#amountpaid').removeAttr('checked');
+        $('#amountunpaid').attr('checked','checked');
       }
 
       $.ajaxSetup({

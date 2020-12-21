@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('expense_types','ExpenseTypeController');
     Route::resource('payment_types','PaymentTypeController');
     Route::resource('banks','BankController');
+    Route::resource('sendergate','SenderGateController'); 
+    Route::resource('senderoffice','SenderOfficeController');
   });
 
 Route::post('expensebytype','ExpenseController@expensebytype')->name('expensebytype');
