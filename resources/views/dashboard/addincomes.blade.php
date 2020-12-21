@@ -159,7 +159,7 @@
           console.log(response.ways)
           for(let row of response.ways){
             console.log(row);
-            total+=row.item.item_amount;
+            total+=Number(row.item.item_amount);
             html +=`
               <tr>
                     <td>${i++}</td>
@@ -221,7 +221,7 @@
         $('.carryfees').hide();
 
         $.post("{{route('getitembyway')}}",{wayid:id},function (response) {
-          if (response.deposit == 0) {
+          if (response.deposit == 0 && (response.sender_gate_id!=null || response.sender_postoffice_id!=null)) {
             $('.carryfees').show();
           }
         })

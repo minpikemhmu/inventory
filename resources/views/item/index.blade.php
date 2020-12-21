@@ -29,8 +29,8 @@
           <div class="bs-component">
             <ul class="nav nav-tabs">
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#collect">{{ __("In Stock")}}</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#way">{{ __("On Way")}}</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#print">{{ __("print way")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#way">{{ __("On Ways")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#print">{{ __("Print Ways")}}</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="collect">
@@ -161,10 +161,10 @@
               </div>
 
                <div class="table-responsive">
-                  <table class="table table-bordered" >
+                  <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th>{{ __("Item Cod")}}</th>
+                        <th>{{ __("Item Code")}}</th>
                         <th>{{ __("Receiver Name")}}</th>
                         <th>{{ __("Full Address")}}</th>
                         <th>{{ __("Receiver Phone No")}}</th>
