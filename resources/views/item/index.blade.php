@@ -95,6 +95,7 @@
                         <th>{{ __("Codeno")}}</th>
                         <th>{{ __("Township")}}</th>
                         <th>{{ __("Delivery Man")}}</th>
+                        <th>{{ __("Assign Date")}}</th>
                         <th>{{ __("Expired Date")}}</th>
                         <th>{{ __("Amount")}}</th>
                         <th>{{ __("Actions")}}</th>
@@ -128,7 +129,8 @@
 
                            @endforeach
                         </td>
-                        <td>{{$way->item->expired_date}}</td>
+                        <td>{{Carbon\Carbon::parse($way->created_at)->format('d-m-Y')}}</td>
+                        <td>{{Carbon\Carbon::parse($way->item->expired_date)->format('d-m-Y')}}</td>
                         <td>{{$amount}}</td>
                         <td class="mytd">
                           <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">{{ __("Detail")}}</a>

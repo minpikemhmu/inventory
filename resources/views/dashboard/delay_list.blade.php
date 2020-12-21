@@ -24,6 +24,7 @@
                       <tr>
                         <th>{{ __("#")}}</th>
                         <th>{{ __("Codeno")}}</th>
+                        <th>{{ __("Client Name")}}</th>
                         <th>{{ __("Township")}}</th>
                         <th>{{ __("Receiver Info")}}</th>
                         <th>{{ __("Expired Date")}}</th>
@@ -50,6 +51,7 @@
                             </label>
                           </div></td>
                         <td>@if($differentday==1)<span class="badge badge-warning">{{$row->codeno}}</span> @elseif($differentday>1)<span class="badge badge-danger">{{$row->codeno}}</span>@endif</td>
+                        <td class="text-danger">{{$row->pickup->schedule->client->user->name}}</td>
                         <td class="text-danger">{{$row->township->name}}</td>
                         <td>
                           {{$row->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span>
