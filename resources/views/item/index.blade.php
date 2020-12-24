@@ -304,6 +304,9 @@
             "bInfo": true,
             "bAutoWidth": true,
             "bStateSave": true,
+            "bprocessing":true,
+            "bserverSide":true,
+            
             "aoColumnDefs": [
                 { 'bSortable': false, 'aTargets': [ -1,0] }
             ]
