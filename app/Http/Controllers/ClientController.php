@@ -55,8 +55,7 @@ class ClientController extends Controller
             'address'  => ['required','string'],
             'person'=>['required','string'],
             'township'=>['required'],
-            'account'=>['required'],
-            'owner'=>['required']
+           
         ]);
         if($validator){
             
@@ -132,8 +131,7 @@ class ClientController extends Controller
             'address'  => ['required','string'],
             'person'=>['required','string'],
             'township'=>['required'],
-            'account'=>['required'],
-            'owner'=>['required']
+           
         ]);
          //dd($request);
         if($validator){

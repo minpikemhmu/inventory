@@ -29,8 +29,8 @@
           <div class="bs-component">
             <ul class="nav nav-tabs">
               <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#collect">{{ __("In Stock")}}</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#way">{{ __("On Way")}}</a></li>
-              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#print">{{ __("print way")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#way">{{ __("On Ways")}}</a></li>
+              <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#print">{{ __("Print Ways")}}</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade active show" id="collect">
@@ -95,6 +95,7 @@
                         <th>{{ __("Codeno")}}</th>
                         <th>{{ __("Township")}}</th>
                         <th>{{ __("Delivery Man")}}</th>
+                        <th>{{ __("Assign Date")}}</th>
                         <th>{{ __("Expired Date")}}</th>
                         <th>{{ __("Amount")}}</th>
                         <th>{{ __("Actions")}}</th>
@@ -128,7 +129,8 @@
 
                            @endforeach
                         </td>
-                        <td>{{$way->item->expired_date}}</td>
+                        <td>{{Carbon\Carbon::parse($way->created_at)->format('d-m-Y')}}</td>
+                        <td>{{Carbon\Carbon::parse($way->item->expired_date)->format('d-m-Y')}}</td>
                         <td>{{$amount}}</td>
                         <td class="mytd">
                           <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">{{ __("Detail")}}</a>
@@ -161,10 +163,10 @@
               </div>
 
                <div class="table-responsive">
-                  <table class="table table-bordered" >
+                  <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th>{{ __("Item Cod")}}</th>
+                        <th>{{ __("Item Code")}}</th>
                         <th>{{ __("Receiver Name")}}</th>
                         <th>{{ __("Full Address")}}</th>
                         <th>{{ __("Receiver Phone No")}}</th>
@@ -302,6 +304,9 @@
             "bInfo": true,
             "bAutoWidth": true,
             "bStateSave": true,
+            "bprocessing":true,
+            "bserverSide":true,
+            
             "aoColumnDefs": [
                 { 'bSortable': false, 'aTargets': [ -1,0] }
             ]

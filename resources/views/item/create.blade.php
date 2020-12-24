@@ -265,89 +265,89 @@
               </div>
             @endif
 
-<!-- Modal -->
-<div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Deposit Amount: {{number_format($pickup->schedule->amount)}} KS</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-6">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" checked="checked">
-              <label class="form-check-label" for="paid">
-               {{ __("Paid")}}
-              </label>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="col-6">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="paystatus" id="unpaid" value="2" >
-                <label class="form-check-label" for="unpaid">
-                  {{ __("Unpaid")}}
-                </label>
+            <!-- Modal -->
+            <div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Deposit Amount: {{number_format($pickup->schedule->amount)}} KS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="paystatus" id="paid" value="1" checked="checked">
+                          <label class="form-check-label" for="paid">
+                           {{ __("Paid")}}
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="col-6">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paystatus" id="unpaid" value="2" >
+                            <label class="form-check-label" for="unpaid">
+                              {{ __("Unpaid")}}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-control-feedback text-danger">
+                          {{$errors->first('paystatus') }} 
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group myknow">
+                          <input type="checkbox" id="know">
+                          <label for="know">{{ __("If you do not paid all deposit")}}</label> 
+                    </div>
+
+                   <div class="row mt-3 paidamount">
+                      <div class="form-row col-md-12">
+                        <div class="col-md-4">
+                        <label>Paid Amount:</label>
+                      </div>
+                      <div class="col-md-8">
+                        <input type="number" name="paidamount" class="form-control" id="paidamount">
+                      </div>
+                      <div class="col-md-12">
+                          <span class="d-none text-danger amounterrormsg">paidamount must be between 1 and depositamount!</span>
+                    </div>
+                    </div>
+                    </div>
+
+
+                    <div class="row mt-3 bank">
+                      <div class="form-row col-md-12">
+                        <div class="col-md-4">
+                          <label>Choose Bank or Cash:</label>
+                        </div>
+                        <div class="col-md-8">
+                          <select class="form-control payment_method" name="payment_method">
+                            <option value="" data-amount="0">Choose Bank</option>
+                            @foreach($banks as $bank)
+                            <option value="{{$bank->id}}" data-amount="{{$bank->amount}}">{{$bank->name}} ({{$bank->amount}})</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="col-md-12">
+                          <span class="d-none text-danger errormsg">Not Enough To Paid!</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+                    <button type="submit" class="btn btn-primary confirm_and_save">Confirm and Save</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-control-feedback text-danger">
-              {{$errors->first('paystatus') }} 
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group myknow">
-              <input type="checkbox" id="know">
-              <label for="know">{{ __("If you do not paid all deposit")}}</label> 
-        </div>
-
-       <div class="row mt-3 paidamount">
-          <div class="form-row col-md-12">
-            <div class="col-md-4">
-            <label>Paid Amount:</label>
-          </div>
-          <div class="col-md-8">
-            <input type="number" name="paidamount" class="form-control" id="paidamount">
-          </div>
-          <div class="col-md-12">
-              <span class="d-none text-danger amounterrormsg">paidamount must be between 1 and depositamount!</span>
-        </div>
-        </div>
-        </div>
-
-
-        <div class="row mt-3 bank">
-          <div class="form-row col-md-12">
-            <div class="col-md-4">
-              <label>Choose Bank or Cash:</label>
-            </div>
-            <div class="col-md-8">
-              <select class="form-control payment_method" name="payment_method">
-                <option value="" data-amount="0">Choose Bank</option>
-                @foreach($banks as $bank)
-                <option value="{{$bank->id}}" data-amount="{{$bank->amount}}">{{$bank->name}} ({{$bank->amount}})</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="col-md-12">
-              <span class="d-none text-danger errormsg">Not Enough To Paid!</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-        <button type="submit" class="btn btn-primary confirm_and_save">Confirm and Save</button>
-      </div>
-    </div>
-  </div>
-</div>
           </form>
         </div>
       </div>
