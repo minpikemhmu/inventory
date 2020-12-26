@@ -99,6 +99,7 @@ Route::post('expensebytype','ExpenseController@expensebytype')->name('expensebyt
   Route::post('storeandassignschedule', 'ScheduleController@storeandassignschedule')->name('schedules.storeandassign');
 
   Route::resource('items', 'ItemController');
+  Route::get('newitem','ItemController@newitem')->name('newitem');
   Route::get('items/collectitem/{cid}/{pid}','ItemController@collectitem')->name('items.collect');
   Route::post('itemdetail','ItemController@itemdetail')->name('itemdetail');
   Route::post('wayassign','ItemController@assignWays')->name('wayassign');

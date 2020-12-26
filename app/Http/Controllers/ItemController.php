@@ -19,7 +19,6 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\DB;
 use App\Bank;
 use App\Transaction;
-
 class ItemController extends Controller
 {
     /**
@@ -43,7 +42,9 @@ class ItemController extends Controller
                       }])->get();
 
         //dd($deliverymen);
-      $ways = Way::orderBy('id', 'desc')->get();
+      $ways = Way::orderBy('id', 'desc')->whereDate('created_at', Carbon\Carbon::today())->get();
+
+     // dd($ways);
       $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
       $data=[];
       foreach ($notifications as $noti) {
@@ -490,5 +491,14 @@ return redirect()->route('items.index')->with("successMsg",'way assign successfu
       }
 
       return "success";
+    }
+
+    public function newitem(){
+      $items=Item::whereHas('pickup',function($query){
+              $query->where('status',1);
+            })
+            ->doesntHave('way')
+            ->get();
+      return $items;
     }
 }
