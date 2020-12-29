@@ -91,6 +91,9 @@ Route::post('expensebytype','ExpenseController@expensebytype')->name('expensebyt
 
   //  For Staff
   Route::resource('schedules', 'ScheduleController');
+  Route::get('allpickup','ScheduleController@allpickup')->name('allpickup');
+  Route::get('getnoti','ScheduleController@getnoti')->name('getnoti');
+
 
   // client
   Route::get('cancel', 'MainController@cancel')->name('cancel.index');
@@ -100,6 +103,7 @@ Route::post('expensebytype','ExpenseController@expensebytype')->name('expensebyt
 
   Route::resource('items', 'ItemController');
   Route::get('newitem','ItemController@newitem')->name('newitem');
+  Route::get('onway','ItemController@onway')->name('onway');
   Route::get('items/collectitem/{cid}/{pid}','ItemController@collectitem')->name('items.collect');
   Route::post('itemdetail','ItemController@itemdetail')->name('itemdetail');
   Route::post('wayassign','ItemController@assignWays')->name('wayassign');

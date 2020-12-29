@@ -19,6 +19,8 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\DB;
 use App\Bank;
 use App\Transaction;
+use Yajra\DataTables\Facades\DataTables;
+use Response;
 class ItemController extends Controller
 {
     /**
@@ -29,11 +31,6 @@ class ItemController extends Controller
     public function index()
     {
       //$items=Item::doesntHave('way')->get();
-      $items=Item::whereHas('pickup',function($query){
-              $query->where('status',1);
-            })
-            ->doesntHave('way')
-            ->get();
   
       // dd($myitems);
       
@@ -42,19 +39,19 @@ class ItemController extends Controller
                       }])->get();
 
         //dd($deliverymen);
-      $ways = Way::orderBy('id', 'desc')->whereDate('created_at', Carbon\Carbon::today())->get();
+     
 
      // dd($ways);
-      $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
+    /*  $notifications=DB::table('notifications')->select('data')->where('notifiable_type','App\Way')->get();
       $data=[];
       foreach ($notifications as $noti) {
         $notiway=json_decode($noti->data);
         if($notiway->ways->status_code=="005"){
           array_push($data, $notiway->ways);
         }
-      }
+      }*/
       // dd($data);
-      return view('item.index',compact('items','deliverymen','ways','data'));
+      return view('item.index',compact('deliverymen'));
     }
 
     /**
@@ -330,6 +327,7 @@ class ItemController extends Controller
 
         $itemcode="";
         $client = Client::find($cid);
+        //dd($client);
         $codeno=$client->codeno;
         // dd($codeno);
         $mytime = Carbon\Carbon::now();
@@ -494,11 +492,16 @@ return redirect()->route('items.index')->with("successMsg",'way assign successfu
     }
 
     public function newitem(){
-      $items=Item::whereHas('pickup',function($query){
+       $items=Item::with("pickup.schedule.client.user")->with("township")->whereHas('pickup',function($query){
               $query->where('status',1);
             })
             ->doesntHave('way')
             ->get();
-      return $items;
+      return Datatables::of($items)->addIndexColumn()->toJson();
+    }
+
+    public function onway(){
+       $ways = Way::orderBy('id', 'desc')->with('item.township')->with("delivery_man.user")->whereDate('created_at', Carbon\Carbon::today())->get();
+       return Datatables::of($ways)->addIndexColumn()->toJson();
     }
 }

@@ -514,7 +514,6 @@
       var id=$(this).val();
 
       if(id==1){
-        //alert("ok");
         var today = new Date();
         var numberofdays = 3;
         today.setDate(today.getDate() + numberofdays); 

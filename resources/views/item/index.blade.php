@@ -48,47 +48,15 @@
                         <th>{{ __("Actions")}}</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        @foreach($items as $row)
-                        <td>
-                          <div class="animated-checkbox">
-                            <label class="mb-0">
-                              <input type="checkbox" name="assign[]" value="{{$row->id}}" data-codeno="{{$row->codeno}}"><span class="label-text"> </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>{{$row->codeno}}</td>
-                        <td>{{$row->pickup->schedule->client->user->name}}</td>
-                        <td class="text-danger">{{$row->township->name}}</td>
-                        <td>
-                          {{$row->receiver_name}} <span class="badge badge-dark">{{$row->receiver_phone_no}}</span>
-                        </td>
-                        <td>
-                          {{$row->expired_date}}
-                          @if($row->error_remark !== null)
-                            <span class="badge badge-warning">{{ __("date changed")}}</span>
-                          @endif
-                        </td>
-                        <td>{{number_format($row->amount)}}</td>
-                        <td class="mytd">
-                          <a href="#" class="btn btn-primary detail" data-id="{{$row->id}}">{{ __("Detail")}}</a>
-                          <a href="{{route('items.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
-                          <form action="{{ route('items.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
-                          </form>
-                        </td>
-                      </tr>
-                      @endforeach
+                    <tbody class="itemtbody">
+                      
                     </tbody>
                   </table>
                 </div>
               </div>
               <div class="tab-pane fade" id="way">
                 <div class="table-responsive">
-                  <table class="table table-bordered dataTable">
+                  <table class="table table-bordered" id="onwaytable">
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -102,44 +70,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @php $i=1;
-                      @endphp
-                      @foreach($ways as $way) 
-                      @php $amount=number_format($way->item->amount) ;  @endphp
-                      <tr>
-                        <td>
-                          {{$i++}}
-                        </td>
-                        <td>{{$way->item->codeno}}  
-                          @if($way->status_code == '001')
-                            <span class="badge badge-info">{{'success'}}</span>
-                          @elseif($way->status_code == '002')
-                            <span class="badge badge-warning">{{'return'}}</span>
-                          @elseif($way->status_code == '003')
-                            <span class="badge badge-danger">{{'reject'}}</span>
-                          @endif
-                        </td>
-                        <td>{{$way->item->township->name}}</td>
-                        <td class="text-danger">
-                          {{$way->delivery_man->user->name}} 
-                            @foreach($data as $dd)
-                            @if($dd->id==$way->id)
-                            <span class="badge badge-info seen">seen</span>
-                            @endif
-
-                           @endforeach
-                        </td>
-                        <td>{{Carbon\Carbon::parse($way->created_at)->format('d-m-Y')}}</td>
-                        <td>{{Carbon\Carbon::parse($way->item->expired_date)->format('d-m-Y')}}</td>
-                        <td>{{$amount}}</td>
-                        <td class="mytd">
-                          <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">{{ __("Detail")}}</a>
-                          <a href="#" class="btn btn-warning wayedit" data-id="{{$way->id}}">{{ __("Edit")}}</a>
-                          <a href="{{route('deletewayassign',$way->id)}}" class="btn btn-danger" onclick="return confirm('Are you sure?')">{{ __("Delete")}}</a>
-                        </td>
-                      </tr>
                       
-                      @endforeach
                     </tbody>
                   </table>
                 </div>
@@ -296,28 +227,12 @@
     $(document).ready(function () {
       $("#export").hide();
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
-      $('#checktable').dataTable({
-            "bPaginate": true,
-            "bLengthChange": true,
-            "bFilter": true,
-            "bSort": true,
-            "bInfo": true,
-            "bAutoWidth": true,
-            "bStateSave": true,
-            "bprocessing":true,
-            "bserverSide":true,
-            
-            "aoColumnDefs": [
-                { 'bSortable': false, 'aTargets': [ -1,0] }
-            ]
-        });
-
       $('.wayassign').click(function () {
         var ways = [];
         var oTable = $('#checktable').dataTable();
         // console.log(oTable);
         var rowcollection = oTable.$("input[name='assign[]']:checked", {"page": "all"});
-        
+        console.log(rowcollection);
         $.each(rowcollection,function(index,elem){
           let wayObj = {id:$(elem).val(),codeno:$(elem).data('codeno')};
           ways.push(wayObj);
@@ -335,7 +250,7 @@
 
 
       //item detail
-      $(".dataTable tbody").on('click','.detail',function(){
+      $("#onwaytable tbody").on('click','.detail',function(){
         var id=$(this).data('id');
         //console.log(id);
         $('#itemDetailModal').modal('show');
@@ -402,22 +317,23 @@
       })
 
       var submit = $("#submit_assign").hide();
-      cbs = $('.dataTable tbody').on('click', 'input[name="assign[]"]', function () {
+      cbs = $('#checktable tbody').on('click', 'input[name="assign[]"]', function () {
       // cbs = $('input[name="assign[]').click(function() {
       // submit.toggle(cbs.is(":checked") , 2000);
       // submit.toggle(cbs.is(":checked"));
-        if($('.dataTable tbody :input[type="checkbox"]:checked').length>0)
+
+        if($('#checktable tbody :input[type="checkbox"]:checked').length>0)
         {
           $("#submit_assign").show();
         }else{
           $("#submit_assign").hide();
         }
         // submit.toggle();
-        console.log(submit)
+        //console.log(submit)
       });
       // console.log($cbs)
 
-      $(".wayedit").click(function(){
+    $("#onwaytable tbody").on('click','.wayedit',function(){
         $('#editwayAssignModal').modal('show');
         var id=$(this).data("id");
         //console.log(id);
@@ -467,8 +383,162 @@
 
     })
 
+      getdata();
+      getway();
+      function getdata(){   
+        var url="{{route('newitem')}}";
+        var i=1;
+        $('#checktable').dataTable({
+          "bPaginate": true,
+          "bLengthChange": true,
+          "bFilter": true,
+          "bSort": true,
+          "bInfo": true,
+          "bAutoWidth": true,
+          "bStateSave": true,
+          "aoColumnDefs": [
+          { 'bSortable': false, 'aTargets': [ -1,0] }
+          ],
+          "bserverSide": true,
+          "bprocessing":true,
+          "ajax": {
+            url: url,
+            type: "GET",
+            dataType:'json',
+          },
+          "columns": [
+          {"data":'DT_RowIndex'},
+          {"data": null,
+          render:function(data, type, full, meta){
+
+            return`<div class="animated-checkbox">
+            <label class="mb-0">
+            <input type="checkbox" name="assign[]" value="${data.id}" data-codeno="${data.codeno}"><span class="label-text"> </span>
+            </label>
+            </div>`
+          }
+        },
+        {"data":"codeno"},
+        {
+          "data":"pickup.schedule.client.user.name"
+        },
+        {
+          "data":"township.name"
+        },
+        {
+          "data":null,
+          render:function(data, type, full, meta){
+
+            return`${data.receiver_name} <span class="badge badge-dark">${data.receiver_phone_no}</span>`
+          }
+        },
+        {
+          "data":null,
+          render:function(data, type, full, meta){
+            if(data.error_remark!== null){
+              return `thousands_separators${thousands_separators(data.amount)}<span class="badge badge-warning">{{ __("date changed")}}</span>`
+            }else{
+              return thousands_separators(data.amount);
+            }
+          }
+        },
+        {
+          "data":null,
+          render:function(data, type, full, meta){
+           var editurl="{{route('items.edit',":id")}}"
+           editurl=editurl.replace(':id',data.id);
+           return`<a href="#" class="btn btn-primary detail" data-id="${data.id}">{{ __("Detail")}}</a> <a href="${editurl}" class="btn btn-warning">{{ __("Edit")}}</a>`
+         }
+       }
+
+       ],
+       "info":false
+     });
+        
+      }
 
 
+      function getway(){   
+        var url="{{route('onway')}}";
+        $('#onwaytable').dataTable({
+          "bPaginate": true,
+          "bLengthChange": true,
+          "bFilter": true,
+          "bSort": true,
+          "bInfo": true,
+          "bAutoWidth": true,
+          "bStateSave": true,
+          "aoColumnDefs": [
+          { 'bSortable': false, 'aTargets': [ -1,0] }
+          ],
+          "bserverSide": true,
+          "bprocessing":true,
+          "ajax": {
+            url: url,
+            type: "GET",
+            dataType:'json',
+          },
+          "columns": [
+          {"data":'DT_RowIndex'},
+          {"data": null,
+          render:function(data, type, full, meta){
+            if(data.status_code=="001"){
+              return `${data.item.codeno}<span class="badge badge-info">{{'success'}}</span>`
+            }else if(data.status_code=="002"){
+               return `${data.item.codeno}<span class="badge badge-warning">{{'return'}}</span>`
+            }else if(data.status_code=="003"){
+              return `${data.item.codeno}<span class="badge badge-danger">{{'reject'}}</span>`
+            }else{
+              return `${data.item.codeno}`
+            }
+            
+          }
+        },
+        {
+          "data":"item.township.name"
+        },
+        {
+          "data":"delivery_man.user.name"
+        },
+        {
+          "data":"created_at",
+          render:function(data){
+            var date=new Date(data);
+            date =date.toLocaleDateString(undefined, {year:'numeric'})+ '-' +date.toLocaleDateString(undefined, {month:'numeric'})+ '-' +date.toLocaleDateString(undefined, {day:'2-digit'})
+             return date;
+          }
+        },
+
+        {
+          "data":"item.expired_date"
+        },
+        {
+          "data":"item.amount",
+          render:function(data){
+            return `${thousands_separators(data)}`
+          }
+        },
+        {
+          "data":null,
+           render:function(data, type, full, meta){
+            var wayediturl="{{route('deletewayassign',":id")}}"
+           wayediturl=wayediturl.replace(':id',data.id);
+            return`<a href="#" class="btn btn-primary detail" data-id="${data.item.id}">{{ __("Detail")}}</a>
+           <a href="#" class="btn btn-warning wayedit" data-id="${data.id}">{{ __("Edit")}}</a>
+          <a href="${wayediturl}" class="btn btn-danger" onclick="return confirm('Are you sure?')">{{ __("Delete")}}</a>`
+           }
+        }
+       ],
+       "info":false
+     });
+        
+      }
+
+        function thousands_separators(num){
+      var num_parts = num.toString().split(".");
+      num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return num_parts.join(".");
+    }
 
     })
 

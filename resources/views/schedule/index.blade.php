@@ -12,6 +12,8 @@
       </ul>
     </div>
     <div class="row">
+      <input type="hidden" name="" value="{{$rolename}}" id="rolename">
+      <input type="hidden" name="" value="" id="notidata">
       <div class="col-md-12">
         @if(session('successMsg') != NULL)
           <div class="alert alert-success alert-dismissible fade show myalert" role="alert">
@@ -37,7 +39,7 @@
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade @role('client'){{'active show'}}@endrole" id="schedules">
                 <div class="table-responsive">
-                  <table class="table dataTable">
+                  <table class="table dataTable" >
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -76,7 +78,7 @@
               </div>
               <div class="tab-pane fade @role('staff'){{'active show'}}@endrole" id="assigned">
                 <div class="table-responsive">
-                  <table class="table dataTable">
+                  <table class="table" id="pickuptable">
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -85,54 +87,12 @@
                         <th>{{ __("Remark")}}</th>
                         <th>{{ __("Delivery Man")}}</th>
                         <th>{{ __("Quantity")}}</th>
-                        <th>{{ __("Actions")}}</th>
+                        <th>{{ __("Pickup state")}}</th>
+                        <th>{{ __("Action")}}</th>
                       </tr>
                     </thead>
                     <tbody class="assigntbody">
-                      @php $i=1; @endphp
-                      @foreach($pickups as $row)
-                      <tr>
-                        <td>{{$i++}}</td>
-                        @role('staff')<td class="text-danger">{{$row->schedule->client->user->name}}</td>@endrole
-                        <td>{{\Carbon\Carbon::parse($row->schedule->pickup_date)->format('d-m-Y')}}</td>
-                        <td>{{$row->schedule->remark}}</td>
-                        <td class="text-danger">{{$row->delivery_man->user->name}}
-                          @foreach($data as $dd)
-                            @if($dd->id==$row->id)
-                            <span class="badge badge-info seen">seen</span>
-                            @endif
-
-                           @endforeach
-                        </td>
-                        <td>{{$row->schedule->quantity}}</td>
-                        <td>
-                          @if($row->status==1 && $row->schedule->quantity > count($row->items))
-                            @role('staff')
-                              <a href="{{route('items.collect',['cid'=>$row->schedule->client->id,'pid'=>$row->id])}}" class="btn btn-primary">{{ __("Collect")}}</a>
-                            @endrole
-                            @role('client')
-                              <button type="button" class="btn btn-info">{{ __("Brought")}}</button>
-                            @endrole
-                          @elseif($row->status == 1 && $row->schedule->quantity == count(($row->items)))
-                            <button type="button" class="btn btn-info">{{ __("completed")}}</button>
-                          @elseif($row->status==2)
-                           <a href="{{route('checkitem',$row->id)}}" class="btn btn-danger">{{ __("fail")}}</a>
-                          @elseif($row->status==3)
-                           <a href="#" class="btn btn-secondary addamount" data-id="{{$row->schedule->id}}">{{ __("Add amount and qty")}}</a>
-                          @else
-                            <button type="button" class="btn btn-danger">{{ __("pending")}}</button>
-                          @endif
-                          <a href="{{route('schedules.edit',$row->schedule->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
-                            <form action="{{ route('schedules.destroy',$row->schedule->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
-                              @csrf
-                              @method('DELETE')
-                              <button type="submit" class="btn btn-danger">{{ __("Delete")}}</button>
-                            </form>
-                          {{-- <a href="#" class="btn btn-warning">Edit</a>
-                          <a href="#" class="btn btn-danger">Delete</a> --}}
-                        </td>
-                      </tr>
-                      @endforeach
+                      
                     </tbody>
                   </table>
                 </div>
@@ -275,6 +235,13 @@
 @section('script')
   <script type="text/javascript">
     $(document).ready(function () {
+      var notiurl="{{route("getnoti")}}";
+      $.get(notiurl,function(res){
+       //console.log(res);
+        $("#notidata").val(JSON.stringify(res));
+        getdata();
+      })
+
       $('.assign').click(function () {
         $('#assignModal').modal('show');
         var id=$(this).data(id);
@@ -353,6 +320,92 @@
         })
       })
 
+         
+
+         function getdata(){
+          //alert("ok");
+          
+          var rolename=$("#rolename").val();
+         var mydata=$("#notidata").val();
+          var mydataarray=JSON.parse(mydata);
+         
+        var url="{{route('allpickup')}}";
+        var i=1;
+         $('#pickuptable').dataTable({
+        "bPaginate": true,
+        "bLengthChange": true,
+        "bFilter": true,
+        "bSort": true,
+        "bInfo": true,
+        "bAutoWidth": true,
+        "bStateSave": true,
+        "aoColumnDefs": [
+                { 'bSortable': false, 'aTargets': [ -1,0] }
+            ],
+        "bserverSide": true,
+        "bprocessing":true,
+        "ajax": {
+            url: url,
+            type: "GET",
+            dataType:'json',
+        },
+          "columns": [
+         {"data":'DT_RowIndex'},
+         {"data":'schedule.client.user.name',
+         render:function(data){
+                      if(rolename=="staff"){
+                        return data;
+                      }
+                    }
+       },
+        { "data": "schedule.pickup_date"},
+        { "data": "schedule.remark"},
+        {"data":"delivery_man.user.name",
+         "render":function(data){
+         // console.log(data)
+           return `${data} `;
+         }
+
+        },
+         {"data":"schedule.quantity"},
+         {"data":null,
+            "render": function(data, type, full, meta){
+              if(data.status==1 && data.schedule.quantity>data.items.length){
+                if(rolename=="staff"){
+                var routeurl="{{route('items.collect',[':cid',':pid'])}}";
+                routeurl=routeurl.replace(':cid',data.schedule.client.id);
+                routeurl=routeurl.replace(':pid',data.id);
+                return `  <a href="${routeurl}" class="btn btn-primary">{{ __("Collect")}}</a>`;
+              }else if(rolename=="client"){
+                return ` <button type="button" class="btn btn-info">{{ __("Brought")}}</button>`
+              }
+              }else if(data.status==1 && data.schedule.quantity==data.items.length){
+                return`<button type="button" class="btn btn-info">{{ __("completed")}}</button>`
+              }else if(data.status==2){
+                var failurl="{{route('checkitem',':id')}}";
+                failurl=failurl.replace(':id',data.id);
+                return `<a href="${failurl}" class="btn btn-danger">{{ __("fail")}}</a>`
+              }else if(data.status==3){
+                return` <a href="#" class="btn btn-sm btn-secondary addamount" data-id="${data.schedule.id}">{{ __("Add amount and qty")}}</a>`
+              }else{
+                return `<button type="button" class="btn btn-danger">{{ __("pending")}}</button>`
+              }
+                  
+            }
+          },
+           {
+              "data":null,
+              "render": function(data, type, full, meta){
+               var editurl="{{route('schedules.edit',":id")}}"
+              editurl=editurl.replace(':id',data.schedule.id);
+              return `<a href="${editurl}" class="btn btn-warning">{{ __("Edit")}}</a>` 
+              }
+             } 
+        ],
+        "info":false
+    });
+        
+         }
 
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
     })
