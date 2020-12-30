@@ -423,7 +423,6 @@
             dataType:'json',
           },
           "columns": [
-          {"data":'DT_RowIndex'},
           {"data": null,
           render:function(data, type, full, meta){
 
@@ -448,15 +447,22 @@
             return`${data.receiver_name} <span class="badge badge-dark">${data.receiver_phone_no}</span>`
           }
         },
+        {"data":null,
+          render:function(data, type, full, meta){
+            if(data.error_remark!=null){
+
+              return`${data.expired_date}<span class="badge badge-warning">{{ __("date changed")}}</span>`;
+            }
+            else{
+              return data.expired_date;
+            }
+          }
+        },
         {
           "data":null,
           render:function(data, type, full, meta){
-            if(data.error_remark!== null){
-              return `thousands_separators${thousands_separators(data.amount)}<span class="badge badge-warning">{{ __("date changed")}}</span>`
-            }else{
               return thousands_separators(data.amount);
             }
-          }
         },
         {
           "data":null,
