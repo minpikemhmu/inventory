@@ -123,7 +123,7 @@
 
                 <div class="form-group">
                   <label for="InputDeposit">{{ __("Deposit")}}:</label>
-                  <input class="form-control" id="InputDeposit" type="number" name="deposit" value="@if($pickupeditem){{ $pickupeditem->deposit }}@else {{old('deposit')}} @endif">
+                  <input class="form-control" id="InputDeposit" type="number" name="deposit" value="{{old('deposit')}}">
                   <div class="form-control-feedback text-danger"> {{$errors->first('deposit') }} </div>
                 </div>
 
