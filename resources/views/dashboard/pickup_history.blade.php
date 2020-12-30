@@ -50,6 +50,7 @@
                 <tr>
                   <th>{{ __("#")}}</th>
                   <th>{{ __("Pickup Date")}}</th>
+                  <th>{{ __("Client Name")}}</th>
                   <th>{{ __("Quantity")}}</th>
                   <th>{{ __("Amount")}}</th>
                   <th>{{ __("Actions")}}</th>
@@ -126,6 +127,7 @@
         "columns": [
          {"data":'DT_RowIndex'},
         { "data": "schedule.pickup_date",},
+        {"data":"schedule.client.user.name"},
         { "data": "schedule.quantity" },
         { "data": "schedule.amount" },
         { "data": "id",

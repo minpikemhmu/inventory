@@ -210,7 +210,10 @@
           <p><strong>{{ __("Receiver Name")}}:</strong> <span id="rname">Ma Mon</span></p>
           <p ><strong >{{ __("Receiver Phone No")}}:</strong> <span id="rphone">09987654321</span></p>
           <p><strong >{{ __("Receiver Address")}}:</strong><span id="raddress"> No(3), Than Street, Hlaing, Yangon.</span></p>
+          <p><strong >{{ __("Item Price")}}:</strong><span id="rprice"> </span></p>
+          <p><strong >{{ __("Delivery Fee")}}:</strong><span id="rdfee"> </span></p>
           <p><strong>{{ __("Remark")}}:</strong> <span class="text-danger" id="rremark">Don't press over!!!!</span></p>
+          <p><strong >{{ __("Total Amount")}}:</strong><span id="rtotal"> </span></p>
 
           <p id="error_remark" class="d-none"></p>
 
@@ -269,7 +272,14 @@
           if(res.error_remark != null){
             $('#error_remark').removeClass('d-none')
             $("#error_remark").html(`<strong>Date Changed Remark:</strong> <span class="text-warning">${res.error_remark}</span>`)
-          }
+          };
+          var price =  `${thousands_separators(res.deposit)}`;
+          var deli_fee = `${thousands_separators(res.delivery_fees)}`;
+          var total = res.deposit + res.delivery_fees;
+          var total_amount = `${thousands_separators(total)}`;
+          $('#rtotal').html(total_amount);
+          $('#rprice').html(price);
+          $('#rdfee').html(deli_fee);
 
           $(".rcode").html(res.codeno);
         })
@@ -297,8 +307,14 @@
           if(res.error_remark != null){
             $('#error_remark').removeClass('d-none')
             $("#error_remark").html(`<strong>Date Changed Remark:</strong> <span class="text-warning">${res.error_remark}</span>`)
-          }
-
+          };
+          var price = `${thousands_separators(res.deposit)}`;
+          var deli_fee = `${thousands_separators(res.delivery_fees)}`;
+          var total = res.deposit + res.delivery_fees;
+          var total_amount = `${thousands_separators(total)}`;
+          $('#rtotal').html(total_amount);
+          $('#rprice').html(price);
+          $('#rdfee').html(deli_fee);
           $(".rcode").html(res.codeno);
         })
       })

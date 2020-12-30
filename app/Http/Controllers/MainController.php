@@ -959,20 +959,20 @@ public function profit(Request $request){
     if($rolename=="client"){
       $client_id=Auth::user()->client->id;
      // dd($client_id);
-      $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
+      $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
         $query->where('client_id', $client_id)->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
       })->where("status",1)->get();
     }else if($rolename=="staff"){
       if($client_id==null){
-       $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($sdate,$edate){
+       $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($sdate,$edate){
         $query->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
       })->where("status",1)->get();
      }else if($sdate==null && $edate==null){
-       $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($client_id){
+       $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($client_id){
         $query->where('client_id', $client_id);
       })->where("status",1)->get();
      }else{
-       $pickups=Pickup::with('schedule')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
+       $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
         $query->where('client_id', $client_id)->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
       })->where("status",1)->get();
      }

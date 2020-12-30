@@ -40,6 +40,7 @@
                   <th>{{ __("#")}}</th>
                   <th>{{ __("Item Code")}}</th>
                   <th>{{ __("Client")}}</th>
+                  <th>{{ __("Deliverd Date")}}</th>
                   <th>{{ __("Delivery Man")}}</th>
                   <th>{{ __("ways state")}}</th>
                   <th>{{ __("Remark")}}</th>
@@ -97,6 +98,15 @@
          {"data":'DT_RowIndex'},
         { "data": "item.codeno",},
         { "data": "item.pickup.schedule.client.user.name" },
+        {"data":"delivery_date",
+          render:function(data){
+            if(data==null){
+              return `-`;
+            }else{
+              return data;
+            }
+          }
+        },
         { "data": "delivery_man.user.name" },
         {"data":"status_code",
            render:function(data){
