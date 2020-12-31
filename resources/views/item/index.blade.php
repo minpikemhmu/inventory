@@ -64,7 +64,8 @@
                         <th>{{ __("Township")}}</th>
                         <th>{{ __("Delivery Man")}}</th>
                         <th>{{ __("Assign Date")}}</th>
-                        <th>{{ __("Expired Date")}}</th>
+                        <th>{{ __("Client")}}</th>
+                        <th>{{ __("Receiver Name")}}</th>
                         <th>{{ __("Amount")}}</th>
                         <th>{{ __("Actions")}}</th>
                       </tr>
@@ -532,8 +533,9 @@
         },
 
         {
-          "data":"item.expired_date"
+          "data":"item.pickup.schedule.client.user.name"
         },
+        {"data":"item.receiver_name"},
         {
           "data":"item.amount",
           render:function(data){

@@ -24,6 +24,7 @@
                         <th>{{ __("Township")}}</th>
                         <th>{{__("Receiver Name")}}</th>
                         <th>{{__("Receiver Phone No")}}</th>
+                        <th>{{ __("Remark")}}</th>
                         <th>{{ __("Way State")}}</th>
                         <th>{{ __("Amount")}}</th>
                       </tr>
@@ -38,6 +39,11 @@
                   <td>{{$row->township->name}}</td>
                   <td>{{$row->receiver_name}}</td>
                   <td>{{$row->receiver_phone_no}}</td>
+                  @if($row->remark!=null)
+                    <td>{{$row->remark}}</td>
+                  @else
+                  <td>{{"-"}}</td>
+                  @endif
                   <td>
                     @if($row->way==null)
                     <span class="badge badge-primary">
