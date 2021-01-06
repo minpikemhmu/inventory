@@ -64,7 +64,8 @@
                         <th>{{ __("Township")}}</th>
                         <th>{{ __("Delivery Man")}}</th>
                         <th>{{ __("Assign Date")}}</th>
-                        <th>{{ __("Expired Date")}}</th>
+                        <th>{{ __("Client")}}</th>
+                        <th>{{ __("Receiver Name")}}</th>
                         <th>{{ __("Amount")}}</th>
                         <th>{{ __("Actions")}}</th>
                       </tr>
@@ -435,7 +436,6 @@
             dataType:'json',
           },
           "columns": [
-          {"data":'DT_RowIndex'},
           {"data": null,
           render:function(data, type, full, meta){
 
@@ -460,15 +460,22 @@
             return`${data.receiver_name} <span class="badge badge-dark">${data.receiver_phone_no}</span>`
           }
         },
+        {"data":null,
+          render:function(data, type, full, meta){
+            if(data.error_remark!=null){
+
+              return`${data.expired_date}<span class="badge badge-warning">{{ __("date changed")}}</span>`;
+            }
+            else{
+              return data.expired_date;
+            }
+          }
+        },
         {
           "data":null,
           render:function(data, type, full, meta){
-            if(data.error_remark!== null){
-              return `thousands_separators${thousands_separators(data.amount)}<span class="badge badge-warning">{{ __("date changed")}}</span>`
-            }else{
               return thousands_separators(data.amount);
             }
-          }
         },
         {
           "data":null,
@@ -538,8 +545,9 @@
         },
 
         {
-          "data":"item.expired_date"
+          "data":"item.pickup.schedule.client.user.name"
         },
+        {"data":"item.receiver_name"},
         {
           "data":"item.amount",
           render:function(data){
