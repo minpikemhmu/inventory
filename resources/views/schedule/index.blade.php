@@ -245,7 +245,7 @@
       $('.assign').click(function () {
         $('#assignModal').modal('show');
         var id=$(this).data(id);
-        //console.log(id);
+        
       $("#assignid").val(id.id);
       })
 
@@ -331,7 +331,7 @@
          
         var url="{{route('allpickup')}}";
         var i=1;
-         $('#pickuptable').dataTable({
+        $('#pickuptable').dataTable({
         "bPaginate": true,
         "bLengthChange": true,
         "bFilter": true,

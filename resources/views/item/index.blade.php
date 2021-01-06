@@ -136,7 +136,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form method="post" action="{{route('wayassign')}}">
+        <form method="post" action="{{route('wayassign')}}" onsubmit="return checkForm(this);">
           @csrf
           <div class="modal-body">
             <div class="form-group">
@@ -228,6 +228,18 @@
 @section('script')
   <script type="text/javascript">
     $(document).ready(function () {
+
+      function checkForm(form) // Submit button clicked
+      {
+        //
+        // check form input values
+        //
+
+        form.myButton.disabled = true;
+        form.myButton.value = "Please wait...";
+        return true;
+      }
+
       $("#export").hide();
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
       $('.wayassign').click(function () {

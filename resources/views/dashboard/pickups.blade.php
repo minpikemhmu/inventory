@@ -26,6 +26,13 @@
       </div>
     </div>
 
+    <div class="row">
+
+      <div class="col-md-4">
+        <input type="date" name="search_date" class="search_date form-control">
+      </div>
+    </div>
+
         {{-- <div class="tile"> --}}
           
           {{-- <h3 class="tile-title d-inline-block">Pickup List ({{$mytime->toFormattedDateString()}})</h3> --}}
@@ -97,7 +104,14 @@
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
+
+    $('.search_date').change(function(){
+      var date = $(this).val();
+      console.log(date);
+     })
+
      setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+
   })
 </script>
 @endsection

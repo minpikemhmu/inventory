@@ -243,7 +243,7 @@ class ScheduleController extends Controller
     
     public function storeandassignschedule(Request $request)
     {
-       // dd($request);
+        // dd($request);
         $schedule_id=$request->assignid;
         $deliveryman_id=$request->deliveryman;
         //dd($deliveryman_id);

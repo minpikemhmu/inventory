@@ -91,7 +91,10 @@ class ItemController extends Controller
         'amount'=>['required'],
       ]);
 
-      if($validator){
+      $item = Item::find($request->codeno);
+      
+
+      if($validator && $item == null){
 
             //dd('c');
         //dd($request->deposit);
@@ -221,6 +224,7 @@ class ItemController extends Controller
       }
       else
       {
+
         return redirect::back()->withErrors($validator);
       }
             

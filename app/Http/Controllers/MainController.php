@@ -657,7 +657,6 @@ public function profit(Request $request){
         
       }
       
-      
       $pickups=Pickup::where('delivery_man_id',$id)->doesntHave('items')->get();
 
     }

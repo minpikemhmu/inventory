@@ -24,7 +24,7 @@
                 </button>
             </div>
           @endif
-          <form method="POST" action="{{route('items.store')}}">
+          <form method="POST" action="{{route('items.store')}}" onsubmit="return checkForm(this);">
             @csrf
             <div class="row">
               <div class="col-md-6">
@@ -257,7 +257,7 @@
 
             @if($pickup->schedule->quantity - count($pickup->items) == 1)
               <div class="form-group">
-                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#depositModal">{{ __("Save")}}</button>
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#depositModal" >{{ __("Save")}}</button>
               </div>
             @else
               <div class="form-group">
@@ -343,7 +343,7 @@
                   </div>
                   <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                    <button type="submit" class="btn btn-primary confirm_and_save">Confirm and Save</button>
+                    <button type="submit" class="btn btn-primary confirm_and_save" >Confirm and Save</button>
                   </div>
                 </div>
               </div>
@@ -368,6 +368,17 @@
 
         }
       })
+
+      function checkForm(form) // Submit button clicked
+      {
+        //
+        // check form input values
+        //
+
+        form.myButton.disabled = true;
+        form.myButton.value = "Please wait...";
+        return true;
+      }
 
     $('input[name="paystatus"]').click(function(){
       var inputValue = $(this).val();
