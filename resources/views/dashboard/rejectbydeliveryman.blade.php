@@ -4,16 +4,16 @@
     <div class="app-title">
       <div>
         @php $mytime = Carbon\Carbon::now(); @endphp
-        <h1><i class="fa fa-dashboard"></i> {{ __("Pending Ways")}} ({{$mytime->toFormattedDateString()}})</h1>
+        <h1><i class="fa fa-dashboard"></i> {{ __("Reject Ways")}} ({{$mytime->toFormattedDateString()}})</h1>
         <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="{{route('pending_ways')}}">{{ __("Pending Ways")}}</a></li>
+        <li class="breadcrumb-item"><a href="{{route('rejectwaybydeliveryman')}}">{{ __("Reject Ways")}}</a></li>
       </ul>
     </div>
 
-  @if(Auth::user()->delivery_man->city->name != "Yangon")
+
     <div  class="row my-4 ">
       <div class="col-md-4">
         <label for="startdate">Start Date</label>
@@ -28,7 +28,6 @@
         <button class="btn btn-info btn_search">Search</button>
       </div>
     </div>
-  @endif
     {{-- <div class="row">
       <div class="col-md-12">
         <div class="tile">
@@ -151,11 +150,11 @@
       </div>
     </div> --}}
 
-    <div class="row mypendingrow">
+    <div class="row myrejectrow">
       <div class="col-12 ">
             <div class="alert alert-primary alertsuccess d-none" role="alert"></div>
       </div>
-      @foreach($pending_ways as $row)
+      @foreach($rejects as $row)
       <div class="col-md-4 ">
         <div class="card mb-3">
           <h5 class="card-header">{{$row->item->receiver_name}}
@@ -445,11 +444,9 @@
             }
 
           }
-          
 
         })
       })
-
 
         // search date
 
@@ -457,7 +454,7 @@
           var start_date = $('.start_date').val();
           var end_date = $('.end_date').val();
           html = '';
-          $.post('pending_deli_date',{start_date:start_date,end_date:end_date},function(res){
+          $.post('reject_deli_date',{start_date:start_date,end_date:end_date},function(res){
             if(res){
               $.each(res,function(i,v){
               html+=`<div class="col-md-4">
@@ -514,7 +511,7 @@
                       </div>
                     </div>`;
                   })
-                $(".mypendingrow").html(html)
+                $(".myrejectrow").html(html)
 
                     }
 

@@ -172,6 +172,7 @@
           <ul class="treeview-menu">
             <li><a class="treeview-item {{ Request::is('ways/pending*') ? 'active' : '' }}" href="{{route('pending_ways')}}"><i class="icon fa fa-circle-o"></i> {{ __("Pending Ways")}}</a></li>
             <li><a class="treeview-item {{ Request::is('ways/success*') ? 'active' : '' }}" href="{{route('success_ways')}}"><i class="icon fa fa-circle-o"></i> {{ __("Success Ways")}}</a></li>
+             <li><a class="treeview-item {{ Request::is('ways/reject*') ? 'active' : '' }}" href="{{route('rejectwaybydeliveryman')}}"><i class="icon fa fa-circle-o"></i> {{ __("Reject Ways")}}</a></li>
           </ul>
         </li>
         @endrole

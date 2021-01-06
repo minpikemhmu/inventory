@@ -13,6 +13,21 @@
       </ul>
     </div>
 
+    <div  class="row my-4 ">
+      <div class="col-md-4">
+        <label for="startdate">Start Date</label>
+        <input type="date" name="start_date" class="form-control startdate" id="start_date">
+      </div>
+      <div class="col-md-4">
+        <label for="enddate">End date</label>
+        <input type="date" name="end_date" class="form-control end_date" id="enddate">
+      </div>
+
+      <div class="col-md-4 mt-4">
+        <button class="btn btn-info btn_search">Search</button>
+      </div>
+    </div>
+
     {{-- <div class="row">
       <div class="col-md-12">
         <div class="tile">
@@ -135,7 +150,7 @@
       </div>
     </div> --}}
 
-    <div class="row">
+    <div class="row mysuccessrow">
       @foreach($success_ways as $row)
       <div class="col-md-4">
         <div class="card mb-3">
@@ -412,6 +427,77 @@
 
         })
       })
+
+
+        // search date
+
+        $('.btn_search').click(function(){
+          var start_date = $('.start_date').val();
+          var end_date = $('.end_date').val();
+          html = '';
+          $.post('success_deli_date',{start_date:start_date,end_date:end_date},function(res){
+            if(res){
+              $.each(res,function(i,v){
+              html+=`<div class="col-md-4">
+                      <div class="card mb-3">
+                        <h5 class="card-header">${v.item.receiver_name}`
+                          if(v.status_code=='001'){
+                          html+=`<span class="badge badge-info">success</span>`}
+                          else if(v.status_code == '002'){
+                          html+=`<span class="badge badge-warning">return</span>`}
+                          else if(v.status_code == '003'){
+                         html+=`<span class="badge badge-danger">reject</span>`}
+                         html+= `<small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${v.item.expired_date}</small></h5>`
+                          html+=`<div class="card-body">
+                          <h5 class="card-title">Item Code: ${v.item.codeno}}</h5>
+                        <h5 class="card-title">Delivered Address: `
+                            if(v.item.sender_gate_id!=null){
+                            html+=`${v.item.sender_gate.name}`}
+                            else if(v.item.sender_postoffice_id != null){
+                             html+=`${v.item.sender_postoffice.name}`
+                            }
+                            else{
+                            html+=`${v.item.township.name}`}
+                         html+=`</h5>
+                        <p class="card-text">Full Address:${v.item.receiver_address}</p>
+                        <p class="card-text">
+                          Receiver Phone No:${v.item.receiver_phone_no}
+                        </p>
+                        <p class="card-text">
+                         Client Name: ${v.item.pickup.schedule.client.user.name}
+                        </p>
+                        <p class="card-text">
+                         Client Phone No: ${v.item.pickup.schedule.client.phone_no}
+                        </p>
+                        <p class="card-text">`
+                          if(v.item.paystatus==1){
+                           html+= `Amount: ${v.item.item_price}Ks`
+                         }
+                           {{-- <span class="badge badge-success">ma shin ya thay</span> --}}
+                          else
+                          {
+                          html+=`<span class="badge badge-success">All Paid!</span>`
+                        }
+                          
+                        html+=`</p>`
+                        
+                          
+                          if(v.status_code=="005"){
+                         html+=`<a href="#" class="btn btn-info btn-sm success" data-id="${v.id}">Success</a>
+                          <a href="#" class="btn btn-warning btn-sm return" data-id="${v.id}">Return</a>
+                          <a href="#" class="btn btn-danger btn-sm reject" data-id="${v.id}">Reject</a>`
+                        }
+                        html+=`<a href="#" class="btn btn-sm btn-primary detail" data-id="${v.item.id}">Detail</a> 
+                        </div>
+                      </div>
+                    </div>`;
+                  })
+                $(".mysuccessrow").html(html)
+
+                    }
+
+            })
+          })
 
     })
   </script>

@@ -7,7 +7,7 @@ use App\User;
 use App\Township;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-
+use App\City;
 class DeliveryMenController extends Controller
 {
     /**
@@ -29,7 +29,8 @@ class DeliveryMenController extends Controller
     public function create()
     {
         $townships=Township::orderBy('name','asc')->get();
-        return view('deliveryman.create',compact('townships'));
+        $cities = City::all();
+        return view('deliveryman.create',compact('townships','cities'));
     }
 
     /**
@@ -40,6 +41,7 @@ class DeliveryMenController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
          $validator = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
             'email'  => ['required','string','email','max:255','unique:users'],
@@ -48,6 +50,7 @@ class DeliveryMenController extends Controller
             'address'  => ['required','string'],
             'township'=>['required'],
         ]);
+
         if($validator){
             $user = new User;
             $user->name = $request->name;
@@ -59,6 +62,13 @@ class DeliveryMenController extends Controller
             $delivery_man->phone_no =$request->phone;
             $delivery_man->address = $request->address;
             $delivery_man->user_id = $user->id;
+
+            if($request->agent){
+                $delivery_man->city_id = $request->city;
+            }else{
+                $delivery_man->city_id = 1;
+            }
+
             $delivery_man->save();
             $delivery_man->townships()->attach($request->township);
            
@@ -89,9 +99,10 @@ class DeliveryMenController extends Controller
      */
     public function edit(DeliveryMan $deliveryMan)
     {
-         $townships=Township::orderBy('name','asc')->get();
+        $townships=Township::orderBy('name','asc')->get();
         $deliveryMan=$deliveryMan;
-        return view('deliveryman.edit',compact('deliveryMan','townships'));
+        $cities = City::all();
+        return view('deliveryman.edit',compact('deliveryMan','townships','cities'));
     }
 
     /**
@@ -124,6 +135,13 @@ class DeliveryMenController extends Controller
             $deliveryMan->phone_no =$request->phone;
             $deliveryMan->address = $request->address;
             $deliveryMan->user_id = $user->id;
+
+            if($request->agent){
+                $deliveryMan->city_id = $request->city;
+            }else{
+                $deliveryMan->city_id = 1;
+            }
+            
             $deliveryMan->save();
             if($request->township!=null){
                  $deliveryMan->townships()->detach();

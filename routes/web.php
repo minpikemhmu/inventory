@@ -136,6 +136,10 @@ Route::post('expensebytype','ExpenseController@expensebytype')->name('expensebyt
 
   Route::prefix('ways')->group(function () {
     Route::get('pending','MainController@pending_ways')->name('pending_ways');
+    Route::post('pending_deli_date','MainController@pending_deli_date')->name('pending_deli_date');
+    Route::post('success_deli_date','MainController@success_deli_date')->name('success_deli_date');
+    Route::post('reject_deli_date','MainController@reject_deli_date')->name('reject_deli_date');
+    Route::get('reject','MainController@rejectwaybydeliveryman')->name('rejectwaybydeliveryman');
     Route::get('success','MainController@success_ways')->name('success_ways');
   });
 

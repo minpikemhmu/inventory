@@ -684,8 +684,10 @@ public function profit(Request $request){
   // for way page => delivery man view
   public function pending_ways($value='')
   {
+
+    $date = Carbon\Carbon::today();
     // pending_ways assigned for that user (must delivery_date and refund_date equal NULL)
-    $pending_ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','!=',001)->where('status_code','!=',002)->where('deleted_at',null)->orderBy('id','desc')->get();
+    $pending_ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','005')->where('deleted_at',null)->orderBy('id','desc')->whereDate('created_at',$date)->get();
     //dd($ways);
 
     foreach ($pending_ways as $way) {
@@ -714,7 +716,8 @@ public function profit(Request $request){
 
   public function success_ways($value='')
   {
-    $success_ways = Way::with('income')->where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->orderBy('id','desc')->get();
+    $date = Carbon\Carbon::today();
+    $success_ways = Way::with('income')->where('delivery_man_id',Auth::user()->delivery_man->id) ->where('status_code',001)->orderBy('id','desc')->whereDate('created_at',$date)->get();
     //dd($success_ways);
 
     return view('dashboard.success_ways',compact('success_ways'));
@@ -1059,4 +1062,49 @@ public function profit(Request $request){
       return $pdf->download( $deliname.'.pdf');
       
   }
+
+
+  // date search
+  public function pending_deli_date(Request $request)
+  {
+    $start_date = $request->start_date;
+    $end_date = $request->end_date;
+
+    $way = Way::whereBetween('created_at',[$start_date." 00:00:00",$end_date." 23:59:59"])->where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','005')->orderBy('id','desc')->with('item.pickup.schedule.client.user')->with('item.SenderGate')->with('item.SenderPostoffice')->with('item.township')->whereHas('item')->get();
+
+    return response()->json($way);
+
+  }
+
+  public function success_deli_date(Request $request)
+  {
+    $start_date = $request->start_date;
+    $end_date = $request->end_date;
+
+    $way = Way::whereBetween('created_at',[$start_date." 00:00:00",$end_date." 23:59:59"])->where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','001')->orderBy('id','desc')->with('item.pickup.schedule.client.user')->with('item.SenderGate')->with('item.SenderPostoffice')->with('item.township')->whereHas('item')->get();
+
+    return response()->json($way);
+
+  }
+
+  public function rejectwaybydeliveryman($value='')
+  {
+      $rejects = Way::where('status_code','003')->where('delivery_man_id',Auth::user()->delivery_man->id)->orderBy('id',"DESC")->get();
+
+      return view('dashboard.rejectbydeliveryman',compact('rejects'));
+  }
+
+
+  public function reject_deli_date(Request $request)
+  {
+    $start_date = $request->start_date;
+    $end_date = $request->end_date;
+
+    $way = Way::whereBetween('created_at',[$start_date." 00:00:00",$end_date." 23:59:59"])->where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','003')->orderBy('id','desc')->with('item.pickup.schedule.client.user')->with('item.SenderGate')->with('item.SenderPostoffice')->with('item.township')->whereHas('item')->get();
+
+    return response()->json($way);
+  }
+
+
+
 }
