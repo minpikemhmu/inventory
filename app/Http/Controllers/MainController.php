@@ -685,9 +685,9 @@ public function profit(Request $request){
   public function pending_ways($value='')
   {
 
-    $date = Carbon\Carbon::today();
+    // $date = Carbon\Carbon::today();
     // pending_ways assigned for that user (must delivery_date and refund_date equal NULL)
-    $pending_ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','005')->where('deleted_at',null)->orderBy('id','desc')->whereDate('created_at',$date)->get();
+    $pending_ways = Way::where('delivery_man_id',Auth::user()->delivery_man->id)->where('status_code','005')->where('deleted_at',null)->orderBy('id','desc')->get();
     //dd($ways);
 
     foreach ($pending_ways as $way) {

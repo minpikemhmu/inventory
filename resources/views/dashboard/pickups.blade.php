@@ -25,13 +25,13 @@
           @endif
       </div>
     </div>
-
+{{-- 
     <div class="row">
 
       <div class="col-md-4">
         <input type="date" name="search_date" class="search_date form-control">
       </div>
-    </div>
+    </div> --}}
 
         {{-- <div class="tile"> --}}
           

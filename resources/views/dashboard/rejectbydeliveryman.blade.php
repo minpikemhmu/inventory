@@ -325,6 +325,26 @@
         })
       })
 
+
+      $('.myrejectrow').on('click','.detail',function () {
+        var id=$(this).data('id');
+        //console.log(id);
+        $('#itemDetailModal').modal('show');
+        $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+
+        $.post("{{route('itemdetail')}}",{id:id},function(res){
+          $("#rname").html(res.receiver_name);
+          $("#rphone").html(res.receiver_phone_no);
+          $("#raddress").html(res.receiver_address);
+          $("#rremark").html(res.remark);
+          $(".rcode").html(res.codeno);
+        })
+      })
+
       // control actions
       var $actions = $(".actions").hide();
       $cbs = $('input[name="ways[]"]').click(function() {
@@ -468,7 +488,7 @@
                          html+=`<span class="badge badge-danger">reject</span>`}
                          html+= `<small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${v.item.expired_date}</small></h5>`
                           html+=`<div class="card-body">
-                          <h5 class="card-title">Item Code: ${v.item.codeno}}</h5>
+                          <h5 class="card-title">Item Code: ${v.item.codeno}</h5>
                         <h5 class="card-title">Delivered Address: `
                             if(v.item.sender_gate_id!=null){
                             html+=`${v.item.sender_gate.name}`}
@@ -490,7 +510,7 @@
                         </p>
                         <p class="card-text">`
                           if(v.item.paystatus==1){
-                           html+= `Amount: ${v.item.item_price}Ks`
+                           html+= `Amount: ${v.item.amount}Ks`
                          }
                            {{-- <span class="badge badge-success">ma shin ya thay</span> --}}
                           else

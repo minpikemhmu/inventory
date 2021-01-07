@@ -292,7 +292,28 @@
         }
       });
 
-      $('.detail').click(function () {
+      $('.mysuccessrow').on('click','.detail',function () {
+        var id=$(this).data('id');
+        console.log(id);
+        $('#itemDetailModal').modal('show');
+        $.ajaxSetup({
+         headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        });
+
+        $.post("{{route('itemdetail')}}",{id:id},function(res){
+          $("#rname").html(res.receiver_name);
+          $("#rphone").html(res.receiver_phone_no);
+          $("#raddress").html(res.receiver_address);
+          $("#rremark").html(res.remark);
+          $(".rcode").html(res.codeno);
+
+          })
+      })
+
+
+        $('.detail').click(function () {
         var id=$(this).data('id');
         console.log(id);
         $('#itemDetailModal').modal('show');
@@ -471,7 +492,7 @@
                         </p>
                         <p class="card-text">`
                           if(v.item.paystatus==1){
-                           html+= `Amount: ${v.item.item_price}Ks`
+                           html+= `Amount: ${v.item.amount}Ks`
                          }
                            {{-- <span class="badge badge-success">ma shin ya thay</span> --}}
                           else
@@ -487,11 +508,15 @@
                           <a href="#" class="btn btn-warning btn-sm return" data-id="${v.id}">Return</a>
                           <a href="#" class="btn btn-danger btn-sm reject" data-id="${v.id}">Reject</a>`
                         }
-                        html+=`<a href="#" class="btn btn-sm btn-primary detail" data-id="${v.item.id}">Detail</a> 
+                        html+=`
+                        <a href="{{route('normal',":id")}}" class="btn btn-sm btn-warning edit" data-id="${v.item.id}">Edit</a>
+                        <a href="#" class="btn btn-sm btn-primary detail" data-id="${v.item.id}">Detail</a> 
                         </div>
                       </div>
                     </div>`;
+                    html = html.replace(':id',v.id);
                   })
+
                 $(".mysuccessrow").html(html)
 
                     }
