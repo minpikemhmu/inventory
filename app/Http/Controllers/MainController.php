@@ -917,17 +917,24 @@ public function profit(Request $request){
 
   public function way_history($value='')
   {
-    return view('dashboard.way_history');
+    $deliverymen=DeliveryMan::all();
+    return view('dashboard.way_history',compact('deliverymen'));
   }
 
 
   public function getwayhistory(Request $request){
     $sdate = $request->sdate;
     $edate = $request->edate;
+    $deliveryman_id=$request->deliveryman_id;
    // dd($sdate);
-    $ways = Way::withTrashed()->with('item.pickup.schedule.client.user','delivery_man.user')->where('status_code','!=','005')->whereBetween('updated_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->get();
-   // dd($ways);
-    return Datatables::of($ways)->addIndexColumn()->toJson();
+    if($deliveryman_id==null){
+       $ways = Way::orderBy('id', 'desc')->with('item.township')->with('item.pickup.schedule.client.user')->with("delivery_man.user")->whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->where('status_code','!=',005)->get();
+     }else if($sdate==null && $edate==null){
+       $ways = Way::orderBy('id', 'desc')->with('item.township')->with('item.pickup.schedule.client.user')->with("delivery_man.user")->where('delivery_man_id',$deliveryman_id)->where('status_code','!=',005)->get();
+     }else{
+       $ways = Way::orderBy('id', 'desc')->with('item.township')->with('item.pickup.schedule.client.user')->with("delivery_man.user")->whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->where('delivery_man_id',$deliveryman_id)->where('status_code','!=',005)->get();
+     }
+     return Datatables::of($ways)->addIndexColumn()->toJson();
   }
 
   public function pickup_history(){

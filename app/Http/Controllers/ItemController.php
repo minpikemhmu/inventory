@@ -508,4 +508,5 @@ return redirect()->route('items.index')->with("successMsg",'way assign successfu
        $ways = Way::orderBy('id', 'desc')->with('item.township')->with('item.pickup.schedule.client.user')->with("delivery_man.user")->whereDate('created_at', Carbon\Carbon::today())->get();
        return Datatables::of($ways)->addIndexColumn()->toJson();
     }
+
 }
