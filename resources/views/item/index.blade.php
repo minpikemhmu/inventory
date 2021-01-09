@@ -341,6 +341,7 @@
         dropdownParent: $('#editwayAssignModal')
       });
 
+
        $('.deliverymanway').select2({
         width: '100%',
       })

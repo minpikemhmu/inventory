@@ -118,6 +118,7 @@ Route::post('expensebytype','ExpenseController@expensebytype')->name('expensebyt
   Route::post('townshipbystatus','ItemController@townshipbystatus')->name('townshipbystatus');
   Route::get('deletewayassign/{id}','ItemController@deletewayassign')->name('deletewayassign');
 
+
   Route::resource('clients', 'ClientController');
   Route::resource('delivery_men', 'DeliveryMenController');
 
