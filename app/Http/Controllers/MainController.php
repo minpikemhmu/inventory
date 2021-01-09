@@ -32,7 +32,7 @@ use Excel;
 use App\Schedule;
 use App\Staff;
 use App\Transaction;
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class MainController extends Controller
 {
@@ -1059,7 +1059,7 @@ public function profit(Request $request){
       $pdf = PDF::loadView('dashboard.waypdf');
 
       // download PDF file with download method
-      return $pdf->download( $deliname.'.pdf');
+      return $pdf->stream( $deliname.'.pdf');
       
   }
 

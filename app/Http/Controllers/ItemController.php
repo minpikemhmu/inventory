@@ -73,7 +73,10 @@ class ItemController extends Controller
     public function store(Request $request)
     {
       // dd($request);
+      // echo checkFontType($request->receiver_address);
+      // echo checkFontType($data);
 
+      // dd('hi');
       $qty=$request->qty;
        // dd($qty);
       $myqty=$request->myqty;
@@ -95,8 +98,10 @@ class ItemController extends Controller
       
 
       if($validator && $item == null){
+      $data = tounicode($request->receiver_address);
 
-            //dd('c');
+
+        //dd('c');
         //dd($request->deposit);
         $item=new Item;
         $item->codeno=$request->codeno;
@@ -105,7 +110,7 @@ class ItemController extends Controller
         $item->amount =$request->amount;
         $item->delivery_fees=$request->delivery_fees;
         $item->receiver_name=$request->receiver_name;
-        $item->receiver_address=$request->receiver_address;
+        $item->receiver_address=$data;
         $item->receiver_phone_no=$request->receiver_phoneno;
         $item->remark=$request->remark;
         $item->paystatus=$request->amountstatus;
@@ -278,6 +283,8 @@ class ItemController extends Controller
         ]);
 
          if($validator){
+            $data = tounicode($request->receiver_address);
+
             $item=$item;
             $item->codeno=$request->codeno;
             $item->expired_date=$request->expired_date;
@@ -285,7 +292,7 @@ class ItemController extends Controller
             $item->amount =$request->amount;
             $item->delivery_fees=$request->delivery_fees;
             $item->receiver_name=$request->receiver_name;
-            $item->receiver_address=$request->receiver_address;
+            $item->receiver_address=$data;
             $item->receiver_phone_no=$request->receiver_phoneno;
             $item->remark=$request->remark;
             $item->paystatus=$request->amountstatus;

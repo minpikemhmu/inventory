@@ -15,6 +15,8 @@
     <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular."> --}}
     <title>{{ config('app.name', 'Better Ways') }}</title>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -31,6 +33,14 @@
     <link href="{{asset('datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.min.css') }}">
   </head>
+
+  <style type="text/css">
+   .mmfont
+    {
+      font-family: 'Zawgyi_One';
+      color: red;
+    }
+</style>
   <body class="app sidebar-mini">
     <!-- Navbar-->
     <header class="app-header"><a class="app-header__logo" href="#">{{ config('app.name', 'Better Ways') }}</a>

@@ -178,6 +178,11 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 
+
+        // for pdf myanmar font
+        PhpJunior\Zawuni\ZawuniServiceProvider::class,
+
+
     ],
 
     /*
