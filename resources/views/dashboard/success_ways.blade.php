@@ -28,128 +28,6 @@
       </div>
     </div>
 
-    {{-- <div class="row">
-      <div class="col-md-12">
-        <div class="tile">
-          
-          <h3 class="tile-title d-inline-block">Pending Ways List </h3>
-
-          <div class="float-right actions">
-            <a href="#" class="btn btn-success btn-sm mx-2 success">Success</a>
-          </div>
-
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="home" aria-selected="true">Pending ways</a>
-            </li>
-            <li class="nav-item" role="presentation">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#success" role="tab" aria-controls="profile" aria-selected="false">success ways</a>
-            </li>
-
-          </ul>
-          <div class="tab-content mt-3" id="myTabContent">
-            <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="home-tab">
-              <div class="col-12">
-              <div class="alert alert-primary success d-none" role="alert"></div>
-              </div>
-              <div class="table-responsive">
-                <table class="table table-bordered dataTable">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Codeno</th>
-                      <th>Township</th>
-                      <th>Receiver Info</th>
-                      <th>Expired Date</th>
-                      <th>Amount</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($ways as $way)
-                    <tr>
-                      <td>
-                        <div class="animated-checkbox">
-                          <label class="mb-0">
-                            <input type="checkbox" name="ways[]" value="{{$way->id}}"><span class="label-text"> </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>
-                        {{$way->item->codeno}}
-                        @if($way->status_code == '001')
-                        <span class="badge badge-info">{{'success'}}</span>
-                        @elseif($way->status_code == '002')
-                        <span class="badge badge-warning">{{'return'}}</span>
-                        @elseif($way->status_code == '003')
-                        <span class="badge badge-danger">{{'reject'}}</span>
-                        @endif
-
-                      </td>
-                      <td class="text-danger">{{$way->item->township->name}}</td>
-                      <td>
-                        {{$way->item->receiver_name}} <span class="badge badge-dark">{{$way->item->receiver_phone_no}}</span>
-                      </td>
-                      <td class="text-danger">{{$way->item->expired_date}}</td>
-                      <td>{{number_format($way->item->amount)}}</td>
-                      <td>
-                        @if($way->status_code == 005)
-                            <a href="#" class="btn btn-info btn-sm success" data-id="{{$way->id}}">Success</a>
-                            <a href="#" class="btn btn-warning btn-sm return" data-id="{{$way->id}}">Return</a>
-                            <a href="#" class="btn btn-danger btn-sm reject" data-id="{{$way->id}}">Reject</a>
-                        @endif
-                        <a href="#" class="btn btn-sm btn-primary detail" data-id="{{$way->item->id}}">Detail</a> 
-                      </td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="tab-pane fade" id="success" role="tabpanel" aria-labelledby="profile-tab">
-              <div class="table-responsive">
-                <table class="table table-bordered dataTable">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Codeno</th>
-                      <th>Township</th>
-                      <th>Receiver Info</th>
-                      <th>Expired Date</th>
-                      <th>Amount</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @php $i=1 @endphp
-                    @foreach($successways as $way)
-                    <tr>
-                      <td>{{$i++}}</td>
-                      <td>
-                        {{$way->item->codeno}}
-
-                      </td>
-                      <td class="text-danger">{{$way->item->township->name}}</td>
-                      <td>
-                        {{$way->item->receiver_name}} <span class="badge badge-dark">{{$way->item->receiver_phone_no}}</span>
-                      </td>
-                      <td class="text-danger">{{$way->item->expired_date}}</td>
-                      <td>{{number_format($way->item->amount)}}</td>
-                      <td>
-                        <a href="{{route('normal',$way->id)}}" class="btn btn-warning">edit</a>
-                        <a href="#" class="btn btn-primary detail" data-id="{{$way->item->id}}">Detail</a>
-                      </td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> --}}
-
     <div class="row mysuccessrow">
       @foreach($success_ways as $row)
       <div class="col-md-4">
@@ -162,7 +40,8 @@
             @elseif($row->status_code == '003')
             <span class="badge badge-danger">{{'reject'}}</span>
             @endif
-            <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->item->expired_date}}</small></h5>
+            {{-- <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->item->expired_date}}</small> --}}
+          </h5>
           <div class="card-body">
             <h5 class="card-title">{{ __("Item Code")}}: {{$row->item->codeno}}</h5>
             <h5 class="card-title">{{ __("Delivered Address")}}: 
@@ -184,7 +63,7 @@
           <p class="card-text">
            Client {{ __("Phone No")}}: {{$row->item->pickup->schedule->client->phone_no}}
           </p>
-            <p class="card-text">Amount: {{$row->item->amount}}</p>
+            <p class="card-text">Amount: {{number_format($row->item->amount)}} Ks</p>
             @if($row->income==null)
             <a href="{{route('normal',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
             @endif

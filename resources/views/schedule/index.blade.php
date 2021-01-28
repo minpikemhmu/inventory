@@ -39,7 +39,7 @@
             <div class="tab-content mt-3" id="myTabContent">
               <div class="tab-pane fade @role('client'){{'active show'}}@endrole" id="schedules">
                 <div class="table-responsive">
-                  <table class="table dataTable" >
+                  <table class="table table-bordered w-100 dataTable" >
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -58,16 +58,16 @@
                         @role('staff')
                           <td class="text-danger">{{$row->client->user->name}}</td>
                         @endrole
-                        <td>{{\Carbon\Carbon::parse($row->pickup_date)->format('d/m/Y')}}</td>
+                        <td>{{\Carbon\Carbon::parse($row->pickup_date)->format('d-m-Y')}}</td>
                         <td>{{$row->remark}}</td>
                         <td>{{$row->quantity}}</td>
                         <td>
                           @role('staff')
-                            <a href="#" class="btn btn-primary assign" data-id="{{$row->id}}">{{ __("Assign")}}</a>
-                            <a href="#" class="btn btn-info showfile" data-file="{{$row->file}}">{{ __("show file")}}</a>
+                            <a href="#" class="btn btn-sm btn-primary assign" data-id="{{$row->id}}">{{ __("Assign")}}</a>
+                            <a href="#" class="btn btn-sm btn-info showfile" data-file="{{$row->file}}">{{ __("show file")}}</a>
                           @endrole
                           @role('client')
-                            <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-warning">{{ __("Edit")}}</a>
+                            <a href="{{route('schedules.edit',$row->id)}}" class="btn btn-sm btn-warning">{{ __("Edit")}}</a>
                           @endrole
                         </td>
                       </tr>
@@ -78,7 +78,7 @@
               </div>
               <div class="tab-pane fade @role('staff'){{'active show'}}@endrole" id="assigned">
                 <div class="table-responsive">
-                  <table class="table" id="pickuptable">
+                  <table class="table table-bordered w-100" id="pickuptable">
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -332,6 +332,7 @@
         var url="{{route('allpickup')}}";
         var i=1;
         $('#pickuptable').dataTable({
+          "pageLength": 100,
         "bPaginate": true,
         "bLengthChange": true,
         "bFilter": true,
@@ -358,12 +359,16 @@
                       }
                     }
        },
-        { "data": "schedule.pickup_date"},
+        { "data": "schedule.pickup_date",
+          render:function (data) {
+            return formatDate(data)
+          }
+        },
         { "data": "schedule.remark"},
         {"data":"delivery_man.user.name",
          "render":function(data){
          // console.log(data)
-           return `${data} `;
+           return `${data}`;
          }
 
         },
@@ -375,20 +380,20 @@
                 var routeurl="{{route('items.collect',[':cid',':pid'])}}";
                 routeurl=routeurl.replace(':cid',data.schedule.client.id);
                 routeurl=routeurl.replace(':pid',data.id);
-                return `  <a href="${routeurl}" class="btn btn-primary">{{ __("Collect")}}</a>`;
+                return `  <a href="${routeurl}" class="btn btn-sm btn-primary">{{ __("Collect")}}</a>`;
               }else if(rolename=="client"){
-                return ` <button type="button" class="btn btn-info">{{ __("Brought")}}</button>`
+                return ` <button type="button" class="btn btn-sm btn-info">{{ __("Brought")}}</button>`
               }
               }else if(data.status==1 && data.schedule.quantity==data.items.length){
-                return`<button type="button" class="btn btn-info">{{ __("completed")}}</button>`
+                return`<button type="button" class="btn btn-sm btn-info">{{ __("completed")}}</button>`
               }else if(data.status==2){
                 var failurl="{{route('checkitem',':id')}}";
                 failurl=failurl.replace(':id',data.id);
-                return `<a href="${failurl}" class="btn btn-danger">{{ __("fail")}}</a>`
+                return `<a href="${failurl}" class="btn btn-sm btn-danger">{{ __("fail")}}</a>`
               }else if(data.status==3){
                 return` <a href="#" class="btn btn-sm btn-secondary addamount" data-id="${data.schedule.id}">{{ __("Add amount and qty")}}</a>`
               }else{
-                return `<button type="button" class="btn btn-danger">{{ __("pending")}}</button>`
+                return `<button type="button" class="btn btn-sm btn-danger">{{ __("pending")}}</button>`
               }
                   
             }
@@ -398,7 +403,7 @@
               "render": function(data, type, full, meta){
                var editurl="{{route('schedules.edit',":id")}}"
               editurl=editurl.replace(':id',data.schedule.id);
-              return `<a href="${editurl}" class="btn btn-warning">{{ __("Edit")}}</a>` 
+              return `<a href="${editurl}" class="btn btn-sm btn-warning">{{ __("Edit")}}</a>` 
               }
              } 
         ],
@@ -408,6 +413,14 @@
          }
 
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
+
+      // Y/M/D into D/M/Y
+      function formatDate (input) {
+        var datePart = input.match(/\d+/g),
+        year = datePart[0].substring(0,4), // get only two digits
+        month = datePart[1], day = datePart[2];
+        return day+'-'+month+'-'+year;
+      }
     })
   </script>
 @endsection

@@ -33,9 +33,11 @@
               <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#print">{{ __("Print Ways")}}</a></li>
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
+
+              {{-- instock --}}
               <div class="tab-pane fade active show" id="collect">
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="checktable">
+                  <table class="table table-bordered w-100" id="checktable">
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -54,9 +56,11 @@
                   </table>
                 </div>
               </div>
+
+              {{-- onway --}}
               <div class="tab-pane fade" id="way">
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="onwaytable">
+                  <table class="table table-bordered w-100" id="onwaytable">
                     <thead>
                       <tr>
                         <th>{{ __("#")}}</th>
@@ -77,24 +81,23 @@
                 </div>
               </div>
 
-             {{--  print --}}
-
-             <div class="tab-pane fade" id="print">
-               <div class="row">
-                 <div class="col-6">
-                  <div class="form-group">
-                    <label>{{ __("Choose Delivery Man")}}:</label>
-                    <select class="deliverymanway form-control" name="delivery_man">
-                      @foreach($deliverymen as $man)
-                      <option value="{{$man->id}}">{{$man->user->name}}
-                      </option>
-                      @endforeach
-                    </select>
+              {{--  print --}}
+              <div class="tab-pane fade" id="print">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>{{ __("Choose Delivery Man")}}:</label>
+                      <select class="deliverymanway form-control" name="delivery_man">
+                        @foreach($deliverymen as $man)
+                        <option value="{{$man->id}}">{{$man->user->name}}
+                        </option>
+                        @endforeach
+                      </select>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-               <div class="table-responsive">
+                <div class="table-responsive">
                   <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -112,14 +115,15 @@
                     </tbody>
                   </table>
                 </div>
-            </div>
-            <form action="{{route("createpdf")}}" method="post">
-              @csrf
-              <input type="hidden" name="id" value="" id="exportid">
-             <div class="justify-content-end mb-4" id="export">
-                  <button type="submit" class="btn btn-primary exportpdf">Export to PDF</button>
+
+                <form action="{{route("createpdf")}}" method="post">
+                  @csrf
+                  <input type="hidden" name="id" value="" id="exportid">
+                  <div class="justify-content-end mb-4" id="export">
+                    <button type="submit" class="btn btn-primary exportpdf">Export to PDF</button>
+                  </div>
+                </form>
               </div>
-            </form>
             </div>
           </div>
         </div>
@@ -415,10 +419,12 @@
 
       getdata();
       getway();
+
       function getdata(){   
         var url="{{route('newitem')}}";
         var i=1;
         $('#checktable').dataTable({
+          "pageLength": 100,
           "bPaginate": true,
           "bLengthChange": true,
           "bFilter": true,
@@ -427,7 +433,7 @@
           "bAutoWidth": true,
           "bStateSave": true,
           "aoColumnDefs": [
-          { 'bSortable': false, 'aTargets': [ -1,0] }
+            { 'bSortable': false, 'aTargets': [ -1,0] }
           ],
           "bserverSide": true,
           "bprocessing":true,
@@ -437,66 +443,66 @@
             dataType:'json',
           },
           "columns": [
-          {"data": null,
-          render:function(data, type, full, meta){
+            {"data": null,
+              render:function(data, type, full, meta){
 
-            return`<div class="animated-checkbox">
-            <label class="mb-0">
-            <input type="checkbox" name="assign[]" value="${data.id}" data-codeno="${data.codeno}"><span class="label-text"> </span>
-            </label>
-            </div>`
-          }
-        },
-        {"data":"codeno"},
-        {
-          "data":"pickup.schedule.client.user.name"
-        },
-        {
-          "data":"township.name"
-        },
-        {
-          "data":null,
-          render:function(data, type, full, meta){
+                return`<div class="animated-checkbox">
+                <label class="mb-0">
+                <input type="checkbox" name="assign[]" value="${data.id}" data-codeno="${data.codeno}"><span class="label-text"> </span>
+                </label>
+                </div>`
+              }
+            },
+            {"data":"codeno"},
+            {
+              "data":"pickup.schedule.client.user.name"
+            },
+            {
+              "data":"township.name"
+            },
+            {
+              "data":null,
+              render:function(data, type, full, meta){
 
-            return`${data.receiver_name} <span class="badge badge-dark">${data.receiver_phone_no}</span>`
-          }
-        },
-        {"data":null,
-          render:function(data, type, full, meta){
-            if(data.error_remark!=null){
+                return`<span class="d-block">${data.receiver_name}</span>
+                        <span class="badge badge-dark">${data.receiver_phone_no}</span>`
+              }
+            },
+            {"data":null,
+              render:function(data, type, full, meta){
+                if(data.error_remark!=null){
 
-              return`${data.expired_date}<span class="badge badge-warning">{{ __("date changed")}}</span>`;
+                  return`<span class="d-block">${formatDate(data.expired_date)}</span>
+                        <span class="badge badge-warning">{{ __("date changed")}}</span>`;
+                }
+                else{
+                  return formatDate(data.expired_date);
+                }
+              }
+            },
+            {
+              "data":null,
+              render:function(data, type, full, meta){
+                  return thousands_separators(data.amount);
+                }
+            },
+            {
+              "data":null,
+              render:function(data, type, full, meta){
+               var editurl="{{route('items.edit',":id")}}"
+               editurl=editurl.replace(':id',data.id);
+               return`<a href="#" class="btn btn-sm btn-primary detail" data-id="${data.id}">{{ __("Detail")}}</a> <a href="${editurl}" class="btn btn-sm btn-warning">{{ __("Edit")}}</a>`
+              }
             }
-            else{
-              return data.expired_date;
-            }
-          }
-        },
-        {
-          "data":null,
-          render:function(data, type, full, meta){
-              return thousands_separators(data.amount);
-            }
-        },
-        {
-          "data":null,
-          render:function(data, type, full, meta){
-           var editurl="{{route('items.edit',":id")}}"
-           editurl=editurl.replace(':id',data.id);
-           return`<a href="#" class="btn btn-primary detail" data-id="${data.id}">{{ __("Detail")}}</a> <a href="${editurl}" class="btn btn-warning">{{ __("Edit")}}</a>`
-         }
-       }
-
-       ],
-       "info":false
-     });
-        
+          ],
+          "info":false
+        });
       }
-
 
       function getway(){   
         var url="{{route('onway')}}";
         $('#onwaytable').dataTable({
+          "pageLength": 100,
           "bPaginate": true,
           "bLengthChange": true,
           "bFilter": true,
@@ -515,67 +521,72 @@
             dataType:'json',
           },
           "columns": [
-          {"data":'DT_RowIndex'},
-          {"data": null,
-          render:function(data, type, full, meta){
-            if(data.status_code=="001"){
-              return `${data.item.codeno}<span class="badge badge-info">{{'success'}}</span>`
-            }else if(data.status_code=="002"){
-               return `${data.item.codeno}<span class="badge badge-warning">{{'return'}}</span>`
-            }else if(data.status_code=="003"){
-              return `${data.item.codeno}<span class="badge badge-danger">{{'reject'}}</span>`
-            }else{
-              return `${data.item.codeno}`
-            }
-            
-          }
-        },
-        {
-          "data":"item.township.name"
-        },
-        {
-          "data":"delivery_man.user.name"
-        },
-        {
-          "data":"created_at",
-          render:function(data){
-            var date=new Date(data);
-            date =date.toLocaleDateString(undefined, {year:'numeric'})+ '-' +date.toLocaleDateString(undefined, {month:'numeric'})+ '-' +date.toLocaleDateString(undefined, {day:'2-digit'})
-             return date;
-          }
-        },
+            {"data":'DT_RowIndex'},
+            {"data": null,
+              render:function(data, type, full, meta){
+                if(data.status_code=="001"){
+                  return `${data.item.codeno}<span class="badge badge-info">{{'success'}}</span>`
+                }else if(data.status_code=="002"){
+                   return `${data.item.codeno}<span class="badge badge-warning">{{'return'}}</span>`
+                }else if(data.status_code=="003"){
+                  return `${data.item.codeno}<span class="badge badge-danger">{{'reject'}}</span>`
+                }else{
+                  return `${data.item.codeno}`
+                }
+                
+              }
+            },
+            {
+              "data":"item.township.name"
+            },
+            {
+              "data":"delivery_man.user.name"
+            },
+            {
+              "data":"created_at",
+              render:function(data){
+                return formatDate(data);
+              }
+            },
 
-        {
-          "data":"item.pickup.schedule.client.user.name"
-        },
-        {"data":"item.receiver_name"},
-        {
-          "data":"item.amount",
-          render:function(data){
-            return `${thousands_separators(data)}`
-          }
-        },
-        {
-          "data":null,
-           render:function(data, type, full, meta){
-            var wayediturl="{{route('deletewayassign',":id")}}"
-           wayediturl=wayediturl.replace(':id',data.id);
-            return`<a href="#" class="btn btn-primary detail" data-id="${data.item.id}">{{ __("Detail")}}</a>
-           <a href="#" class="btn btn-warning wayedit" data-id="${data.id}">{{ __("Edit")}}</a>
-          <a href="${wayediturl}" class="btn btn-danger" onclick="return confirm('Are you sure?')">{{ __("Delete")}}</a>`
-           }
-        }
-       ],
-       "info":false
-     });
-        
+            {
+              "data":"item.pickup.schedule.client.user.name"
+            },
+            {"data":"item.receiver_name"},
+            {
+              "data":"item.amount",
+              render:function(data){
+                return `${thousands_separators(data)}`
+              }
+            },
+            {
+              "data":null,
+               render:function(data, type, full, meta){
+                var wayediturl="{{route('deletewayassign',":id")}}"
+               wayediturl=wayediturl.replace(':id',data.id);
+                return `<a href="#" class="btn btn-sm btn-primary detail" data-id="${data.item.id}">{{ __("Detail")}}</a>
+               <a href="#" class="btn btn-sm btn-warning wayedit" data-id="${data.id}">{{ __("Edit")}}</a>
+              <a href="${wayediturl}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">{{ __("Delete")}}</a>`
+               }
+            }
+          ],
+          "info":false
+        });
       }
 
-        function thousands_separators(num){
-      var num_parts = num.toString().split(".");
-      num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      return num_parts.join(".");
-    }
+      function thousands_separators(num){
+        var num_parts = num.toString().split(".");
+        num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return num_parts.join(".");
+      }
+
+      // Y/M/D into D/M/Y
+      function formatDate (input) {
+        var datePart = input.match(/\d+/g),
+        year = datePart[0].substring(0,4), // get only two digits
+        month = datePart[1], day = datePart[2];
+        return day+'-'+month+'-'+year;
+      }
 
     })
 

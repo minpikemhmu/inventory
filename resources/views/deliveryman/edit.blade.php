@@ -63,7 +63,7 @@
             </div>
 
              <div class="form-group">
-              <input type="checkbox" name="agent" class="agent" id="agentcheck" @if($deliveryMan->city->name != "Yangon") checked="" @endif>
+              <input type="checkbox" name="agent" class="agent" id="agentcheck" @if($deliveryMan->city_id != 1) checked="" @endif>
               <label for="agentcheck">For agent</label>
             </div>
 
