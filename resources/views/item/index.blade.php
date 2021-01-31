@@ -292,7 +292,7 @@
           };
           var price =  `${thousands_separators(res.deposit)}`;
           var deli_fee = `${thousands_separators(res.delivery_fees)}`;
-          var total = res.deposit + res.delivery_fees;
+          var total = Number(res.deposit) + Number(res.delivery_fees);
           var total_amount = `${thousands_separators(total)}`;
           $('#rtotal').html(total_amount);
           $('#rprice').html(price);
@@ -327,7 +327,7 @@
           };
           var price = `${thousands_separators(res.deposit)}`;
           var deli_fee = `${thousands_separators(res.delivery_fees)}`;
-          var total = res.deposit + res.delivery_fees;
+          var total = Number(res.deposit) + Number(res.delivery_fees);
           var total_amount = `${thousands_separators(total)}`;
           $('#rtotal').html(total_amount);
           $('#rprice').html(price);

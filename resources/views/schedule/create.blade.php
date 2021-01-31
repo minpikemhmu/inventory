@@ -17,6 +17,7 @@
           @role('client')
             <h3 class="tile-title d-inline-block">Create Schedule Form</h3>
             <form method="post" action="{{route('schedules.store')}}" enctype="multipart/form-data">
+            <input type="hidden" name="client" value="{{Auth::user()->client->id}}">
           @endrole
           @role('staff')
             <h3 class="tile-title d-inline-block">{{ __("Create Schedule and Assign")}}</h3>
@@ -31,26 +32,25 @@
                 </optgroup>
               </select>
             </div>
-          @endrole  
-            @csrf     
+          @endrole
+            @csrf
             <div class="form-group">
               <label for="txtDate">{{ __("Date")}}:</label>
               <input class="form-control" id="txtDate" type="date" name="date" required>
               <div class="form-control-feedback text-danger"> {{$errors->first('date') }} </div>
             </div>   
+
             <div class="form-group">
               <label for="InputRemark">{{ __("Remark")}}:</label>
               <textarea class="form-control" id="InputRemark" name="remark" placeholder="Enter Remark" ></textarea>
               <div class="form-control-feedback text-danger"> {{$errors->first('remark') }} </div>
             </div>
 
-
             <div class="form-group">
               <label for="file">{{ __("File")}}:</label> 
               <input type="file" id="file" name="file" class="form-control-file">
             </div>
 
-            @role('staff')
             <div class="form-group">
               <input type="checkbox" id="know">
               <label for="know">{{ __("If you know quantity and amount")}}</label> 
@@ -62,35 +62,17 @@
               <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
             </div>
 
-
             <div class="form-group amount">
               <label for="amount">{{ __("Amount")}}:</label>
               <input type="number"  id="amount" class="form-control" name="amount">
               <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
             </div>
-            @endrole
-
-            @role('client')
-              <div class="form-group ">
-              <label for="quantity">{{ __("Quantity")}}:</label>
-              <input type="number"  id="quantity" class="form-control" name="quantity">
-              <div class="form-control-feedback text-danger"> {{$errors->first('quantity') }} </div>
-            </div>
-
-
-            <div class="form-group ">
-              <label for="amount">{{ __("Amount")}}:</label>
-              <input type="number"  id="amount" class="form-control" name="amount">
-              <div class="form-control-feedback text-danger"> {{$errors->first('amount') }} </div>
-            </div>
-            @endrole
             
             @role('staff')
             <div class="form-group">
               <label for="InputDeliveryMan">{{ __("Delivery Man")}}:</label>
               <select class="form-control" name="deliveryman" id="InputDeliveryMan">
                 <optgroup label="Choose Delivery Man">
-                   {{-- <option value="">{{ __("Choose Delivery Man")}}</option> --}}
                  @foreach($deliverymen as $row)
                   <option value="{{$row->id}}">{{$row->deliveryname}}</option>
                   @endforeach
@@ -99,14 +81,13 @@
             </div>
 
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">{{ __("Save And Assign")}}</button>
+              <button class="btn btn-sm btn-primary" type="submit">{{ __("Save And Assign")}}</button>
             </div>
             @endrole
 
             @role('client')
-            
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">{{ __("Save")}}</button>
+              <button class="btn btn-sm btn-primary" type="submit">{{ __("Save")}}</button>
             </div>
             @endrole
           </form>
@@ -124,46 +105,31 @@
     $(".quantity").hide();
     $(".amount").hide();
 
-      $("#know").click(function(){
-        if(this.checked){
-          $(".quantity").show();
-          $(".amount").show();
-        }else{
-          $(".quantity").hide();
-        $(".amount").hide();
-
-        }
-      })
-
-
-
-
-    /*$(".myfile").hide();
-    $(".mychangepsw").click(function(){
+    $("#know").click(function(){
       if(this.checked){
-    $(".myfile").show();
+        $(".quantity").show();
+        $(".amount").show();
       }else{
-      $(".myfile").hide();
+        $(".quantity").hide();
+        $(".amount").hide();
       }
-    })*/
-
+    })
 
     $(function(){
-        var dtToday = new Date();
-        
-        var month = dtToday.getMonth() + 1;
-        var day = dtToday.getDate();
-        var year = dtToday.getFullYear();
-        if(month < 10)
-            month = '0' + month.toString();
-        if(day < 10)
-            day = '0' + day.toString();
-        
-        var maxDate = day+ '-' +month+ '-' +year;
-        //alert(maxDate);
-        //console.log(maxDate);
-        $('#txtDate').attr('min', maxDate);
+      var dtToday = new Date();
+      var month = dtToday.getMonth() + 1;
+      var day = dtToday.getDate();
+      var year = dtToday.getFullYear();
+
+      if(month < 10)
+          month = '0' + month.toString();
+      if(day < 10)
+          day = '0' + day.toString();
+
+      var maxDate = day+ '-' +month+ '-' +year;
+      $('#txtDate').attr('min', maxDate);
     });
+    
   })
 </script>
 @endsection

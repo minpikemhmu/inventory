@@ -170,6 +170,7 @@
               </div>
               <div class="col-md-6">
                 <input type="hidden" name="pickup_id" value="{{$pickup->id}}">
+                <input type="hidden" name="client_id" value="{{$client->id}}">
 
                 <div class="card mt-4">
                   <div class="card-header">
@@ -189,7 +190,6 @@
                     @foreach($pickup->items as $pickupitem)
                      @php $total+=$pickupitem->deposit @endphp
                     @endforeach
-                    <input type="hidden" name="client_id" value="{{$client->id}}">
 
                     <input type="hidden" name="depositamount" value="{{$pickup->schedule->amount}}" class="depositamount">
 
@@ -313,7 +313,7 @@
                         <label>Paid Amount:</label>
                       </div>
                       <div class="col-md-8">
-                        <input type="number" name="paidamount" class="form-control" id="paidamount">
+                        <input type="number" name="paidamount" class="form-control" id="paidamount" value="0">
                       </div>
                       <div class="col-md-12">
                           <span class="d-none text-danger amounterrormsg">paidamount must be between 1 and depositamount!</span>

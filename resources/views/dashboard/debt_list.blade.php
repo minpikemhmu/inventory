@@ -48,9 +48,11 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>{{ __("Description")}}</th>
-                    <th>{{ __("Expense Type")}}</th>
-                    <th>{{ __("Amount")}}</th>
+                    <th>{{ __("Pickup Date")}}</th>
+                    <th>{{ __("Item Qty")}}</th>
+                    <th>{{ __("Total Amount")}}</th>
+                    <th>{{ __("Prepaid Amount")}}</th>
+                    <th>{{ __("Balance")}}</th>
                   </tr>
                 </thead>
                 <tbody id="debit_list">
@@ -65,7 +67,7 @@
                   <tr>
                     <th>{{ __("#")}}</th>
                     <th>{{ __("Name")}}</th>
-                    {{-- <th>Township</th> --}}
+                    <th>{{ __("Collect Date")}}</th>
                     <th>{{ __("Delivery Fees")}}</th>
                     <th>{{ __("Deposit Amount")}}</th>
                     <th>{{ __("Total Amount")}}</th>
@@ -316,22 +318,38 @@
           var html = "";
           let total = 0;
           for(let row of response.expenses){
+            let allpaid_delivery_fees = 0
+            let unpaid_total_item_price = 0
+            let prepaid_amount = 0
+
+            for(let item of row.items){
+              if (item.paystatus==2) {
+                allpaid_delivery_fees += Number(item.delivery_fees)
+              }else{
+                unpaid_total_item_price += Number(item.deposit)
+              }
+            }
+
             html +=`<tr>
                     <td>
                       <div class="animated-checkbox">
                         <label class="mb-0">
-                          <input type="checkbox" name="expenses[]" value="${row.id}" data-amount="${row.amount}"><span class="label-text"> </span>
+                          <input type="checkbox" name="expenses[]" value="${row.id}" data-amount="${unpaid_total_item_price}"><span class="label-text"> </span>
                         </label>
                       </div>
-                    </td>
-                    <td>${row.description}</td>
-                    <td>${row.expense_type.name}</td>
-                    <td>${thousands_separators(row.amount)} Ks</td>
+                    </td>`
+                    
+            html+=`<td>${formatDate(row.created_at)}</td>`
+                  
+            html+=`<td> ${row.items.length}</td>
+                    <td> ${thousands_separators(unpaid_total_item_price)} </td>
+                    <td> ${thousands_separators(prepaid_amount)} </td>
+                   <td>${thousands_separators(unpaid_total_item_price)} Ks</td>
                   </tr>`;
-                  total += Number(row.amount);
+                  total += Number(unpaid_total_item_price);
           }
           html +=`<tr>
-                    <td colspan="3">Total: </td>
+                    <td colspan="5">Total: </td>
                     <td>${thousands_separators(total)} Ks</td>
                   </tr>`;
 
@@ -355,6 +373,7 @@
                   html2 +=` <span class="badge badge-danger">reject</span>`;
           
             html2 +=`</td>
+                      <td>${formatDate(row.item.created_at)}</td>
                       <td>${thousands_separators(delivery_fees)}</td>
                       <td>${thousands_separators(row.item.deposit)}</td>
                       <td>${thousands_separators(row.item.deposit + delivery_fees)} Ks</td>
@@ -364,13 +383,17 @@
 
           for(let row of response.incomes){
             let delivery_fees=deposit=0;
-            if(row.payment_type_id == 4){
-              delivery_fees = Number(row.way.item.delivery_fees);
-              deposit = Number(row.way.item.deposit);
-            }else if(row.payment_type_id == 5){
-              deposit = Number(row.way.item.deposit);
-            }else if(row.payment_type_id == 6){
-              delivery_fees = Number(row.way.item.delivery_fees);
+            // if(row.payment_type_id == 4){
+            //   delivery_fees = Number(row.way.item.delivery_fees);
+            //   deposit = Number(row.way.item.deposit);
+            // }else if(row.payment_type_id == 5){
+            //   deposit = Number(row.way.item.deposit);
+            // }else if(row.payment_type_id == 6){
+            //   delivery_fees = Number(row.way.item.delivery_fees);
+            // }
+
+            if (row.paystatus ==2) {
+              delivery_fees = Number(row.delivery_fees);
             }
 
             html2 +=`<tr>
@@ -381,17 +404,22 @@
                           </label>
                         </div>
                       </td>
-                      <td>${row.way.item.receiver_name} - ${row.way.item.township.name}`;
+                      <td>${row.receiver_name} - ${row.township.name}`;
 
-            if(row.payment_type_id == 4){
-              html2 +=` <span class="badge badge-info">All Paid</span>`;
-            }else if(row.payment_type_id == 5){
-              html2 +=` <span class="badge badge-info">Only Deposit</span>`;
-            }else if(row.payment_type_id == 6){
-              html2 +=` <span class="badge badge-info">Only Deli</span>`;
+            // if(row.payment_type_id == 4){
+            //   html2 +=` <span class="badge badge-info">All Paid</span>`;
+            // }else if(row.payment_type_id == 5){
+            //   html2 +=` <span class="badge badge-info">Only Deposit</span>`;
+            // }else if(row.payment_type_id == 6){
+            //   html2 +=` <span class="badge badge-info">Only Deli</span>`;
+            // }
+
+            if (row.paystatus == 2) {
+              html2 += ` <span class="badge badge-info">All Paid</span>`;
             }
 
             html2 +=`</td>
+                      <td>${formatDate(row.created_at)}</td>
                       <td>${thousands_separators(delivery_fees)}</td>
                       <td>${thousands_separators(deposit)}</td>
                       <td>${thousands_separators(delivery_fees+deposit)} Ks</td>
@@ -410,6 +438,7 @@
                         </div>
                       </td>
                       <td>${row.item.receiver_name} - ${row.item.township.name} <span class="badge badge-info">carryfees</span></td>
+                      <td>${formatDate(row.created_at)}</td>
                       <td>${0}</td>
                       <td>${thousands_separators(row.amount)}</td>
                       <td>${thousands_separators(row.amount)} Ks</td>
@@ -420,7 +449,7 @@
           total2  = Number(totalreject)+Number(totalincome)+Number(totalcarryfees);
 
           html2 +=`<tr>
-                    <td colspan="4">Total: </td>
+                    <td colspan="5">Total: </td>
                     <td>${thousands_separators(total2)} Ks</td>
                   </tr>`;
 
@@ -429,6 +458,14 @@
           $('#reject_list').html(html2);
         })
       })
+
+    // Y/M/D into D/M/Y
+    function formatDate (input) {
+      var datePart = input.match(/\d+/g),
+      year = datePart[0].substring(0,4), // get only two digits
+      month = datePart[1], day = datePart[2];
+      return day+'-'+month+'-'+year;
+    }
   })
 </script>
 @endsection

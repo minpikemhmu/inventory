@@ -159,9 +159,24 @@
           console.log(response.ways)
           for(let row of response.ways){
             console.log(row);
-            total+=Number(row.item.item_amount);
-            html +=`
-              <tr>
+            var delivery_fees=0;
+            if (row.status_code == "001") {
+              total+=Number(row.item.item_amount);
+              delivery_fees = Number(row.item.delivery_fees)
+              deposit = Number(row.item.deposit)
+            }else{
+              delivery_fees = 0;
+              deposit = 0;
+            }
+
+            if (row.item.paystatus == 2) {
+              delivery_fees = 0;
+              total -= Number(row.item.delivery_fees)
+            }else{
+              delivery_fees = row.item.delivery_fees
+            }
+
+            html +=`<tr>
                     <td>${i++}</td>
                     <td>
                       ${row.item.item_code}`
@@ -178,7 +193,8 @@
                     }else{
                       html+=`<td>-</td>`
                     }
-                    html+=`<td>${thousands_separators(row.item.delivery_fees)}</td><td>${thousands_separators(row.item.deposit)}</td>`
+                    html+=`<td>${thousands_separators(delivery_fees)}</td>
+                            <td>${thousands_separators(row.item.deposit)}</td>`
 
                     if(row.status_code=="001"){
                       html+=`<td><button class="btn btn-primary btnsave" data-id="${row.id}" data-amount="${row.item.item_amount}" data-deliveryfee="${row.item.delivery_fees}" data-deposit="${row.item.deposit}" data-paystatus="${row.item.paystatus}">save</button></td>`

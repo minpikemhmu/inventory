@@ -4,7 +4,6 @@
     <div class="app-title">
       <div>
         <h1><i class="fa fa-dashboard"></i> {{ __("Schedules")}}</h1>
-        <!-- <p>A free and open source Bootstrap 4 admin template</p> -->
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -26,8 +25,7 @@
         @endif
         <div class="tile">
           <h3 class="tile-title d-inline-block">{{ __("Pickup List")}}</h3>
-          <a href="{{route('schedules.create')}}" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> {{ __("Add New")}}</a>
-
+          <a href="{{route('schedules.create')}}" class="btn btn-sm btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> {{ __("Add New")}}</a>
 
           <div class="bs-component">
             @role('staff')
@@ -86,7 +84,8 @@
                         <th>{{ __("Pickup Date")}}</th>
                         <th>{{ __("Remark")}}</th>
                         <th>{{ __("Delivery Man")}}</th>
-                        <th>{{ __("Quantity")}}</th>
+                        <th>{{ __("Quantity / Collected")}}</th>
+                        <th>{{ __("Amount / Total")}}</th>
                         <th>{{ __("Pickup state")}}</th>
                         <th>{{ __("Action")}}</th>
                       </tr>
@@ -136,8 +135,8 @@
     </div>
   </div>
 
-{{-- addfile modal --}}
- <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  {{-- addfile modal --}}
+  <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -179,57 +178,57 @@
     </div>
   </div>
 
-{{-- show file modal --}}
-<div class="modal fade" id="filedisplay" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{ __("File")}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <img src="" class="img-fluid stafffile" width="100%" height="100%">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("Close")}}</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-{{--Add amount modal--}}
-<div class="modal fade" id="addamount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{ __("Add Amount and Quantity")}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" name="schedule" id="schedule_id" value="">
-       <div class="form-group quantity">
-              <label for="quantity">{{ __("Quantity")}}:</label>
-              <input type="number"  id="quantity" class="form-control" name="quantity">
-              <span class="Eamount error d-block" ></span>
-            </div>
-
-
-            <div class="form-group amount">
-              <label for="amount">{{ __("Amount")}}:</label>
-              <input type="number"  id="amount" class="form-control" name="amount">
-              <span class="Equantity error d-block" ></span>
-            </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary amountsave">{{ __("Save")}}</button>
+  {{-- show file modal --}}
+  <div class="modal fade" id="filedisplay" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{ __("File")}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img src="" class="img-fluid stafffile" width="100%" height="100%">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __("Close")}}</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  {{--Add amount modal--}}
+  <div class="modal fade" id="addamount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{ __("Add Amount and Quantity")}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="schedule" id="schedule_id" value="">
+         <div class="form-group quantity">
+                <label for="quantity">{{ __("Quantity")}}:</label>
+                <input type="number"  id="quantity" class="form-control" name="quantity">
+                <span class="Eamount error d-block" ></span>
+              </div>
+
+
+              <div class="form-group amount">
+                <label for="amount">{{ __("Amount")}}:</label>
+                <input type="number"  id="amount" class="form-control" name="amount">
+                <span class="Equantity error d-block" ></span>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary amountsave">{{ __("Save")}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 @endsection 
 @section('script')
@@ -237,16 +236,19 @@
     $(document).ready(function () {
       var notiurl="{{route("getnoti")}}";
       $.get(notiurl,function(res){
-       //console.log(res);
+        console.log(res);
         $("#notidata").val(JSON.stringify(res));
-        getdata();
       })
+
+      var rolename=$("#rolename").val();
+      if (rolename == "staff") {
+        getdata(rolename);
+      }
 
       $('.assign').click(function () {
         $('#assignModal').modal('show');
         var id=$(this).data(id);
-        
-      $("#assignid").val(id.id);
+        $("#assignid").val(id.id);
       })
 
       $('.addfile').click(function () {
@@ -265,30 +267,28 @@
         var file=$(this).data("file");
         //console.log(file);
         $(".stafffile").attr("src",file);
-
-
       })
 
       $(".assigntbody").on('click','.addamount',function(e){
-         e.preventDefault();
+        e.preventDefault();
         $('#addamount').modal('show');
         var id=$(this).data('id');
         $("#schedule_id").val(id);
       })
 
-         $(".amountsave").click(function(){
+      $(".amountsave").click(function(){
         var schedule_id=$("#schedule_id").val();
         var amount=$("#amount").val();
         var quantity=$("#quantity").val();
         var url="{{route('editamountandqty')}}";
 
-          $.ajaxSetup({
-         headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
         });
           
-         $.ajax({
+        $.ajax({
           url:url,
           type:"post",
           data:{schedule_id:schedule_id,amount:amount,quantity:quantity},
@@ -313,104 +313,112 @@
               $('.Equantity').text(quantity);
               $('span.error').addClass('text-danger');
             }
-
           }
-          
-
         })
       })
 
-         
-
-         function getdata(){
-          //alert("ok");
-          
-          var rolename=$("#rolename").val();
-         var mydata=$("#notidata").val();
-          var mydataarray=JSON.parse(mydata);
-         
+      function getdata(rolename){  
+        // var mydata=$("#notidata").val();
+        // var mydataarray=JSON.parse(mydata);
         var url="{{route('allpickup')}}";
         var i=1;
         $('#pickuptable').dataTable({
           "pageLength": 100,
-        "bPaginate": true,
-        "bLengthChange": true,
-        "bFilter": true,
-        "bSort": true,
-        "bInfo": true,
-        "bAutoWidth": true,
-        "bStateSave": true,
-        "aoColumnDefs": [
-                { 'bSortable': false, 'aTargets': [ -1,0] }
-            ],
-        "bserverSide": true,
-        "bprocessing":true,
-        "ajax": {
-            url: url,
-            type: "GET",
-            dataType:'json',
-        },
-          "columns": [
-         {"data":'DT_RowIndex'},
-         {"data":'schedule.client.user.name',
-         render:function(data){
-                      if(rolename=="staff"){
-                        return data;
-                      }
-                    }
-       },
-        { "data": "schedule.pickup_date",
-          render:function (data) {
-            return formatDate(data)
-          }
-        },
-        { "data": "schedule.remark"},
-        {"data":"delivery_man.user.name",
-         "render":function(data){
-         // console.log(data)
-           return `${data}`;
-         }
-
-        },
-         {"data":"schedule.quantity"},
-         {"data":null,
-            "render": function(data, type, full, meta){
-              if(data.status==1 && data.schedule.quantity>data.items.length){
-                if(rolename=="staff"){
-                var routeurl="{{route('items.collect',[':cid',':pid'])}}";
-                routeurl=routeurl.replace(':cid',data.schedule.client.id);
-                routeurl=routeurl.replace(':pid',data.id);
-                return `  <a href="${routeurl}" class="btn btn-sm btn-primary">{{ __("Collect")}}</a>`;
-              }else if(rolename=="client"){
-                return ` <button type="button" class="btn btn-sm btn-info">{{ __("Brought")}}</button>`
-              }
-              }else if(data.status==1 && data.schedule.quantity==data.items.length){
-                return`<button type="button" class="btn btn-sm btn-info">{{ __("completed")}}</button>`
-              }else if(data.status==2){
-                var failurl="{{route('checkitem',':id')}}";
-                failurl=failurl.replace(':id',data.id);
-                return `<a href="${failurl}" class="btn btn-sm btn-danger">{{ __("fail")}}</a>`
-              }else if(data.status==3){
-                return` <a href="#" class="btn btn-sm btn-secondary addamount" data-id="${data.schedule.id}">{{ __("Add amount and qty")}}</a>`
-              }else{
-                return `<button type="button" class="btn btn-sm btn-danger">{{ __("pending")}}</button>`
-              }
-                  
-            }
+          "bPaginate": true,
+          "bLengthChange": true,
+          "bFilter": true,
+          "bSort": true,
+          "bInfo": true,
+          "bAutoWidth": true,
+          "bStateSave": true,
+          "aoColumnDefs": [
+            { 'bSortable': false, 'aTargets': [ -1,0] }
+          ],
+          "bserverSide": true,
+          "bprocessing":true,
+          "ajax": {
+              url: url,
+              type: "GET",
+              dataType:'json',
           },
-           {
+          "columns": [
+            {"data":'DT_RowIndex'},
+            {"data":'schedule.client.user.name',
+              render:function(data){
+                return data;
+              }
+            },
+            { "data": "schedule.pickup_date",
+              render:function (data) {
+                return formatDate(data)
+              }
+            },
+            { "data": "schedule.remark"},
+            {"data":"delivery_man.user.name",
+              render:function(data){
+                return `${data}`;
+              }
+            },
+            {"data": null,
+              render:function (data) {
+                return `${data.schedule.quantity} / ${data.items.length}`
+              }
+            },
+            {"data": null,
+              render:function (data) {
+                var total = data.items.reduce((acc,row) => acc + Number(row.deposit), 0);
+                return `${thousands_separators(data.schedule.amount)} / ${thousands_separators(total)}`
+              }
+            },
+            {"data":null,
+              render: function(data, type, full, meta){
+                if(data.status==1 && data.schedule.quantity>data.items.length){
+                  var routeurl="{{route('items.collect',[':cid',':pid'])}}";
+                  routeurl=routeurl.replace(':cid',data.schedule.client.id);
+                  routeurl=routeurl.replace(':pid',data.id);
+                  return `<a href="${routeurl}" class="btn btn-sm btn-primary">{{ __("Collect")}}</a>`;
+                }else if(data.status==4 && data.schedule.quantity==data.items.length){
+                  return `<button type="button" class="btn btn-sm btn-info">{{ __("completed")}}</button>`
+                }else if(data.status==2){
+                  var failurl="{{route('checkitem',':id')}}";
+                  failurl=failurl.replace(':id',data.id);
+                  return `<a href="${failurl}" class="btn btn-sm btn-danger">{{ __("fail")}}</a>`
+                }else if(data.status==3){
+                  return `<a href="#" class="btn btn-sm btn-secondary addamount" data-id="${data.schedule.id}">{{ __("Add amount and qty")}}</a>`
+                }else{
+                  return `<button type="button" class="btn btn-sm btn-danger">{{ __("pending")}}</button>`
+                }  
+              }
+            },
+            {
               "data":null,
               "render": function(data, type, full, meta){
-               var editurl="{{route('schedules.edit',":id")}}"
-              editurl=editurl.replace(':id',data.schedule.id);
-              return `<a href="${editurl}" class="btn btn-sm btn-warning">{{ __("Edit")}}</a>` 
+                var html=""
+
+                if(data.status != 4){
+                  var editurl="{{route('schedules.edit',":id")}}"
+                  editurl=editurl.replace(':id',data.schedule.id);
+                  html+= `<a href="${editurl}" class="btn btn-sm btn-warning mr-2">{{ __("Edit")}}</a>`
+                }
+                 
+                if((data.status == 0 || data.status == 1 || data.status == 3) && data.items.length == 0){
+                  var schedule_destroy_route = `{{ route('schedules.destroy',':schedule_destroy_id') }}`;
+                  schedule_destroy_route = schedule_destroy_route.replace(':schedule_destroy_id', data.schedule.id);
+
+                  html += `<form action="${schedule_destroy_route}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
+                              @csrf
+                              @method('DELETE')
+                              <button type="submit" class="btn btn-sm btn-danger">{{ __("Delete")}}</button>
+                            </form>`
+                }
+
+                return html
               }
-             } 
-        ],
-        "info":false
-    });
-        
-         }
+            } 
+          ],
+          "info":false
+        });
+      }
 
       setTimeout(function(){ $('.myalert').hide(); showDiv2() },3000);
 
@@ -421,6 +429,13 @@
         month = datePart[1], day = datePart[2];
         return day+'-'+month+'-'+year;
       }
+
+      function thousands_separators(num){
+        var num_parts = num.toString().split(".");
+        num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return num_parts.join(".");
+      }
+
     })
   </script>
 @endsection

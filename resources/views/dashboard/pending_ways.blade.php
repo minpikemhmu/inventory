@@ -45,7 +45,7 @@
             @elseif($row->status_code == '003')
             <span class="badge badge-danger">{{'reject'}}</span>
             @endif
-            {{-- <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{$row->item->expired_date}}</small> --}}
+            <small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</small>
           </h5>
           <div class="card-body">
             <h5 class="card-title">{{ __("Item Code")}}: {{$row->item->codeno}}</h5>
@@ -349,7 +349,7 @@
                           html+=`<span class="badge badge-warning">return</span>`}
                           else if(v.status_code == '003'){
                          html+=`<span class="badge badge-danger">reject</span>`}
-                         html+= `<small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${v.item.expired_date}</small></h5>`
+                         html+= `<small class="float-right"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${formatDate(v.created_at)}</small></h5>`
                           html+=`<div class="card-body">
                           <h5 class="card-title">Item Code: ${v.item.codeno}}</h5>
                         <h5 class="card-title">Delivered Address: `
@@ -400,6 +400,14 @@
 
             })
           })
+
+        // Y/M/D into D/M/Y
+        function formatDate (input) {
+          var datePart = input.match(/\d+/g),
+          year = datePart[0].substring(0,4), // get only two digits
+          month = datePart[1], day = datePart[2];
+          return day+'-'+month+'-'+year;
+        }
 
         })
 

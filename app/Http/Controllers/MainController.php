@@ -195,11 +195,19 @@ class MainController extends Controller
 
   public function getdebitlistbyclient($id)
   {
-    $expenses = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',1)->with('expense_type')->get();
+    // $expenses = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',1)->with('expense_type')->get();
 
-    $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->with('way.item.township')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
+    $expenses = Pickup::where('status',4)->with('items')->with('schedule')->whereHas('schedule',function ($query) use ($id){
       $query->where('client_id', $id);
-    })->where('amount',null)->get();
+    })->get();
+
+    // $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->with('way.item.township')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
+    //   $query->where('client_id', $id);
+    // })->where('amount',null)->get();
+
+    $incomes = Item::where('paystatus',2)->with('township')->whereHas('pickup.schedule',function ($query) use ($id){
+      $query->where('client_id', $id);
+    })->get();
    
     $rejects =  Way::with('item.pickup.schedule')
     ->whereHas('item.pickup.schedule', function($query) use ($id){
@@ -970,20 +978,20 @@ public function profit(Request $request){
      // dd($client_id);
       $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
         $query->where('client_id', $client_id)->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
-      })->where("status",1)->get();
+      })->where("status",4)->get();
     }else if($rolename=="staff"){
       if($client_id==null){
        $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($sdate,$edate){
         $query->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
-      })->where("status",1)->get();
+      })->where("status",4)->get();
      }else if($sdate==null && $edate==null){
        $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($client_id){
         $query->where('client_id', $client_id);
-      })->where("status",1)->get();
+      })->where("status",4)->get();
      }else{
        $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
         $query->where('client_id', $client_id)->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
-      })->where("status",1)->get();
+      })->where("status",4)->get();
      }
    }
      return Datatables::of($pickups)->addIndexColumn()->toJson();

@@ -21,6 +21,7 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('expense_type_id');
 
             $table->unsignedBigInteger('client_id')->nullable();
+
             $table->unsignedBigInteger('staff_id');
             $table->unsignedBigInteger('city_id');
 

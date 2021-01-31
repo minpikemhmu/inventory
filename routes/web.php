@@ -90,14 +90,18 @@ Route::post('expensebytype','ExpenseController@expensebytype')->name('expensebyt
   Route::resource('staff','StaffController');
 
   //  For Staff
+
+
+  // get schedules
   Route::resource('schedules', 'ScheduleController');
+  // get assigned pickup
   Route::get('allpickup','ScheduleController@allpickup')->name('allpickup');
+  // get assigned pickup noti
   Route::get('getnoti','ScheduleController@getnoti')->name('getnoti');
 
 
   // client
   Route::get('cancel', 'MainController@cancel')->name('cancel.index');
-
   Route::post('uploadfile', 'ScheduleController@uploadfile')->name('uploadfile');
   Route::post('storeandassignschedule', 'ScheduleController@storeandassignschedule')->name('schedules.storeandassign');
 
