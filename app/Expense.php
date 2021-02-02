@@ -8,7 +8,7 @@ class Expense extends Model
 {
   use SoftDeletes;
 	protected $fillable=[
-  	'amount', 'description', 'expense_type_id' , 'status', 'client_id', 'staff_id', 'city_id', 'item_id'
+  	'amount', 'description', 'expense_type_id' , 'status', 'pickup_id', 'staff_id', 'city_id', 'item_id'
   ];
 
   public function expense_type()
@@ -16,9 +16,9 @@ class Expense extends Model
     return $this->belongsTo('App\ExpenseType');
   }
 
-  public function client()
+  public function pickup()
   {
-    return $this->belongsTo('App\Client');
+    return $this->belongsTo('App\Pickup');
   }
 
   public function staff()

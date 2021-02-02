@@ -70,6 +70,7 @@
                     <th>{{ __("Collect Date")}}</th>
                     <th>{{ __("Delivery Fees")}}</th>
                     <th>{{ __("Deposit Amount")}}</th>
+                    <th>{{ __("Bus Gate / Other Charges")}}</th>
                     <th>{{ __("Total Amount")}}</th>
                   </tr>
                 </thead>
@@ -212,7 +213,7 @@
             </div>
             <div class="col-md-8">
               <select class="form-control payment_method" name="payment_method">
-                <option value="" data-amount="0">Choose Bank</option>
+                {{-- <option value="" data-amount="0">Choose Bank</option> --}}
                 @foreach($banks as $bank)
                 <option value="{{$bank->id}}" data-amount="{{$bank->amount}}">{{$bank->name}} ({{$bank->amount}})</option>
                 @endforeach
@@ -277,7 +278,10 @@
                 <input type="hidden" name="incomes" value='${JSON.stringify(incomes)}'>
                 <input type="hidden" name="carryfees" value='${JSON.stringify(carryfees)}'>
                 <p>ပေးရန် => ${thousands_separators(totalexpenses)}</p>
-                <p>ရရန် => ${thousands_separators(totalincomes)}</p>`;
+                <p>ရရန် => ${thousands_separators(totalincomes)}</p>
+                <p>လက်ကျန် => ${thousands_separators(totalexpenses-totalincomes)}</p>
+                <input type="hidden" name="balance" value='${totalexpenses-totalincomes}'>`;
+                ;
         $('.checked_debt_list').html(html);
         $('#fixDebitModal').modal('show');
       }else{
@@ -330,11 +334,15 @@
               }
             }
 
+            if (row.expense != null && row.expense.status == 1) {
+              prepaid_amount = Number(row.expense.amount)
+            }
+
             html +=`<tr>
                     <td>
                       <div class="animated-checkbox">
                         <label class="mb-0">
-                          <input type="checkbox" name="expenses[]" value="${row.id}" data-amount="${unpaid_total_item_price}"><span class="label-text"> </span>
+                          <input type="checkbox" name="expenses[]" value="${row.id}" data-amount="${unpaid_total_item_price-prepaid_amount}"><span class="label-text"> </span>
                         </label>
                       </div>
                     </td>`
@@ -344,9 +352,9 @@
             html+=`<td> ${row.items.length}</td>
                     <td> ${thousands_separators(unpaid_total_item_price)} </td>
                     <td> ${thousands_separators(prepaid_amount)} </td>
-                   <td>${thousands_separators(unpaid_total_item_price)} Ks</td>
+                   <td>${thousands_separators(unpaid_total_item_price-prepaid_amount)} Ks</td>
                   </tr>`;
-                  total += Number(unpaid_total_item_price);
+                  total += Number(unpaid_total_item_price-prepaid_amount);
           }
           html +=`<tr>
                     <td colspan="5">Total: </td>
@@ -358,7 +366,7 @@
           let total2=totalreject=totalincome=totalcarryfees=0;
           for(let row of response.rejects){
             // console.log(row)
-            let delivery_fees = 0;
+            let delivery_fees = bus_gate_other = 0;
 
             html2 +=`<tr>
                       <td>
@@ -376,13 +384,14 @@
                       <td>${formatDate(row.item.created_at)}</td>
                       <td>${thousands_separators(delivery_fees)}</td>
                       <td>${thousands_separators(row.item.deposit)}</td>
+                      <td>${thousands_separators(bus_gate_other)}</td>
                       <td>${thousands_separators(row.item.deposit + delivery_fees)} Ks</td>
                   </tr>`;
                   totalreject += Number(row.item.deposit + delivery_fees);
           }
 
           for(let row of response.incomes){
-            let delivery_fees=deposit=0;
+            let delivery_fees=deposit=bus_gate_other=0;
             // if(row.payment_type_id == 4){
             //   delivery_fees = Number(row.way.item.delivery_fees);
             //   deposit = Number(row.way.item.deposit);
@@ -422,6 +431,7 @@
                       <td>${formatDate(row.created_at)}</td>
                       <td>${thousands_separators(delivery_fees)}</td>
                       <td>${thousands_separators(deposit)}</td>
+                      <td>${thousands_separators(bus_gate_other)}</td>
                       <td>${thousands_separators(delivery_fees+deposit)} Ks</td>
                     </tr>`;
                   totalincome += Number(delivery_fees + deposit);
@@ -440,6 +450,7 @@
                       <td>${row.item.receiver_name} - ${row.item.township.name} <span class="badge badge-info">carryfees</span></td>
                       <td>${formatDate(row.created_at)}</td>
                       <td>${0}</td>
+                      <td>${0}</td>
                       <td>${thousands_separators(row.amount)}</td>
                       <td>${thousands_separators(row.amount)} Ks</td>
                   </tr>`;
@@ -449,7 +460,7 @@
           total2  = Number(totalreject)+Number(totalincome)+Number(totalcarryfees);
 
           html2 +=`<tr>
-                    <td colspan="5">Total: </td>
+                    <td colspan="6">Total: </td>
                     <td>${thousands_separators(total2)} Ks</td>
                   </tr>`;
 

@@ -20,7 +20,7 @@ class CreateExpensesTable extends Migration
 
             $table->unsignedBigInteger('expense_type_id');
 
-            $table->unsignedBigInteger('client_id')->nullable();
+            $table->unsignedBigInteger('pickup_id')->nullable();
 
             $table->unsignedBigInteger('staff_id');
             $table->unsignedBigInteger('city_id');
@@ -37,8 +37,8 @@ class CreateExpensesTable extends Migration
                     ->references('id')->on('expense_types')
                     ->onDelete('cascade');
 
-            $table->foreign('client_id')
-                    ->references('id')->on('clients')
+            $table->foreign('pickup_id')
+                    ->references('id')->on('pickups')
                     ->onDelete('cascade');
 
             $table->foreign('staff_id')

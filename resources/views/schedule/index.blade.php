@@ -385,6 +385,8 @@
                   return `<a href="${failurl}" class="btn btn-sm btn-danger">{{ __("fail")}}</a>`
                 }else if(data.status==3){
                   return `<a href="#" class="btn btn-sm btn-secondary addamount" data-id="${data.schedule.id}">{{ __("Add amount and qty")}}</a>`
+                }else if(data.status == 5){
+                  return `<button type="button" class="btn btn-sm btn-success">{{ __("clear")}}</button>`
                 }else{
                   return `<button type="button" class="btn btn-sm btn-danger">{{ __("pending")}}</button>`
                 }  
@@ -395,7 +397,7 @@
               "render": function(data, type, full, meta){
                 var html=""
 
-                if(data.status != 4){
+                if(data.status == 0 || data.status == 1 || data.status == 2 || data.status == 3){
                   var editurl="{{route('schedules.edit',":id")}}"
                   editurl=editurl.replace(':id',data.schedule.id);
                   html+= `<a href="${editurl}" class="btn btn-sm btn-warning mr-2">{{ __("Edit")}}</a>`

@@ -25,6 +25,9 @@ class CreateItemsTable extends Migration
             $table->string('receiver_phone_no');
             $table->longText('remark')->nullable();
             $table->string('paystatus')->default(0); 
+            // 1 => unpaid, 2 => allpaid
+
+            $table->string('status')->default(0); 
             // 0,1 (ပုံမှန်ဆို မပေးရသေးတာ)
             
             $table->unsignedBigInteger('pickup_id');

@@ -449,7 +449,9 @@ return redirect()->route('items.index')->with("successMsg",'way assign successfu
 
     public function newitem(){
        $items=Item::with("pickup.schedule.client.user")->with("township")->whereHas('pickup',function($query){
-              $query->where('status',4);
+              $query->where(function ($q){
+                $q->where('status',4)->orWhere('status',5);
+              });
             })
             ->doesntHave('way')
             ->get();

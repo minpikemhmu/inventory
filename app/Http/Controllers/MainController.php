@@ -195,17 +195,11 @@ class MainController extends Controller
 
   public function getdebitlistbyclient($id)
   {
-    // $expenses = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',1)->with('expense_type')->get();
-
     $expenses = Pickup::where('status',4)->with('items')->with('schedule')->whereHas('schedule',function ($query) use ($id){
       $query->where('client_id', $id);
-    })->get();
+    })->with('expense')->get();
 
-    // $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->with('way.item.township')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
-    //   $query->where('client_id', $id);
-    // })->where('amount',null)->get();
-
-    $incomes = Item::where('paystatus',2)->with('township')->whereHas('pickup.schedule',function ($query) use ($id){
+    $incomes = Item::where('paystatus',2)->where('status',0)->with('township')->whereHas('pickup.schedule',function ($query) use ($id){
       $query->where('client_id', $id);
     })->get();
    
@@ -214,7 +208,9 @@ class MainController extends Controller
         $query->where('client_id', $id);
     })->where('status_code','003')->where('refund_date',null)->get();
 
-    $carryfees = Expense::where('client_id',$id)->where('status',2)->where('expense_type_id',5)->with('item.township')->get();
+    $carryfees = Expense::where('expense_type_id',5)->where('status',1)->with('item.township')->whereHas('pickup.schedule',function ($query) use ($id){
+      $query->where('client_id', $id);
+    })->get();
 
     $myarray=[];
     foreach ($rejects as $income) {
@@ -224,12 +220,12 @@ class MainController extends Controller
     }
     
     return Response::json(array(
-            'rejectnoti'=>$myarray,
-            'expenses' => $expenses,
-            'rejects' => $rejects,
-            'incomes' => $incomes,
-            'carryfees' => $carryfees,
-      ));
+      'rejectnoti'=>$myarray,
+      'expenses' => $expenses,
+      'rejects' => $rejects,
+      'incomes' => $incomes,
+      'carryfees' => $carryfees,
+    ));
   }
 
   public function getdebithistorybyclient(Request $request)
@@ -260,13 +256,14 @@ class MainController extends Controller
 
   public function fix_debit(Request $request)
   {
-    // dd(json_decode($request->expenses)[0]->amount);
+    // dd($request);
+
     $request->validate([
       'client' => 'required'
     ]);
 
     $notiarray=explode(",", $request->noti);
-    //dd($notiarray);
+    // dd($notiarray);
     $mytime = Carbon\Carbon::now();
     $date=$mytime->toDateString();
 
@@ -275,30 +272,67 @@ class MainController extends Controller
     }
     
     $id = $request->client;
-    // $expenses = Expense::where('client_id',$id)->where('status',2)->with('expense_type')->get();
-    if ($request->expenses) {
-      $expenses = json_decode($request->expenses);
-      foreach ($expenses as $row) {
-        $expense = Expense::find($row->id);
-        $expense->status = 1;
+    $pickups = json_decode($request->expenses);
+    foreach ($pickups as $pickup) {
+      // retrieve expenses related that client
+      $expense = Expense::where('pickup_id',$pickup->id)->where('status',1)->first();
+      // if have expenses by deposit, change paid
+      if (isset($expense)) {
+        $expense->status = 2;
         $expense->save();
-
-        // insert into transaction (expense_id - ဘာနဲ့ရှင်းလိုက်တာလဲ)
-        $transaction = new Transaction;
-        $transaction->bank_id = $request->payment_method;
-        $transaction->expense_id = $expense->id;
-        $transaction->amount = $expense->amount;
-        $transaction->description = "Fix Debit List";
-        $transaction->save();
-
-        $bank = Bank::find($request->payment_method);
-        if($expense->expense_type_id == 5){
-          $bank->amount = $bank->amount+$expense->amount;
-        }else{
-          $bank->amount = $bank->amount-$expense->amount;
-        }
-        $bank->save();
       }
+
+      $mypickup = Pickup::find($pickup->id);
+      $mypickup->status = 5;
+      $mypickup->save();
+    }
+
+    // if have to pay
+    if ($request->balance < 0) {
+      // Get
+      $income = new Income;
+      $income->amount = abs($request->balance);
+      if ($request->payment_method == 1) {
+        $income->cash_amount = abs($request->balance);
+      }else{
+        $income->bank_amount = abs($request->balance);
+      }
+      $income->payment_type_id = 7;
+      $income->save();
+
+      // insert into transaction (income_id - ပြန်အရ)
+      $transaction = new Transaction;
+      $transaction->bank_id = $request->payment_method;
+      $transaction->income_id = $income->id;
+      $transaction->amount = $income->amount;
+      $transaction->description = "Fix Debit List";
+      $transaction->save();
+
+      $bank = Bank::find($request->payment_method);
+      $bank->amount = $bank->amount+$income->amount;
+      $bank->save();
+    }else{
+      // Pay
+      $expense = new Expense;
+      $expense->amount = $request->balance;
+      $expense->description = "Client Deposit Fixed";
+      $expense->expense_type_id = 1;
+      $expense->staff_id = Auth::user()->staff->id;
+      $expense->city_id = 1;
+      $expense->status = 2;
+      $expense->save();
+
+      // insert into transaction (expense_id - ဘာနဲ့ရှင်းလိုက်တာလဲ)
+      $transaction = new Transaction;
+      $transaction->bank_id = $request->payment_method;
+      $transaction->expense_id = $expense->id;
+      $transaction->amount = $expense->amount;
+      $transaction->description = "Fix Debit List";
+      $transaction->save();
+
+      $bank = Bank::find($request->payment_method);
+      $bank->amount = $bank->amount-$expense->amount;
+      $bank->save();
     }
 
     // carry fees
@@ -306,101 +340,28 @@ class MainController extends Controller
       $carryfees = json_decode($request->carryfees);
       foreach ($carryfees as $row) {
         $expense = Expense::find($row->id);
-        $expense->status = 1;
+        $expense->status = 2;
         $expense->save();
-
-        // insert into transaction (expense_id - ဘာနဲ့ရှင်းလိုက်တာလဲ)
-        $transaction = new Transaction;
-        $transaction->bank_id = $request->payment_method;
-        $transaction->expense_id = $expense->id;
-        $transaction->amount = $expense->amount;
-        $transaction->description = "Fix Debit List";
-        $transaction->save();
-
-        $bank = Bank::find($request->payment_method);
-        if($expense->expense_type_id == 5){
-          $bank->amount = $bank->amount+$expense->amount;
-        }else{
-          $bank->amount = $bank->amount-$expense->amount;
-        }
-        $bank->save();
       }
     }
 
-    // $rejects =  Way::with('item.pickup.schedule')->whereHas('item.pickup.schedule', function($query) use ($id){
-    //     $query->where('client_id', $id);
-    // })->where('status_code','003')->where('refund_date',null)->get();
+    // rejects
     if ($request->rejects) {
       $rejects = json_decode($request->rejects);
       foreach ($rejects as $row) {
         $way = Way::find($row->id);
-        $income = new Income;
-        $income->delivery_fees = 0;
-        $income->deposit = $way->item->deposit;
-        $income->amount = $way->item->deposit;
-        $income->cash_amount = $way->item->deposit;
-        $income->way_id = $way->id;
-        $income->payment_type_id = 1;
-        $income->save();
-
-        // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
-        $transaction = new Transaction;
-        $transaction->bank_id = $request->payment_method;
-        $transaction->income_id = $income->id;
-        $transaction->amount = $income->amount;
-        $transaction->description = "Fix Debit List";
-        $transaction->save();
-
-        $bank = Bank::find($request->payment_method);
-        $bank->amount = $bank->amount+$income->amount;
-        $bank->save();
-
         $way->refund_date = date('Y-m-d');
         $way->save();
       }
     }
 
-    // $incomes = Income::whereIn('payment_type_id',[4,5,6])->with('way.item.pickup.schedule')->whereHas('way.item.pickup.schedule',function ($query) use ($id){
-    //   $query->where('client_id', $id);
-    // })->get();
+    // items (allpaid)
     if ($request->incomes) {
-      $incomes = json_decode($request->incomes);
-      foreach ($incomes as $row) {
-        $income = Income::find($row->id);
-        $income->delivery_fees = $income->way->item->delivery_fees;
-        $income->deposit = $income->way->item->deposit;
-        $income->amount = $income->way->item->amount;
-        $income->cash_amount = $income->way->item->amount;
-        // $income->payment_type_id = 1;
-        $income->save();
-
-        // insert into transaction ဘာနဲ့ရှင်းလိုက်တာလဲ
-        $bank = Bank::find($request->payment_method);
-
-        $transaction = new Transaction;
-        $transaction->bank_id = $request->payment_method;
-        $transaction->income_id = $income->id;
-        $transaction->description = "Fix Debit List";
-
-        if ($income->payment_type_id == 4) {
-          $transaction->amount = $income->amount;
-          $transaction->save();
-
-          $bank->amount = $bank->amount+$income->amount;
-          $bank->save();
-        }else if($income->payment_type_id == 5){
-          $transaction->amount = $income->deposit;
-          $transaction->save();
-
-          $bank->amount = $bank->amount+$income->deposit;
-          $bank->save();
-        }else if($income->payment_type_id == 6){
-          $transaction->amount = $income->delivery_fees;
-          $transaction->save();
-
-          $bank->amount = $bank->amount+$income->delivery_fees;
-          $bank->save();
-        }
+      $items = json_decode($request->incomes);
+      foreach ($items as $row) {
+        $item = Item::find($row->id);
+        $item->status = 1;
+        $item->save();
       }
     }
 
@@ -456,7 +417,7 @@ public function profit(Request $request){
   // for income list page
   public function incomes($value='')
   {
-    $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','!=',Null)->get();
+    $incomes=Income::whereDate('created_at', Carbon\Carbon::today())->where('amount','!=',Null)->has('way')->get();
     return view('dashboard.incomes',compact('incomes'));
   }
 
@@ -623,11 +584,11 @@ public function profit(Request $request){
       $expense->amount = $request->carryfees;
       $expense->description = 'Carry Fees';
       $expense->expense_type_id = 5;
-      $expense->client_id = $income->way->item->pickup->schedule->client_id;
       $expense->staff_id = Auth::user()->staff->id;
+      $expense->pickup_id = $income->way->item->pickup_id;
       $expense->city_id = 1;
       $expense->item_id = $income->way->item_id;
-      $expense->status = 2;
+      $expense->status = 1;
       $expense->save();
     }
 
@@ -978,20 +939,28 @@ public function profit(Request $request){
      // dd($client_id);
       $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
         $query->where('client_id', $client_id)->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
-      })->where("status",4)->get();
+      })->where(function ($q){
+        $q->where("status",4)->orWhere("status",5);
+      })->get();
     }else if($rolename=="staff"){
       if($client_id==null){
        $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($sdate,$edate){
         $query->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
-      })->where("status",4)->get();
+      })->where(function ($q){
+        $q->where("status",4)->orWhere("status",5);
+      })->get();
      }else if($sdate==null && $edate==null){
        $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($client_id){
         $query->where('client_id', $client_id);
-      })->where("status",4)->get();
+      })->where(function ($q){
+        $q->where("status",4)->orWhere("status",5);
+      })->get();
      }else{
        $pickups=Pickup::with('schedule.client.user')->whereHas('schedule',function ($query) use ($client_id,$sdate,$edate){
         $query->where('client_id', $client_id)->whereBetween('pickup_date', [$sdate.' 00:00:00',$edate.' 23:59:59']);
-      })->where("status",4)->get();
+      })->where(function ($q){
+        $q->where("status",4)->orWhere("status",5);
+      })->get();
      }
    }
      return Datatables::of($pickups)->addIndexColumn()->toJson();
