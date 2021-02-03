@@ -121,15 +121,20 @@ class ItemController extends Controller
 
         $item->save();
 
+        $pickup = Pickup::find($item->pickup_id);
+
         if($qty==1){
-          $checkitems = Item::orderBy('id', 'desc')->take($myqty)->get();
+          $checkitems = Item::where('pickup_id', $pickup->id)->get();
           if($checkitems->sum('deposit')!=$damount){
+            $pickup->status = 2;
+            $pickup->save();
+
             return redirect()->route('checkitem',$request->pickup_id); 
           }elseif($request->paidamount>0 && $request->paystatus == 1){
             $expense=new Expense;
             $expense->amount=$request->paidamount;
-            // $expense->pickup_id=$request->pickup_id;
-            $expense->client_id=$request->client_id;
+            $expense->pickup_id=$request->pickup_id;
+            // $expense->client_id=$request->client_id;
 
             if($rolename=="staff"){
               $user=Auth::user();
@@ -166,7 +171,6 @@ class ItemController extends Controller
           }
         }
 
-        $pickup = Pickup::find($item->pickup_id);
         if (($pickup->schedule->quantity - count($pickup->items)) > 0) {
           return redirect()->back()->with("successMsg",'New Item is ADDED');
         }else{
@@ -395,47 +399,53 @@ return redirect()->route('items.index')->with("successMsg",'way assign successfu
     $banks = Bank::all();
     return view('dashboard.checkitem',compact('checkitems','banks'))->with("successMsg",'items amount are wrong');
       //dd($pickupid);
-      
     }
 
     public function updateamount(Request $request){
       $checkitemarray=$request->myarray;
+
+      // update item amount
       foreach ($checkitemarray as $value) {
-
-       $item=Item::find($value["id"]);
-       $deliveryfee=$item->delivery_fees;
-       $item->deposit=$value["amount"];
-       $item->amount=$value["amount"]+$deliveryfee;
-       $item->save();
-
-       $pickup=Pickup::find($item->pickup_id);
-       $pickup->status=1;
-       $pickup->save();
+        $item=Item::find($value["id"]);
+        $deliveryfee=$item->delivery_fees;
+        $item->deposit=$value["amount"];
+        $item->amount=$value["amount"]+$deliveryfee;
+        $item->save();
       }
 
-      $expense=new Expense;
-      $expense->amount=$request->totaldeposit;
-      $expense->client_id=$pickup->schedule->client_id;
-      $role=Auth::user()->roles()->first();
-      $rolename=$role->name;
-      
-      if($rolename=="staff"){
-        $user=Auth::user();
-        $staffid=$user->staff->id;
-        $expense->staff_id=$staffid;
-      }
-      $expense->status=$request->paystatus;
-      $expense->description="Client Deposit";
-      $expense->city_id=1;
-      $expense->expense_type_id=1;
-      $expense->save();
+      // update status in pickup
+      $item=Item::find($checkitemarray[0]["id"]);
+      $pickup=Pickup::find($item->pickup_id);
+      $pickup->status=4;
+      $pickup->save();
 
-      // insert into transaction if paid
-      if($request->paystatus == 1){
+      $rolename=Auth::user()->roles()->first()->name;
+
+      // if prepaid deposit, insert into expense table
+      if($request->totaldeposit>0 && $request->paystatus == 1){
+        $expense=new Expense;
+        $expense->amount=$request->totaldeposit;
+        $expense->pickup_id=$request->pickup_id;
+        // $expense->client_id=$request->client_id;
+
+        if($rolename=="staff"){
+          $user=Auth::user();
+          $staffid=$user->staff->id;
+          $expense->staff_id=$staffid;
+        }
+
+        $expense->status=$request->paystatus;
+        $expense->description="Client Deposit";
+        $expense->city_id=1;
+        $expense->expense_type_id=1;
+        $expense->save();
+
+        // insert into transaction and bank
         $transaction = new Transaction;
         $transaction->bank_id = $request->payment_method;
         $transaction->expense_id = $expense->id;
         $transaction->amount = $request->totaldeposit;
+        
         $transaction->description = "Client Deposit";
         $transaction->save();
 
