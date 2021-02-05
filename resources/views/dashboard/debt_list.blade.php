@@ -272,7 +272,7 @@
       let totalexpenses = expenses.reduce((a, c) => (a + c.amount),0)
       let totalincomes = rejects.reduce((a, c) => (a + c.amount),0) + incomes.reduce((a, c) => (a + c.amount),0) + carryfees.reduce((a, c) => (a + c.amount),0)
 
-      if ((totalexpenses+totalincomes) > 0){
+      if ((totalexpenses+totalincomes) >= 0){
         let html = `<input type="hidden" name="expenses" value='${JSON.stringify(expenses)}'>
                 <input type="hidden" name="rejects" value='${JSON.stringify(rejects)}'>
                 <input type="hidden" name="incomes" value='${JSON.stringify(incomes)}'>
