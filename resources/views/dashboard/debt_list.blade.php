@@ -372,7 +372,7 @@
                       <td>
                         <div class="animated-checkbox">
                           <label class="mb-0">
-                            <input type="checkbox" name="rejects[]" value="${row.id}" data-amount="${row.item.deposit + delivery_fees}"><span class="label-text"> </span>
+                            <input type="checkbox" name="rejects[]" value="${row.id}" data-amount="${Number(row.item.deposit) + Number(delivery_fees)}"><span class="label-text"> </span>
                           </label>
                         </div>
                       </td>
