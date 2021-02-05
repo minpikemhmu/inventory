@@ -205,11 +205,11 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        $item=$item;
-        $townships=Township::orderBy('name','asc')->get();
-        $sendergates=SenderGate::orderBy('name','asc')->get();
-        $senderoffice=SenderPostoffice::orderBy('name','asc')->get();
-        return view('item.edit',compact('item','townships','sendergates','senderoffice'));
+      $townships=Township::orderBy('name','asc')->get();
+      $sendergates=SenderGate::orderBy('name','asc')->get();
+      $senderoffice=SenderPostoffice::orderBy('name','asc')->get();
+      $deliverymen = DeliveryMan::all();
+      return view('item.edit',compact('item','townships','sendergates','senderoffice','deliverymen'));
     }
 
     /**
@@ -261,6 +261,12 @@ class ItemController extends Controller
                 $item->staff_id=$staffid;
             }
             $item->save();
+
+            if ($request->deliveryman) {
+              $way = $item->way;
+              $way->delivery_man_id = $request->deliveryman;
+              $way->save();
+            }
            return redirect()->route('items.index')->with("successMsg",'Updatesuccessfully');
         }
         else

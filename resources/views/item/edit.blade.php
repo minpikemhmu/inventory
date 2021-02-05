@@ -167,10 +167,23 @@
                   <textarea class="form-control" id="InputRemark" name="remark">{{$item->remark}}</textarea>
                   <div class="form-control-feedback text-danger"> {{$errors->first('remark') }} </div>
                 </div>
+
+                @if($item->way)
+                <div class="form-group">
+                  <label for="InputDeliveryman">Delivery Man:</label>
+                  <select class="form-control" id="InputDeliveryman" name="deliveryman">
+                    @foreach($deliverymen as $deliveryman)
+                      <option value="{{$deliveryman->id}}" @if($deliveryman->id==$item->way->delivery_man_id) {{'selected'}} @endif>{{$deliveryman->user->name}}</option>
+                    @endforeach
+                  </select>
+                  <div class="form-control-feedback text-danger"> {{$errors->first('deliveryman') }} </div>
+                </div>
+                @endif
+
               </div>
 
             <div class="form-group">
-              <button class="btn btn-primary mx-3" type="submit">Save</button>
+              <button class="btn btn-primary mx-3" type="submit">Update</button>
             </div>
           </form>
         </div>

@@ -562,11 +562,13 @@
             {
               "data":null,
                render:function(data, type, full, meta){
-                var wayediturl="{{route('deletewayassign',":id")}}"
-               wayediturl=wayediturl.replace(':id',data.id);
+                var waydeleteurl="{{route('deletewayassign',":id")}}"
+                waydeleteurl=waydeleteurl.replace(':id',data.id);
+                var wayediturl="{{route('items.edit',":id")}}"
+                wayediturl=wayediturl.replace(':id',data.item.id);
                 return `<a href="#" class="btn btn-sm btn-primary detail" data-id="${data.item.id}">{{ __("Detail")}}</a>
-               <a href="#" class="btn btn-sm btn-warning wayedit" data-id="${data.id}">{{ __("Edit")}}</a>
-              <a href="${wayediturl}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">{{ __("Delete")}}</a>`
+               <a href="${wayediturl}" class="btn btn-sm btn-warning">{{ __("Edit")}}</a>
+              <a href="${waydeleteurl}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">{{ __("Delete")}}</a>`
                }
             }
           ],

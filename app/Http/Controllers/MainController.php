@@ -487,6 +487,11 @@ public function profit(Request $request){
     }else if($request->paymenttype==4){
       $income->amount=null;
       $income->delivery_fees=null;
+
+      $way = Way::find($request->way_id);
+      $way->item->paystatus = 2;
+      $way->item->save();
+      
     }else if($request->paymenttype==5){
       $income->amount=null;
     }else if($request->paymenttype==6){

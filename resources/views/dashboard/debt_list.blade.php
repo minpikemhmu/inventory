@@ -403,6 +403,7 @@
 
             if (row.paystatus ==2) {
               delivery_fees = Number(row.delivery_fees);
+              deposit = Number(row.deposit);
             }
 
             html2 +=`<tr>
