@@ -124,6 +124,11 @@ class ItemController extends Controller
         $pickup = Pickup::find($item->pickup_id);
 
         if($qty==1){
+          
+          if ($request->paystatus == 1 && $request->paidamount == 0) {
+            $request->paidamount = $request->depositamount;
+          }
+
           $checkitems = Item::where('pickup_id', $pickup->id)->get();
           if($checkitems->sum('deposit')!=$damount){
             $pickup->status = 2;

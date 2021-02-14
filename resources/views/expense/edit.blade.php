@@ -48,7 +48,7 @@
               <select class="form-control" id="bank" name="bank">
                 <option value="">Choose Bank</option>
                 @foreach($banks as $row)
-                <option value="{{$row->id}}">{{$row->name}}({{$row->amount}})</option>
+                <option value="{{$row->id}}" @if(isset($expense->transaction) && ($row->id == $expense->transaction->bank_id)) {{'selected'}} @endif>{{$row->name}}({{$row->amount}})</option>
                 @endforeach
               </select>
               <div class="form-control-feedback text-danger"> {{$errors->first('bank') }} </div>

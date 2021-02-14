@@ -51,7 +51,7 @@
             </div>
         </div>
           <div class="table-responsive">
-            <table class="table" id="expensetable">
+            <table class="table table-bordered" id="expensetable">
               <thead>
                 <tr>
                   <th>{{ __("#")}}</th>
@@ -67,14 +67,14 @@
                  @foreach($expenses as $row)
                 <tr>
                   <td>{{$i++}}</td>
-                  <td>{{$row->created_at->format('Y-m-d')}}</td>
-                  <td>{{number_format($row->amount)}} Ks</td>
+                  <td>{{Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                  <td>{{number_format($row->amount)}}</td>
                   <td>{{$row->expense_type->name}}</td>
                   <td>{{$row->description}}</td>
                   <td>
-                    @if($row->expense_type_id!=1)
-                    <a href="{{route('expenses.edit',$row->id)}}" class="btn btn-warning">Edit</a>
-                    @endif
+                    {{-- @if($row->expense_type_id!=1) --}}
+                    <a href="{{route('expenses.edit',$row->id)}}" class="btn btn-sm btn-warning">Edit</a>
+                    {{-- @endif --}}
                     {{-- <form action="{{ route('expenses.destroy',$row->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure?')">
 
                       @csrf
@@ -140,16 +140,18 @@
             dataType:'json',
         },
         "columns": [
-         {"data":'DT_RowIndex'},
+        {"data":'DT_RowIndex'},
         { "data": "created_at",
-         sortable:false,
-                    render:function(data){
-                      var mydate = new Date(data);
-                      var str = formatDate(mydate.toDateString());
-                      return str;
-                    }
+          sortable:false,
+          render:function(data){
+            return formatDate(data);
+          }
         },
-        { "data": "amount" },
+        { "data": null,
+          render:function (data) {
+            return thousands_separators(data.amount)
+          }
+        },
         { "data": "expense_type.name" },
         { "data": "description"},
         { "data": "id",
@@ -157,7 +159,7 @@
                     render:function(data){
                       var routeurl="{{route('expenses.edit',':id')}}";
                       routeurl=routeurl.replace(':id',data);
-                      return `<a class="btn btn-warning " href="${routeurl}" data-id="${data}">Edit</a>`;
+                      return `<a class="btn btn-sm btn-warning " href="${routeurl}" data-id="${data}">Edit</a>`;
                     }
              }
         ],
@@ -166,19 +168,19 @@
         
       })
 
-      function formatDate(date) {
-        var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+    // Y/M/D into D/M/Y
+    function formatDate (input) {
+      var datePart = input.match(/\d+/g),
+      year = datePart[0].substring(0,4), // get only two digits
+      month = datePart[1], day = datePart[2];
+      return day+'-'+month+'-'+year;
+    }
 
-        if (month.length < 2) 
-          month = '0' + month;
-        if (day.length < 2) 
-          day = '0' + day;
-
-        return [year, month, day].join('-');
-      }
+    function thousands_separators(num){
+      var num_parts = num.toString().split(".");
+      num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return num_parts.join(".");
+    }
   })
   
 </script>

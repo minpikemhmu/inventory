@@ -322,39 +322,76 @@
           var html = "";
           let total = 0;
           for(let row of response.expenses){
-            let allpaid_delivery_fees = 0
-            let unpaid_total_item_price = 0
-            let prepaid_amount = 0
+            if(row.expense == null){
+              let allpaid_delivery_fees = 0
+              let unpaid_total_item_price = 0
+              let prepaid_amount = 0
 
-            for(let item of row.items){
-              if (item.paystatus==2) {
-                allpaid_delivery_fees += Number(item.delivery_fees)
-              }else{
-                unpaid_total_item_price += Number(item.deposit)
+              for(let item of row.items){
+                if (item.paystatus==2) {
+                  allpaid_delivery_fees += Number(item.delivery_fees)
+                }else{
+                  unpaid_total_item_price += Number(item.deposit)
+                }
               }
-            }
 
-            if (row.expense != null && row.expense.status == 1) {
-              prepaid_amount = Number(row.expense.amount)
-            }
+              if (row.expense != null && row.expense.status == 1) {
+                prepaid_amount = Number(row.expense.amount)
+              }
 
-            html +=`<tr>
-                    <td>
-                      <div class="animated-checkbox">
-                        <label class="mb-0">
-                          <input type="checkbox" name="expenses[]" value="${row.id}" data-amount="${unpaid_total_item_price-prepaid_amount}"><span class="label-text"> </span>
-                        </label>
-                      </div>
-                    </td>`
+              html +=`<tr>
+                      <td>
+                        <div class="animated-checkbox">
+                          <label class="mb-0">
+                            <input type="checkbox" name="expenses[]" value="${row.id}" data-amount="${unpaid_total_item_price-prepaid_amount}"><span class="label-text"> </span>
+                          </label>
+                        </div>
+                      </td>`
+                      
+              html+=`<td>${formatDate(row.created_at)}</td>`
                     
-            html+=`<td>${formatDate(row.created_at)}</td>`
-                  
-            html+=`<td> ${row.items.length}</td>
-                    <td> ${thousands_separators(unpaid_total_item_price)} </td>
-                    <td> ${thousands_separators(prepaid_amount)} </td>
-                   <td>${thousands_separators(unpaid_total_item_price-prepaid_amount)} Ks</td>
-                  </tr>`;
-                  total += Number(unpaid_total_item_price-prepaid_amount);
+              html+=`<td> ${row.items.length}</td>
+                      <td> ${thousands_separators(unpaid_total_item_price)} </td>
+                      <td> ${thousands_separators(prepaid_amount)} </td>
+                     <td>${thousands_separators(unpaid_total_item_price-prepaid_amount)} Ks</td>
+                    </tr>`;
+                    total += Number(unpaid_total_item_price-prepaid_amount);
+            }
+            else if ((row.expense != null) && (row.expense.amount != row.schedule.amount)) {
+              let allpaid_delivery_fees = 0
+              let unpaid_total_item_price = 0
+              let prepaid_amount = 0
+
+              for(let item of row.items){
+                if (item.paystatus==2) {
+                  allpaid_delivery_fees += Number(item.delivery_fees)
+                }else{
+                  unpaid_total_item_price += Number(item.deposit)
+                }
+              }
+
+              if (row.expense != null && row.expense.status == 1) {
+                prepaid_amount = Number(row.expense.amount)
+              }
+
+              html +=`<tr>
+                      <td>
+                        <div class="animated-checkbox">
+                          <label class="mb-0">
+                            <input type="checkbox" name="expenses[]" value="${row.id}" data-amount="${unpaid_total_item_price-prepaid_amount}"><span class="label-text"> </span>
+                          </label>
+                        </div>
+                      </td>`
+                      
+              html+=`<td>${formatDate(row.created_at)}</td>`
+                    
+              html+=`<td> ${row.items.length}</td>
+                      <td> ${thousands_separators(unpaid_total_item_price)} </td>
+                      <td> ${thousands_separators(prepaid_amount)} </td>
+                     <td>${thousands_separators(unpaid_total_item_price-prepaid_amount)} Ks</td>
+                    </tr>`;
+                    total += Number(unpaid_total_item_price-prepaid_amount);
+            }
           }
           html +=`<tr>
                     <td colspan="5">Total: </td>

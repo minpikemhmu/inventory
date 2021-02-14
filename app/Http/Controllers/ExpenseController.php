@@ -20,7 +20,9 @@ class ExpenseController extends Controller
     public function index()
     {
          $expensetypes=ExpenseType::all();
-         $expenses=Expense::where('status',1)->get();
+         $expenses=Expense::orderBy('id','desc')
+                            // ->where('status',1)
+                            ->get();
        
         return view('expense.index',compact('expensetypes','expenses'));
     }
@@ -165,10 +167,9 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-        
-         $expense=$expense;
+        $expense=$expense;
         $expense->delete();
-       return redirect()->route('expenses.index')->with('successMsg','Existing Expense is DELETED in your data');
+        return redirect()->route('expenses.index')->with('successMsg','Existing Expense is DELETED in your data');
     }
 
     public function expensebytype(Request $request){
@@ -176,13 +177,26 @@ class ExpenseController extends Controller
         $edate = $request->edate;
         $type_id=$request->type_id;
         $expenses="";
-       // dd($type_id);
+       
         if($type_id==null){
-        $expenses=Expense::whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->where('status',1)->with('expense_type')->get();
+            $expenses=Expense::whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])
+                            // ->where('status',1)
+                            ->orderBy('id','desc')
+                            ->with('expense_type')
+                            ->get();
         }else if($sdate==null && $edate==null){
-        $expenses=Expense::where('expense_type_id',$type_id)->where('status',1)->with('expense_type')->get();
+            $expenses=Expense::where('expense_type_id',$type_id)
+                            // ->where('status',1)
+                            ->orderBy('id','desc')
+                            ->with('expense_type')
+                            ->get();
         }else{
-            $expenses=Expense::whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])->where('expense_type_id',$type_id)->where('status',1)->with('expense_type')->get();
+            $expenses=Expense::whereBetween('created_at', [$sdate.' 00:00:00',$edate.' 23:59:59'])
+                                ->where('expense_type_id',$type_id)
+                                // ->where('status',1)
+                                ->orderBy('id','desc')
+                                ->with('expense_type')
+                                ->get();
         }
         
         return Datatables::of($expenses)->addIndexColumn()->toJson();
