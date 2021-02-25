@@ -62,7 +62,7 @@
           <p class="card-text">
             {{ __("Receiver Phone No")}}:{{$row->item->receiver_phone_no}}
           </p>
-          @if($row->item->pickup->schedule)
+          @if(isset($row->item->pickup->schedule))
           <p class="card-text">
            Client {{ __("Name")}}: {{$row->item->pickup->schedule->client->user->name}}
           </p>
