@@ -62,12 +62,15 @@
           <p class="card-text">
             {{ __("Receiver Phone No")}}:{{$row->item->receiver_phone_no}}
           </p>
+          @if($row->item->pickup->schedule)
           <p class="card-text">
            Client {{ __("Name")}}: {{$row->item->pickup->schedule->client->user->name}}
           </p>
+
           <p class="card-text">
            Client {{ __("Phone No")}}: {{$row->item->pickup->schedule->client->phone_no}}
           </p>
+          @endif
           <p class="card-text">
             @if($row->item->paystatus==1)
               {{ __("Amount")}}: {{number_format($row->item->amount)}} Ks
